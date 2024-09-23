@@ -37,34 +37,77 @@ function getParser() {
      return p!;
 }
 
-function closestToPosition(
-     matches: parser.QueryMatch[],
-     index: number
-): Parser.SyntaxNode | null {
-     const nodes: parser.SyntaxNode[] = [];
+type JoinedPoint = {
+     startPosition: Parser.Point;
+     endPosition: Parser.Point;
+     startIndex: number;
+     endIndex: number;
+};
+
+function groupNodes(matches: parser.QueryMatch[]) {
+     const nodes: JoinedPoint[] = [];
 
      for (const match of matches) {
-          for (const f of match.captures) {
-               nodes.push(f.node);
+          match.captures.sort((a, b) => a.node.startIndex - b.node.startIndex);
+          const firstNode = match.captures.at(0);
+          const lastNode = match.captures.at(-1);
+          if (!firstNode || !lastNode) {
+               continue;
           }
+          nodes.push({
+               startPosition: firstNode.node.startPosition,
+               endPosition: lastNode.node.endPosition,
+               startIndex: firstNode.node.startIndex,
+               endIndex: firstNode.node.endIndex,
+          });
      }
+     return nodes;
+}
+
+function closestToPosition(
+     nodes: JoinedPoint[],
+     index: vscode.Position
+): JoinedPoint | null {
      if (nodes.length === 0) {
           return null;
      }
      let closestNode = nodes[0];
-     let closestDistance = Math.abs(
-          index -
-               (closestNode.startPosition.row * 1000 +
-                    closestNode.startPosition.column)
-     );
+     let closestDistance =
+          Math.abs(index.line - closestNode.startPosition.row) +
+          Math.abs(index.character - closestNode.startPosition.column);
 
      for (const node of nodes) {
-          const distance = Math.abs(index - node.startIndex);
+          const start = node.startPosition;
+          const end = node.endPosition;
+
+          // Check if the cursor is within the node's range
+          if (
+               (index.line > start.row ||
+                    (index.line === start.row &&
+                         index.character >= start.column)) &&
+               (index.line < end.row ||
+                    (index.line === end.row && index.character <= end.column))
+          ) {
+               return node;
+          }
+
+          if (
+               start.row < index.line ||
+               (start.row === index.line && start.column > index.character)
+          ) {
+               continue;
+          }
+
+          // Calculate the distance to the cursor position
+          const distance =
+               Math.abs(index.line - start.row) +
+               Math.abs(index.character - start.column);
           if (distance < closestDistance) {
                closestNode = node;
                closestDistance = distance;
           }
      }
+
      return closestNode;
 }
 
@@ -93,16 +136,15 @@ class QueryCommand {
 
           const cursor = editor.selection.active;
 
-          const cursorIndex = editor.document.offsetAt(cursor);
-
           const lang = await getLang();
 
           const textQuery = lang.query(this.myQuery);
 
-          const matches = textQuery.matches(tree.rootNode);
+          let matches = textQuery.matches(tree.rootNode);
 
-          // Process the matches
-          const position = closestToPosition(matches, cursorIndex);
+          console.log(matches);
+          const nodes = groupNodes(matches);
+          const position = closestToPosition(nodes, cursor);
 
           if (!position) {
                vscode.window.showInformationMessage('no position found');
@@ -118,18 +160,35 @@ export async function activate(context: vscode.ExtensionContext) {
      await initParser(languages.treeSitter.parser);
 
      const fncommand = new QueryCommand(
-          ` ( (function_declaration) @function) `
+          `
+(
+  [
+    (export_statement
+      (function_declaration
+        name: (identifier) @function.name
+        body: (statement_block) @function.body
+      ) @function) @export
+
+    (function_declaration
+      name: (identifier) @function.name
+      body: (statement_block) @function.body
+    ) @function
+  ]
+)
+
+          `
      );
 
      const innerfn = new QueryCommand(
-          `(
-    (function_declaration
-        name: (identifier) @function.name
-        body: (statement_block
-            (statement)* @function.body
-        )
-    )
-)`
+          `
+          (
+          (function_declaration
+          body: (statement_block
+     (_)* @function_body
+          )
+     )
+     )
+          `
      );
 
      const loopcommand = new QueryCommand(
@@ -147,11 +206,11 @@ export async function activate(context: vscode.ExtensionContext) {
           `     
 (for_statement
   body: (statement_block
-    (_) @loop_body))
+    (_)* @loop_body))
 
 (for_in_statement
   body: (statement_block
-    (_) @loop_body))
+    (_)* @loop_body))
 `
      );
 
@@ -244,7 +303,7 @@ function moveTo(
      editor.selection = new vscode.Selection(position, endPos); // Move cursor to that position
 
      // Reveal the new cursor position in the editor
-     editor.revealRange(new vscode.Range(position, endPos));
+     editor.revealRange(new vscode.Range(position, position));
 }
 
 // This method is called when your extension is deactivated
