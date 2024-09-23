@@ -2,7 +2,11 @@
      "name": "vscode-textobjects",
      "displayName": "vscode text objects",
      "description": "inspired by tree sitter. this is the vscode implementation of object selection",
-     "version": "0.0.1",
+     "repository": {
+          "type": "git",
+          "url": "https://github.com/RodrigoScola/vscode-text-objects"
+     },
+     "version": "0.0.2",
      "engines": {
           "vscode": "^1.93.0"
      },
