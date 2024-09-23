@@ -142,12 +142,10 @@ class QueryCommand {
 
           let matches = textQuery.matches(tree.rootNode);
 
-          console.log(matches);
           const nodes = groupNodes(matches);
           const position = closestToPosition(nodes, cursor);
 
           if (!position) {
-               vscode.window.showInformationMessage('no position found');
                return;
           }
 
