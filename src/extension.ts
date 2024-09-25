@@ -1,48 +1,31 @@
 import assert from 'assert';
-import * as path from 'path';
 import * as vscode from 'vscode';
-import { default as Parser, default as parser } from 'web-tree-sitter';
+import { default as parser } from 'web-tree-sitter';
+import { closestToPosition, JoinedPoint } from './motions/selection';
+import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file
 
-function getWasmPath(name: string) {
-     return path.join(__dirname, '..', 'parsers', `${name}.wasm`); // Adjust the path if necessary
-}
-async function initParser(name: string) {
-     const wasmPath = getWasmPath(name);
-     await parser.init({
-          locateFile: () => wasmPath,
-     });
+export function visualize(start: JoinedPoint, end: JoinedPoint): void {
+     const editor = getEditor();
+     if (!editor) {
+          return;
+     }
+     const startPos = new vscode.Position(
+          start.endPosition.row,
+          start.endPosition.column
+     );
+     const endPos = new vscode.Position(
+          end.startPosition.row,
+          end.startPosition.column
+     );
+     editor.revealRange(new vscode.Range(startPos, endPos));
+     editor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
 }
 
 function makeName(str: string) {
      return `vscode-textobjects.${str}`;
 }
-
-const languages = {
-     javascript: {
-          parser: 'javascript',
-     },
-     treeSitter: {
-          parser: 'tree-sitter',
-     },
-};
-
-let p: Parser | null = null;
-
-function getParser() {
-     if (!p) {
-          p = new Parser();
-     }
-     return p!;
-}
-
-type JoinedPoint = {
-     startPosition: Parser.Point;
-     endPosition: Parser.Point;
-     startIndex: number;
-     endIndex: number;
-};
 
 function groupNodes(matches: parser.QueryMatch[]) {
      const nodes: JoinedPoint[] = [];
@@ -54,127 +37,81 @@ function groupNodes(matches: parser.QueryMatch[]) {
           if (!firstNode || !lastNode) {
                continue;
           }
-          nodes.push({
+          const node = {
                startPosition: firstNode.node.startPosition,
                endPosition: lastNode.node.endPosition,
                startIndex: firstNode.node.startIndex,
                endIndex: firstNode.node.endIndex,
-          });
+          };
+          visualize(node, node);
+          nodes.push(node);
      }
      return nodes;
 }
 
-function closestToPosition(
-     nodes: JoinedPoint[],
-     index: vscode.Position
-): JoinedPoint | null {
-     if (nodes.length === 0) {
-          return null;
-     }
-     let closestNode = nodes[0];
-     let closestDistance =
-          Math.abs(index.line - closestNode.startPosition.row) +
-          Math.abs(index.character - closestNode.startPosition.column);
-
-     for (const node of nodes) {
-          const start = node.startPosition;
-          const end = node.endPosition;
-
-          // Check if the cursor is within the node's range
-          if (
-               (index.line > start.row ||
-                    (index.line === start.row &&
-                         index.character >= start.column)) &&
-               (index.line < end.row ||
-                    (index.line === end.row && index.character <= end.column))
-          ) {
-               return node;
-          }
-
-          if (
-               start.row < index.line ||
-               (start.row === index.line && start.column > index.character)
-          ) {
-               continue;
-          }
-
-          // Calculate the distance to the cursor position
-          const distance =
-               Math.abs(index.line - start.row) +
-               Math.abs(index.character - start.column);
-          if (distance < closestDistance) {
-               closestNode = node;
-               closestDistance = distance;
-          }
-     }
-
-     return closestNode;
-}
-
-async function getLang() {
-     const lang = await parser.Language.load(
-          getWasmPath(languages.javascript.parser)
-     );
-     return lang;
+let currentEditor: vscode.TextEditor | undefined;
+export function getEditor() {
+     return currentEditor;
 }
 
 class QueryCommand {
-     myQuery: string;
+     selector: string;
 
      constructor(query: string) {
-          this.myQuery = query;
+          this.selector = query;
      }
      async exec() {
           const editor = vscode.window.activeTextEditor;
           if (!editor) {
                return;
           }
-          assert(this.myQuery, 'invalid query');
-          assert(this.myQuery.length > 0, 'invalid query');
-
-          const tree = getParser().parse(editor.document.getText());
+          currentEditor = editor;
 
           const cursor = editor.selection.active;
 
-          const lang = await getLang();
+          assert(this.selector, 'invalid query');
+          assert(this.selector.length > 0, 'invalid query');
 
-          const textQuery = lang.query(this.myQuery);
+          const parser = await LanguageParser.get('javascript');
+          assert(parser, 'could not init parser');
 
-          let matches = textQuery.matches(tree.rootNode);
+          const tree = parser.parser.parse(editor.document.getText());
 
-          const nodes = groupNodes(matches);
-          const position = closestToPosition(nodes, cursor);
+          const query = parser.language.query(this.selector);
+
+          let matches = query.matches(tree.rootNode);
+
+          const position = closestToPosition(groupNodes(matches), cursor);
 
           if (!position) {
                return;
           }
+          const endPos = new vscode.Position(
+               position.endPosition.row,
+               position.endPosition.column
+          );
+          const startPos = new vscode.Position(
+               position.startPosition.row,
+               position.startPosition.column
+          );
 
-          moveTo(position.startPosition, position.endPosition, editor);
+          select(startPos, endPos, editor);
      }
 }
 
 // This method is called when your extension is activated
 export async function activate(context: vscode.ExtensionContext) {
-     await initParser(languages.treeSitter.parser);
+     LanguageParser.init();
 
      const fncommand = new QueryCommand(
           `
-(
-  [
-    (export_statement
-      (function_declaration
-        name: (identifier) @function.name
-        body: (statement_block) @function.body
-      ) @function) @export
+         (export_statement 
+           (function_declaration
+             name: (identifier) @function.name
+             body: (statement_block) @function.body
+           ) @exportedFunction) ? @export
 
-    (function_declaration
-      name: (identifier) @function.name
-      body: (statement_block) @function.body
-    ) @function
-  ]
-)
-
-          `
+                    `
      );
 
      const innerfn = new QueryCommand(
@@ -225,13 +162,6 @@ export async function activate(context: vscode.ExtensionContext) {
     )
     `
      );
-
-     const lang = await parser.Language.load(
-          getWasmPath(languages.javascript.parser)
-     );
-
-     const p = getParser();
-     p.setLanguage(lang);
 
      //to do variable declaration
      //const assValue = vscode.commands.registerCommand('no.assValue', () => {
@@ -287,23 +217,19 @@ export async function activate(context: vscode.ExtensionContext) {
      context.subscriptions.push(innerFn);
 }
 
-function moveTo(
-     startPosition: parser.Point,
-     endPosition: parser.Point,
+function select(
+     startPos: vscode.Position,
+     endPos: vscode.Position,
      editor: vscode.TextEditor
 ) {
-     const endPos = new vscode.Position(endPosition.row, endPosition.column);
-     const position = new vscode.Position(
-          startPosition.row,
-          startPosition.column
-     ); // Create a new position object
+     editor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
+     editor.revealRange(
+          new vscode.Range(startPos, endPos),
+          vscode.TextEditorRevealType.InCenter
+     );
 
-     editor.selection = new vscode.Selection(position, endPos); // Move cursor to that position
-
-     // Reveal the new cursor position in the editor
-     editor.revealRange(new vscode.Range(position, position));
+     return editor;
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
 

@@ -17,6 +17,16 @@
      "activationEvents": [],
      "main": "./dist/extension.js",
      "contributes": {
+          "configuration": {
+               "title": "settings",
+               "properties": {
+                    "vscode-textobjects.lookBack": {
+                         "type": "boolean",
+                         "description": "allows to select items before the cursor",
+                         "default": false
+                    }
+               }
+          },
           "commands": [
                {
                     "command": "vscode-textobjects.rhs",
