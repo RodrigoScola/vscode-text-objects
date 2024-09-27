@@ -1,98 +1,98 @@
 {
-     "name": "vscode-textobjects",
-     "displayName": "vscode text objects",
-     "description": "inspired by tree sitter. this is the vscode implementation of object selection",
-     "repository": {
-          "type": "git",
-          "url": "https://github.com/RodrigoScola/vscode-text-objects"
-     },
-     "version": "0.0.4",
-     "engines": {
-          "vscode": "^1.93.0"
-     },
-     "categories": [
-          "Other"
-     ],
-     "publisher": "rodrigoscola",
-     "activationEvents": [],
-     "main": "./dist/extension.js",
-     "contributes": {
-          "configuration": {
-               "title": "settings",
-               "properties": {
-                    "vscode-textobjects.lookBack": {
-                         "type": "boolean",
-                         "description": "allows to select items before the cursor",
-                         "default": false
-                    }
-               }
-          },
-          "commands": [
-               {
-                    "command": "vscode-textobjects.rhs",
-                    "title": "select variable assignments"
-               },
-               {
-                    "command": "vscode-textobjects.conditional",
-                    "title": "Select if statements"
-               },
-               {
-                    "command": "vscode-textobjects.innerConditional",
-                    "title": "Select inner if statements"
-               },
-               {
-                    "command": "vscode-textobjects.innerLoops",
-                    "title": "select inner loops"
-               },
-               {
-                    "command": "vscode-textobjects.loops",
-                    "title": "Select Loops"
-               },
-               {
-                    "command": "vscode-textobjects.assValue",
-                    "title": "select variable declarator"
-               },
-               {
-                    "command": "vscode-textobjects.innerFunction",
-                    "title": "select inner function"
-               },
-               {
-                    "command": "vscode-textobjects.function",
-                    "title": "Select Function"
-               }
-          ]
-     },
-     "scripts": {
-          "vscode:prepublish": "npm run package",
-          "compile": "npm run check-types && npm run lint && node esbuild.js",
-          "watch": "npm-run-all -p watch:*",
-          "watch:esbuild": "node esbuild.js --watch",
-          "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-          "package": "npm run check-types && npm run lint && node esbuild.js --production",
-          "compile-tests": "tsc -p . --outDir out",
-          "watch-tests": "tsc -p . -w --outDir out",
-          "pretest": "npm run compile-tests && npm run compile && npm run lint",
-          "check-types": "tsc --noEmit",
-          "lint": "eslint src",
-          "test": "vscode-test"
-     },
-     "devDependencies": {
-          "@types/mocha": "^10.0.7",
-          "@types/node": "20.x",
-          "@types/vscode": "^1.93.0",
-          "@typescript-eslint/eslint-plugin": "^8.3.0",
-          "@typescript-eslint/parser": "^8.3.0",
-          "@vscode/test-cli": "^0.0.10",
-          "@vscode/test-electron": "^2.4.1",
-          "esbuild": "^0.23.1",
-          "eslint": "^9.9.1",
-          "npm-run-all": "^4.1.5",
-          "tree-sitter-cli": "^0.23.0",
-          "tree-sitter-javascript": "^0.23.0",
-          "typescript": "^5.5.4"
-     },
-     "dependencies": {
-          "web-tree-sitter": "^0.23.0"
-     }
+	"name": "vscode-textobjects",
+	"displayName": "vscode text objects",
+	"description": "inspired by tree sitter. this is the vscode implementation of object selection",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/RodrigoScola/vscode-text-objects"
+	},
+	"version": "0.0.5",
+	"engines": {
+		"vscode": "^1.93.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"publisher": "rodrigoscola",
+	"activationEvents": [],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "settings",
+			"properties": {
+				"vscode-textobjects.lookBack": {
+					"type": "boolean",
+					"description": "allows to select items before the cursor",
+					"default": false
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "vscode-textobjects.rhs",
+				"title": "select variable assignments"
+			},
+			{
+				"command": "vscode-textobjects.conditional",
+				"title": "Select if statements"
+			},
+			{
+				"command": "vscode-textobjects.innerConditional",
+				"title": "Select inner if statements"
+			},
+			{
+				"command": "vscode-textobjects.innerLoops",
+				"title": "select inner loops"
+			},
+			{
+				"command": "vscode-textobjects.loops",
+				"title": "Select Loops"
+			},
+			{
+				"command": "vscode-textobjects.assValue",
+				"title": "select variable declarator"
+			},
+			{
+				"command": "vscode-textobjects.innerFunction",
+				"title": "select inner function"
+			},
+			{
+				"command": "vscode-textobjects.function",
+				"title": "Select Function"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "npm run check-types && npm run lint && node esbuild.js",
+		"watch": "npm-run-all -p watch:*",
+		"watch:esbuild": "node esbuild.js --watch",
+		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+		"package": "npm run check-types && npm run lint && node esbuild.js --production",
+		"compile-tests": "tsc -p . --outDir out && cp -r ./parsers ./out/parsers",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "npm run compile-tests && npm run compile && npm run lint",
+		"check-types": "tsc --noEmit",
+		"lint": "eslint src",
+		"test": "vscode-test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^10.0.7",
+		"@types/node": "20.x",
+		"@types/vscode": "^1.93.0",
+		"@typescript-eslint/eslint-plugin": "^8.3.0",
+		"@typescript-eslint/parser": "^8.3.0",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/test-electron": "^2.4.1",
+		"esbuild": "^0.23.1",
+		"eslint": "^9.9.1",
+		"npm-run-all": "^4.1.5",
+		"tree-sitter-cli": "^0.23.0",
+		"tree-sitter-javascript": "^0.23.0",
+		"typescript": "^5.5.4"
+	},
+	"dependencies": {
+		"web-tree-sitter": "^0.23.0"
+	}
 }
 

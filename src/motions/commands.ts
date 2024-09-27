@@ -1,55 +1,87 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
+import { QueryMatch } from 'web-tree-sitter';
+import { NODES } from '../constants';
 import { editor } from '../extension';
-import { groupNodes } from '../parsing/nodes';
-import { LanguageParser } from '../parsing/parser';
+import { filterLargestMatches, groupNodes } from '../parsing/nodes';
+import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestToPosition, select } from './selection';
 
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
+
+export type QueryContext = {
+	cursor: vscode.Position;
+	text: string;
+	language: SupportedLanguages;
+};
+
 export class QueryCommand {
 	selector: string;
 
-	constructor(query: string) {
+	private onMatch: ((matches: QueryMatch[]) => QueryMatch[]) | undefined;
+
+	constructor(
+		query: string,
+		onMatch?: ((matches: QueryMatch[]) => QueryMatch[]) | undefined
+	) {
 		this.selector = query;
+		this.onMatch = onMatch;
 	}
-	async exec() {
-		const currentEditor = vscode.window.activeTextEditor;
-		if (!currentEditor) {
-			return;
-		}
-		editor.setEditor(currentEditor);
-
-		const cursor = currentEditor.selection.active;
-
+	async exec(context: QueryContext) {
 		assert(this.selector, 'invalid query');
 		assert(this.selector.length > 0, 'invalid query');
 
 		const parser = await LanguageParser.get('javascript');
 		assert(parser, 'could not init parser');
 
-		const tree = parser.parser.parse(currentEditor.document.getText());
+		const tree = parser.parser.parse(context.text);
 
 		const query = parser.language.query(this.selector);
 
 		let matches = query.matches(tree.rootNode);
 
-		const position = closestToPosition(groupNodes(matches), cursor);
+		if (this.onMatch && typeof this.onMatch === 'function') {
+			matches = this.onMatch(matches);
+		}
+
+		const position = closestToPosition(
+			groupNodes(matches),
+			context.cursor
+		);
 
 		if (!position) {
+			console.log('function not actually found');
 			return;
 		}
-		const endPos = new vscode.Position(
-			position.endPosition.row,
-			position.endPosition.column
-		);
+
 		const startPos = new vscode.Position(
 			position.startPosition.row,
 			position.startPosition.column
 		);
 
-		select(startPos, endPos, editor.getEditor());
+		const endPos = new vscode.Position(
+			position.endPosition.row,
+			position.endPosition.column
+		);
+
+		const ret = {
+			start: startPos,
+			end: endPos,
+		};
+
+		console.log(ret);
+		console.log('start', {
+			line: ret.start.line,
+			char: ret.start.character,
+		});
+
+		console.log('end', {
+			line: ret.end.line,
+			char: ret.end.character,
+		});
+		return ret;
 	}
 }
 // [
@@ -69,24 +101,43 @@ export class QueryCommand {
 //   ) @function
 // ]
 
+export class JsCommands {
+	function() {
+		return new QueryCommand(
+			` [
+   ; Match the exported function declaration
+   (export_statement
+     (function_declaration
+       name: (identifier) @function.name
+       body: (statement_block) @function.body
+     ) @exportedFunction
+   ) @export
+
+   ; Match only the non-exported function declarations
+   (function_declaration
+     name: (identifier) @function.name
+     body: (statement_block) @function.body
+     (#not-any? export_statement)
+   ) @function
+ ] `,
+			function (matches) {
+				return filterLargestMatches(matches, NODES.FUNCTION_NAME);
+			}
+		);
+	}
+}
+
+const jsCommands = new JsCommands();
+
+function getContext(currentEditor: vscode.TextEditor): QueryContext {
+	return {
+		text: currentEditor.document.getText(),
+		cursor: currentEditor.selection.active,
+		language: 'javascript',
+	};
+}
+
 export function initCommands(context: vscode.ExtensionContext) {
-	const fncommand = new QueryCommand(
-		`
-[
-  ; Match the exported function declaration
-  (export_statement
-    (function_declaration
-      name: (identifier) @function.name
-      body: (statement_block) @function.body
-    ) @exportedFunction
-  ) @export
-
-]
-
-
-		`
-	);
-
 	const innerfn = new QueryCommand(
 		`
           (
@@ -138,44 +189,127 @@ export function initCommands(context: vscode.ExtensionContext) {
 
 	const innerFn = vscode.commands.registerCommand(
 		makeName('innerFunction'),
-		() => {
-			innerfn.exec();
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await innerfn.exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
 		}
 	);
 
 	const outerFunction = vscode.commands.registerCommand(
 		makeName('function'),
-		() => {
-			fncommand.exec();
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await jsCommands.function().exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
 		}
 	);
 
-	const forLoops = vscode.commands.registerCommand(makeName('loops'), () => {
-		loopcommand.exec();
-	});
+	const forLoops = vscode.commands.registerCommand(
+		makeName('loops'),
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await loopcommand.exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
+		}
+	);
 
 	const innerConditional = vscode.commands.registerCommand(
 		makeName('innerConditional'),
-		() => {
-			innerConditionalCommand.exec();
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await innerConditionalCommand.exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
 		}
 	);
 
 	const conditional = vscode.commands.registerCommand(
 		makeName('conditional'),
-		() => {
-			conditionalCommand.exec();
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await conditionalCommand.exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
 		}
 	);
 	const innerLoops = vscode.commands.registerCommand(
 		makeName('innerLoops'),
-		() => {
-			innerloopcommand.exec();
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await innerloopcommand.exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
 		}
 	);
-	const rhsCommand = vscode.commands.registerCommand(makeName('rhs'), () => {
-		rhscommand.exec();
-	});
+	const rhsCommand = vscode.commands.registerCommand(
+		makeName('rhs'),
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = getContext(currentEditor);
+			const position = await rhscommand.exec(context);
+			if (!position) {
+				return;
+			}
+
+			select(position.start, position.end, editor.getEditor());
+		}
+	);
 
 	context.subscriptions.push(rhsCommand);
 	context.subscriptions.push(innerLoops);

@@ -44,7 +44,6 @@ export function closestToPosition(
 				(index.line === end.row && index.character <= end.column))
 		) {
 			isInside = true;
-			console.log('inside');
 			closestNode = node;
 		}
 
@@ -59,7 +58,6 @@ export function closestToPosition(
 			continue;
 		}
 
-		console.log(`calculating the closest one`, index.line, start.row);
 		// Calculate the distance to the cursor position
 		const distance =
 			Math.abs(index.line - start.row) +
