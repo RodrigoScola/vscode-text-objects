@@ -5,5 +5,6 @@ node_modules
 playground.js
 
 dist 
+out
 
 .vscode-test
