@@ -1,9 +1,9 @@
 import {
-	Position,
-	Range,
-	Selection,
-	TextEditor,
-	TextEditorRevealType,
+     Position,
+     Range,
+     Selection,
+     TextEditor,
+     TextEditorRevealType,
 } from 'vscode';
 import Parser from 'web-tree-sitter';
 import { visualize } from '../extension';
@@ -14,6 +14,45 @@ export type JoinedPoint = {
 	startIndex: number;
 	endIndex: number;
 };
+
+export function nextToPosition(nodes: JoinedPoint[], index: Position) {
+	if (nodes.length === 0) {
+		return undefined;
+	}
+
+	// let closestNode = nodes[0];
+	let closestNode = undefined;
+	let closestDistance = Infinity;
+	//      Math.abs(index.line - closestNode.startPosition.row);
+	//Math.abs(index.character - closestNode.startPosition.column);
+
+
+	for (const node of nodes) {
+		const start = node.startPosition;
+		if (start.row > index.line ) {
+			continue;
+		}
+
+		if (
+			start.row < index.line ||
+			(start.row === index.line && start.column > index.character)
+		) {
+			continue;
+		}
+
+		// Calculate the distance to the cursor position
+		const distance = Math.abs(index.line - start.row);
+		//Math.abs(index.character - start.column);
+		if (distance < closestDistance) {
+			visualize(node, node);
+			closestNode = node;
+			closestDistance = distance;
+		}
+	}
+
+	return closestNode;
+}
+
 export function closestToPosition(
 	nodes: JoinedPoint[],
 	index: Position
@@ -91,10 +130,8 @@ export function select(
 		revealType = TextEditorRevealType.InCenter;
 	}
 
-	console.log(editor.selection.active.line);
 
 	editor.revealRange(new Range(startPos, endPos), revealType);
 
 	return editor;
 }
-

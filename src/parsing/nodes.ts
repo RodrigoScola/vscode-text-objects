@@ -66,7 +66,6 @@ export function filterLargestMatches(
 
 export function groupNodes(matches: parser.QueryMatch[]) {
 	const nodes: JoinedPoint[] = [];
-	console.log(matches);
 
 	for (const match of matches) {
 		match.captures.sort((a, b) => a.node.startIndex - b.node.startIndex);

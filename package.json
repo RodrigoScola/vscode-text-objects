@@ -29,6 +29,10 @@
 		},
 		"commands": [
 			{
+				"command": "vscode-textobjects.goToFunction",
+				"title": "go to the next function"
+			},
+			{
 				"command": "vscode-textobjects.rhs",
 				"title": "select variable assignments"
 			},
