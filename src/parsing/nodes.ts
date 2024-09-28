@@ -27,7 +27,18 @@ function exists(
 
 // Function to filter the largest matches
 export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
+     const idMap = new Map<number, QueryMatch>();
 	return matches.reduce((filtered: QueryMatch[], match: QueryMatch) => {
+
+          for (const cap of match.captures) {
+               if (idMap.has(cap.node.id)) {
+                    return filtered;
+               }
+               idMap.set(cap.node.id, match);
+          }
+
+
+
 		//checks if function is anonymous
 		if (exists(match.captures, 'anonymous_function')) {
 			filtered.push(match);

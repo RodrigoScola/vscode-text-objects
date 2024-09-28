@@ -79,14 +79,21 @@ export class QueryCommand {
 
 		let matches = query.matches(tree.rootNode);
 
+          console.log(matches);
+
 		if (typeof this.onMatch === 'function') {
 			matches = this.onMatch(matches);
 		}
+          console.log(matches, 'after');
+
+
+          const group = groupNodes(matches);
 
 		const position = closestToPosition(
-			groupNodes(matches),
+			group,
 			context.cursor
 		);
+
 
 		if (!position) {
 			return;
@@ -171,7 +178,6 @@ export class JsCommands {
 
  ] `,
 			function (matches) {
-                    console.log(matches[matches.length - 1].captures);
 				return filterLargestMatches(matches, );
 			}
 		);
