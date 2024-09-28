@@ -105,6 +105,15 @@ export class JsCommands {
 	function() {
 		return new QueryCommand(
 			` [
+
+               ( call_expression
+                arguments: (arguments
+(arrow_function
+  parameters: (formal_parameters) @function.name
+  body: (statement_block) @body
+  @arrow-function) @function))
+
+
    ; Match the exported function declaration
    (export_statement
      (function_declaration
@@ -119,6 +128,23 @@ export class JsCommands {
      body: (statement_block) @function.body
      (#not-any? export_statement)
    ) @function
+
+   ; arrow functions
+   (lexical_declaration
+               (variable_declarator
+   value: (arrow_function) @function.body
+     )
+   ) @function
+               (export_statement 
+               (lexical_declaration
+               (variable_declarator
+               name: (identifier) @function.name
+               value: (arrow_function) @function.body
+          )
+          )
+          ) @function
+
+
  ] `,
 			function (matches) {
 				return filterLargestMatches(matches, NODES.FUNCTION_NAME);
@@ -146,7 +172,7 @@ export function initCommands(context: vscode.ExtensionContext) {
      (_)* @function_body
           )
      )
-     )
+     ) 
           `
 	);
 

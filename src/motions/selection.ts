@@ -17,16 +17,17 @@ export type JoinedPoint = {
 export function closestToPosition(
 	nodes: JoinedPoint[],
 	index: Position
-): JoinedPoint | null {
+): JoinedPoint | undefined {
 	if (nodes.length === 0) {
-		return null;
+		return undefined;
 	}
 
-	let closestNode = nodes[0];
+	// let closestNode = nodes[0];
+	let closestNode = undefined;
 
-	let closestDistance =
-		Math.abs(index.line - closestNode.startPosition.row) +
-		Math.abs(index.character - closestNode.startPosition.column);
+	let closestDistance = Infinity;
+	//      Math.abs(index.line - closestNode.startPosition.row);
+	//Math.abs(index.character - closestNode.startPosition.column);
 
 	let isInside = false;
 
@@ -59,9 +60,8 @@ export function closestToPosition(
 		}
 
 		// Calculate the distance to the cursor position
-		const distance =
-			Math.abs(index.line - start.row) +
-			Math.abs(index.character - start.column);
+		const distance = Math.abs(index.line - start.row);
+		//Math.abs(index.character - start.column);
 		if (distance < closestDistance) {
 			visualize(node, node);
 			closestNode = node;
@@ -77,11 +77,23 @@ export function select(
 	endPos: Position,
 	editor: TextEditor
 ) {
+	const cursor = editor.selection.active;
+
 	editor.selection = new Selection(startPos, endPos); // Move cursor to that position
-	editor.revealRange(
-		new Range(startPos, endPos),
-		TextEditorRevealType.InCenterIfOutsideViewport
-	);
+
+	editor.document.lineCount;
+
+	const delta = Math.abs(cursor.line - editor.selection.active.line);
+
+	let revealType = TextEditorRevealType.Default;
+
+	if (delta > editor.document.lineCount) {
+		revealType = TextEditorRevealType.InCenter;
+	}
+
+	console.log(editor.selection.active.line);
+
+	editor.revealRange(new Range(startPos, endPos), revealType);
 
 	return editor;
 }
