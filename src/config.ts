@@ -39,4 +39,3 @@ export class Config {
 		return configValue;
 	}
 }
-

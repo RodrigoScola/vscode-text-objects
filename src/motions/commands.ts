@@ -33,7 +33,7 @@ export class QueryCommand {
 		assert(this.selector, 'invalid query');
 		assert(this.selector.length > 0, 'invalid query');
 
-		const parser = await LanguageParser.get('javascript');
+		const parser = await LanguageParser.get(context.language);
 		assert(parser, 'could not init parser');
 
 		const tree = parser.parser.parse(context.text);
@@ -42,7 +42,7 @@ export class QueryCommand {
 
 		let matches = query.matches(tree.rootNode);
 
-		if (this.onMatch && typeof this.onMatch === 'function') {
+		if (typeof this.onMatch === 'function') {
 			matches = this.onMatch(matches);
 		}
 
@@ -52,7 +52,6 @@ export class QueryCommand {
 		);
 
 		if (!position) {
-			console.log('function not actually found');
 			return;
 		}
 
@@ -71,38 +70,12 @@ export class QueryCommand {
 			end: endPos,
 		};
 
-		console.log(ret);
-		console.log('start', {
-			line: ret.start.line,
-			char: ret.start.character,
-		});
-
-		console.log('end', {
-			line: ret.end.line,
-			char: ret.end.character,
-		});
 		return ret;
 	}
 }
-// [
-//   ; Match the exported function declaration
-//   (export_statement
-//     (function_declaration
-//       name: (identifier) @function.name
-//       body: (statement_block) @function.body
-//     ) @exportedFunction
-//   ) @export
-
-//   ; Match only the non-exported function declarations
-//   (function_declaration
-//     name: (identifier) @function.name
-//     body: (statement_block) @function.body
-//     (#not-any? export_statement)
-//   ) @function
-// ]
 
 export class JsCommands {
-	function() {
+	function(): QueryCommand {
 		return new QueryCommand(
 			` [
 
@@ -151,21 +124,9 @@ export class JsCommands {
 			}
 		);
 	}
-}
-
-const jsCommands = new JsCommands();
-
-function getContext(currentEditor: vscode.TextEditor): QueryContext {
-	return {
-		text: currentEditor.document.getText(),
-		cursor: currentEditor.selection.active,
-		language: 'javascript',
-	};
-}
-
-export function initCommands(context: vscode.ExtensionContext) {
-	const innerfn = new QueryCommand(
-		`
+	innerFunction(): QueryCommand {
+		return new QueryCommand(
+			`
           (
           (function_declaration
           body: (statement_block
@@ -174,21 +135,18 @@ export function initCommands(context: vscode.ExtensionContext) {
      )
      ) 
           `
-	);
-
-	const loopcommand = new QueryCommand(
-		` (for_statement) @loop
+		);
+	}
+	loop() {
+		return new QueryCommand(
+			` (for_statement) @loop
           
           (for_in_statement) @loop `
-	);
-
-	const rhscommand = new QueryCommand(
-		`(variable_declarator
-  value: (_) @rhs)`
-	);
-
-	const innerloopcommand = new QueryCommand(
-		`     
+		);
+	}
+	innerLoop() {
+		return new QueryCommand(
+			`     
 (for_statement
   body: (statement_block
     (_)* @loop_body))
@@ -197,145 +155,132 @@ export function initCommands(context: vscode.ExtensionContext) {
   body: (statement_block
     (_)* @loop_body))
 `
-	);
-
-	const innerConditionalCommand = new QueryCommand(`
+		);
+	}
+	innerConditional() {
+		return new QueryCommand(`
 (if_statement
   consequence: (statement_block
     (_) @inner_statement))
 `);
-
-	const conditionalCommand = new QueryCommand(
-		`
+	}
+	conditional() {
+		return new QueryCommand(
+			`
     (
         (if_statement) @if.statement
     )
     `
+		);
+	}
+     rhs() {
+return new QueryCommand(
+		`(variable_declarator
+  value: (_) @rhs)`
 	);
+     }
+}
 
-	const innerFn = vscode.commands.registerCommand(
+const jsCommands = new JsCommands();
+
+async function getContext(
+	currentEditor: vscode.TextEditor
+): Promise<QueryContext> {
+	const langName = currentEditor.document.languageId;
+	console.log(langName, 'the language id');
+	const parser = await LanguageParser.get(langName);
+	assert(parser, 'could not find parser');
+	return {
+		text: currentEditor.document.getText(),
+		cursor: currentEditor.selection.active,
+		language: langName as SupportedLanguages,
+	};
+}
+
+export function initCommands(context: vscode.ExtensionContext) {
+
+	function e(
+		name: string,
+		command: QueryCommand,
+		afterEnd: (position: {
+			start: vscode.Position;
+			end: vscode.Position;
+		}) => unknown
+	) {
+		return vscode.commands.registerCommand(name, async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = await getContext(currentEditor);
+			const position = await command.exec(context);
+			if (!position) {
+				return;
+			}
+			afterEnd(position);
+		});
+	}
+
+
+     const selectRange = function (position: { start: vscode.Position; end: vscode.Position; }): void {
+          select(position.start, position.end, editor.getEditor());
+     };
+	const innerFn = e(
 		makeName('innerFunction'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await innerfn.exec(context);
-			if (!position) {
-				return;
-			}
-
-			select(position.start, position.end, editor.getEditor());
-		}
+		jsCommands.innerFunction(),
+		selectRange
 	);
 
-	const outerFunction = vscode.commands.registerCommand(
+	const outerFunction = e(
 		makeName('function'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await jsCommands.function().exec(context);
-			if (!position) {
-				return;
-			}
-
+		jsCommands.function(),
+		function (position) {
 			select(position.start, position.end, editor.getEditor());
 		}
 	);
-
-	const forLoops = vscode.commands.registerCommand(
+	const forLoops = e(
 		makeName('loops'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await loopcommand.exec(context);
-			if (!position) {
-				return;
-			}
-
+		jsCommands.loop(),
+		function (position) {
 			select(position.start, position.end, editor.getEditor());
 		}
 	);
 
-	const innerConditional = vscode.commands.registerCommand(
+	const innerConditional = e(
 		makeName('innerConditional'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await innerConditionalCommand.exec(context);
-			if (!position) {
-				return;
-			}
-
+		jsCommands.innerConditional(),
+		function (position) {
 			select(position.start, position.end, editor.getEditor());
 		}
 	);
 
-	const conditional = vscode.commands.registerCommand(
+	const conditional = e(
 		makeName('conditional'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await conditionalCommand.exec(context);
-			if (!position) {
-				return;
-			}
-
+		jsCommands.conditional(),
+		function (position) {
 			select(position.start, position.end, editor.getEditor());
 		}
 	);
-	const innerLoops = vscode.commands.registerCommand(
+
+	const innerLoops = e(
 		makeName('innerLoops'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await innerloopcommand.exec(context);
-			if (!position) {
-				return;
-			}
+		jsCommands.innerLoop(),
 
+		function (position) {
 			select(position.start, position.end, editor.getEditor());
 		}
 	);
-	const rhsCommand = vscode.commands.registerCommand(
+
+     const rhsCommand = e(
 		makeName('rhs'),
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = getContext(currentEditor);
-			const position = await rhscommand.exec(context);
-			if (!position) {
-				return;
-			}
-
+          jsCommands.rhs(),
+		function (position) {
 			select(position.start, position.end, editor.getEditor());
 		}
-	);
+     );
+
+
 
 	context.subscriptions.push(rhsCommand);
 	context.subscriptions.push(innerLoops);
@@ -345,4 +290,3 @@ export function initCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(outerFunction);
 	context.subscriptions.push(innerFn);
 }
-

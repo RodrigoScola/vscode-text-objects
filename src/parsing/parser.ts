@@ -1,9 +1,9 @@
 import assert from 'assert';
 import path from 'path';
 import {
-	Language,
-	default as Parser,
-	default as parser,
+     Language,
+     default as Parser,
+     default as parser,
 } from 'web-tree-sitter';
 
 export type Parsing = {
@@ -33,9 +33,10 @@ export class LanguageParser {
 	static path(name: string) {
 		return path.join(__dirname, '..', 'parsers', `${name}.wasm`); // Adjust the path if necessary
 	}
-	static async get(langname: SupportedLanguages) {
+	static async get(langname : string) {
+
 		if (langname in LanguageParser.initedLanguages) {
-			return LanguageParser.initedLanguages[langname];
+			return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 		}
 
 		let lang: Language | undefined;
@@ -49,12 +50,12 @@ export class LanguageParser {
 		assert(lang, 'could not set language');
 		const p = new Parser();
 		p.setLanguage(lang);
-		LanguageParser.initedLanguages[langname] = {
+		LanguageParser.initedLanguages[langname as keyof typeof Languages] = {
 			language: lang,
 			module: langname,
 			parser: p,
 		};
-		return LanguageParser.initedLanguages[langname];
+		return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 	}
 }
 

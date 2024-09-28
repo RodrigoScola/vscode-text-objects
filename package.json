@@ -18,9 +18,9 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"configuration": {
-			"title": "settings",
+			"title": "Vscode Text Objects",
 			"properties": {
-				"vscode-textobjects.lookBack": {
+				"vscode-textobjects.selection.lookBack": {
 					"type": "boolean",
 					"description": "allows to select items before the cursor",
 					"default": false
@@ -95,4 +95,3 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
-
