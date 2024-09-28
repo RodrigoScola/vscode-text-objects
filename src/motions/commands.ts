@@ -2,7 +2,6 @@ import assert from 'assert';
 import * as vscode from 'vscode';
 import { Selection } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
-import { NODES } from '../constants';
 import { editor } from '../extension';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
@@ -37,13 +36,9 @@ export class QueryCommand {
 
 		const parser = await LanguageParser.get(context.language);
 		assert(parser, 'could not init parser');
-
 		const tree = parser.parser.parse(context.text);
-
 		const query = parser.language.query(this.selector);
-
 		let matches = query.matches(tree.rootNode);
-
 		if (typeof this.onMatch === 'function') {
 			matches = this.onMatch(matches);
 		}
@@ -107,12 +102,11 @@ export class QueryCommand {
 			position.endPosition.column
 		);
 
-		const ret = {
+
+		return {
 			start: startPos,
 			end: endPos,
 		};
-
-		return ret;
 	}
 }
 
@@ -121,6 +115,11 @@ export class JsCommands {
 		return new QueryCommand(
 			` [
 
+
+          ;anonymous functions
+(function_expression
+  (identifier)? @function_name
+  (#not-eq? @function_name "identifier")) @anonymous_function
                ( call_expression
                 arguments: (arguments
 (arrow_function
@@ -144,9 +143,11 @@ export class JsCommands {
      (#not-any? export_statement)
    ) @function
 
+
    ; arrow functions
    (lexical_declaration
                (variable_declarator
+               name : (identifier) @function.name
    value: (arrow_function) @function.body
      )
    ) @function
@@ -160,9 +161,18 @@ export class JsCommands {
           ) @function
 
 
+               (arrow_function
+  (identifier)? @function_name
+  (#not-eq? @function_name "identifier")) @anonymous_function
+
+
+
+
+
  ] `,
 			function (matches) {
-				return filterLargestMatches(matches, NODES.FUNCTION_NAME);
+                    console.log(matches[matches.length - 1].captures);
+				return filterLargestMatches(matches, );
 			}
 		);
 	}

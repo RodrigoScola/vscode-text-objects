@@ -65,9 +65,6 @@ export function closestToPosition(
 	let closestNode = undefined;
 
 	let closestDistance = Infinity;
-	//      Math.abs(index.line - closestNode.startPosition.row);
-	//Math.abs(index.character - closestNode.startPosition.column);
-
 	let isInside = false;
 
 	for (const node of nodes) {
@@ -93,10 +90,18 @@ export function closestToPosition(
 
 		if (
 			start.row < index.line ||
-			(start.row === index.line && start.column > index.character)
+			(start.row === index.line && index.character  < start.column - 1)
 		) {
+               // console.log('calculation start',{
+               //      st: start.row, 
+               //      index: index.line,
+               //      sc: start.column,
+               //      id: index.character
+
+               // } );
 			continue;
 		}
+
 
 		// Calculate the distance to the cursor position
 		const distance = Math.abs(index.line - start.row);

@@ -3,6 +3,7 @@ import { visualize } from '../extension';
 import { JoinedPoint } from '../motions/selection';
 
 import { QueryMatch } from 'web-tree-sitter';
+import { NODES } from '../constants';
 
 // Define a function to calculate the size of a match based on its start and end positions.
 function getMatchSize(match: QueryMatch): number {
@@ -25,20 +26,24 @@ function exists(
 }
 
 // Function to filter the largest matches
-export function filterLargestMatches(
-	matches: QueryMatch[],
-	node_name: string
-): QueryMatch[] {
+export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
 	return matches.reduce((filtered: QueryMatch[], match: QueryMatch) => {
+		//checks if function is anonymous
+		if (exists(match.captures, 'anonymous_function')) {
+			filtered.push(match);
+			return filtered;
+		}
+
 		// Extract the function name (or unique identifier) from the match
 		const functionName =
-			exists(match.captures, node_name)?.node.text || '';
+			exists(match.captures, NODES.FUNCTION_NAME)?.node.text || '';
 
 		// Check if there is an existing match for the same function
 		const existingMatch = filtered.find((f) => {
 			const existingFunctionName =
-				f.captures.find((capture) => capture.name === node_name)
-					?.node.text || '';
+				f.captures.find(
+					(capture) => capture.name === NODES.FUNCTION_NAME
+				)?.node.text || '';
 			return existingFunctionName === functionName;
 		});
 
@@ -55,11 +60,12 @@ export function filterLargestMatches(
 			return filtered.map((f) => {
 				const existingFunctionName =
 					f.captures.find(
-						(capture) => capture.name === node_name
+						(capture) => capture.name === NODES.FUNCTION_NAME
 					)?.node.text || '';
 				return existingFunctionName === functionName ? match : f;
 			});
 		}
+
 		return filtered;
 	}, []);
 }
@@ -83,6 +89,7 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		visualize(node, node);
 		nodes.push(node);
 	}
+
 	return nodes;
 }
 
