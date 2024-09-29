@@ -35,7 +35,10 @@ export class QueryCommand {
 		assert(this.selector.length > 0, 'invalid query');
 
 		const parser = await LanguageParser.get(context.language);
-		assert(parser, 'could not init parser');
+		assert(
+			parser,
+			'could not init parser for ' + context.language + 'language'
+		);
 		const tree = parser.parser.parse(context.text);
 		const query = parser.language.query(this.selector);
 		let matches = query.matches(tree.rootNode);
@@ -71,7 +74,7 @@ export class QueryCommand {
 		assert(this.selector.length > 0, 'invalid query');
 
 		const parser = await LanguageParser.get(context.language);
-		assert(parser, 'could not init parser');
+		assert(parser, `could not init parser for ${context.language}`);
 
 		const tree = parser.parser.parse(context.text);
 
@@ -260,7 +263,7 @@ async function getContext(
 ): Promise<QueryContext> {
 	const langName = currentEditor.document.languageId;
 	const parser = await LanguageParser.get(langName);
-	assert(parser, 'could not find parser');
+	assert(parser, `could not find parser for ${langName}`);
 	return {
 		text: currentEditor.document.getText(),
 		cursor: currentEditor.selection.active,
