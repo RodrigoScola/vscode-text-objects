@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -31,6 +31,10 @@
 			{
 				"command": "vscode-textobjects.goToFunction",
 				"title": "go to the next function"
+			},
+			{
+				"command": "vscode-textobjects.variable",
+				"title": "select variables"
 			},
 			{
 				"command": "vscode-textobjects.rhs",
@@ -99,3 +103,4 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
+

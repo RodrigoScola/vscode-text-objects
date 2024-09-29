@@ -119,9 +119,8 @@ export class JsCommands {
                (arrow_function 
             parameters: (formal_parameters 
               (identifier)) 
-            body: (statement_block ) @function.body) @anonymous_function
-  
-  `,
+            body: (statement_block ) @function.body) @anonymous_function`,
+
 			`(export_statement
                     (function_declaration
                     name: (identifier) @function.name
@@ -163,23 +162,38 @@ export class JsCommands {
 		return new QueryCommand(`[${commands.join('\n')}]`, function (
 			matches
 		) {
-			console.log('matches', matches);
-
 			return filterLargestMatches(matches);
 		});
 	}
 	innerFunction(): QueryCommand {
-		return new QueryCommand(
+		const commands = [
 			`
+              
           (
-          (function_declaration
-          body: (statement_block
-     (_)* @function_body
+               (function_declaration
+               body: (statement_block
+                    (_)* @function_body
+               )
           )
-     )
      ) 
-          `
-		);
+          `,
+			`
+               (function_expression
+               (statement_block
+               (_)* @function_body
+          )
+          )
+               `,
+			`
+               (arrow_function
+               body: (statement_block
+          (_)* @function_body
+          )
+          )
+               `,
+		];
+
+		return new QueryCommand(`[${commands.join('\n')}]`);
 	}
 	loop() {
 		return new QueryCommand(
@@ -224,6 +238,18 @@ export class JsCommands {
 			`(variable_declarator
   value: (_) @rhs)`
 		);
+	}
+	variables() {
+		return new QueryCommand(`
+               (lexical_declaration
+
+               (variable_declarator 
+                    name: (identifier  )
+                    value: (_) 
+                    ) @variable_declarator
+               ) @lexical_declaration
+               
+               `);
 	}
 }
 
@@ -345,6 +371,15 @@ export function initCommands(context: vscode.ExtensionContext) {
 		}
 	);
 
+	const variables = InitSelect(
+		makeName('variable'),
+		jsCommands.variables(),
+		function (position) {
+			select(position.start, position.end, editor.getEditor());
+		}
+	);
+
+	context.subscriptions.push(variables);
 	context.subscriptions.push(rhsCommand);
 	context.subscriptions.push(innerLoops);
 	context.subscriptions.push(conditional);

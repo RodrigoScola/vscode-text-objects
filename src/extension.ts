@@ -67,3 +67,4 @@ export function deactivate() {}
 function foo() {
 	return 1;
 }
+

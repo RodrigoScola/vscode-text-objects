@@ -122,6 +122,8 @@ export function select(
 		revealType = TextEditorRevealType.InCenter;
 	}
 
+	console.log('start', startPos, 'end', endPos);
+
 	editor.revealRange(new Range(startPos, endPos), revealType);
 
 	return editor;
