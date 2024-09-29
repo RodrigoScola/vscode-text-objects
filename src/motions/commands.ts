@@ -74,6 +74,9 @@ export class QueryCommand {
 		assert(this.selector.length > 0, 'invalid query');
 
 		const parser = await LanguageParser.get(context.language);
+
+		console.log(`lang`, context.language);
+
 		assert(parser, `could not init parser for ${context.language}`);
 
 		const tree = parser.parser.parse(context.text);

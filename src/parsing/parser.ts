@@ -1,9 +1,9 @@
 import assert from 'assert';
 import path from 'path';
 import {
-     Language,
-     default as Parser,
-     default as parser,
+	Language,
+	default as Parser,
+	default as parser,
 } from 'web-tree-sitter';
 
 export type Parsing = {
@@ -14,6 +14,10 @@ export type Parsing = {
 
 export const Languages = {
 	javascript: {
+		module: 'javascript',
+	},
+	//need to add parser for this but for now lets do javascript
+	typescript: {
 		module: 'javascript',
 	},
 };
@@ -33,10 +37,11 @@ export class LanguageParser {
 	static path(name: string) {
 		return path.join(__dirname, '..', 'parsers', `${name}.wasm`); // Adjust the path if necessary
 	}
-	static async get(langname : string) {
-
+	static async get(langname: string) {
 		if (langname in LanguageParser.initedLanguages) {
-			return LanguageParser.initedLanguages[langname as keyof typeof Languages];
+			return LanguageParser.initedLanguages[
+				langname as keyof typeof Languages
+			];
 		}
 
 		let lang: Language | undefined;
@@ -55,7 +60,9 @@ export class LanguageParser {
 			module: langname,
 			parser: p,
 		};
-		return LanguageParser.initedLanguages[langname as keyof typeof Languages];
+		return LanguageParser.initedLanguages[
+			langname as keyof typeof Languages
+		];
 	}
 }
 
