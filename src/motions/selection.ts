@@ -1,9 +1,9 @@
 import {
-     Position,
-     Range,
-     Selection,
-     TextEditor,
-     TextEditorRevealType,
+	Position,
+	Range,
+	Selection,
+	TextEditor,
+	TextEditorRevealType,
 } from 'vscode';
 import Parser from 'web-tree-sitter';
 import { visualize } from '../extension';
@@ -26,10 +26,9 @@ export function nextToPosition(nodes: JoinedPoint[], index: Position) {
 	//      Math.abs(index.line - closestNode.startPosition.row);
 	//Math.abs(index.character - closestNode.startPosition.column);
 
-
 	for (const node of nodes) {
 		const start = node.startPosition;
-		if (start.row > index.line ) {
+		if (start.row > index.line) {
 			continue;
 		}
 
@@ -74,11 +73,10 @@ export function closestToPosition(
 		let currentInside = false;
 		// Check if the cursor is within the node's range
 		if (
-			(index.line > start.row ||
-				(index.line === start.row &&
-					index.character >= start.column)) &&
-			(index.line < end.row ||
-				(index.line === end.row && index.character <= end.column))
+			(index.line > start.row || index.line === start.row) &&
+			//index.character >= start.column)) &&
+			(index.line < end.row || index.line === end.row)
+			//  && index.character <= end.column))
 		) {
 			isInside = true;
 			closestNode = node;
@@ -88,20 +86,9 @@ export function closestToPosition(
 			continue;
 		}
 
-		if (
-			start.row < index.line ||
-			(start.row === index.line && index.character  < start.column - 1)
-		) {
-               // console.log('calculation start',{
-               //      st: start.row, 
-               //      index: index.line,
-               //      sc: start.column,
-               //      id: index.character
-
-               // } );
+		if (start.row < index.line || start.row === index.line) {
 			continue;
 		}
-
 
 		// Calculate the distance to the cursor position
 		const distance = Math.abs(index.line - start.row);
@@ -135,8 +122,8 @@ export function select(
 		revealType = TextEditorRevealType.InCenter;
 	}
 
-
 	editor.revealRange(new Range(startPos, endPos), revealType);
 
 	return editor;
 }
+

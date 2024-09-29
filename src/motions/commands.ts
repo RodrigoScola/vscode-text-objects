@@ -79,21 +79,13 @@ export class QueryCommand {
 
 		let matches = query.matches(tree.rootNode);
 
-          console.log(matches);
-
 		if (typeof this.onMatch === 'function') {
 			matches = this.onMatch(matches);
 		}
-          console.log(matches, 'after');
 
+		const group = groupNodes(matches);
 
-          const group = groupNodes(matches);
-
-		const position = closestToPosition(
-			group,
-			context.cursor
-		);
-
+		const position = closestToPosition(group, context.cursor);
 
 		if (!position) {
 			return;
@@ -109,7 +101,6 @@ export class QueryCommand {
 			position.endPosition.column
 		);
 
-
 		return {
 			start: startPos,
 			end: endPos,
@@ -119,45 +110,40 @@ export class QueryCommand {
 
 export class JsCommands {
 	function(): QueryCommand {
-		return new QueryCommand(
-			` [
-
-
-          ;anonymous functions
-(function_expression
+		const commands = [
+			`(function_expression
   (identifier)? @function_name
-  (#not-eq? @function_name "identifier")) @anonymous_function
-               ( call_expression
-                arguments: (arguments
-(arrow_function
-  parameters: (formal_parameters) @function.name
-  body: (statement_block) @body
-  @arrow-function) @function))
+  (#not-eq? @function_name "identifier")) @anonymous_function`,
 
-
-   ; Match the exported function declaration
-   (export_statement
-     (function_declaration
-       name: (identifier) @function.name
-       body: (statement_block) @function.body
-     ) @exportedFunction
-   ) @export
-
-   ; Match only the non-exported function declarations
+			`
+               (arrow_function 
+            parameters: (formal_parameters 
+              (identifier)) 
+            body: (statement_block ) @function.body) @anonymous_function
+  
+  `,
+			`(export_statement
+                    (function_declaration
+                    name: (identifier) @function.name
+                    body: (statement_block) @function.body
+                    ) @exportedFunction
+               ) @export`,
+			`
    (function_declaration
      name: (identifier) @function.name
      body: (statement_block) @function.body
      (#not-any? export_statement)
    ) @function
-
-
-   ; arrow functions
+                `,
+			`
    (lexical_declaration
                (variable_declarator
                name : (identifier) @function.name
    value: (arrow_function) @function.body
      )
    ) @function
+                `,
+			`
                (export_statement 
                (lexical_declaration
                (variable_declarator
@@ -166,21 +152,21 @@ export class JsCommands {
           )
           )
           ) @function
-
-
+                `,
+			`
                (arrow_function
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function
+                `,
+		];
 
+		return new QueryCommand(`[${commands.join('\n')}]`, function (
+			matches
+		) {
+			console.log('matches', matches);
 
-
-
-
- ] `,
-			function (matches) {
-				return filterLargestMatches(matches, );
-			}
-		);
+			return filterLargestMatches(matches);
+		});
 	}
 	innerFunction(): QueryCommand {
 		return new QueryCommand(
@@ -290,22 +276,26 @@ export function initCommands(context: vscode.ExtensionContext) {
 		selectRange
 	);
 
-	const gotoFunction  = vscode.commands.registerCommand(
-          makeName('goToFunction')
-          
-          , async () => {
-		const currentEditor = vscode.window.activeTextEditor;
-		if (!currentEditor) {
-			return;
+	const gotoFunction = vscode.commands.registerCommand(
+		makeName('goToFunction'),
+
+		async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
+			}
+			editor.setEditor(currentEditor);
+			const context = await getContext(currentEditor);
+			const position = await jsCommands.function().goTo(context);
+			if (!position) {
+				return;
+			}
+			editor.getEditor().selection = new Selection(
+				position.start,
+				position.start
+			);
 		}
-		editor.setEditor(currentEditor);
-		const context = await getContext(currentEditor);
-		const position = await jsCommands.function().goTo(context);
-		if (!position) {
-			return;
-		}
-          editor.getEditor().selection = new Selection(position.start, position.start);
-	});
+	);
 
 	const outerFunction = InitSelect(
 		makeName('function'),
@@ -364,3 +354,4 @@ export function initCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(gotoFunction);
 	context.subscriptions.push(innerFn);
 }
+
