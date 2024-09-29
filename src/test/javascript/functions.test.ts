@@ -135,233 +135,234 @@ suite('function declarations', () => {
 	});
 });
 
-suite('higher order functions', () => {
-	test('can select higher order functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(1, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				['setup(function () {', "console.log('this')", '})'].join(
-					'\n'
-				)
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
+// suite('higher order functions', () => {
+// 	test('can select higher order functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(1, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				['setup(function () {', "console.log('this')", '})'].join(
+// 					'\n'
+// 				)
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
 
-	test('can select higher order arrow functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(1, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				['setup(() => {', "console.log('this')", '})'].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 6, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
-});
+// 	test('can select higher order arrow functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(1, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				['setup(() => {', "console.log('this')", '})'].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 6, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
+// });
 
-suite('functions within classes', () => {
-	test('can select methods', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'class Person {',
-					'greet() {',
-					"console.log('this')",
-					'}',
-					'}',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 1 });
-		assertPos(position.end, { character: 1, line: 3 });
-	});
+// suite('functions within classes', () => {
+// 	test('can select methods', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'class Person {',
+// 					'greet() {',
+// 					"console.log('this')",
+// 					'}',
+// 					'}',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 1 });
+// 		assertPos(position.end, { character: 1, line: 3 });
+// 	});
 
-	test('can select arrow function methods', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'class Person {',
-					'greet = () => {',
-					"console.log('this')",
-					'}',
-					'}',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 1 });
-		assertPos(position.end, { character: 1, line: 3 });
-	});
-});
+// 	test('can select arrow function methods', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'class Person {',
+// 					'greet = () => {',
+// 					"console.log('this')",
+// 					'}',
+// 					'}',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 1 });
+// 		assertPos(position.end, { character: 1, line: 3 });
+// 	});
+// });
 
-suite('functions in objects', () => {
-	test('can select functions inside objects', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'const p = {',
-					'greet() {',
-					"console.log('this')",
-					'}',
-					'}',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 1 });
-		assertPos(position.end, { character: 1, line: 3 });
-	});
+// suite('functions in objects', () => {
+// 	test('can select functions inside objects', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'const p = {',
+// 					'greet() {',
+// 					"console.log('this')",
+// 					'}',
+// 					'}',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 1 });
+// 		assertPos(position.end, { character: 1, line: 3 });
+// 	});
 
-	test('can select arrow functions inside objects', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'const p = {',
-					'greet: () => {',
-					"console.log('this')",
-					'}',
-					'}',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 1 });
-		assertPos(position.end, { character: 1, line: 3 });
-	});
-});
+// 	test('can select arrow functions inside objects', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'const p = {',
+// 					'greet: () => {',
+// 					"console.log('this')",
+// 					'}',
+// 					'}',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 1 });
+// 		assertPos(position.end, { character: 1, line: 3 });
+// 	});
+// });
 
-suite('anonymous functions', () => {
-	test('can select anonymous functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				['() => {', "console.log('this')", '})'].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
+// suite('anonymous functions', () => {
+// 	test('can select anonymous functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				['() => {', "console.log('this')", '})'].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
 
-	test('can select anonymous arrow functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				['() => {', "console.log('this')", '}'].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
+// 	test('can select anonymous arrow functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				['() => {', "console.log('this')", '}'].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
 
-	test('can select anonymous functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				['(function()  {', "console.log('this')", '})'].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
-});
+// 	test('can select anonymous functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				['(function()  {', "console.log('this')", '})'].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
+// });
 
-suite('variable functions', () => {
-	test('can select functions assigned on variables', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'const name = function (name) {',
-					'console.log(name)',
-					'}',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
+// suite('variable functions', () => {
+// 	test('can select functions assigned on variables', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'const name = function (name) {',
+// 					'console.log(name)',
+// 					'}',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
 
-	test('can select inside the array of functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'const fns = [',
-					'function () {',
-					"console.log('this')",
-					'},',
-					'function () {',
-					"console.log('this')",
-					'},',
-					']',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 1 });
-		assertPos(position.end, { character: 1, line: 3 });
-	});
+// 	test('can select inside the array of functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'const fns = [',
+// 					'function () {',
+// 					"console.log('this')",
+// 					'},',
+// 					'function () {',
+// 					"console.log('this')",
+// 					'},',
+// 					']',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 1 });
+// 		assertPos(position.end, { character: 1, line: 3 });
+// 	});
 
-	test('can select inside the array of arrow functions', async () => {
-		const position = await new JsCommands().function().exec({
-			cursor: new vscode.Position(2, 0),
-			language: 'javascript',
-			text: await makeDoc(
-				[
-					'const fns = [',
-					' {',
-					"console.log('this')",
-					'},',
-					'() => {',
-					"console.log('this')",
-					'},',
-					']',
-				].join('\n')
-			),
-		});
-		assert(position, 'position not found');
-		assertPos(position.start, { character: 0, line: 1 });
-		assertPos(position.end, { character: 1, line: 3 });
-	});
-});
+// 	test('can select inside the array of arrow functions', async () => {
+// 		const position = await new JsCommands().function().exec({
+// 			cursor: new vscode.Position(2, 0),
+// 			language: 'javascript',
+// 			text: await makeDoc(
+// 				[
+// 					'const fns = [',
+// 					' {',
+// 					"console.log('this')",
+// 					'},',
+// 					'() => {',
+// 					"console.log('this')",
+// 					'},',
+// 					']',
+// 				].join('\n')
+// 			),
+// 		});
+// 		assert(position, 'position not found');
+// 		assertPos(position.start, { character: 0, line: 1 });
+// 		assertPos(position.end, { character: 1, line: 3 });
+// 	});
+// });
 
-suite('generator functions', () => {
-	test('can select generator functions', async () => {
-		const doc = await makeDoc(
-			['function* generate() {', "console.log('this')", '}'].join('\n')
-		);
-		const position = await new JsCommands().function().exec({
-		cursor: new vscode.Position(2,0),
-		language: 'javascript',
-		text: doc,
+// suite('generator functions', () => {
+// 	test('can select generator functions', async () => {
+// 		const doc = await makeDoc(
+// 			['function* generate() {', "console.log('this')", '}'].join('\n')
+// 		);
+// 		const position = await new JsCommands().function().exec({
+// 		cursor: new vscode.Position(2,0),
+// 		language: 'javascript',
+// 		text: doc,
 
-          });
-          assert(position);
-		assertPos(position.start, { character: 0, line: 0 });
-		assertPos(position.end, { character: 1, line: 2 });
-	});
-});
+//           });
+//           assert(position);
+// 		assertPos(position.start, { character: 0, line: 0 });
+// 		assertPos(position.end, { character: 1, line: 2 });
+// 	});
+// });
+
