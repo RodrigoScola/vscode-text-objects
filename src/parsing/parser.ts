@@ -56,7 +56,6 @@ export class LanguageParser {
 		try {
 			const parseName = Languages[langname as keyof typeof Languages];
 
-			console.log(LanguageParser.initedLanguages);
 			assert(parseName, 'could not find parser for ' + langname);
 			lang = await parser.Language.load(this.path(parseName.module));
 		} catch (err) {
