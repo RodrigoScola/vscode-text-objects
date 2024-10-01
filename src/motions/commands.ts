@@ -185,7 +185,7 @@ export class JsCommands {
 		].join('\n');
 
 		return new QueryCommand(
-			makeName('function'),
+			makeName('selectFunction'),
 			{
 				javascript: `[${commands}]`,
 				typescript: `[${commands}]`,
@@ -237,7 +237,7 @@ export class JsCommands {
 			` (for_statement) @loop
           (for_in_statement) @loop `,
 		].join('\n');
-		return new QueryCommand(makeName('loops'), {
+		return new QueryCommand(makeName('selectLoop'), {
 			javascript: commands,
 			typescript: commands,
 			javascriptreact: commands,
@@ -283,7 +283,7 @@ export class JsCommands {
         (if_statement) @if.statement
     ) `,
 		].join('\n');
-		return new QueryCommand(makeName('conditional'), {
+		return new QueryCommand(makeName('selectConditional'), {
 			javascript: commands,
 			typescript: commands,
 			javascriptreact: commands,
@@ -295,7 +295,7 @@ export class JsCommands {
 			`(variable_declarator
   value: (_) @rhs)`,
 		].join('\n');
-		return new QueryCommand(makeName('rhs'), {
+		return new QueryCommand(makeName('selectRhs'), {
 			javascript: commands,
 			typescript: commands,
 			javascriptreact: commands,
@@ -312,7 +312,7 @@ export class JsCommands {
                     ) @variable_declarator
                ) @lexical_declaration `,
 		].join('\n');
-		return new QueryCommand(makeName('variable'), {
+		return new QueryCommand(makeName('selectVariable'), {
 			javascript: commands,
 			typescript: commands,
 			javascriptreact: commands,

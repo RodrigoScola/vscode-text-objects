@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -27,21 +27,53 @@
 				}
 			}
 		},
+		"keybindings": [
+			{
+				"command": "vscode-textobjects.selectFunction",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+f",
+				"mac": "cmd+alt+s cmd+alt+f"
+			},
+			{
+				"command": "vscode-textobjects.selectLoop",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+l",
+				"mac": "cmd+alt+s cmd+alt+l"
+			},
+			{
+				"command": "vscode-textobjects.selectConditional",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+i",
+				"mac": "cmd+alt+s cmd+alt+i"
+			},
+			{
+				"command": "vscode-textobjects.selectVariable",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+v",
+				"mac": "cmd+alt+s cmd+alt+v"
+			},
+			{
+				"command": "vscode-textobjects.selectRhs",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+r",
+				"mac": "cmd+alt+s cmd+alt+r"
+			}
+		],
 		"commands": [
 			{
 				"command": "vscode-textobjects.goToFunction",
 				"title": "go to the next function"
 			},
 			{
-				"command": "vscode-textobjects.variable",
+				"command": "vscode-textobjects.selectVariable",
 				"title": "select variables"
 			},
 			{
-				"command": "vscode-textobjects.rhs",
+				"command": "vscode-textobjects.selectRhs",
 				"title": "select variable assignments"
 			},
 			{
-				"command": "vscode-textobjects.conditional",
+				"command": "vscode-textobjects.selectConditional",
 				"title": "Select if statements"
 			},
 			{
@@ -53,19 +85,15 @@
 				"title": "select inner loops"
 			},
 			{
-				"command": "vscode-textobjects.loops",
+				"command": "vscode-textobjects.selectLoop",
 				"title": "Select Loops"
-			},
-			{
-				"command": "vscode-textobjects.assValue",
-				"title": "select variable declarator"
 			},
 			{
 				"command": "vscode-textobjects.innerFunction",
 				"title": "select inner function"
 			},
 			{
-				"command": "vscode-textobjects.function",
+				"command": "vscode-textobjects.selectFunction",
 				"title": "Select Function"
 			}
 		]
