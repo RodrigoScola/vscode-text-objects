@@ -11,7 +11,7 @@
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"${workspaceFolder}/src/playground.js"
+				"${workspaceFolder}/src/playground.jsx"
 			],
 			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
 			"preLaunchTask": "${defaultBuildTask}"

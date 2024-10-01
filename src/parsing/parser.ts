@@ -16,8 +16,15 @@ export const Languages = {
 	javascript: {
 		module: 'javascript',
 	},
+	javascriptreact: {
+		module: 'javascript',
+	},
 	//need to add parser for this but for now lets do javascript
 	typescript: {
+		module: 'javascript',
+	},
+
+	typescriptreact: {
 		module: 'javascript',
 	},
 };
@@ -47,7 +54,12 @@ export class LanguageParser {
 		let lang: Language | undefined;
 		await LanguageParser.init();
 		try {
-			lang = await parser.Language.load(this.path(langname));
+			const parseName =
+				LanguageParser.initedLanguages[
+					langname as keyof typeof Languages
+				];
+			assert(parseName, 'could not find parser for ' + langname);
+			lang = await parser.Language.load(this.path(parseName.module));
 		} catch (err) {
 			console.error('could not set language', err);
 			return undefined;
