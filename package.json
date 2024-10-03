@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -57,9 +57,57 @@
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+r",
 				"mac": "cmd+alt+s cmd+alt+r"
+			},
+			{
+				"command": "vscode-textobjects.selectClass",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+c",
+				"mac": "cmd+alt+s cmd+alt+c"
+			},
+			{
+				"command": "vscode-textobjects.selectArray",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+a",
+				"mac": "cmd+alt+s cmd+alt+a"
+			},
+			{
+				"command": "vscode-textobjects.selectObject",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+o",
+				"mac": "cmd+alt+s cmd+alt+o"
+			},
+			{
+				"command": "vscode-textobjects.selectString",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+s",
+				"mac": "cmd+alt+s cmd+alt+s"
 			}
 		],
 		"commands": [
+			{
+				"command": "vscode-textobjects.innerString",
+				"title": "select the nearest inner string"
+			},
+			{
+				"command": "vscode-textobjects.selectString",
+				"title": "select the nearest string"
+			},
+			{
+				"command": "vscode-textobjects.selectObject",
+				"title": "select the nearest object"
+			},
+			{
+				"command": "vscode-textobjects.selectArray",
+				"title": "select the nearest array"
+			},
+			{
+				"command": "vscode-textobjects.innerClass",
+				"title": "select the inner class"
+			},
+			{
+				"command": "vscode-textobjects.selectClass",
+				"title": "select the nearest class"
+			},
 			{
 				"command": "vscode-textobjects.goToFunction",
 				"title": "go to the next function"

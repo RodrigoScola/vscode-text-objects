@@ -1,6 +1,5 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { Selection } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { editor } from '../extension';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
@@ -130,10 +129,106 @@ export class JsCommands {
 			this.innerConditional(),
 			this.rhs(),
 			this.variables(),
+			this.class(),
+			this.innerClass(),
+			this.array(),
+			this.object(),
+			this.string(),
+			this.innerString(),
 		];
+	}
+	innerString() {
+		const commands = [
+			`(string
+               (_)* @string
+          ) `,
+		].join('\n');
+
+		return new QueryCommand(makeName('innerString'), {
+			javascript: `${commands}`,
+			typescript: `${commands}`,
+			javascriptreact: `${commands}`,
+			typescriptreact: `${commands}`,
+		});
+	}
+	string() {
+		const commands = ['(string) @string'].join('\n');
+
+		return new QueryCommand(makeName('selectString'), {
+			javascript: `${commands}`,
+			typescript: `${commands}`,
+			javascriptreact: `${commands}`,
+			typescriptreact: `${commands}`,
+		});
+	}
+	object() {
+		const commands = ['(object) @object'].join('\n');
+
+		return new QueryCommand(makeName('selectObject'), {
+			javascript: `${commands}`,
+			typescript: `${commands}`,
+			javascriptreact: `${commands}`,
+			typescriptreact: `${commands}`,
+		});
+	}
+	array() {
+		const commands = ['(array) @array'].join('\n');
+
+		return new QueryCommand(makeName('selectArray'), {
+			javascript: `${commands}`,
+			typescript: `${commands}`,
+			javascriptreact: `${commands}`,
+			typescriptreact: `${commands}`,
+		});
+	}
+
+	innerClass(): QueryCommand {
+		const commands = [
+			`
+               (export_statement
+               declaration: (
+               class_declaration 
+               body: (class_body
+          (_)* @class.body
+               ) 
+               )
+               )
+               `,
+		].join('\n');
+		return new QueryCommand(makeName('innerClass'), {
+			javascript: `${commands}`,
+			typescript: `${commands}`,
+			javascriptreact: `${commands}`,
+			typescriptreact: `${commands}`,
+		});
+	}
+	class(): QueryCommand {
+		const commands = [
+			`
+               (export_statement
+               declaration: (
+               class_declaration 
+               name: (identifier) @class.name
+               body: (class_body) @class.body
+               ) @class
+               ) @export
+               `,
+		].join('\n');
+		return new QueryCommand(makeName('selectClass'), {
+			javascript: `${commands}`,
+			typescript: `${commands}`,
+			javascriptreact: `${commands}`,
+			typescriptreact: `${commands}`,
+		});
 	}
 	function(): QueryCommand {
 		const commands = [
+			`(method_definition
+               name: (property_identifier) @function.name
+               body: (_) @function.body
+               
+               ) @function
+               `,
 			`(function_expression
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function`,
@@ -197,8 +292,15 @@ export class JsCommands {
 	}
 	innerFunction(): QueryCommand {
 		const commands = [
+			`(method_definition
+               body: (statement_block
+          (_)* @function.body
+               )
+               
+               ) 
+			`,
+
 			`
-              
           (
                (function_declaration
                body: (statement_block
@@ -370,7 +472,7 @@ export function initCommands(context: vscode.ExtensionContext) {
 			if (!position) {
 				return;
 			}
-			editor.getEditor().selection = new Selection(
+			editor.getEditor().selection = new vscode.Selection(
 				position.start,
 				position.start
 			);
