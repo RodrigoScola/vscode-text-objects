@@ -8,7 +8,7 @@ for (let i = 0; i < 100; i++) {
 
 const b = 4;
 
-function f(o) {
+export function f(o) {
 	return o.map((e) => {
 		console.log();
 	});

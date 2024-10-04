@@ -16,213 +16,40 @@ export type QueryContext = {
 	language: SupportedLanguages;
 };
 
-export class QueryCommand {
-	selector: Record<SupportedLanguages, string>;
-	readonly name: string;
+interface Selector {
+	function(): string;
+	innerFunction(): string;
+	loop(): string;
+	innerLoop(): string;
+	conditional(): string;
+	innerConditional(): string;
+	rhs(): string;
+	variables(): string;
+	class(): string;
+	innerClass(): string;
+	array(): string;
+	object(): string;
+	string(): string;
+	innerString(): string;
+}
 
-	private onMatch: ((matches: QueryMatch[]) => QueryMatch[]) | undefined;
-
-	constructor(
-		name: string,
-		query: Record<SupportedLanguages, string>,
-		onMatch?: ((matches: QueryMatch[]) => QueryMatch[]) | undefined
-	) {
-		this.name = name;
-		this.selector = query;
-		this.onMatch = onMatch;
+class SelectorFactory {
+	private static selectors: Record<string, Selector> = {};
+	static set(lang: SupportedLanguages, selector: Selector) {
+		SelectorFactory.selectors[lang] = selector;
 	}
-
-	async goTo(context: QueryContext) {
-		const parser = await LanguageParser.get(context.language);
+	static get(lang: SupportedLanguages): Selector {
 		assert(
-			parser,
-			'could not init parser for ' + context.language + 'language'
+			lang in SelectorFactory.selectors,
+			`language ${lang} not found in selectors`
 		);
-		const tree = parser.parser.parse(context.text);
-
-		const selector = this.selector[context.language];
-		assert(selector, 'invalid query for ' + context.language);
-
-		const query = parser.language.query(selector);
-		let matches = query.matches(tree.rootNode);
-		if (typeof this.onMatch === 'function') {
-			matches = this.onMatch(matches);
-		}
-
-		const position = nextToPosition(groupNodes(matches), context.cursor);
-
-		if (!position) {
-			return;
-		}
-
-		const startPos = new vscode.Position(
-			position.startPosition.row,
-			position.startPosition.column
-		);
-
-		const endPos = new vscode.Position(
-			position.endPosition.row,
-			position.endPosition.column
-		);
-
-		const ret = {
-			start: startPos,
-			end: endPos,
-		};
-
-		return ret;
-	}
-	async exec(context: QueryContext) {
-		assert(this.selector, 'invalid query');
-
-		const parser = await LanguageParser.get(context.language);
-
-		assert(parser, `could not init parser for ${context.language}`);
-
-		const tree = parser.parser.parse(context.text);
-
-		const selector = this.selector[context.language];
-
-		assert(selector, 'invalid selector for ' + context.language);
-
-		const query = parser.language.query(selector);
-
-		let matches = query.matches(tree.rootNode);
-
-		if (typeof this.onMatch === 'function') {
-			matches = this.onMatch(matches);
-		}
-
-		const group = groupNodes(matches);
-
-		const position = closestToPosition(group, context.cursor);
-
-		if (!position) {
-			return;
-		}
-
-		const startPos = new vscode.Position(
-			position.startPosition.row,
-			position.startPosition.column
-		);
-
-		const endPos = new vscode.Position(
-			position.endPosition.row,
-			position.endPosition.column
-		);
-
-		return {
-			start: startPos,
-			end: endPos,
-		};
+		return SelectorFactory.selectors[lang];
 	}
 }
 
-export class JsCommands {
-	getAll(): QueryCommand[] {
+const JsQuery: Selector = {
+	function() {
 		return [
-			this.function(),
-			this.innerFunction(),
-			this.loop(),
-			this.innerLoop(),
-			this.conditional(),
-			this.innerConditional(),
-			this.rhs(),
-			this.variables(),
-			this.class(),
-			this.innerClass(),
-			this.array(),
-			this.object(),
-			this.string(),
-			this.innerString(),
-		];
-	}
-	innerString() {
-		const commands = [
-			`(string
-               (_)* @string
-          ) `,
-		].join('\n');
-
-		return new QueryCommand(makeName('innerString'), {
-			javascript: `${commands}`,
-			typescript: `${commands}`,
-			javascriptreact: `${commands}`,
-			typescriptreact: `${commands}`,
-		});
-	}
-	string() {
-		const commands = ['(string) @string'].join('\n');
-
-		return new QueryCommand(makeName('selectString'), {
-			javascript: `${commands}`,
-			typescript: `${commands}`,
-			javascriptreact: `${commands}`,
-			typescriptreact: `${commands}`,
-		});
-	}
-	object() {
-		const commands = ['(object) @object'].join('\n');
-
-		return new QueryCommand(makeName('selectObject'), {
-			javascript: `${commands}`,
-			typescript: `${commands}`,
-			javascriptreact: `${commands}`,
-			typescriptreact: `${commands}`,
-		});
-	}
-	array() {
-		const commands = ['(array) @array'].join('\n');
-
-		return new QueryCommand(makeName('selectArray'), {
-			javascript: `${commands}`,
-			typescript: `${commands}`,
-			javascriptreact: `${commands}`,
-			typescriptreact: `${commands}`,
-		});
-	}
-
-	innerClass(): QueryCommand {
-		const commands = [
-			`
-               (export_statement
-               declaration: (
-               class_declaration 
-               body: (class_body
-          (_)* @class.body
-               ) 
-               )
-               )
-               `,
-		].join('\n');
-		return new QueryCommand(makeName('innerClass'), {
-			javascript: `${commands}`,
-			typescript: `${commands}`,
-			javascriptreact: `${commands}`,
-			typescriptreact: `${commands}`,
-		});
-	}
-	class(): QueryCommand {
-		const commands = [
-			`
-               (export_statement
-               declaration: (
-               class_declaration 
-               name: (identifier) @class.name
-               body: (class_body) @class.body
-               ) @class
-               ) @export
-               `,
-		].join('\n');
-		return new QueryCommand(makeName('selectClass'), {
-			javascript: `${commands}`,
-			typescript: `${commands}`,
-			javascriptreact: `${commands}`,
-			typescriptreact: `${commands}`,
-		});
-	}
-	function(): QueryCommand {
-		const commands = [
 			`(method_definition
                name: (property_identifier) @function.name
                body: (_) @function.body
@@ -276,22 +103,10 @@ export class JsCommands {
   (#not-eq? @function_name "identifier")) @anonymous_function
                 `,
 		].join('\n');
+	},
 
-		return new QueryCommand(
-			makeName('selectFunction'),
-			{
-				javascript: `[${commands}]`,
-				typescript: `[${commands}]`,
-				javascriptreact: `[${commands}]`,
-				typescriptreact: `[${commands}]`,
-			},
-			function (matches) {
-				return filterLargestMatches(matches);
-			}
-		);
-	}
-	innerFunction(): QueryCommand {
-		const commands = [
+	innerFunction() {
+		return [
 			`(method_definition
                body: (statement_block
           (_)* @function.body
@@ -324,28 +139,17 @@ export class JsCommands {
           )
                `,
 		].join('\n');
+	},
 
-		return new QueryCommand(makeName('innerFunction'), {
-			javascript: `[${commands}]`,
-			typescript: `[${commands}]`,
-			javascriptreact: `[${commands}]`,
-			typescriptreact: `[${commands}]`,
-		});
-	}
 	loop() {
-		const commands = [
+		return [
 			` (for_statement) @loop
           (for_in_statement) @loop `,
 		].join('\n');
-		return new QueryCommand(makeName('selectLoop'), {
-			javascript: commands,
-			typescript: commands,
-			javascriptreact: commands,
-			typescriptreact: commands,
-		});
-	}
+	},
+
 	innerLoop() {
-		const commands = [
+		return [
 			`     
 (for_statement
   body: (statement_block
@@ -356,54 +160,34 @@ export class JsCommands {
     (_)* @loop_body))
 `,
 		].join('\n');
-		return new QueryCommand(makeName('innerLoops'), {
-			javascript: commands,
-			typescript: commands,
-			javascriptreact: commands,
-			typescriptreact: commands,
-		});
-	}
+	},
+
+	conditional() {
+		return [
+			` (
+        (if_statement) @if.statement
+    ) `,
+		].join('\n');
+	},
+
 	innerConditional() {
-		const commands = [
+		return [
 			` (if_statement
   consequence: (statement_block
     (_) @inner_statement))
 `,
 		].join('\n');
-		return new QueryCommand(makeName('innerConditional'), {
-			javascript: commands,
-			typescript: commands,
-			javascriptreact: commands,
-			typescriptreact: commands,
-		});
-	}
-	conditional() {
-		const commands = [
-			` (
-        (if_statement) @if.statement
-    ) `,
-		].join('\n');
-		return new QueryCommand(makeName('selectConditional'), {
-			javascript: commands,
-			typescript: commands,
-			javascriptreact: commands,
-			typescriptreact: commands,
-		});
-	}
+	},
+
 	rhs() {
-		const commands = [
+		return [
 			`(variable_declarator
   value: (_) @rhs)`,
 		].join('\n');
-		return new QueryCommand(makeName('selectRhs'), {
-			javascript: commands,
-			typescript: commands,
-			javascriptreact: commands,
-			typescriptreact: commands,
-		});
-	}
+	},
+
 	variables() {
-		const commands = [
+		return [
 			` (lexical_declaration
 
                (variable_declarator 
@@ -412,16 +196,158 @@ export class JsCommands {
                     ) @variable_declarator
                ) @lexical_declaration `,
 		].join('\n');
-		return new QueryCommand(makeName('selectVariable'), {
-			javascript: commands,
-			typescript: commands,
-			javascriptreact: commands,
-			typescriptreact: commands,
-		});
+	},
+
+	class() {
+		return [
+			`
+               (export_statement
+               declaration: (
+               class_declaration 
+               name: (identifier) @class.name
+               body: (class_body) @class.body
+               ) @class
+               ) @export
+               `,
+		].join('\n');
+	},
+
+	innerClass() {
+		return [
+			`
+               (export_statement
+               declaration: (
+               class_declaration 
+               body: (class_body
+          (_)* @class.body
+               ) 
+               )
+               )
+               `,
+		].join('\n');
+	},
+
+	array() {
+		return ['(array) @array'].join('\n');
+	},
+
+	object() {
+		return ['(object) @object'].join('\n');
+	},
+
+	innerString() {
+		return [
+			`(string
+               (_)* @string
+          ) `,
+		].join('\n');
+	},
+
+	string() {
+		return ['(string) @string'].join('\n');
+	},
+};
+
+SelectorFactory.set('javascript', JsQuery);
+SelectorFactory.set('javascriptreact', JsQuery);
+SelectorFactory.set('typescript', JsQuery);
+SelectorFactory.set('typescriptreact', JsQuery);
+export class QueryCommand {
+	readonly name: keyof Selector;
+
+	private onMatch: ((matches: QueryMatch[]) => QueryMatch[]) | undefined;
+
+	constructor(
+		name: keyof Selector,
+		onMatch?: ((matches: QueryMatch[]) => QueryMatch[]) | undefined
+	) {
+		this.name = name;
+		this.onMatch = onMatch;
+	}
+
+	async goTo(context: QueryContext) {
+		const parser = await LanguageParser.get(context.language);
+		assert(
+			parser,
+			'could not init parser for ' + context.language + 'language'
+		);
+		const tree = parser.parser.parse(context.text);
+
+		const selector = SelectorFactory.get(context.language)[this.name]();
+		assert(selector, 'invalid query for ' + context.language);
+
+		const query = parser.language.query(selector);
+		let matches = query.matches(tree.rootNode);
+		if (typeof this.onMatch === 'function') {
+			matches = this.onMatch(matches);
+		}
+
+		const position = nextToPosition(groupNodes(matches), context.cursor);
+
+		if (!position) {
+			return;
+		}
+
+		const startPos = new vscode.Position(
+			position.startPosition.row,
+			position.startPosition.column
+		);
+
+		const endPos = new vscode.Position(
+			position.endPosition.row,
+			position.endPosition.column
+		);
+
+		const ret = {
+			start: startPos,
+			end: endPos,
+		};
+
+		return ret;
+	}
+	async exec(context: QueryContext) {
+		const parser = await LanguageParser.get(context.language);
+
+		assert(parser, `could not init parser for ${context.language}`);
+
+		const tree = parser.parser.parse(context.text);
+
+		const selector = SelectorFactory.get(context.language)[this.name]();
+
+		assert(selector, 'invalid selector for ' + context.language);
+
+		const query = parser.language.query(selector);
+
+		let matches = query.matches(tree.rootNode);
+
+		if (typeof this.onMatch === 'function') {
+			matches = this.onMatch(matches);
+		}
+
+		const group = groupNodes(matches);
+
+		const position = closestToPosition(group, context.cursor);
+
+		if (!position) {
+			return;
+		}
+
+		const startPos = new vscode.Position(
+			position.startPosition.row,
+			position.startPosition.column
+		);
+
+		const endPos = new vscode.Position(
+			position.endPosition.row,
+			position.endPosition.column
+		);
+
+		return {
+			start: startPos,
+			end: endPos,
+		};
 	}
 }
-
-const jsCommands = new JsCommands();
 
 async function getContext(
 	currentEditor: vscode.TextEditor
@@ -436,13 +362,14 @@ async function getContext(
 	};
 }
 function InitSelect(
+	name: string,
 	command: QueryCommand,
 	afterEnd: (position: {
 		start: vscode.Position;
 		end: vscode.Position;
 	}) => unknown
 ) {
-	return vscode.commands.registerCommand(command.name, async () => {
+	return vscode.commands.registerCommand(name, async () => {
 		const currentEditor = vscode.window.activeTextEditor;
 		if (!currentEditor) {
 			return;
@@ -450,42 +377,46 @@ function InitSelect(
 		editor.setEditor(currentEditor);
 		const context = await getContext(currentEditor);
 		const position = await command.exec(context);
+
 		if (!position) {
 			return;
 		}
+
 		afterEnd(position);
 	});
 }
+export const commands = {
+	function: new QueryCommand('function', function (matches) {
+		return filterLargestMatches(matches);
+	}),
+
+	innerFunction: new QueryCommand('innerFunction'),
+	loop: new QueryCommand('loop'),
+	innerLoop: new QueryCommand('innerLoop'),
+	conditional: new QueryCommand('conditional'),
+	rhs: new QueryCommand('rhs'),
+	variables: new QueryCommand('variables'),
+	class: new QueryCommand('class'),
+	innerClass: new QueryCommand('innerClass'),
+	array: new QueryCommand('array'),
+	object: new QueryCommand('object'),
+	string: new QueryCommand('string'),
+};
 
 export function initCommands(context: vscode.ExtensionContext) {
-	const gotoFunction = vscode.commands.registerCommand(
-		makeName('goToFunction'),
-
-		async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-			editor.setEditor(currentEditor);
-			const context = await getContext(currentEditor);
-			const position = await jsCommands.function().goTo(context);
-			if (!position) {
-				return;
-			}
-			editor.getEditor().selection = new vscode.Selection(
-				position.start,
-				position.start
-			);
-		}
-	);
-
-	context.subscriptions.push(gotoFunction);
-
-	for (const command of jsCommands.getAll()) {
+	for (const command of Object.values(commands)) {
 		context.subscriptions.push(
-			InitSelect(command, function (position) {
-				select(position.start, position.end, editor.getEditor());
-			})
+			InitSelect(
+				makeName(`select.${command.name}`),
+				command,
+				function (position) {
+					select(
+						position.start,
+						position.end,
+						editor.getEditor()
+					);
+				}
+			)
 		);
 	}
 }

@@ -1,4 +1,6 @@
 import assert from 'assert';
+import fs from 'fs';
+import path from 'path';
 import * as vscode from 'vscode';
 import { Config } from './config';
 import { initCommands } from './motions/commands';
@@ -60,6 +62,45 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 
 	await initCommands(context);
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			'vscode-textobjects.bugFile',
+			async () => {
+				const editor = vscode.window.activeTextEditor;
+				if (!editor) {
+					return;
+				}
+
+				let text = editor.document.getText();
+
+				//get the range of the selected text
+				let selection = editor.selection;
+
+				if (!selection.start.isEqual(selection.end)) {
+					text = editor.document.getText(selection);
+				}
+				//make a better way to log files like this, maybe a config for the path
+
+				const bugsDir = config.bugPath();
+				console.log(bugsDir);
+
+				if (!bugsDir) {
+					return;
+				}
+
+				fs.mkdirSync(bugsDir, { recursive: true });
+
+				fs.writeFileSync(
+					path.join(bugsDir, new Date().toUTCString()),
+					text,
+					{
+						encoding: 'utf-8',
+					}
+				);
+			}
+		)
+	);
 }
 
 export function deactivate() {}

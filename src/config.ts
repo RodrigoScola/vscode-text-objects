@@ -27,6 +27,19 @@ export class Config {
 		}
 		return configKey.defaultValue;
 	}
+	bugPath(): string | undefined {
+		const inspection = this.config.inspect('logs.bugsPath');
+		if (!inspection) {
+			return;
+		}
+		const configValue = this.value(inspection);
+
+		if (!configValue || typeof configValue !== 'string') {
+			return;
+		}
+
+		return configValue;
+	}
 	lookBack(): boolean {
 		const inspection = this.config.inspect('lookBack');
 		assert(
@@ -39,3 +52,4 @@ export class Config {
 		return configValue;
 	}
 }
+

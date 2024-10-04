@@ -14,12 +14,21 @@
 		"Other"
 	],
 	"publisher": "rodrigoscola",
-	"activationEvents": [],
+	"activationEvents": [
+		"onLanguage:javascript",
+		"onLanguage:typescript",
+		"onLanguage:javascriptreact",
+		"onLanguage:typescriptreact"
+	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"configuration": {
 			"title": "Vscode Text Objects",
 			"properties": {
+				"vscode-textobjects.logs.bugsPath": {
+					"type": "string",
+                         "description": " the selection bug file, for developers only "
+				},
 				"vscode-textobjects.selection.lookBack": {
 					"type": "boolean",
 					"description": "allows to select items before the cursor",
@@ -29,55 +38,55 @@
 		},
 		"keybindings": [
 			{
-				"command": "vscode-textobjects.selectFunction",
+				"command": "vscode-textobjects.select.function",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+f",
 				"mac": "cmd+alt+s cmd+alt+f"
 			},
 			{
-				"command": "vscode-textobjects.selectLoop",
+				"command": "vscode-textobjects.select.loop",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+l",
 				"mac": "cmd+alt+s cmd+alt+l"
 			},
 			{
-				"command": "vscode-textobjects.selectConditional",
+				"command": "vscode-textobjects.select.conditional",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+i",
 				"mac": "cmd+alt+s cmd+alt+i"
 			},
 			{
-				"command": "vscode-textobjects.selectVariable",
+				"command": "vscode-textobjects.select.variable",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+v",
 				"mac": "cmd+alt+s cmd+alt+v"
 			},
 			{
-				"command": "vscode-textobjects.selectRhs",
+				"command": "vscode-textobjects.select.Rhs",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+r",
 				"mac": "cmd+alt+s cmd+alt+r"
 			},
 			{
-				"command": "vscode-textobjects.selectClass",
+				"command": "vscode-textobjects.select.class",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+c",
 				"mac": "cmd+alt+s cmd+alt+c"
 			},
 			{
-				"command": "vscode-textobjects.selectArray",
+				"command": "vscode-textobjects.select.array",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+a",
 				"mac": "cmd+alt+s cmd+alt+a"
 			},
 			{
-				"command": "vscode-textobjects.selectObject",
+				"command": "vscode-textobjects.select.object",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+o",
 				"mac": "cmd+alt+s cmd+alt+o"
 			},
 			{
-				"command": "vscode-textobjects.selectString",
+				"command": "vscode-textobjects.select.string",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+s",
 				"mac": "cmd+alt+s cmd+alt+s"
@@ -85,19 +94,23 @@
 		],
 		"commands": [
 			{
+				"command": "vscode-textobjects.bugFile",
+				"title": "adds the current file or selection to bugs"
+			},
+			{
 				"command": "vscode-textobjects.innerString",
 				"title": "select the nearest inner string"
 			},
 			{
-				"command": "vscode-textobjects.selectString",
+				"command": "vscode-textobjects.select.string",
 				"title": "select the nearest string"
 			},
 			{
-				"command": "vscode-textobjects.selectObject",
+				"command": "vscode-textobjects.select.object",
 				"title": "select the nearest object"
 			},
 			{
-				"command": "vscode-textobjects.selectArray",
+				"command": "vscode-textobjects.select.array",
 				"title": "select the nearest array"
 			},
 			{
@@ -105,7 +118,7 @@
 				"title": "select the inner class"
 			},
 			{
-				"command": "vscode-textobjects.selectClass",
+				"command": "vscode-textobjects.select.class",
 				"title": "select the nearest class"
 			},
 			{
@@ -113,15 +126,15 @@
 				"title": "go to the next function"
 			},
 			{
-				"command": "vscode-textobjects.selectVariable",
+				"command": "vscode-textobjects.select.variable",
 				"title": "select variables"
 			},
 			{
-				"command": "vscode-textobjects.selectRhs",
+				"command": "vscode-textobjects.select.Rhs",
 				"title": "select variable assignments"
 			},
 			{
-				"command": "vscode-textobjects.selectConditional",
+				"command": "vscode-textobjects.select.conditional",
 				"title": "Select if statements"
 			},
 			{
@@ -133,7 +146,7 @@
 				"title": "select inner loops"
 			},
 			{
-				"command": "vscode-textobjects.selectLoop",
+				"command": "vscode-textobjects.select.loop",
 				"title": "Select Loops"
 			},
 			{
@@ -141,7 +154,7 @@
 				"title": "select inner function"
 			},
 			{
-				"command": "vscode-textobjects.selectFunction",
+				"command": "vscode-textobjects.select.function",
 				"title": "Select Function"
 			}
 		]
