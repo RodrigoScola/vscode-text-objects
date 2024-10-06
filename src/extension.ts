@@ -62,6 +62,13 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.getConfiguration('vscode-textobjects')
 	);
 
+	const terminalDataListener = vscode.window.onDidChangeTerminalState(
+		(e) => {
+			const currentOutput = terminalOutputs.get(e.terminal.name) || '';
+			terminalOutputs.set(e.terminal.name, currentOutput + e.data);
+		}
+	);
+
 	await initCommands(context);
 
 	let decType: vscode.TextEditorDecorationType | undefined;
@@ -119,7 +126,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
 				const decorations: vscode.DecorationOptions[] =
 					treeView.map((line) => {
-						console.log(line.startPosition);
 						return {
 							range: new vscode.Range(
 								line.startPosition.row +

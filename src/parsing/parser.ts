@@ -27,6 +27,13 @@ export const Languages = {
 	typescriptreact: {
 		module: 'javascript',
 	},
+	go: {
+		module: 'go',
+	},
+
+	json: {
+		module: 'javascript',
+	},
 };
 
 export type SupportedLanguages = keyof typeof Languages;
@@ -75,4 +82,3 @@ export class LanguageParser {
 		];
 	}
 }
-

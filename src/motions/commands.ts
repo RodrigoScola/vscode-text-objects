@@ -47,6 +47,69 @@ class SelectorFactory {
 	}
 }
 
+export const GoQuery: Selector = {
+	function() {
+		return [
+			`(function_declaration
+               name :(identifier)? @function.name
+               body: (_)? @function.body
+               ) @function`,
+			`
+                (func_literal
+                body: (_) @function.body
+                ) @function
+                `,
+		].join('\n');
+	},
+	array() {
+		return '';
+	},
+	class() {
+		return '';
+	},
+	conditional() {
+		return '';
+	},
+	innerClass() {
+		return '';
+	},
+	innerConditional() {
+		return '';
+	},
+	innerFunction() {
+		return [
+			`
+                (func_literal
+                block (_) @function.body
+                ) 
+                `,
+		].join('\n');
+	},
+	innerLoop() {
+		return '';
+	},
+	innerString() {
+		return '';
+	},
+	loop() {
+		return '';
+	},
+	object() {
+		return '';
+	},
+	rhs() {
+		return '';
+	},
+	string() {
+		return '';
+	},
+	variables() {
+		return '';
+	},
+};
+
+SelectorFactory.set('go', GoQuery);
+
 export const JsQuery: Selector = {
 	function() {
 		return [
@@ -240,11 +303,12 @@ export const JsQuery: Selector = {
 			`(string
                (_)* @string
           ) `,
+			`(string`,
 		].join('\n');
 	},
 
 	string() {
-		return ['(string) @string'].join('\n');
+		return [`( string_fragment) @string`].join('\n');
 	},
 };
 
@@ -396,6 +460,7 @@ export const commands = {
 	conditional: new QueryCommand('conditional'),
 	rhs: new QueryCommand('rhs'),
 	variables: new QueryCommand('variables'),
+	innerString: new QueryCommand('innerString'),
 	class: new QueryCommand('class'),
 	innerClass: new QueryCommand('innerClass'),
 	array: new QueryCommand('array'),
