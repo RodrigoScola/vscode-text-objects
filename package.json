@@ -102,7 +102,7 @@
 				"title": "adds the current file or selection to bugs"
 			},
 			{
-				"command": "vscode-textobjects.innerString",
+				"command": "vscode-textobjects.select.innerString",
 				"title": "select the nearest inner string"
 			},
 			{
@@ -118,7 +118,7 @@
 				"title": "select the nearest array"
 			},
 			{
-				"command": "vscode-textobjects.innerClass",
+				"command": "vscode-textobjects.inner.class",
 				"title": "select the inner class"
 			},
 			{
@@ -142,11 +142,11 @@
 				"title": "Select if statements"
 			},
 			{
-				"command": "vscode-textobjects.innerConditional",
+				"command": "vscode-textobjects.inner.conditional",
 				"title": "Select inner if statements"
 			},
 			{
-				"command": "vscode-textobjects.innerLoops",
+				"command": "vscode-textobjects.select.innerLoop",
 				"title": "select inner loops"
 			},
 			{
@@ -154,7 +154,7 @@
 				"title": "Select Loops"
 			},
 			{
-				"command": "vscode-textobjects.innerFunction",
+				"command": "vscode-textobjects.select.innerFunction",
 				"title": "select inner function"
 			},
 			{
