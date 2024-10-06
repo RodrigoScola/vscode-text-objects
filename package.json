@@ -27,7 +27,7 @@
 			"properties": {
 				"vscode-textobjects.logs.bugsPath": {
 					"type": "string",
-                         "description": " the selection bug file, for developers only "
+					"description": " the selection bug file, for developers only "
 				},
 				"vscode-textobjects.selection.lookBack": {
 					"type": "boolean",
@@ -93,6 +93,10 @@
 			}
 		],
 		"commands": [
+			{
+				"command": "vscode-textobjects.treeSitter",
+				"title": "views the treesitter range"
+			},
 			{
 				"command": "vscode-textobjects.bugFile",
 				"title": "adds the current file or selection to bugs"
@@ -192,4 +196,3 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
-
