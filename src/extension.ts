@@ -62,12 +62,12 @@ export async function activate(context: vscode.ExtensionContext) {
 		vscode.workspace.getConfiguration('vscode-textobjects')
 	);
 
-	const terminalDataListener = vscode.window.onDidChangeTerminalState(
-		(e) => {
-			const currentOutput = terminalOutputs.get(e.terminal.name) || '';
-			terminalOutputs.set(e.terminal.name, currentOutput + e.data);
-		}
-	);
+	// const terminalDataListener = vscode.window.onDidChangeTerminalState(
+	// 	(e) => {
+	// 		const currentOutput = terminalOutputs.get(e.terminal.name) || '';
+	// 		terminalOutputs.set(e.terminal.name, currentOutput + e.data);
+	// 	}
+	// );
 
 	await initCommands(context);
 
@@ -194,3 +194,4 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
+

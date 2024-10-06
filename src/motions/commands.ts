@@ -170,82 +170,83 @@ export const JsQuery: Selector = {
 
 	innerFunction() {
 		return [
-			`(method_definition
-               body: (statement_block
-          (_)* @function.body
-               )
-               
-               ) 
-			`,
+			`
+                         (
+                              (function_declaration
+                              body: (statement_block
+                                   (_)* @function_body
+                              )
+                         )
+                    )
+                         `,
+			`
 
-			`
-          (
-               (function_declaration
-               body: (statement_block
-                    (_)* @function_body
+                    (function_expression
+                    body: (statement_block
+                    (_)* @function.body
+                    )
+
                )
-          )
-     ) 
-          `,
+                    `,
 			`
-               (function_expression
-               (statement_block
-               (_)* @function_body
-          )
-          )
-               `,
-			`
-               (arrow_function
-               body: (statement_block
-          (_)* @function_body
-          )
-          )
-               `,
+                              (arrow_function
+                              body: (statement_block
+                         (_)* @function_body
+                         )
+                         )
+                              `,
+			`(method_definition
+                              body: (statement_block
+                         (_)* @function.body
+                              )
+
+                              )
+                              `,
 		].join('\n');
 	},
 
 	loop() {
 		return [
 			` (for_statement) @loop
-          (for_in_statement) @loop `,
+               (for_in_statement) @loop `,
 		].join('\n');
 	},
 
 	innerLoop() {
 		return [
 			`     
-(for_statement
-  body: (statement_block
-    (_)* @loop_body))
+     (for_statement
+     body: (statement_block
+     (_)* @loop_body))
 
-(for_in_statement
-  body: (statement_block
-    (_)* @loop_body))
-`,
+     (for_in_statement
+     body: (statement_block
+     (_)* @loop_body))
+     `,
 		].join('\n');
 	},
 
 	conditional() {
 		return [
 			` (
-        (if_statement) @if.statement
-    ) `,
+          (if_statement) @if.statement
+     ) `,
 		].join('\n');
 	},
 
 	innerConditional() {
 		return [
 			` (if_statement
-  consequence: (statement_block
-    (_) @inner_statement))
-`,
+     consequence: (statement_block
+     (_) @inner_statement))
+     `,
 		].join('\n');
 	},
 
 	rhs() {
 		return [
 			`(variable_declarator
-  value: (_) @rhs)`,
+     value: (_) @rhs)`,
 		].join('\n');
 	},
 
@@ -253,40 +254,40 @@ export const JsQuery: Selector = {
 		return [
 			` (lexical_declaration
 
-               (variable_declarator 
-                    name: (identifier  )
-                    value: (_) 
-                    ) @variable_declarator
-               ) @lexical_declaration `,
+                    (variable_declarator 
+                         name: (identifier  )
+                         value: (_) 
+                         ) @variable_declarator
+                    ) @lexical_declaration `,
 		].join('\n');
 	},
 
 	class() {
 		return [
 			`
-               (export_statement
-               declaration: (
-               class_declaration 
-               name: (identifier) @class.name
-               body: (class_body) @class.body
-               ) @class
-               ) @export
-               `,
+                    (export_statement
+                    declaration: (
+                    class_declaration 
+                    name: (identifier) @class.name
+                    body: (class_body) @class.body
+                    ) @class
+                    ) @export
+                    `,
 		].join('\n');
 	},
 
 	innerClass() {
 		return [
 			`
-               (export_statement
-               declaration: (
-               class_declaration 
-               body: (class_body
-          (_)* @class.body
-               ) 
-               )
-               )
-               `,
+                    (export_statement
+                    declaration: (
+                    class_declaration 
+                    body: (class_body
+               (_)* @class.body
+                    ) 
+                    )
+                    )
+                    `,
 		].join('\n');
 	},
 
@@ -301,8 +302,8 @@ export const JsQuery: Selector = {
 	innerString() {
 		return [
 			`(string
-               (_)* @string
-          ) `,
+                    (_)* @string
+               ) `,
 			`(string`,
 		].join('\n');
 	},
@@ -485,3 +486,4 @@ export function initCommands(context: vscode.ExtensionContext) {
 		);
 	}
 }
+

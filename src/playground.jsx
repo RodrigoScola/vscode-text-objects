@@ -54,8 +54,10 @@ function getConfig(): Config {
 }
 export const editor = new Editor();
 
+
+
 // This method is called when your extension is activated
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context ) {
 	LanguageParser.init();
 
 	config = new Config(
@@ -69,9 +71,9 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	);
 
-	await initCommands(context);
+	initCommands(context);
 
-	let decType: vscode.TextEditorDecorationType | undefined;
+	let decType 
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
@@ -194,3 +196,4 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {}
+

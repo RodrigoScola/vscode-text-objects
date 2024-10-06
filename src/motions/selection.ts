@@ -66,11 +66,13 @@ export function closestToPosition(
 	let closestDistance = Infinity;
 	let isInside = false;
 
-	for (const node of nodes) {
+	for (let i = nodes.length - 1; i >= 0; i--) {
+		const node = nodes[i];
+
+		let currentInside = false;
 		const start = node.startPosition;
 		const end = node.endPosition;
 
-		let currentInside = false;
 		// Check if the cursor is within the node's range
 		if (
 			(index.line > start.row || index.line === start.row) &&
@@ -80,9 +82,10 @@ export function closestToPosition(
 		) {
 			isInside = true;
 			closestNode = node;
+			currentInside = true;
 		}
 
-		if (start.row > index.line && isInside && !currentInside) {
+		if (start.row > index.line && isInside && currentInside === false) {
 			continue;
 		}
 
