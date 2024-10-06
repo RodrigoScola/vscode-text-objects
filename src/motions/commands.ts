@@ -47,7 +47,7 @@ class SelectorFactory {
 	}
 }
 
-const JsQuery: Selector = {
+export const JsQuery: Selector = {
 	function() {
 		return [
 			`(method_definition
@@ -420,4 +420,3 @@ export function initCommands(context: vscode.ExtensionContext) {
 		);
 	}
 }
-
