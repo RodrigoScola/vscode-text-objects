@@ -21,11 +21,11 @@ export const Languages = {
 	},
 	//need to add parser for this but for now lets do javascript
 	typescript: {
-		module: 'javascript',
+		module: 'typescript',
 	},
 
 	typescriptreact: {
-		module: 'javascript',
+		module: 'typescript',
 	},
 	go: {
 		module: 'go',
@@ -82,3 +82,4 @@ export class LanguageParser {
 		];
 	}
 }
+

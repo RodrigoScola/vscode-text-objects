@@ -4,13 +4,14 @@ import assert from 'assert';
 import { before } from 'mocha';
 import * as vscode from 'vscode';
 import { QueryCommand } from '../../motions/commands';
+import { closestToLine } from '../../motions/selection';
 import { LanguageParser } from '../../parsing/parser';
 
 let fncommand: QueryCommand;
 
 before(async () => {
 	await LanguageParser.init();
-	fncommand = new QueryCommand('function');
+	fncommand = new QueryCommand('function', closestToLine);
 });
 
 async function makeDoc(content: string) {
@@ -342,3 +343,4 @@ suite('anonymous functions', () => {
 // 		assertPos(position.end, { character: 1, line: 2 });
 // 	});
 // });
+

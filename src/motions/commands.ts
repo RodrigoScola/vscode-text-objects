@@ -11,6 +11,7 @@ import {
 	nextToPosition,
 	select,
 } from './selection';
+import { TsSelector } from './selectors/typescript';
 
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
@@ -22,8 +23,10 @@ export type QueryContext = {
 	language: SupportedLanguages;
 };
 
-interface Selector {
+export interface Selector {
 	function(): string;
+	call(): string;
+	innerCall(): string;
 	parameters(): string;
 	innerFunction(): string;
 	loop(): string;
@@ -55,6 +58,9 @@ class SelectorFactory {
 }
 
 export const GoQuery: Selector = {
+	call() {
+		return '';
+	},
 	parameters() {
 		return '';
 	},
@@ -122,16 +128,14 @@ SelectorFactory.set('go', GoQuery);
 
 export const JsQuery: Selector = {
 	parameters() {
-		return [`(formal_parameters) @parameter`].join('\n');
+		return [`(formal_parameters)+ @parameter`].join('\n');
 	},
 	function() {
 		return [
-			`(method_definition
-               name: (property_identifier) @function.name
-               body: (_) @function.body
-               
-               ) @function
-               `,
+			`(method_definition 
+            name: (_) @function.name
+            body: (_) @function.body
+            ) @function`,
 			`(function_expression
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function`,
@@ -149,30 +153,29 @@ export const JsQuery: Selector = {
                     ) @exportedFunction
                ) @export`,
 			`
-   (function_declaration
-     name: (identifier) @function.name
-     body: (statement_block) @function.body
-     (#not-any? export_statement)
-   ) @function
-                `,
+			   (function_declaration
+			     name: (identifier) @function.name
+			     body: (statement_block) @function.body
+			   ) @function
+			                `,
 			`
-   (lexical_declaration
-               (variable_declarator
-               name : (identifier) @function.name
-   value: (arrow_function) @function.body
-     )
-   ) @function
-                `,
+			   (lexical_declaration
+			               (variable_declarator
+			               name : (identifier) @function.name
+			   value: (arrow_function) @function.body
+			     )
+			   ) @function
+			                `,
 			`
-               (export_statement 
-               (lexical_declaration
-               (variable_declarator
-               name: (identifier) @function.name
-               value: (arrow_function) @function.body
-          )
-          )
-          ) @function
-                `,
+			     (export_statement
+			     (lexical_declaration
+			     (variable_declarator
+			     name: (identifier) @function.name
+			     value: (arrow_function) @function.body
+			)
+			)
+			) @function
+			      `,
 			`
                (arrow_function
   (identifier)? @function_name
@@ -260,11 +263,15 @@ export const JsQuery: Selector = {
 		return [
 			`(variable_declarator
      value: (_) @rhs)`,
+			`( public_field_definition
+               value: (_) @rhs
+               )`,
 		].join('\n');
 	},
 
 	variables() {
 		return [
+			`( public_field_definition) @lexical_declaration`,
 			` (lexical_declaration
 
                     (variable_declarator 
@@ -273,6 +280,12 @@ export const JsQuery: Selector = {
                          ) @variable_declarator
                     ) @lexical_declaration `,
 		].join('\n');
+	},
+	call() {
+		return [`(call_expression ) @call `].join('\n');
+	},
+	innerCall() {
+		return [`(call_expression (_) @call )  `].join('\n');
 	},
 
 	class() {
@@ -333,8 +346,8 @@ export const JsQuery: Selector = {
 
 SelectorFactory.set('javascript', JsQuery);
 SelectorFactory.set('javascriptreact', JsQuery);
-SelectorFactory.set('typescript', JsQuery);
-SelectorFactory.set('typescriptreact', JsQuery);
+SelectorFactory.set('typescript', TsSelector);
+SelectorFactory.set('typescriptreact', TsSelector);
 export class QueryCommand {
 	readonly name: keyof Selector;
 	readonly getPosition: (
@@ -494,6 +507,8 @@ export const commands = {
 	object: new QueryCommand('object', closestPos),
 	string: new QueryCommand('string', closestToLine),
 	parameters: new QueryCommand('parameters', closestToLine),
+	call: new QueryCommand('call', closestToLine),
+	innerCall: new QueryCommand('innerCall', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
