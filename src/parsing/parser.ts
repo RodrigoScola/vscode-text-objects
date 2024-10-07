@@ -32,7 +32,10 @@ export const Languages = {
 	},
 
 	json: {
-		module: 'javascript',
+		module: 'json',
+	},
+	jsonc: {
+		module: 'json',
 	},
 };
 
