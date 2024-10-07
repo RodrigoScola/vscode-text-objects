@@ -10,23 +10,6 @@ import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file
 
-export function visualize(start: JoinedPoint, end: JoinedPoint): void {
-	const editor = getEditor();
-	if (!editor) {
-		return;
-	}
-	const startPos = new vscode.Position(
-		start.endPosition.row,
-		start.endPosition.column
-	);
-	const endPos = new vscode.Position(
-		end.startPosition.row,
-		end.startPosition.column
-	);
-	editor.revealRange(new vscode.Range(startPos, endPos));
-	editor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
-}
-
 class Editor {
 	private editor: vscode.TextEditor | undefined;
 	getEditor() {
@@ -39,13 +22,6 @@ class Editor {
 	}
 }
 
-let currentEditor: vscode.TextEditor | undefined;
-
-export function getEditor() {
-	return currentEditor;
-}
-export function setEditor() {}
-
 let config: Config;
 
 function getConfig(): Config {
@@ -53,6 +29,24 @@ function getConfig(): Config {
 	return config;
 }
 export const editor = new Editor();
+
+export function visualize(start: JoinedPoint, end: JoinedPoint): void {
+	const ceditor = editor.getEditor();
+	if (!ceditor) {
+		console.log('there is no editor');
+		return;
+	}
+	const startPos = new vscode.Position(
+		start.endPosition.row,
+		start.endPosition.column
+	);
+	const endPos = new vscode.Position(
+		end.startPosition.row,
+		end.startPosition.column
+	);
+	ceditor.revealRange(new vscode.Range(startPos, endPos));
+	ceditor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
+}
 
 // This method is called when your extension is activated
 export async function activate(context: vscode.ExtensionContext) {

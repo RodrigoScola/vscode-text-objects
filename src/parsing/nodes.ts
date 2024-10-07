@@ -1,5 +1,4 @@
 import * as parser from 'web-tree-sitter';
-import { visualize } from '../extension';
 import { JoinedPoint } from '../motions/selection';
 
 import { QueryMatch } from 'web-tree-sitter';
@@ -27,17 +26,14 @@ function exists(
 
 // Function to filter the largest matches
 export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
-     const idMap = new Map<number, QueryMatch>();
+	const idMap = new Map<number, QueryMatch>();
 	return matches.reduce((filtered: QueryMatch[], match: QueryMatch) => {
-
-          for (const cap of match.captures) {
-               if (idMap.has(cap.node.id)) {
-                    return filtered;
-               }
-               idMap.set(cap.node.id, match);
-          }
-
-
+		for (const cap of match.captures) {
+			if (idMap.has(cap.node.id)) {
+				return filtered;
+			}
+			idMap.set(cap.node.id, match);
+		}
 
 		//checks if function is anonymous
 		if (exists(match.captures, 'anonymous_function')) {
@@ -97,7 +93,6 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 			startIndex: firstNode.node.startIndex,
 			endIndex: firstNode.node.endIndex,
 		};
-		visualize(node, node);
 		nodes.push(node);
 	}
 

@@ -56,7 +56,7 @@
 				"mac": "cmd+alt+s cmd+alt+i"
 			},
 			{
-				"command": "vscode-textobjects.select.variable",
+				"command": "vscode-textobjects.select.variables",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+v",
 				"mac": "cmd+alt+s cmd+alt+v"
@@ -130,12 +130,16 @@
 				"title": "go to the next function"
 			},
 			{
-				"command": "vscode-textobjects.select.variable",
+				"command": "vscode-textobjects.select.variables",
 				"title": "select variables"
 			},
 			{
-				"command": "vscode-textobjects.select.Rhs",
+				"command": "vscode-textobjects.select.rhs",
 				"title": "select variable assignments"
+			},
+			{
+				"command": "vscode-textobjects.select.parameters",
+				"title": "select parameters"
 			},
 			{
 				"command": "vscode-textobjects.select.conditional",
@@ -196,3 +200,4 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
+
