@@ -1,4 +1,5 @@
-import { JsQuery, Selector } from '../commands';
+import { Selector } from '../commands';
+import { JsQuery } from './javascript';
 
 export const TsSelector: Selector = {
 	type() {
