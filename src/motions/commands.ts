@@ -24,10 +24,12 @@ export type QueryContext = {
 };
 
 export interface Selector {
+	type(): string;
 	function(): string;
 	call(): string;
 	innerCall(): string;
 	parameters(): string;
+	innerParameters(): string;
 	innerFunction(): string;
 	loop(): string;
 	innerLoop(): string;
@@ -58,6 +60,15 @@ class SelectorFactory {
 }
 
 export const GoQuery: Selector = {
+	type() {
+		return '';
+	},
+	innerCall() {
+		return '';
+	},
+	innerParameters() {
+		return '';
+	},
 	call() {
 		return '';
 	},
@@ -127,6 +138,12 @@ export const GoQuery: Selector = {
 SelectorFactory.set('go', GoQuery);
 
 export const JsQuery: Selector = {
+	type() {
+		return '';
+	},
+	innerParameters() {
+		return [`(formal_parameters (_) @parameter )`].join('\n');
+	},
 	parameters() {
 		return [`(formal_parameters)+ @parameter`].join('\n');
 	},
@@ -509,6 +526,8 @@ export const commands = {
 	parameters: new QueryCommand('parameters', closestToLine),
 	call: new QueryCommand('call', closestToLine),
 	innerCall: new QueryCommand('innerCall', closestToLine),
+	innerParameters: new QueryCommand('innerParameters', closestToLine),
+	type: new QueryCommand('type', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
