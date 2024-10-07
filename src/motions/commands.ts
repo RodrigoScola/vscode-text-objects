@@ -4,7 +4,13 @@ import { QueryMatch } from 'web-tree-sitter';
 import { editor } from '../extension';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
-import { closestToPosition, nextToPosition, select } from './selection';
+import {
+	closestPos,
+	closestToLine,
+	JoinedPoint,
+	nextToPosition,
+	select,
+} from './selection';
 
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
@@ -18,6 +24,7 @@ export type QueryContext = {
 
 interface Selector {
 	function(): string;
+	parameters(): string;
 	innerFunction(): string;
 	loop(): string;
 	innerLoop(): string;
@@ -48,6 +55,9 @@ class SelectorFactory {
 }
 
 export const GoQuery: Selector = {
+	parameters() {
+		return '';
+	},
 	function() {
 		return [
 			`(function_declaration
@@ -111,6 +121,9 @@ export const GoQuery: Selector = {
 SelectorFactory.set('go', GoQuery);
 
 export const JsQuery: Selector = {
+	parameters() {
+		return [`(formal_parameters) @parameter`].join('\n');
+	},
 	function() {
 		return [
 			`(method_definition
@@ -304,12 +317,17 @@ export const JsQuery: Selector = {
 			`(string
                     (_)* @string
                ) `,
-			`(string`,
+
+			`(template_string
+                    (_)* @string
+               ) `,
 		].join('\n');
 	},
 
 	string() {
-		return [`( string_fragment) @string`].join('\n');
+		return [`( string ) @string`, `( template_string ) @string`].join(
+			'\n'
+		);
 	},
 };
 
@@ -319,14 +337,23 @@ SelectorFactory.set('typescript', JsQuery);
 SelectorFactory.set('typescriptreact', JsQuery);
 export class QueryCommand {
 	readonly name: keyof Selector;
+	readonly getPosition: (
+		points: JoinedPoint[],
+		index: vscode.Position
+	) => JoinedPoint | undefined;
 
 	private onMatch: ((matches: QueryMatch[]) => QueryMatch[]) | undefined;
 
 	constructor(
 		name: keyof Selector,
+		getPosition: (
+			points: JoinedPoint[],
+			index: vscode.Position
+		) => JoinedPoint | undefined,
 		onMatch?: ((matches: QueryMatch[]) => QueryMatch[]) | undefined
 	) {
 		this.name = name;
+		this.getPosition = getPosition;
 		this.onMatch = onMatch;
 	}
 
@@ -391,7 +418,7 @@ export class QueryCommand {
 
 		const group = groupNodes(matches);
 
-		const position = closestToPosition(group, context.cursor);
+		const position = this.getPosition(group, context.cursor);
 
 		if (!position) {
 			return;
@@ -451,22 +478,22 @@ function InitSelect(
 	});
 }
 export const commands = {
-	function: new QueryCommand('function', function (matches) {
+	function: new QueryCommand('function', closestToLine, function (matches) {
 		return filterLargestMatches(matches);
 	}),
-
-	innerFunction: new QueryCommand('innerFunction'),
-	loop: new QueryCommand('loop'),
-	innerLoop: new QueryCommand('innerLoop'),
-	conditional: new QueryCommand('conditional'),
-	rhs: new QueryCommand('rhs'),
-	variables: new QueryCommand('variables'),
-	innerString: new QueryCommand('innerString'),
-	class: new QueryCommand('class'),
-	innerClass: new QueryCommand('innerClass'),
-	array: new QueryCommand('array'),
-	object: new QueryCommand('object'),
-	string: new QueryCommand('string'),
+	innerFunction: new QueryCommand('innerFunction', closestToLine),
+	loop: new QueryCommand('loop', closestToLine),
+	innerLoop: new QueryCommand('innerLoop', closestToLine),
+	conditional: new QueryCommand('conditional', closestToLine),
+	rhs: new QueryCommand('rhs', closestToLine),
+	variables: new QueryCommand('variables', closestToLine),
+	innerString: new QueryCommand('innerString', closestToLine),
+	class: new QueryCommand('class', closestToLine),
+	innerClass: new QueryCommand('innerClass', closestToLine),
+	array: new QueryCommand('array', closestPos),
+	object: new QueryCommand('object', closestPos),
+	string: new QueryCommand('string', closestToLine),
+	parameters: new QueryCommand('parameters', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
