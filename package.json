@@ -152,6 +152,14 @@
 				"title": "select variable assignments"
 			},
 			{
+				"command": "vscode-textobjects.select.type",
+				"title": "select type "
+			},
+			{
+				"command": "vscode-textobjects.select.innerParameters",
+				"title": "select inner parameters"
+			},
+			{
 				"command": "vscode-textobjects.select.parameters",
 				"title": "select parameters"
 			},

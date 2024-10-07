@@ -1,6 +1,37 @@
 import { JsQuery, Selector } from '../commands';
 
 export const TsSelector: Selector = {
+	type() {
+		return [
+			`
+               (export_statement
+               (type_alias_declaration)
+               ) @type   
+               `,
+
+			`
+               (type_alias_declaration) @type   
+               `,
+
+			`
+               (export_statement
+               (interface_declaration)
+               ) @type
+               `,
+
+			`
+               (interface_declaration) @type
+               `,
+
+			`(type_annotation (_) @type)`,
+		].join('\n');
+	},
+	innerCall() {
+		return JsQuery.innerCall();
+	},
+	innerParameters() {
+		return JsQuery.innerParameters();
+	},
 	call() {
 		return JsQuery.call();
 	},
