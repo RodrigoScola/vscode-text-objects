@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.0.11",
+	"version": "0.0.14",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -37,6 +37,12 @@
 			}
 		},
 		"keybindings": [
+			{
+				"command": "vscode-textobjects.select.call",
+				"when": "editorTextFocus",
+				"key": "ctrl+alt+s ctrl+alt+f",
+				"mac": "cmd+alt+s cmd+alt+c"
+			},
 			{
 				"command": "vscode-textobjects.select.function",
 				"when": "editorTextFocus",
@@ -93,6 +99,14 @@
 			}
 		],
 		"commands": [
+			{
+				"command": "vscode-textobjects.select.innerCall",
+				"title": "select a function or operation call"
+			},
+			{
+				"command": "vscode-textobjects.select.call",
+				"title": "select a function or operation call"
+			},
 			{
 				"command": "vscode-textobjects.treeSitter",
 				"title": "views the treesitter range"
