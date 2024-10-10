@@ -1,0 +1,95 @@
+() => {
+    it('can delete normally', async () => {
+        const response = await App.post('/shelf')
+            .send(NewShelfObject)
+            .set('Authorization', `Bearer ${TESTING_ACCESS_TOKEN}`);
+
+        expect(response.status).not.eq(404);
+        expect(response.status).eq(200);
+
+        const deleteResponse = await App.delete(
+            `/shelf/${response.body.id}`
+        ).set('Authorization', `Bearer ${TESTING_ACCESS_TOKEN}`);
+
+        expect(deleteResponse.status).eq(200);
+        expect(deleteResponse.body).eq(true);
+
+        const shelf = await connection('shelf')
+            .where('id', response.body.id)
+            .first();
+
+        expect(shelf).toBeDefined();
+        expect(shelf?.status).eq(ItemStatus.DELETED);
+
+        const getResp = await App.get(`/shelf/${response.body.id}`).set(
+            'Authorization',
+            `Bearer ${TESTING_ACCESS_TOKEN}`
+        );
+
+        expect(getResp.status).not.eq(200);
+        expect(getResp.status).not.eq(404);
+    });
+
+    it('cannot delete when is already deleted', async () => {
+        const response = await App.post('/shelf')
+            .send(NewShelfObject)
+            .set('Authorization', `Bearer ${TESTING_ACCESS_TOKEN}`);
+
+        expect(response.status).not.eq(404);
+        expect(response.status).eq(200);
+
+        const deleteResponse = await App.delete(
+            `/shelf/${response.body.id}`
+        ).set('Authorization', `Bearer ${TESTING_ACCESS_TOKEN}`);
+
+        expect(deleteResponse.status).eq(200);
+        expect(deleteResponse.body).eq(true);
+
+        const shelf = await connection('shelf')
+            .where('id', response.body.id)
+            .first();
+
+        expect(shelf).toBeDefined();
+        expect(shelf?.status).eq(ItemStatus.DELETED);
+
+        const getResp = await App.get(`/shelf/${response.body.id}`).set(
+            'Authorization',
+            `Bearer ${TESTING_ACCESS_TOKEN}`
+        );
+
+        expect(getResp.status).not.eq(200);
+        expect(getResp.status).not.eq(404);
+
+        const otherDel = await App.delete(`/shelf/${response.body.id}`).set(
+            'Authorization',
+            `Bearer ${TESTING_ACCESS_TOKEN}`
+        );
+
+        expect(otherDel.status).not.eq(404);
+        expect(otherDel.status).not.eq(200);
+    });
+    it('campaigns in shelf should be deactivated after shelf deletion', async () => {
+        const id = await connection('shelf')
+            .select('id')
+            .where('status', ItemStatus.ACTIVE)
+            .andWhere('marketplaceId', MARKETPLACES.TESTING)
+            .first();
+
+        const response = await App!
+            .delete(`/shelf/${id?.id}`)
+            .set('Authorization', TESTING_ACCESS_TOKEN);
+
+        expect(response.status).eq(HTTPCodes.OK);
+        expect(response.body).toBeTypeOf('boolean');
+        expect(response.body).eq(true);
+
+        const campaigns = await connection('campaigns')
+            .select('id', 'marketplaceId', 'status', 'shelfId')
+            .where('shelfId', id?.id);
+        console.log(id?.id);
+        console.log(campaigns);
+        for (const camp of campaigns) {
+            expect(camp.status).eq(ItemStatus.INACTIVE);
+        }
+    });
+}

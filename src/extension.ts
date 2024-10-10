@@ -1,191 +1,176 @@
-import assert from 'assert';
-import fs from 'fs';
-import path from 'path';
-import * as vscode from 'vscode';
-import { SyntaxNode } from 'web-tree-sitter';
-import { Config } from './config';
-import { initCommands } from './motions/commands';
-import { JoinedPoint } from './motions/selection';
-import { LanguageParser } from './parsing/parser';
+import assert from "assert";
+import fs from "fs";
+import path from "path";
+import * as vscode from "vscode";
+import { SyntaxNode } from "web-tree-sitter";
+import { Config } from "./config";
+import { initCommands } from "./motions/commands";
+import { JoinedPoint } from "./motions/selection";
+import { LanguageParser } from "./parsing/parser";
 
 // Initialize the parser with the correct path to the WebAssembly file
 
 class Editor {
-	private editor: vscode.TextEditor | undefined;
-	getEditor() {
-		assert(this.editor, 'editor has not been setup yet');
-		return this.editor;
-	}
-	setEditor(editor: vscode.TextEditor) {
-		assert(editor, 'invalid editor');
-		this.editor = editor;
-	}
+  private editor: vscode.TextEditor | undefined;
+  getEditor() {
+    assert(this.editor, "editor has not been setup yet");
+    return this.editor;
+  }
+  setEditor(editor: vscode.TextEditor) {
+    assert(editor, "invalid editor");
+    this.editor = editor;
+  }
 }
 
 let config: Config;
 
 function getConfig(): Config {
-	assert(config, 'configuration has not setup yet');
-	return config;
+  assert(config, "configuration has not setup yet");
+  return config;
 }
 export const editor = new Editor();
 
 export function visualize(start: JoinedPoint, end: JoinedPoint): void {
-	const ceditor = editor.getEditor();
-	if (!ceditor) {
-		console.log('there is no editor');
-		return;
-	}
-	const startPos = new vscode.Position(
-		start.endPosition.row,
-		start.endPosition.column
-	);
-	const endPos = new vscode.Position(
-		end.startPosition.row,
-		end.startPosition.column
-	);
-	ceditor.revealRange(new vscode.Range(startPos, endPos));
-	ceditor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
+  const ceditor = editor.getEditor();
+  if (!ceditor) {
+    console.log("there is no editor");
+    return;
+  }
+  const startPos = new vscode.Position(
+    start.endPosition.row,
+    start.endPosition.column,
+  );
+  const endPos = new vscode.Position(
+    end.startPosition.row,
+    end.startPosition.column,
+  );
+  ceditor.revealRange(new vscode.Range(startPos, endPos));
+  ceditor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
 }
 
 // This method is called when your extension is activated
 export async function activate(context: vscode.ExtensionContext) {
-	LanguageParser.init();
+  LanguageParser.init();
 
-	config = new Config(
-		vscode.workspace.getConfiguration('vscode-textobjects')
-	);
+  config = new Config(vscode.workspace.getConfiguration("vscode-textobjects"));
 
-	// const terminalDataListener = vscode.window.onDidChangeTerminalState(
-	// 	(e) => {
-	// 		const currentOutput = terminalOutputs.get(e.terminal.name) || '';
-	// 		terminalOutputs.set(e.terminal.name, currentOutput + e.data);
-	// 	}
-	// );
+  // const terminalDataListener = vscode.window.onDidChangeTerminalState(
+  // 	(e) => {
+  // 		const currentOutput = terminalOutputs.get(e.terminal.name) || '';
+  // 		terminalOutputs.set(e.terminal.name, currentOutput + e.data);
+  // 	}
+  // );
 
-	await initCommands(context);
+  await initCommands(context);
 
-	let decType: vscode.TextEditorDecorationType | undefined;
+  let decType: vscode.TextEditorDecorationType | undefined;
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand(
-			'vscode-textobjects.treeSitter',
-			async function () {
-				const editor = vscode.window.activeTextEditor;
+  context.subscriptions.push(
+    vscode.commands.registerCommand(
+      "vscode-textobjects.treeSitter",
+      async function () {
+        const editor = vscode.window.activeTextEditor;
 
-				if (!editor) {
-					return;
-				}
+        if (!editor) {
+          return;
+        }
 
-				let text = editor.document.getText();
+        let text = editor.document.getText();
 
-				let selection = editor.selection;
+        let selection = editor.selection;
 
-				if (!selection.start.isEqual(selection.end)) {
-					text = editor.document.getText(selection);
-				}
+        if (!selection.start.isEqual(selection.end)) {
+          text = editor.document.getText(selection);
+        }
 
-				const parser = await LanguageParser.get(
-					editor.document.languageId
-				);
-				assert(parser);
+        const parser = await LanguageParser.get(editor.document.languageId);
+        assert(parser);
 
-				const tree = parser.parser.parse(text);
+        const tree = parser.parser.parse(text);
 
-				let treeView: SyntaxNode[] = [];
+        let treeView: SyntaxNode[] = [];
 
-				function printTree(node: SyntaxNode | null) {
-					if (!node) {
-						return;
-					}
+        function printTree(node: SyntaxNode | null) {
+          if (!node) {
+            return;
+          }
 
-					treeView.push(node);
+          treeView.push(node);
 
-					// Recurse on children
-					for (let i = 0; i < node.namedChildCount; i++) {
-						printTree(node.namedChild(i));
-					}
-				}
+          // Recurse on children
+          for (let i = 0; i < node.namedChildCount; i++) {
+            printTree(node.namedChild(i));
+          }
+        }
 
-				// Print the syntax tree
-				printTree(tree.rootNode);
+        // Print the syntax tree
+        printTree(tree.rootNode);
 
-				if (decType) {
-					decType.dispose();
-					decType = undefined;
-					return;
-				}
+        if (decType) {
+          decType.dispose();
+          decType = undefined;
+          return;
+        }
 
-				treeView.sort((a, b) => a.startIndex - b.startIndex);
+        treeView.sort((a, b) => a.startIndex - b.startIndex);
 
-				const decorations: vscode.DecorationOptions[] =
-					treeView.map((line) => {
-						return {
-							range: new vscode.Range(
-								line.startPosition.row +
-									selection.start.line,
-								0,
-								line.startPosition.row +
-									selection.start.line,
-								0
-							),
-							renderOptions: {
-								after: {
-									contentText: line.type,
-									color: 'rgba(173, 56, 56, 0.83)',
-									backgroundColor:
-										'rgba(255, 255, 255, 0.06)',
-									margin: '0 0 0 1em',
-								},
-							},
-						};
-					});
+        const decorations: vscode.DecorationOptions[] = treeView.map((line) => {
+          return {
+            range: new vscode.Range(
+              line.startPosition.row + selection.start.line,
+              0,
+              line.startPosition.row + selection.start.line,
+              0,
+            ),
+            renderOptions: {
+              after: {
+                contentText: line.type,
+                color: "rgba(173, 56, 56, 0.83)",
+                backgroundColor: "rgba(255, 255, 255, 0.06)",
+                margin: "0 0 0 1em",
+              },
+            },
+          };
+        });
 
-				decType = vscode.window.createTextEditorDecorationType({});
+        decType = vscode.window.createTextEditorDecorationType({});
 
-				editor.setDecorations(decType, decorations);
-			}
-		)
-	);
+        editor.setDecorations(decType, decorations);
+      },
+    ),
+  );
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand(
-			'vscode-textobjects.bugFile',
-			async () => {
-				const editor = vscode.window.activeTextEditor;
-				if (!editor) {
-					return;
-				}
+  context.subscriptions.push(
+    vscode.commands.registerCommand("vscode-textobjects.bugFile", async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        return;
+      }
 
-				let text = editor.document.getText();
+      let text = editor.document.getText();
 
-				//get the range of the selected text
-				let selection = editor.selection;
+      //get the range of the selected text
+      let selection = editor.selection;
 
-				if (!selection.start.isEqual(selection.end)) {
-					text = editor.document.getText(selection);
-				}
-				//make a better way to log files like this, maybe a config for the path
+      if (!selection.start.isEqual(selection.end)) {
+        text = editor.document.getText(selection);
+      }
+      //make a better way to log files like this, maybe a config for the path
 
-				const bugsDir = config.bugPath();
+      const bugsDir = config.bugPath();
 
-				if (!bugsDir) {
-					return;
-				}
+      if (!bugsDir) {
+        return;
+      }
 
-				fs.mkdirSync(bugsDir, { recursive: true });
+      //add better validation?
+      fs.mkdirSync(bugsDir, { recursive: true });
 
-				fs.writeFileSync(
-					path.join(bugsDir, new Date().toUTCString()),
-					text,
-					{
-						encoding: 'utf-8',
-					}
-				);
-			}
-		)
-	);
+      fs.writeFileSync(path.join(bugsDir, new Date().toUTCString()), text, {
+        encoding: "utf-8",
+      });
+    }),
+  );
 }
 
 export function deactivate() {}
-
