@@ -16,6 +16,13 @@ import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
 import { TsSelector } from './selectors/typescript';
 
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
@@ -243,6 +250,7 @@ export const commands = {
 	innerCall: new QueryCommand('innerCall', closestToLine),
 	innerParameters: new QueryCommand('innerParameters', closestToLine),
 	type: new QueryCommand('type', closestToLine),
+	comments: new QueryCommand('comments', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
