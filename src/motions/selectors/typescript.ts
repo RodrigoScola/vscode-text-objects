@@ -3,7 +3,7 @@ import { JsQuery } from './javascript';
 
 export const TsSelector: Selector = {
 	comments() {
-		return '';
+		return JsQuery.comments();
 	},
 	type() {
 		return [

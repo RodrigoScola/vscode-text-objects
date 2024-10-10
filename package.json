@@ -100,6 +100,10 @@
 		],
 		"commands": [
 			{
+				"command": "vscode-textobjects.select.comments",
+				"title": "selects the nearest comment"
+			},
+			{
 				"command": "vscode-textobjects.select.innerCall",
 				"title": "select a function or operation call"
 			},
