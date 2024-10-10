@@ -3,6 +3,9 @@ import { JsQuery } from './javascript';
 
 //since the syntax is mostly the same, for now we can keep it the same
 export const JsonSelector: Selector = {
+	comments() {
+		return '';
+	},
 	type() {
 		return '';
 	},
@@ -61,4 +64,3 @@ export const JsonSelector: Selector = {
 		return '';
 	},
 };
-

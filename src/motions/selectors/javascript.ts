@@ -1,6 +1,12 @@
 import { Selector } from '../commands';
 
 export const JsQuery: Selector = {
+	comments() {
+		return '(comment) @comment';
+	},
+
+	//this is one kind of comment
+	/** this is another kind of comment */
 	type() {
 		return '';
 	},
@@ -223,4 +229,3 @@ export const JsQuery: Selector = {
 		);
 	},
 };
-

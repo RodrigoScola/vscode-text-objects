@@ -13,7 +13,15 @@ import {
 } from './selection';
 import { GoQuery } from './selectors/go';
 import { JsQuery } from './selectors/javascript';
+import { JsonSelector } from './selectors/json';
 import { TsSelector } from './selectors/typescript';
+
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
+//toggle this coommme
 
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
@@ -26,6 +34,7 @@ export type QueryContext = {
 };
 
 export interface Selector {
+	comments(): string;
 	type(): string;
 	function(): string;
 	call(): string;
@@ -66,8 +75,15 @@ SelectorFactory.set('javascript', JsQuery);
 SelectorFactory.set('javascriptreact', JsQuery);
 SelectorFactory.set('typescript', TsSelector);
 SelectorFactory.set('typescriptreact', TsSelector);
-SelectorFactory.set('json', TsSelector);
-SelectorFactory.set('jsonc', TsSelector);
+SelectorFactory.set('json', JsonSelector);
+SelectorFactory.set('jsonc', JsonSelector);
+
+// there is a better way, could make a state class with all the current state of the extension
+// just trying to prove the idea for now
+let lastCommand: QueryCommand | undefined;
+export function getLastExecCommand() {
+	return lastCommand;
+}
 
 export class QueryCommand {
 	readonly name: keyof Selector;
@@ -129,6 +145,7 @@ export class QueryCommand {
 			end: endPos,
 		};
 
+		lastCommand = this;
 		return ret;
 	}
 	async exec(context: QueryContext) {
@@ -168,6 +185,7 @@ export class QueryCommand {
 			position.endPosition.column
 		);
 
+		lastCommand = this;
 		return {
 			start: startPos,
 			end: endPos,
@@ -232,6 +250,7 @@ export const commands = {
 	innerCall: new QueryCommand('innerCall', closestToLine),
 	innerParameters: new QueryCommand('innerParameters', closestToLine),
 	type: new QueryCommand('type', closestToLine),
+	comments: new QueryCommand('comments', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
@@ -251,4 +270,3 @@ export function initCommands(context: vscode.ExtensionContext) {
 		);
 	}
 }
-
