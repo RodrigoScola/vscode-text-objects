@@ -1,6 +1,9 @@
 import { Selector } from '../commands';
 
 export const GoQuery: Selector = {
+	comments() {
+		return '';
+	},
 	type() {
 		return '';
 	},
@@ -75,4 +78,3 @@ export const GoQuery: Selector = {
 		return '';
 	},
 };
-
