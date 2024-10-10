@@ -1,10 +1,10 @@
 import assert from 'assert';
-import fs from 'fs';
+import fs, { ObjectEncodingOptions } from 'fs';
 import path from 'path';
 import * as vscode from 'vscode';
 import { SyntaxNode } from 'web-tree-sitter';
 import { Config } from './config';
-import { initCommands } from './motions/commands';
+import { getLastExecCommand, initCommands } from './motions/commands';
 import { JoinedPoint } from './motions/selection';
 import { LanguageParser } from './parsing/parser';
 
@@ -21,6 +21,9 @@ class Editor {
 		this.editor = editor;
 	}
 }
+const bugFileOptions: ObjectEncodingOptions = {
+	encoding: 'utf-8',
+};
 
 let config: Config;
 
@@ -153,34 +156,66 @@ export async function activate(context: vscode.ExtensionContext) {
 			'vscode-textobjects.bugFile',
 			async () => {
 				const editor = vscode.window.activeTextEditor;
-				if (!editor) {
+				const bugsDir = config.bugPath();
+				if (!editor || !bugsDir) {
 					return;
 				}
 
 				let text = editor.document.getText();
 
-				//get the range of the selected text
 				let selection = editor.selection;
+				let start: string = '';
+				let end: string = '';
 
 				if (!selection.start.isEqual(selection.end)) {
 					text = editor.document.getText(selection);
+					start = editor.document.getText(
+						new vscode.Range(
+							new vscode.Position(0, 0),
+							selection.start
+						)
+					);
+					end = editor.document.getText(
+						new vscode.Range(
+							selection.end,
+							new vscode.Position(
+								editor.document.lineCount,
+								Infinity
+							)
+						)
+					);
 				}
-				//make a better way to log files like this, maybe a config for the path
 
-				const bugsDir = config.bugPath();
-
-				if (!bugsDir) {
-					return;
-				}
+				const name =
+					new Date().getTime.toString() +
+					getExtension(editor.document.languageId);
 
 				fs.mkdirSync(bugsDir, { recursive: true });
 
+				let comment = '//';
+				if (editor.document.languageId === 'python') {
+					comment = '#';
+				}
+
+				let file = `
+                    ${comment} path: ${editor.document.fileName}\n
+                    `;
+
+				const lastCommand = getLastExecCommand();
+				if (lastCommand) {
+					file += `${comment} last command: ${lastCommand.name}\n`;
+				}
+
+				file += `${start}\n`;
+				file += `${comment} START \n`;
+				file += `${text}`;
+				file += `${comment} END \n`;
+				file += `${end}`;
+
 				fs.writeFileSync(
-					path.join(bugsDir, new Date().toUTCString()),
-					text,
-					{
-						encoding: 'utf-8',
-					}
+					path.join(bugsDir, name),
+					file,
+					bugFileOptions
 				);
 			}
 		)
@@ -189,3 +224,25 @@ export async function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
+function getExtension(language: string) {
+	switch (language.trim()) {
+		case 'javascript': {
+			return '.js';
+		}
+		case 'typescript': {
+			return '.ts';
+		}
+		case 'javascriptreact': {
+			return '.jsx';
+		}
+		case 'typescriptreact': {
+			return '.tsx';
+		}
+		case 'python': {
+			return '.py';
+		}
+		default: {
+			return language;
+		}
+	}
+}

@@ -1,3 +1,8 @@
+would be nice to have a reverse look up
+viF -- get the function that is behind the cursor
+viI -- get the conditional that is behind the cursor
+... so and so on
+
 nodes :
 @assignment.lhs
 @attribute.inner
@@ -29,4 +34,3 @@ nodes.push(f.node);
 }
 
      should select the loop of f but selects the nodes push
-
