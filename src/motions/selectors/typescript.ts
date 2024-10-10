@@ -2,6 +2,9 @@ import { Selector } from '../commands';
 import { JsQuery } from './javascript';
 
 export const TsSelector: Selector = {
+	comments() {
+		return JsQuery.comments();
+	},
 	type() {
 		return [
 			`
@@ -136,4 +139,3 @@ export const TsSelector: Selector = {
 		return JsQuery.variables();
 	},
 };
-
