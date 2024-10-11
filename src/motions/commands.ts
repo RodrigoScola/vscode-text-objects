@@ -39,6 +39,7 @@ export type QueryContext = {
 export interface Selector {
 	comments(): string;
 	type(): string;
+	innerType(): string;
 	function(): string;
 	call(): string;
 	innerCall(): string;
@@ -160,7 +161,10 @@ export class QueryCommand {
 
 		const selector = SelectorFactory.get(context.language)[this.name]();
 
-		assert(selector, 'invalid selector for ' + context.language);
+		assert(
+			selector,
+			this.name + ' is an invalid selector for ' + context.language
+		);
 
 		const query = parser.language.query(selector);
 
@@ -268,7 +272,8 @@ export const commands = {
 	innerParameters: new QueryCommand('innerParameters', closestToLine),
 	type: new QueryCommand('type', closestToLine),
 	comments: new QueryCommand('comments', closestToLine),
-	innerComments: new QueryCommand('innerComments', closestToLine),
+	innerConditional: new QueryCommand('innerConditional', closestToLine),
+	innerType: new QueryCommand('innerType', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
@@ -288,3 +293,4 @@ export function initCommands(context: vscode.ExtensionContext) {
 		);
 	}
 }
+

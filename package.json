@@ -160,6 +160,10 @@
 				"title": "select variable assignments"
 			},
 			{
+				"command": "vscode-textobjects.select.innerType",
+				"title": "select inner type"
+			},
+			{
 				"command": "vscode-textobjects.select.type",
 				"title": "select type "
 			},
@@ -176,7 +180,7 @@
 				"title": "Select if statements"
 			},
 			{
-				"command": "vscode-textobjects.inner.conditional",
+				"command": "vscode-textobjects.select.innerConditional",
 				"title": "Select inner if statements"
 			},
 			{
@@ -230,3 +234,4 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
+
