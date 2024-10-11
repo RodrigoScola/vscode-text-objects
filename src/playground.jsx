@@ -22,6 +22,7 @@ export function a() {
 			return () => {};
 		};
 	}
+	debugger;
 }
 const b = [
 	{

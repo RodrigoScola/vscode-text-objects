@@ -190,6 +190,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					new Date().getTime.toString() +
 					getExtension(editor.document.languageId);
 
+				//add better validation?
 				fs.mkdirSync(bugsDir, { recursive: true });
 
 				let comment = '//';
@@ -246,3 +247,4 @@ function getExtension(language: string) {
 		}
 	}
 }
+
