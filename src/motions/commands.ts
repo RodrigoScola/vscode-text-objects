@@ -16,6 +16,9 @@ import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
 import { TsSelector } from './selectors/typescript';
 
+/**
+ * this
+ */
 //toggle this coommme
 //toggle this coommme
 //toggle this coommme
@@ -205,6 +208,8 @@ async function getContext(
 		language: langName as SupportedLanguages,
 	};
 }
+
+const greedyChars = [';', ','];
 function InitSelect(
 	name: string,
 	command: QueryCommand,
@@ -224,6 +229,18 @@ function InitSelect(
 
 		if (!position) {
 			return;
+		}
+
+		const endPos = new vscode.Position(
+			position.end.line,
+			position.end.character + 1
+		);
+		const endLine = currentEditor.document.getText(
+			new vscode.Range(position.start, endPos)
+		);
+
+		if (greedyChars.includes(endLine.at(-1)!)) {
+			position.end = endPos;
 		}
 
 		afterEnd(position);
@@ -251,6 +268,7 @@ export const commands = {
 	innerParameters: new QueryCommand('innerParameters', closestToLine),
 	type: new QueryCommand('type', closestToLine),
 	comments: new QueryCommand('comments', closestToLine),
+	innerComments: new QueryCommand('innerComments', closestToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {

@@ -2,7 +2,7 @@ import { Selector } from '../commands';
 
 export const JsQuery: Selector = {
 	comments() {
-		return '(comment) @comment';
+		return '(comment)+ @comment';
 	},
 
 	//this is one kind of comment
