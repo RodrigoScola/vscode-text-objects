@@ -187,7 +187,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 
 				const name =
-					new Date().getTime.toString() +
+					new Date().getTime().toString() +
 					getExtension(editor.document.languageId);
 
 				//add better validation?
@@ -208,9 +208,9 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 
 				file += `${start}\n`;
-				file += `${comment} START \n`;
-				file += `${text}`;
-				file += `${comment} END \n`;
+				file += `${comment}---- START \n`;
+				file += `${text}\n`;
+				file += `${comment}------ END \n`;
 				file += `${end}`;
 
 				fs.writeFileSync(
