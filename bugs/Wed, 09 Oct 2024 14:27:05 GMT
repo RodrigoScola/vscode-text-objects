@@ -1,5 +1,0 @@
-            metadata = {
-                skuId: skuId,
-                paymentType: ad.paymentType,
-                cpc: ad.cpc,
-            };

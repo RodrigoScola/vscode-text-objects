@@ -1,7 +1,0 @@
-const query = connection("ads")
-      .where("type", 1)
-      .innerJoin("ads_rotation", "ads.id", "ads_rotation.id")
-      .where("shelfId", 2)
-      .andWhere("marketplaceId", req.marketplace)
-      .andWhere("score", ">", "0")
-      .andWhere("status", 1)
