@@ -219,6 +219,8 @@ export const commands = {
 	object: new QueryCommand('object', closestPos),
 	string: new QueryCommand('string', closestToLine),
 	parameters: new QueryCommand('parameters', closestToLine),
+	//think of a good keybind for call
+	//make sure call works, at this moment dont know
 	call: new QueryCommand('call', closestToLine),
 	innerCall: new QueryCommand('innerCall', closestToLine),
 	innerParameters: new QueryCommand('innerParameters', closestToLine),

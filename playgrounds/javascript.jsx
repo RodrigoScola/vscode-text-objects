@@ -10,6 +10,7 @@ function a() {
 		console.log();
 	}
 }
+function getParams(param) {}
 
 const b = 4;
 
@@ -27,3 +28,5 @@ for (let i = 0; i < 100; i++) {}
 class A {}
 
 const arr = [1, 1, 2];
+
+const b9 = {};

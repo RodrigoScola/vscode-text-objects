@@ -134,6 +134,22 @@
 				"title": "go to the next array"
 			},
 			{
+				"command": "vscode-textobjects.goTo.next.object",
+				"title": "go to the next object"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.parameters",
+				"title": "go to the next parameter"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.type",
+				"title": "go to the next type"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.comments",
+				"title": "go to the next comment"
+			},
+			{
 				"command": "vscode-textobjects.goTo.next.class",
 				"title": "go to the next class"
 			},
