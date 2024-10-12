@@ -2,22 +2,44 @@ import { Selector } from '../commands';
 
 export const GoQuery: Selector = {
 	comments() {
-		return '';
+		return ['(comment)+ @comment'].join('\n');
 	},
 	type() {
-		return '';
+		return [
+			`(parameter_list
+               (parameter_declaration)
+               ) @types`,
+			`(type_declaration) @types`,
+		].join('\n');
+	},
+	//todo: complete this
+	innerType() {
+		return [
+			`(struct_type
+               (field_declaration_list
+               (_)+ @types
+          )
+               )`,
+			`
+      (interface_type (method_declaration ) @types  ) 
+               `,
+		].join('\n');
 	},
 	innerCall() {
 		return '';
 	},
 	innerParameters() {
-		return '';
+		return [
+			`(parameter_list
+               (parameter_declaration)+ @parameters
+               ) `,
+		].join('\n');
 	},
 	call() {
 		return '';
 	},
 	parameters() {
-		return '';
+		return [`(parameter_list) @parameters`].join('\n');
 	},
 	function() {
 		return [
@@ -33,19 +55,45 @@ export const GoQuery: Selector = {
 		].join('\n');
 	},
 	array() {
-		return '';
+		return [
+			`
+     (composite_literal
+     
+     type: (array_type)
+     ) @array`,
+
+			`
+               (var_declaration
+               (var_spec
+               type : (array_type)
+          )
+               ) @array `,
+		].join('\n');
 	},
 	class() {
 		return '';
 	},
 	conditional() {
-		return '';
+		return [
+			`(if_statement
+               consequence: (block
+               (_)
+               )
+          ) @conditional
+               `,
+		].join('\n');
 	},
 	innerClass() {
 		return '';
 	},
 	innerConditional() {
-		return '';
+		return [
+			`(if_statement
+               consequence: (block
+               (_) @conditional
+               )
+          )`,
+		].join('\n');
 	},
 	innerFunction() {
 		return [
@@ -57,24 +105,69 @@ export const GoQuery: Selector = {
 		].join('\n');
 	},
 	innerLoop() {
-		return '';
+		return [
+			`
+               (for_statement
+               body: (block
+               (_) @loop
+          )
+          )
+               `,
+		].join('\n');
 	},
+	//golang doesnt have inner string?
 	innerString() {
-		return '';
+		return [
+			`(raw_string_literal) @string`,
+			`(interpreted_string_literal) @string`,
+		].join('\n');
 	},
 	loop() {
-		return '';
+		return [`(for_statement) @loop`].join('\n');
 	},
 	object() {
-		return '';
+		return [
+			`(type_declaration
+               (type_spec
+               type: (struct_type)
+          )
+          ) @struct`,
+			`(composite_literal
+               body: (literal_value
+               (keyed_element)
+               )
+               ) @struct`,
+		].join('\n');
 	},
 	rhs() {
-		return '';
+		return [
+			`
+                    (var_spec
+                    value: (_) @variable
+                    )
+               `,
+			`
+               (short_var_declaration
+               right: (_) @variable
+          )
+               `,
+		].join('\n');
 	},
 	string() {
-		return '';
+		return [
+			`(raw_string_literal) @string`,
+			`(interpreted_string_literal) @string`,
+		].join('\n');
 	},
 	variables() {
-		return '';
+		return [
+			`
+               (short_var_declaration) @variable
+               `,
+			`
+               (var_declaration) @variable
+               `,
+		].join('\n');
 	},
 };
+
