@@ -6,6 +6,7 @@ import {
 	TextEditorRevealType,
 } from 'vscode';
 import Parser from 'web-tree-sitter';
+import { visualize } from '../extension';
 
 export type JoinedPoint = {
 	startPosition: Parser.Point;
@@ -109,7 +110,51 @@ export function closestPos(
 
 	return closestNode;
 }
+//todo this selects inner functions
+//maybe should refactor to account for that?
+// ill just try it out and see how i feel about it
+export function previousToLine(
+	nodes: JoinedPoint[],
+	index: Position
+): JoinedPoint | undefined {
+	if (nodes.length === 0) {
+		return undefined;
+	}
 
+	nodes.sort((a, b) => a.startPosition.row - b.startPosition.row);
+
+	let closestNode;
+
+	for (let i = nodes.length - 1; i >= 0; i--) {
+		const node = nodes[i];
+
+		if (
+			node.startPosition.row === index.line ||
+			node.endPosition.row === index.line
+		) {
+			return node;
+		}
+
+		let startDelta = node.startPosition.row - index.line;
+		let endDelta = node.endPosition.row - index.line;
+
+		if (startDelta > 0 && endDelta > 0) {
+			continue;
+		}
+		if (!closestNode) {
+			closestNode = node;
+			continue;
+		}
+
+		const closestDelta = closestNode!.startPosition.row - index.line;
+
+		if (startDelta > closestDelta) {
+			closestNode = node;
+		}
+	}
+
+	return closestNode;
+}
 export function closestToLine(
 	nodes: JoinedPoint[],
 	index: Position
@@ -147,6 +192,7 @@ export function closestToLine(
 
 		if (startDelta < closestDelta) {
 			closestNode = node;
+			visualize(node);
 		}
 	}
 
@@ -176,4 +222,3 @@ export function select(
 
 	return editor;
 }
-

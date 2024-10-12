@@ -9,6 +9,7 @@ import {
 	closestToLine,
 	JoinedPoint,
 	nextToPosition,
+	previousToLine,
 	select,
 } from './selection';
 import { GoQuery } from './selectors/go';
@@ -151,7 +152,7 @@ export class QueryCommand {
 		lastCommand = this;
 		return ret;
 	}
-	async exec(context: QueryContext) {
+	async next(context: QueryContext) {
 		const parser = await LanguageParser.get(context.language);
 
 		assert(parser, `could not init parser for ${context.language}`);
@@ -225,7 +226,7 @@ function InitSelect(
 		}
 		editor.setEditor(currentEditor);
 		const context = await getContext(currentEditor);
-		const position = await command.exec(context);
+		const position = await command.next(context);
 
 		if (!position) {
 			return;
@@ -268,10 +269,48 @@ export const commands = {
 	innerParameters: new QueryCommand('innerParameters', closestToLine),
 	type: new QueryCommand('type', closestToLine),
 	comments: new QueryCommand('comments', closestToLine),
-	innerComments: new QueryCommand('innerComments', closestToLine),
+};
+
+export const previousCommands = {
+	function: new QueryCommand('function', previousToLine, function (matches) {
+		return filterLargestMatches(matches);
+	}),
+	innerFunction: new QueryCommand('innerFunction', previousToLine),
+	loop: new QueryCommand('loop', previousToLine),
+	innerLoop: new QueryCommand('innerLoop', previousToLine),
+	conditional: new QueryCommand('conditional', previousToLine),
+	rhs: new QueryCommand('rhs', previousToLine),
+	variables: new QueryCommand('variables', previousToLine),
+	innerString: new QueryCommand('innerString', previousToLine),
+	class: new QueryCommand('class', previousToLine),
+	innerClass: new QueryCommand('innerClass', previousToLine),
+	array: new QueryCommand('array', closestPos),
+	object: new QueryCommand('object', closestPos),
+	string: new QueryCommand('string', closestPos),
+	parameters: new QueryCommand('parameters', previousToLine),
+	call: new QueryCommand('call', previousToLine),
+	innerCall: new QueryCommand('innerCall', previousToLine),
+	innerParameters: new QueryCommand('innerParameters', previousToLine),
+	type: new QueryCommand('type', previousToLine),
+	comments: new QueryCommand('comments', previousToLine),
 };
 
 export function initCommands(context: vscode.ExtensionContext) {
+	for (const command of Object.values(previousCommands)) {
+		context.subscriptions.push(
+			InitSelect(
+				makeName(`select.previous.${command.name}`),
+				command,
+				function (position) {
+					select(
+						position.start,
+						position.end,
+						editor.getEditor()
+					);
+				}
+			)
+		);
+	}
 	for (const command of Object.values(commands)) {
 		context.subscriptions.push(
 			InitSelect(
