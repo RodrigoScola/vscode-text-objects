@@ -33,7 +33,7 @@ function getConfig(): Config {
 }
 export const editor = new Editor();
 
-export function visualize(start: JoinedPoint, end: JoinedPoint): void {
+export function visualize(start: JoinedPoint): void {
 	const ceditor = editor.getEditor();
 	if (!ceditor) {
 		console.log('there is no editor');
@@ -44,8 +44,8 @@ export function visualize(start: JoinedPoint, end: JoinedPoint): void {
 		start.endPosition.column
 	);
 	const endPos = new vscode.Position(
-		end.startPosition.row,
-		end.startPosition.column
+		start.startPosition.row,
+		start.startPosition.column
 	);
 	ceditor.revealRange(new vscode.Range(startPos, endPos));
 	ceditor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
@@ -247,4 +247,3 @@ function getExtension(language: string) {
 		}
 	}
 }
-
