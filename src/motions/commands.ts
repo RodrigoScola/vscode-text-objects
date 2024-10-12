@@ -17,16 +17,6 @@ import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
 import { TsSelector } from './selectors/typescript';
 
-/**
- * this
- */
-//toggle this coommme
-//toggle this coommme
-//toggle this coommme
-//toggle this coommme
-//toggle this coommme
-//toggle this coommme
-
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
