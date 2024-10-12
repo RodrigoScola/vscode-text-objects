@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.0.16",
+	"version": "0.0.17",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -294,3 +294,4 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
+
