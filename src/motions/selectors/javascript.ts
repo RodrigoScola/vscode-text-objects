@@ -1,53 +1,39 @@
 import { Selector } from '../commands';
 
 export const JsQuery: Selector = {
-	innerType() {
-		return '';
-	},
-	comments() {
-		return '(comment)+ @comment';
-	},
-
-	//this is one kind of comment
-	/** this is another kind of comment */
-	type() {
-		return '';
-	},
-	innerParameters() {
-		return [`(formal_parameters (_) @parameter )`].join('\n');
-	},
-	parameters() {
-		return [`(formal_parameters)+ @parameter`].join('\n');
-	},
-	function() {
-		return [
-			`(method_definition 
+	['inner.type']: '',
+	['outer.comment']: '(comment)+ @comment',
+	['outer.type']: '',
+	['inner.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
+	['outer.parameters']: [`(formal_parameters)+ @parameter`].join('\n'),
+	['outer.function']: [
+		`(method_definition 
             name: (_) @function.name
             body: (_) @function.body
             ) @function`,
-			`(function_expression
+		`(function_expression
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function`,
 
-			`
+		`
                (arrow_function 
             parameters: (formal_parameters 
               (identifier)) 
             body: (statement_block ) @function.body) @anonymous_function`,
 
-			`(export_statement
+		`(export_statement
                     (function_declaration
                     name: (identifier) @function.name
                     body: (statement_block) @function.body
                     ) @exportedFunction
                ) @export`,
-			`
+		`
 			   (function_declaration
 			     name: (identifier) @function.name
 			     body: (statement_block) @function.body
 			   ) @function
 			                `,
-			`
+		`
 			   (lexical_declaration
 			               (variable_declarator
 			               name : (identifier) @function.name
@@ -55,7 +41,7 @@ export const JsQuery: Selector = {
 			     )
 			   ) @function
 			                `,
-			`
+		`
 			     (export_statement
 			     (lexical_declaration
 			     (variable_declarator
@@ -65,17 +51,15 @@ export const JsQuery: Selector = {
 			)
 			) @function
 			      `,
-			`
+		`
                (arrow_function
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function
                 `,
-		].join('\n');
-	},
+	].join('\n'),
 
-	innerFunction() {
-		return [
-			`
+	['inner.function']: [
+		`
                          (
                               (function_declaration
                               body: (statement_block
@@ -84,7 +68,7 @@ export const JsQuery: Selector = {
                          )
                     )
                          `,
-			`
+		`
 
                     (function_expression
                     body: (statement_block
@@ -93,33 +77,28 @@ export const JsQuery: Selector = {
 
                )
                     `,
-			`
+		`
                               (arrow_function
                               body: (statement_block
                          (_)* @function_body
                          )
                          )
                               `,
-			`(method_definition
+		`(method_definition
                               body: (statement_block
                          (_)* @function.body
                               )
 
                               )
                               `,
-		].join('\n');
-	},
-
-	loop() {
-		return [
-			` (for_statement) @loop
+	].join('\n'),
+	['outer.loop']: [
+		` (for_statement) @loop
                (for_in_statement) @loop `,
-		].join('\n');
-	},
+	].join('\n'),
 
-	innerLoop() {
-		return [
-			`     
+	['inner.loop']: [
+		`     
      (for_statement
      body: (statement_block
      (_)* @loop_body))
@@ -128,60 +107,41 @@ export const JsQuery: Selector = {
      body: (statement_block
      (_)* @loop_body))
      `,
-		].join('\n');
-	},
-
-	conditional() {
-		return [
-			` (
+	].join('\n'),
+	['outer.conditional']: [
+		` (
           (if_statement) @if.statement
      ) `,
-		].join('\n');
-	},
-
-	innerConditional() {
-		return [
-			` (if_statement
+	].join('\n'),
+	['inner.conditional']: [
+		` (if_statement
      consequence: (statement_block
      (_) @inner_statement))
      `,
-		].join('\n');
-	},
-
-	rhs() {
-		return [
-			`(variable_declarator
+	].join('\n'),
+	'outer.rhs': [
+		`(variable_declarator
      value: (_) @rhs)`,
-			//todo: go to a class with the public and check if node is good name
-			// `( public_field_definition
-			// value: (_) @rhs
-			// )`,
-		].join('\n');
-	},
-
-	variables() {
-		return [
-			//todo: go to a class with the public and check if node is good name
-			//`( public_field_definition) @lexical_declaration`,
-			` (lexical_declaration
+		//todo: go to a class with the public and check if node is good name
+		// `( public_field_definition
+		// value: (_) @rhs
+		// )`,
+	].join('\n'),
+	'outer.variable': [
+		//todo: go to a class with the public and check if node is good name
+		//`( public_field_definition) @lexical_declaration`,
+		` (lexical_declaration
 
                     (variable_declarator 
                          name: (identifier  )
                          value: (_) 
                          ) @variable_declarator
                     ) @lexical_declaration `,
-		].join('\n');
-	},
-	call() {
-		return [`(call_expression ) @call `].join('\n');
-	},
-	innerCall() {
-		return [`(call_expression (_) @call )  `].join('\n');
-	},
-
-	class() {
-		return [
-			`
+	].join('\n'),
+	'outer.call': [`(call_expression ) @call `].join('\n'),
+	'inner.call': [`(call_expression (_) @call )  `].join('\n'),
+	'outer.class': [
+		`
                     (export_statement
                     declaration: (
                     class_declaration 
@@ -190,12 +150,9 @@ export const JsQuery: Selector = {
                     ) @class
                     ) @export
                     `,
-		].join('\n');
-	},
-
-	innerClass() {
-		return [
-			`
+	].join('\n'),
+	'inner.class': [
+		`
                     (export_statement
                     declaration: (
                     class_declaration 
@@ -205,32 +162,20 @@ export const JsQuery: Selector = {
                     )
                     )
                     `,
-		].join('\n');
-	},
+	].join('\n'),
 
-	array() {
-		return ['(array) @array'].join('\n');
-	},
-
-	object() {
-		return ['(object) @object'].join('\n');
-	},
-
-	innerString() {
-		return [
-			`(string
+	'outer.array': ['(array) @array'].join('\n'),
+	'outer.object': ['(object) @object'].join('\n'),
+	'inner.string': [
+		`(string
                     (_)* @string
                ) `,
 
-			`(template_string
+		`(template_string
                     (_)* @string
                ) `,
-		].join('\n');
-	},
-
-	string() {
-		return [`( string ) @string`, `( template_string ) @string`].join(
-			'\n'
-		);
-	},
+	].join('\n'),
+	'outer.string': [`( string ) @string`, `( template_string ) @string`].join(
+		'\n'
+	),
 };

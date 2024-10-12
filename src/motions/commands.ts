@@ -38,27 +38,27 @@ export type QueryContext = {
 };
 
 export interface Selector {
-	comments(): string;
-	type(): string;
-	innerType(): string;
-	function(): string;
-	call(): string;
-	innerCall(): string;
-	parameters(): string;
-	innerParameters(): string;
-	innerFunction(): string;
-	loop(): string;
-	innerLoop(): string;
-	conditional(): string;
-	innerConditional(): string;
-	rhs(): string;
-	variables(): string;
-	class(): string;
-	innerClass(): string;
-	array(): string;
-	object(): string;
-	string(): string;
-	innerString(): string;
+	['outer.comment']: string;
+	['outer.type']: string;
+	['inner.type']: string;
+	['outer.function']: string;
+	['inner.function']: string;
+	['outer.call']: string;
+	['inner.call']: string;
+	['outer.parameters']: string;
+	['inner.parameters']: string;
+	['outer.loop']: string;
+	['inner.loop']: string;
+	['outer.conditional']: string;
+	['inner.conditional']: string;
+	['outer.variable']: string;
+	['outer.rhs']: string;
+	['outer.class']: string;
+	['inner.class']: string;
+	['outer.array']: string;
+	['outer.object']: string;
+	['outer.string']: string;
+	['inner.string']: string;
 }
 
 class SelectorFactory {
@@ -90,26 +90,39 @@ export function getLastExecCommand() {
 	return lastCommand;
 }
 
+type OnMatchFunc = (matches: QueryMatch[]) => QueryMatch[];
+
+type GetPositionFunc = (
+	points: JoinedPoint[],
+	index: vscode.Position
+) => JoinedPoint | undefined;
+
 export class QueryCommand {
 	readonly name: keyof Selector;
-	readonly getPosition: (
-		points: JoinedPoint[],
-		index: vscode.Position
-	) => JoinedPoint | undefined;
+	private getPosition: GetPositionFunc | undefined;
 
-	private onMatch: ((matches: QueryMatch[]) => QueryMatch[]) | undefined;
-
-	constructor(
-		name: keyof Selector,
-		getPosition: (
-			points: JoinedPoint[],
-			index: vscode.Position
-		) => JoinedPoint | undefined,
-		onMatch?: ((matches: QueryMatch[]) => QueryMatch[]) | undefined
-	) {
+	constructor(name: keyof Selector) {
 		this.name = name;
-		this.getPosition = getPosition;
-		this.onMatch = onMatch;
+	}
+
+	private onMatch: OnMatchFunc | undefined;
+
+	setOnMatch(fn: OnMatchFunc) {
+		assert(
+			typeof this.onMatch === 'undefined',
+			'cannot assign on match more than once'
+		);
+		this.onMatch = fn;
+		return this;
+	}
+
+	setGetPosition(fn: GetPositionFunc) {
+		assert(
+			typeof this.getPosition === 'undefined',
+			'cannot assign on get position more than once'
+		);
+		this.getPosition = fn;
+		return this;
 	}
 
 	async goTo(context: QueryContext) {
@@ -124,7 +137,7 @@ export class QueryCommand {
 
 		const tree = Parsing.parser.parse(context.text);
 
-		const selector = SelectorFactory.get(context.language)[this.name]();
+		const selector = SelectorFactory.get(context.language)[this.name];
 		assert(selector, 'invalid query for ' + context.language);
 
 		const query = Parsing.language.query(selector);
@@ -136,6 +149,35 @@ export class QueryCommand {
 		const position = nextPosition(groupNodes(matches), context.cursor);
 
 		return this.makePosition(position);
+	}
+
+	async select(context: QueryContext) {
+		assert(this.getPosition, 'get position function is undefined');
+		lastCommand = this;
+		const parser = await LanguageParser.get(context.language);
+
+		assert(parser, `could not init parser for ${context.language}`);
+
+		const tree = parser.parser.parse(context.text);
+
+		const selector = SelectorFactory.get(context.language)[this.name];
+		assert(
+			selector,
+			this.name + ' is an invalid selector for ' + context.language
+		);
+
+		const query = parser.language.query(selector);
+		assert(query, 'invalid query came out');
+
+		let matches = query.matches(tree.rootNode);
+
+		if (this.onMatch) {
+			matches = this.onMatch(matches);
+		}
+
+		return this.makePosition(
+			this.getPosition(groupNodes(matches), context.cursor)
+		);
 	}
 	private makePosition(position?: JoinedPoint) {
 		if (!position) {
@@ -156,88 +198,91 @@ export class QueryCommand {
 			end: endPos,
 		};
 	}
-	async select(context: QueryContext) {
-		lastCommand = this;
-		const parser = await LanguageParser.get(context.language);
-
-		assert(parser, `could not init parser for ${context.language}`);
-
-		const tree = parser.parser.parse(context.text);
-
-		const selector = SelectorFactory.get(context.language)[this.name]();
-		assert(
-			selector,
-			this.name + ' is an invalid selector for ' + context.language
-		);
-
-		const query = parser.language.query(selector);
-		assert(query, 'invalid query came out');
-
-		let matches = query.matches(tree.rootNode);
-
-		if (this.onMatch) {
-			matches = this.onMatch(matches);
-		}
-
-		return this.makePosition(
-			this.getPosition(groupNodes(matches), context.cursor)
-		);
-	}
 }
 
 export const commands = {
-	function: new QueryCommand('function', closestToLine, function (matches) {
-		return filterLargestMatches(matches);
-	}),
-	innerFunction: new QueryCommand('innerFunction', closestToLine),
-	loop: new QueryCommand('loop', closestToLine),
-	innerLoop: new QueryCommand('innerLoop', closestToLine),
-	conditional: new QueryCommand('conditional', closestPos),
-	rhs: new QueryCommand('rhs', closestToLine),
-	variables: new QueryCommand('variables', closestToLine),
-	innerString: new QueryCommand('innerString', closestToLine),
+	function: new QueryCommand('outer.function')
+		.setGetPosition(closestToLine)
+		.setOnMatch(function (matches) {
+			return filterLargestMatches(matches);
+		}),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(
+		closestToLine
+	),
+	loop: new QueryCommand('outer.loop').setGetPosition(closestToLine),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(closestToLine),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(
+		closestPos
+	),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(
+		closestToLine
+	),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(closestToLine),
+	variables: new QueryCommand('outer.variable').setGetPosition(
+		closestToLine
+	),
+	string: new QueryCommand('outer.string').setGetPosition(closestToLine),
+	innerString: new QueryCommand('inner.string').setGetPosition(
+		closestToLine
+	),
 	//bug on going to class
-	class: new QueryCommand('class', closestToLine),
-	innerClass: new QueryCommand('innerClass', closestToLine),
-	array: new QueryCommand('array', closestPos),
-	object: new QueryCommand('object', closestPos),
-	string: new QueryCommand('string', closestToLine),
-	parameters: new QueryCommand('parameters', closestToLine),
+	class: new QueryCommand('outer.class').setGetPosition(closestToLine),
+	innerClass: new QueryCommand('inner.class').setGetPosition(closestToLine),
+	array: new QueryCommand('outer.array').setGetPosition(closestPos),
+	object: new QueryCommand('outer.object').setGetPosition(closestPos),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(
+		closestToLine
+	),
 	//think of a good keybind for call
 	//make sure call works, at this moment dont know
-	call: new QueryCommand('call', closestToLine),
-	innerCall: new QueryCommand('innerCall', closestToLine),
-	innerParameters: new QueryCommand('innerParameters', closestToLine),
-	type: new QueryCommand('type', closestToLine),
-	comments: new QueryCommand('comments', closestToLine),
-	innerConditional: new QueryCommand('innerConditional', closestToLine),
-	innerType: new QueryCommand('innerType', closestToLine),
+	call: new QueryCommand('outer.call').setGetPosition(closestToLine),
+	innerCall: new QueryCommand('inner.call').setGetPosition(closestToLine),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(
+		closestToLine
+	),
+	type: new QueryCommand('outer.type').setGetPosition(closestToLine),
+	innerType: new QueryCommand('inner.type').setGetPosition(closestToLine),
+	comments: new QueryCommand('outer.comment').setGetPosition(closestToLine),
 };
 
 export const previousCommands = {
-	function: new QueryCommand('function', previousToLine, function (matches) {
-		return filterLargestMatches(matches);
-	}),
-	innerFunction: new QueryCommand('innerFunction', previousToLine),
-	loop: new QueryCommand('loop', previousToLine),
-	innerLoop: new QueryCommand('innerLoop', previousToLine),
-	conditional: new QueryCommand('conditional', previousToLine),
-	rhs: new QueryCommand('rhs', previousToLine),
-	variables: new QueryCommand('variables', previousToLine),
-	innerString: new QueryCommand('innerString', previousToLine),
-	class: new QueryCommand('class', previousToLine),
-	innerClass: new QueryCommand('innerClass', previousToLine),
-	array: new QueryCommand('array', closestPos),
-	object: new QueryCommand('object', closestPos),
-	string: new QueryCommand('string', closestPos),
-	parameters: new QueryCommand('parameters', previousToLine),
-	call: new QueryCommand('call', previousToLine),
-	innerCall: new QueryCommand('innerCall', previousToLine),
-	innerParameters: new QueryCommand('innerParameters', previousToLine),
-	type: new QueryCommand('type', previousToLine),
-	comments: new QueryCommand('comments', previousToLine),
-	innerConditional: new QueryCommand('innerConditional', previousToLine),
-	innerType: new QueryCommand('innerType', previousToLine),
+	function: new QueryCommand('outer.function')
+		.setGetPosition(previousToLine)
+		.setOnMatch(filterLargestMatches),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(
+		previousToLine
+	),
+	loop: new QueryCommand('outer.loop').setGetPosition(previousToLine),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousToLine),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(
+		previousToLine
+	),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(
+		previousToLine
+	),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(previousToLine),
+	variables: new QueryCommand('outer.variable').setGetPosition(
+		previousToLine
+	),
+	innerString: new QueryCommand('inner.string').setGetPosition(
+		previousToLine
+	),
+	class: new QueryCommand('outer.class').setGetPosition(previousToLine),
+	innerClass: new QueryCommand('inner.class').setGetPosition(previousToLine),
+	array: new QueryCommand('outer.array').setGetPosition(closestPos),
+	object: new QueryCommand('outer.object').setGetPosition(closestPos),
+	string: new QueryCommand('outer.string').setGetPosition(closestPos),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(
+		previousToLine
+	),
+	call: new QueryCommand('outer.call').setGetPosition(previousToLine),
+	innerCall: new QueryCommand('inner.call').setGetPosition(previousToLine),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(
+		previousToLine
+	),
+	type: new QueryCommand('outer.type').setGetPosition(previousToLine),
+	innerType: new QueryCommand('inner.type').setGetPosition(previousToLine),
+	comments: new QueryCommand('outer.comment').setGetPosition(previousToLine),
 };
 
 function goTo(position: { start: vscode.Position; end: vscode.Position }) {
@@ -269,7 +314,7 @@ export function initCommands(context: vscode.ExtensionContext) {
 		);
 		context.subscriptions.push(
 			InitCommand(
-				makeName(`select.${command.name}`),
+				makeName(`select.next.${command.name}`),
 				(context) => command.select(context),
 				function (position) {
 					select(

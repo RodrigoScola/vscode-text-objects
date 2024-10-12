@@ -18,7 +18,9 @@
 		"onLanguage:javascript",
 		"onLanguage:typescript",
 		"onLanguage:javascriptreact",
-		"onLanguage:typescriptreact"
+		"onLanguage:typescriptreact",
+		"onLanguage:json",
+		"onLanguage:jsonc"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -38,61 +40,61 @@
 		},
 		"keybindings": [
 			{
-				"command": "vscode-textobjects.select.call",
+				"command": "vscode-textobjects.select.outer.call",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+f",
 				"mac": "cmd+alt+s cmd+alt+c"
 			},
 			{
-				"command": "vscode-textobjects.select.function",
+				"command": "vscode-textobjects.select.outer.function",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+f",
 				"mac": "cmd+alt+s cmd+alt+f"
 			},
 			{
-				"command": "vscode-textobjects.select.loop",
+				"command": "vscode-textobjects.select.outer.loop",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+l",
 				"mac": "cmd+alt+s cmd+alt+l"
 			},
 			{
-				"command": "vscode-textobjects.select.conditional",
+				"command": "vscode-textobjects.select.outer.conditional",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+i",
 				"mac": "cmd+alt+s cmd+alt+i"
 			},
 			{
-				"command": "vscode-textobjects.select.variables",
+				"command": "vscode-textobjects.select.outer.variable",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+v",
 				"mac": "cmd+alt+s cmd+alt+v"
 			},
 			{
-				"command": "vscode-textobjects.select.Rhs",
+				"command": "vscode-textobjects.select.outer.rhs",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+r",
 				"mac": "cmd+alt+s cmd+alt+r"
 			},
 			{
-				"command": "vscode-textobjects.select.class",
+				"command": "vscode-textobjects.select.outer.class",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+c",
 				"mac": "cmd+alt+s cmd+alt+c"
 			},
 			{
-				"command": "vscode-textobjects.select.array",
+				"command": "vscode-textobjects.select.outer.array",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+a",
 				"mac": "cmd+alt+s cmd+alt+a"
 			},
 			{
-				"command": "vscode-textobjects.select.object",
+				"command": "vscode-textobjects.select.outer.object",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+o",
 				"mac": "cmd+alt+s cmd+alt+o"
 			},
 			{
-				"command": "vscode-textobjects.select.string",
+				"command": "vscode-textobjects.select.outer.string",
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+s",
 				"mac": "cmd+alt+s cmd+alt+s"
@@ -100,81 +102,81 @@
 			{
 				"key": "ctrl+alt+g ctrl+alt+f",
 				"mac": "cmd+alt+g cmd+alt+f",
-				"command": "vscode-textobjects.goTo.next.function",
+				"command": "vscode-textobjects.goTo.next.outer.function",
 				"when": "editorTextFocus"
 			}
 		],
 		"commands": [
 			{
-				"command": "vscode-textobjects.goTo.next.function",
+				"command": "vscode-textobjects.goTo.next.outer.function",
 				"title": "go to the next function"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.conditional",
+				"command": "vscode-textobjects.goTo.next.outer.conditional",
 				"title": "go to the next if statement"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.loop",
+				"command": "vscode-textobjects.goTo.next.outer.loop",
 				"title": "go to the next if statement"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.rhs",
+				"command": "vscode-textobjects.goTo.next.outer.rhs",
 				"title": "go to the next variable assignments"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.variables",
+				"command": "vscode-textobjects.goTo.next.outer.variable",
 				"title": "go to the next variable "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.string",
+				"command": "vscode-textobjects.goTo.next.outer.string",
 				"title": "go to the next string"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.array",
+				"command": "vscode-textobjects.goTo.next.outer.array",
 				"title": "go to the next array"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.object",
+				"command": "vscode-textobjects.goTo.next.outer.object",
 				"title": "go to the next object"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.parameters",
+				"command": "vscode-textobjects.goTo.next.outer.parameters",
 				"title": "go to the next parameter"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.type",
+				"command": "vscode-textobjects.goTo.next.outer.type",
 				"title": "go to the next type"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.comments",
+				"command": "vscode-textobjects.goTo.next.outer.comments",
 				"title": "go to the next comment"
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.class",
+				"command": "vscode-textobjects.goTo.next.outer.class",
 				"title": "go to the next class"
 			},
 			{
-				"command": "vscode-textobjects.select.previous.loop",
+				"command": "vscode-textobjects.select.previous.outer.loop",
 				"title": "selects the previous loop"
 			},
 			{
-				"command": "vscode-textobjects.select.previous.function",
+				"command": "vscode-textobjects.select.previous.outer.function",
 				"title": "selects the previous function"
 			},
 			{
-				"command": "vscode-textobjects.select.innerComments",
+				"command": "vscode-textobjects.select.next.inner.comment",
 				"title": "selects the inner comment"
 			},
 			{
-				"command": "vscode-textobjects.select.comments",
+				"command": "vscode-textobjects.select.next.outer.comment",
 				"title": "selects the nearest comment"
 			},
 			{
-				"command": "vscode-textobjects.select.innerCall",
+				"command": "vscode-textobjects.select.next.inner.call",
 				"title": "select a function or operation call"
 			},
 			{
-				"command": "vscode-textobjects.select.call",
+				"command": "vscode-textobjects.select.next.outer.call",
 				"title": "select a function or operation call"
 			},
 			{
@@ -186,79 +188,75 @@
 				"title": "adds the current file or selection to bugs"
 			},
 			{
-				"command": "vscode-textobjects.select.innerString",
+				"command": "vscode-textobjects.select.next.inner.string",
 				"title": "select the nearest inner string"
 			},
 			{
-				"command": "vscode-textobjects.select.string",
+				"command": "vscode-textobjects.select.next.outer.string",
 				"title": "select the nearest string"
 			},
 			{
-				"command": "vscode-textobjects.select.object",
+				"command": "vscode-textobjects.select.next.outer.object",
 				"title": "select the nearest object"
 			},
 			{
-				"command": "vscode-textobjects.select.array",
+				"command": "vscode-textobjects.select.next.outer.array",
 				"title": "select the nearest array"
 			},
 			{
-				"command": "vscode-textobjects.inner.class",
+				"command": "vscode-textobjects.select.next.inner.class",
 				"title": "select the inner class"
 			},
 			{
-				"command": "vscode-textobjects.select.class",
+				"command": "vscode-textobjects.select.next.outer.class",
 				"title": "select the nearest class"
 			},
 			{
-				"command": "vscode-textobjects.goToFunction",
-				"title": "go to the next function"
-			},
-			{
-				"command": "vscode-textobjects.select.variables",
+				"command": "vscode-textobjects.select.next.outer.variable",
 				"title": "select variables"
 			},
 			{
-				"command": "vscode-textobjects.select.rhs",
+				"command": "vscode-textobjects.select.next.outer.rhs",
 				"title": "select variable assignments"
 			},
 			{
-				"command": "vscode-textobjects.select.innerType",
+				"command": "vscode-textobjects.select.next.inner.type",
 				"title": "select inner type"
 			},
 			{
-				"command": "vscode-textobjects.select.type",
+				"command": "vscode-textobjects.select.next.outer.type",
 				"title": "select type "
 			},
 			{
-				"command": "vscode-textobjects.select.innerParameters",
+				"command": "vscode-textobjects.select.next.inner.parameters",
 				"title": "select inner parameters"
 			},
 			{
-				"command": "vscode-textobjects.select.parameters",
+				"command": "vscode-textobjects.select.next.outer.parameters",
 				"title": "select parameters"
 			},
 			{
-				"command": "vscode-textobjects.select.conditional",
+				"command": "vscode-textobjects.select.next.outer.conditional",
 				"title": "Select if statements"
 			},
 			{
-				"command": "vscode-textobjects.select.innerConditional",
+				"command": "vscode-textobjects.select.next.inner.conditional",
 				"title": "Select inner if statements"
 			},
 			{
-				"command": "vscode-textobjects.select.innerLoop",
+				"command": "vscode-textobjects.select.next.inner.loop",
 				"title": "select inner loops"
 			},
 			{
-				"command": "vscode-textobjects.select.loop",
+				"command": "vscode-textobjects.select.next.outer.loop",
 				"title": "Select Loops"
 			},
 			{
-				"command": "vscode-textobjects.select.innerFunction",
+				"command": "vscode-textobjects.select.next.inner.function",
 				"title": "select inner function"
 			},
 			{
-				"command": "vscode-textobjects.select.function",
+				"command": "vscode-textobjects.select.next.outer.function",
 				"title": "Select Function"
 			}
 		]
