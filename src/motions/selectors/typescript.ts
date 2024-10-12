@@ -2,79 +2,67 @@ import { Selector } from '../commands';
 import { JsQuery } from './javascript';
 
 export const TsSelector: Selector = {
-	innerType() {
-		return '';
-	},
-	comments() {
-		return JsQuery.comments();
-	},
-	type() {
-		return [
-			`
+	['inner.type']: '',
+	['outer.comment']: JsQuery['outer.comment'],
+	['outer.type']: [
+		`
                (export_statement
                (type_alias_declaration)
                ) @type   
                `,
 
-			`
+		`
                (type_alias_declaration) @type   
                `,
 
-			`
+		`
                (export_statement
                (interface_declaration)
                ) @type
                `,
 
-			`
+		`
                (interface_declaration) @type
                `,
 
-			`(type_annotation (_) @type)`,
-		].join('\n');
-	},
-	innerCall() {
-		return JsQuery.innerCall();
-	},
-	innerParameters() {
-		return JsQuery.innerParameters();
-	},
-	call() {
-		return JsQuery.call();
-	},
-	function() {
-		return [
-			`(method_definition 
+		`(type_annotation (_) @type)`,
+	].join('\n'),
+	['inner.function']: JsQuery['inner.function'],
+	['inner.call']: JsQuery['inner.call'],
+	['outer.call']: JsQuery['outer.call'],
+	['inner.parameters']: JsQuery['inner.parameters'],
+	['outer.function']: [
+		`(method_definition 
             name: (_) @function.name
             body: (_) @function.body
             ) @function`,
-			`(function_expression
+		`(function_expression
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function`,
-			`
+		`
                (arrow_function 
             parameters: (formal_parameters ) 
             body: (statement_block ) @function.body) @anonymous_function`,
 
-			// 	`
-			//      (arrow_function
-			//   parameters: (formal_parameters
-			//     (identifier))
-			//   body: (statement_block ) @function.body) @anonymous_function`,
+		// 	`
+		//      (arrow_function
+		//   parameters: (formal_parameters
+		//     (identifier))
+		//   body: (statement_block ) @function.body) @anonymous_function`,
 
-			`(export_statement
+		`(export_statement
                     (function_declaration
                     name: (identifier) @function.name
                     body: (statement_block) @function.body
                     ) @exportedFunction
                ) @export`,
-			`
+		`
 			   (function_declaration
 			     name: (identifier) @function.name
 			     body: (statement_block) @function.body
 			   ) @function
 			                `,
-			`
+		`
 			   (lexical_declaration
 			               (variable_declarator
 			               name : (identifier) @function.name
@@ -82,7 +70,7 @@ export const TsSelector: Selector = {
 			     )
 			   ) @function
 			                `,
-			`
+		`
 			     (export_statement
 			     (lexical_declaration
 			     (variable_declarator
@@ -92,53 +80,23 @@ export const TsSelector: Selector = {
 			)
 			) @function
 			      `,
-			`
+		`
                (arrow_function
   (identifier)? @function_name
   (#not-eq? @function_name "identifier")) @anonymous_function
                 `,
-		].join('\n');
-	},
-	array() {
-		return JsQuery.array();
-	},
-	class() {
-		return JsQuery.class();
-	},
-	innerClass() {
-		return JsQuery.innerClass();
-	},
-	conditional() {
-		return JsQuery.conditional();
-	},
-	innerConditional() {
-		return JsQuery.innerConditional();
-	},
-	innerFunction() {
-		return JsQuery.innerFunction();
-	},
-	innerLoop() {
-		return JsQuery.innerLoop();
-	},
-	innerString() {
-		return JsQuery.innerString();
-	},
-	loop() {
-		return JsQuery.loop();
-	},
-	object() {
-		return JsQuery.object();
-	},
-	parameters() {
-		return JsQuery.parameters();
-	},
-	rhs() {
-		return JsQuery.rhs();
-	},
-	string() {
-		return JsQuery.string();
-	},
-	variables() {
-		return JsQuery.variables();
-	},
+	].join('\n'),
+	['outer.array']: JsQuery['outer.array'],
+	['outer.class']: JsQuery['outer.class'],
+	['inner.class']: JsQuery['inner.class'],
+	['outer.conditional']: JsQuery['outer.conditional'],
+	['inner.conditional']: JsQuery['inner.conditional'],
+	['inner.loop']: JsQuery['inner.loop'],
+	['outer.loop']: JsQuery['outer.loop'],
+	['inner.string']: JsQuery['inner.string'],
+	['outer.string']: JsQuery['outer.string'],
+	['outer.object']: JsQuery['outer.object'],
+	['outer.parameters']: JsQuery['outer.parameters'],
+	['outer.rhs']: JsQuery['outer.rhs'],
+	['outer.variable']: JsQuery['outer.variable'],
 };

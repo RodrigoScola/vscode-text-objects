@@ -11,7 +11,9 @@ let fncommand: QueryCommand;
 
 before(async () => {
 	await LanguageParser.init();
-	fncommand = new QueryCommand('function', closestToLine);
+	fncommand = new QueryCommand('outer.function').setGetPosition(
+		closestToLine
+	);
 });
 
 async function makeDoc(content: string) {

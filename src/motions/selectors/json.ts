@@ -1,69 +1,28 @@
 import { Selector } from '../commands';
 import { JsQuery } from './javascript';
 
-//since the syntax is mostly the same, for now we can keep it the same
 export const JsonSelector: Selector = {
-	innerType() {
-		return '';
-	},
-	comments() {
-		return '';
-	},
-	type() {
-		return '';
-	},
-	innerCall() {
-		return '';
-	},
-	innerParameters() {
-		return '';
-	},
-	call() {
-		return '';
-	},
-	function() {
-		return '';
-	},
-	array() {
-		return JsQuery.array();
-	},
-	class() {
-		return '';
-	},
-	innerClass() {
-		return '';
-	},
-	conditional() {
-		return '';
-	},
-	innerConditional() {
-		return '';
-	},
-	innerFunction() {
-		return '';
-	},
-	innerLoop() {
-		return '';
-	},
-	innerString() {
-		return JsQuery.innerString();
-	},
-	loop() {
-		return '';
-	},
-	object() {
-		return JsQuery.object();
-	},
-	parameters() {
-		return '';
-	},
-	rhs() {
-		return JsQuery.rhs();
-	},
-	string() {
-		return JsQuery.string();
-	},
-	variables() {
-		return '';
-	},
+	['inner.type']: '',
+	['outer.comment']: JsQuery['outer.comment'],
+	['outer.type']: '',
+	['outer.function']: '',
+	['inner.function']: '',
+	['inner.call']: '',
+	['outer.call']: '',
+	['outer.parameters']: '',
+	['inner.parameters']: '',
+	['outer.array']: JsQuery['outer.array'],
+	['outer.class']: '',
+	['inner.class']: '',
+	['outer.conditional']: '',
+	['inner.conditional']: '',
+	['inner.loop']: '',
+	['outer.loop']: '',
+	['inner.string']: JsQuery['inner.string'],
+	['outer.string']: JsQuery['outer.string'],
+	['outer.object']: JsQuery['outer.object'],
+	['outer.variable']: '',
+	['outer.rhs']: JsQuery['outer.rhs'],
 };
+
+//since the syntax is mostly the same, for now we can keep it the same
