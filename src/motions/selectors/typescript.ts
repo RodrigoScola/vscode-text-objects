@@ -100,3 +100,4 @@ export const TsSelector: Selector = {
 	['outer.rhs']: JsQuery['outer.rhs'],
 	['outer.variable']: JsQuery['outer.variable'],
 };
+
