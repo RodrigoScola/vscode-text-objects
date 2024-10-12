@@ -1,6 +1,9 @@
 import { Selector } from '../commands';
 
 export const JsQuery: Selector = {
+	innerType() {
+		return '';
+	},
 	comments() {
 		return '(comment)+ @comment';
 	},
