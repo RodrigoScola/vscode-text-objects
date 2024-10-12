@@ -122,6 +122,11 @@ export const JsQuery: Selector = {
 	'outer.rhs': [
 		`(variable_declarator
      value: (_) @rhs)`,
+		`(
+     assignment_expression
+     (_) @rhs
+     )
+     `,
 		//todo: go to a class with the public and check if node is good name
 		// `( public_field_definition
 		// value: (_) @rhs
@@ -179,4 +184,3 @@ export const JsQuery: Selector = {
 		'\n'
 	),
 };
-

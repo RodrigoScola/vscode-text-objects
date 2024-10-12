@@ -97,7 +97,13 @@ export const TsSelector: Selector = {
 	['outer.string']: JsQuery['outer.string'],
 	['outer.object']: JsQuery['outer.object'],
 	['outer.parameters']: JsQuery['outer.parameters'],
-	['outer.rhs']: JsQuery['outer.rhs'],
-	['outer.variable']: JsQuery['outer.variable'],
+	['outer.rhs']: JsQuery['outer.rhs'].concat(
+		`
+               (type_alias_declaration
+               value: (_) @type   ) 
+               `
+	),
+	['outer.variable']: JsQuery['outer.variable'].concat(
+		`(type_alias_declaration) @type`
+	),
 };
-
