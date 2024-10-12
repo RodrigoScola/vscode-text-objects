@@ -96,9 +96,47 @@
 				"when": "editorTextFocus",
 				"key": "ctrl+alt+s ctrl+alt+s",
 				"mac": "cmd+alt+s cmd+alt+s"
+			},
+			{
+				"key": "ctrl+alt+g ctrl+alt+f",
+				"mac": "cmd+alt+g cmd+alt+f",
+				"command": "vscode-textobjects.goTo.next.function",
+				"when": "editorTextFocus"
 			}
 		],
 		"commands": [
+			{
+				"command": "vscode-textobjects.goTo.next.function",
+				"title": "go to the next function"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.conditional",
+				"title": "go to the next if statement"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.loop",
+				"title": "go to the next if statement"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.rhs",
+				"title": "go to the next variable assignments"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.variables",
+				"title": "go to the next variable "
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.string",
+				"title": "go to the next string"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.array",
+				"title": "go to the next array"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.class",
+				"title": "go to the next class"
+			},
 			{
 				"command": "vscode-textobjects.select.previous.loop",
 				"title": "selects the previous loop"
@@ -242,4 +280,3 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
-

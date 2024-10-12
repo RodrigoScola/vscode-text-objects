@@ -4,11 +4,11 @@ import { QueryMatch } from 'web-tree-sitter';
 import { editor } from '../extension';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
+import { nextPosition } from './nextPos';
 import {
 	closestPos,
 	closestToLine,
 	JoinedPoint,
-	nextToPosition,
 	previousToLine,
 	select,
 } from './selection';
@@ -129,7 +129,7 @@ export class QueryCommand {
 			matches = this.onMatch(matches);
 		}
 
-		const position = nextToPosition(groupNodes(matches), context.cursor);
+		const position = nextPosition(groupNodes(matches), context.cursor);
 
 		if (!position) {
 			return;
@@ -153,7 +153,7 @@ export class QueryCommand {
 		lastCommand = this;
 		return ret;
 	}
-	async next(context: QueryContext) {
+	async select(context: QueryContext) {
 		const parser = await LanguageParser.get(context.language);
 
 		assert(parser, `could not init parser for ${context.language}`);
@@ -201,56 +201,6 @@ export class QueryCommand {
 	}
 }
 
-async function getContext(
-	currentEditor: vscode.TextEditor
-): Promise<QueryContext> {
-	const langName = currentEditor.document.languageId;
-	const parser = await LanguageParser.get(currentEditor.document.languageId);
-	assert(parser, `could not find parser for ${langName}`);
-	return {
-		text: currentEditor.document.getText(),
-		cursor: currentEditor.selection.active,
-		language: langName as SupportedLanguages,
-	};
-}
-
-const greedyChars = [';', ','];
-function InitSelect(
-	name: string,
-	command: QueryCommand,
-	afterEnd: (position: {
-		start: vscode.Position;
-		end: vscode.Position;
-	}) => unknown
-) {
-	return vscode.commands.registerCommand(name, async () => {
-		const currentEditor = vscode.window.activeTextEditor;
-		if (!currentEditor) {
-			return;
-		}
-		editor.setEditor(currentEditor);
-		const context = await getContext(currentEditor);
-		const position = await command.next(context);
-
-		if (!position) {
-			return;
-		}
-
-		const endPos = new vscode.Position(
-			position.end.line,
-			position.end.character + 1
-		);
-		const endLine = currentEditor.document.getText(
-			new vscode.Range(position.start, endPos)
-		);
-
-		if (greedyChars.includes(endLine.at(-1)!)) {
-			position.end = endPos;
-		}
-
-		afterEnd(position);
-	});
-}
 export const commands = {
 	function: new QueryCommand('function', closestToLine, function (matches) {
 		return filterLargestMatches(matches);
@@ -258,10 +208,11 @@ export const commands = {
 	innerFunction: new QueryCommand('innerFunction', closestToLine),
 	loop: new QueryCommand('loop', closestToLine),
 	innerLoop: new QueryCommand('innerLoop', closestToLine),
-	conditional: new QueryCommand('conditional', closestToLine),
+	conditional: new QueryCommand('conditional', closestPos),
 	rhs: new QueryCommand('rhs', closestToLine),
 	variables: new QueryCommand('variables', closestToLine),
 	innerString: new QueryCommand('innerString', closestToLine),
+	//bug on going to class
 	class: new QueryCommand('class', closestToLine),
 	innerClass: new QueryCommand('innerClass', closestToLine),
 	array: new QueryCommand('array', closestPos),
@@ -303,12 +254,17 @@ export const previousCommands = {
 	innerType: new QueryCommand('innerType', previousToLine),
 };
 
+function goTo(position: { start: vscode.Position; end: vscode.Position }) {
+	const ceditor = editor.getEditor();
+	ceditor.selection = new vscode.Selection(position.start, position.start);
+}
+
 export function initCommands(context: vscode.ExtensionContext) {
 	for (const command of Object.values(previousCommands)) {
 		context.subscriptions.push(
-			InitSelect(
+			InitCommand(
 				makeName(`select.previous.${command.name}`),
-				command,
+				command.select,
 				function (position) {
 					select(
 						position.start,
@@ -320,10 +276,15 @@ export function initCommands(context: vscode.ExtensionContext) {
 		);
 	}
 	for (const command of Object.values(commands)) {
+		InitCommand(
+			makeName(`goTo.next.${command.name}`),
+			(ctx) => command.goTo(ctx),
+			goTo
+		);
 		context.subscriptions.push(
-			InitSelect(
+			InitCommand(
 				makeName(`select.${command.name}`),
-				command,
+				(context) => command.select(context),
 				function (position) {
 					select(
 						position.start,
@@ -334,4 +295,62 @@ export function initCommands(context: vscode.ExtensionContext) {
 			)
 		);
 	}
+}
+
+const greedyChars = [';', ','];
+function InitCommand(
+	name: string,
+	execFunc: (context: QueryContext) => Promise<
+		| {
+				start: vscode.Position;
+				end: vscode.Position;
+		  }
+		| undefined
+	>,
+
+	afterEnd: (position: {
+		start: vscode.Position;
+		end: vscode.Position;
+	}) => unknown
+) {
+	return vscode.commands.registerCommand(name, async () => {
+		const currentEditor = vscode.window.activeTextEditor;
+		if (!currentEditor) {
+			return;
+		}
+		editor.setEditor(currentEditor);
+		const context = await getContext(currentEditor);
+		const position = await execFunc(context);
+
+		if (!position) {
+			return;
+		}
+
+		const endPos = new vscode.Position(
+			position.end.line,
+			position.end.character + 1
+		);
+		const endLine = currentEditor.document.getText(
+			new vscode.Range(position.start, endPos)
+		);
+
+		if (greedyChars.includes(endLine.at(-1)!)) {
+			position.end = endPos;
+		}
+
+		afterEnd(position);
+	});
+}
+
+async function getContext(
+	currentEditor: vscode.TextEditor
+): Promise<QueryContext> {
+	const langName = currentEditor.document.languageId;
+	const parser = await LanguageParser.get(currentEditor.document.languageId);
+	assert(parser, `could not find parser for ${langName}`);
+	return {
+		text: currentEditor.document.getText(),
+		cursor: currentEditor.selection.active,
+		language: langName as SupportedLanguages,
+	};
 }

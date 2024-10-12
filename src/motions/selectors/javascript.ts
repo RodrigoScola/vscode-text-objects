@@ -152,15 +152,17 @@ export const JsQuery: Selector = {
 		return [
 			`(variable_declarator
      value: (_) @rhs)`,
-			`( public_field_definition
-               value: (_) @rhs
-               )`,
+			//todo: go to a class with the public and check if node is good name
+			// `( public_field_definition
+			// value: (_) @rhs
+			// )`,
 		].join('\n');
 	},
 
 	variables() {
 		return [
-			`( public_field_definition) @lexical_declaration`,
+			//todo: go to a class with the public and check if node is good name
+			//`( public_field_definition) @lexical_declaration`,
 			` (lexical_declaration
 
                     (variable_declarator 
