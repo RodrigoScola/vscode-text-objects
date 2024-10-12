@@ -24,13 +24,17 @@ nodes :
 
 multi lang support
 
-bugs:
+planned support for languages
 
-inner functions either one line or select the name of another
-for (const match of matches) {
-for (const f of match.captures) {
-nodes.push(f.node);
-}
-}
-
-     should select the loop of f but selects the nodes push
+-    python
+-    golang (almost done)
+-    yaml
+-    css
+-    c++
+-    c
+-    c#
+-    lua
+-    rust
+-    java
+-    r
+-    obj-c

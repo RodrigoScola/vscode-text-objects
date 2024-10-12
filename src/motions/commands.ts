@@ -113,17 +113,21 @@ export class QueryCommand {
 	}
 
 	async goTo(context: QueryContext) {
-		const parser = await LanguageParser.get(context.language);
+		lastCommand = this;
+		const Parsing = await LanguageParser.get(context.language);
 		assert(
-			parser,
+			Parsing,
 			'could not init parser for ' + context.language + 'language'
 		);
-		const tree = parser.parser.parse(context.text);
+
+		assert(context.text, 'cannot parse text that is not there');
+
+		const tree = Parsing.parser.parse(context.text);
 
 		const selector = SelectorFactory.get(context.language)[this.name]();
 		assert(selector, 'invalid query for ' + context.language);
 
-		const query = parser.language.query(selector);
+		const query = Parsing.language.query(selector);
 		let matches = query.matches(tree.rootNode);
 		if (typeof this.onMatch === 'function') {
 			matches = this.onMatch(matches);
@@ -131,10 +135,12 @@ export class QueryCommand {
 
 		const position = nextPosition(groupNodes(matches), context.cursor);
 
+		return this.makePosition(position);
+	}
+	private makePosition(position?: JoinedPoint) {
 		if (!position) {
 			return;
 		}
-
 		const startPos = new vscode.Position(
 			position.startPosition.row,
 			position.startPosition.column
@@ -145,15 +151,13 @@ export class QueryCommand {
 			position.endPosition.column
 		);
 
-		const ret = {
+		return {
 			start: startPos,
 			end: endPos,
 		};
-
-		lastCommand = this;
-		return ret;
 	}
 	async select(context: QueryContext) {
+		lastCommand = this;
 		const parser = await LanguageParser.get(context.language);
 
 		assert(parser, `could not init parser for ${context.language}`);
@@ -161,43 +165,23 @@ export class QueryCommand {
 		const tree = parser.parser.parse(context.text);
 
 		const selector = SelectorFactory.get(context.language)[this.name]();
-
 		assert(
 			selector,
 			this.name + ' is an invalid selector for ' + context.language
 		);
 
 		const query = parser.language.query(selector);
+		assert(query, 'invalid query came out');
 
 		let matches = query.matches(tree.rootNode);
 
-		if (typeof this.onMatch === 'function') {
+		if (this.onMatch) {
 			matches = this.onMatch(matches);
 		}
 
-		const group = groupNodes(matches);
-
-		const position = this.getPosition(group, context.cursor);
-
-		if (!position) {
-			return;
-		}
-
-		const startPos = new vscode.Position(
-			position.startPosition.row,
-			position.startPosition.column
+		return this.makePosition(
+			this.getPosition(groupNodes(matches), context.cursor)
 		);
-
-		const endPos = new vscode.Position(
-			position.endPosition.row,
-			position.endPosition.column
-		);
-
-		lastCommand = this;
-		return {
-			start: startPos,
-			end: endPos,
-		};
 	}
 }
 
