@@ -40,6 +40,22 @@ export class Config {
 
 		return configValue;
 	}
+	groupElements(): boolean {
+		const inspection = this.config.inspect('selection.groupElements');
+		assert(inspection, 'group elements config should be defined');
+
+		assert(
+			typeof inspection.defaultValue === 'boolean',
+			'group elements type is boolean'
+		);
+		const configValue = this.value(inspection);
+		assert(
+			typeof configValue === 'boolean',
+			'current configuration value is not boolean'
+		);
+
+		return configValue;
+	}
 	lookBack(): boolean {
 		const inspection = this.config.inspect('lookBack');
 		assert(
@@ -52,4 +68,3 @@ export class Config {
 		return configValue;
 	}
 }
-
