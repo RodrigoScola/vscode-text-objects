@@ -21,7 +21,11 @@ export const GoQuery: Selector = {
                `,
 		].join('\n'),
 	'inner.call': '',
-	'inner.parameters': '',
+	'inner.parameters': [
+		`(parameter_list
+    (_) @parameters
+    )`,
+	].join('\n'),
 	'outer.call': '',
 	'outer.parameters': [`(parameter_list) @parameters`].join('\n'),
 	'outer.function': [
@@ -50,6 +54,7 @@ export const GoQuery: Selector = {
           )
                ) @array `,
 	].join('\n'),
+	//this would be a struct
 	['outer.class']: '',
 	'outer.conditional': [
 		`(if_statement

@@ -1,3 +1,4 @@
+import assert from 'assert';
 import {
 	Position,
 	Range,
@@ -23,17 +24,27 @@ export function closestPos(
 		return undefined;
 	}
 
-	nodes.sort((a, b) => a.startPosition.row - b.startPosition.row);
+	nodes.sort((a, b) => {
+		if (a.startPosition.row === b.startPosition.row) {
+			return a.startPosition.column - b.startPosition.column;
+		}
+
+		return a.startPosition.row - b.startPosition.row;
+	});
 
 	let closestNode;
 	let isInside = true;
 
 	for (let i = 0; i < nodes.length; i++) {
 		const node = nodes[i];
+		const next = nodes[i + 1];
 
 		if (
-			node.startPosition.row === index.line ||
-			node.endPosition.row === index.line
+			(node.startPosition.row === index.line ||
+				node.endPosition.row === index.line) &&
+			(!next ||
+				next.startPosition.row !== index.line ||
+				next.endPosition.row !== index.line)
 		) {
 			return node;
 		}
@@ -45,7 +56,6 @@ export function closestPos(
 		}
 		if (!closestNode) {
 			closestNode = node;
-
 			continue;
 		}
 
@@ -54,12 +64,21 @@ export function closestPos(
 		if (isInside && startDelta < closestDelta) {
 			closestNode = node;
 			continue;
-		}
+		} else if (closestDelta === startDelta) {
+			const closestRow =
+				closestNode.startPosition.column - index.character;
+			const currentRow = node.startPosition.column - index.character;
 
-		if (closerToZero(closestDelta, startDelta) === startDelta) {
-			closestNode = node;
-			isInside = true;
+			if (closerToZero(closestRow, currentRow) === currentRow) {
+				isInside = true;
+				closestNode = node;
+			}
+			continue;
 		}
+		// if (closerToZero(closestDelta, startDelta) === startDelta) {
+		// 	closestNode = node;
+		// 	isInside = true;
+		// }
 	}
 
 	return closestNode;
@@ -75,7 +94,15 @@ export function previousToLine(
 		return undefined;
 	}
 
-	nodes.sort((a, b) => a.startPosition.row - b.startPosition.row);
+	nodes.sort((a, b) => {
+		assert(a, 'a is undefined');
+		assert(b, 'b is undefined');
+		if (a.startPosition.row === b.startPosition.row) {
+			return a.startPosition.column - b.startPosition.column;
+		}
+
+		return a.startPosition.row - b.startPosition.row;
+	});
 
 	let closestNode;
 	let isInside = true;
@@ -99,53 +126,9 @@ export function previousToLine(
 			isInside = true;
 		}
 
-		const closestDelta = closestNode!.startPosition.row - index.line;
-
 		if (!closestNode) {
 			closestNode = node;
-		} else if (isInside && startDelta < closestDelta) {
-			closestNode = node;
-		} else if (closerToZero(closestDelta, startDelta) === startDelta) {
-			closestNode = node;
-		}
-	}
-
-	return closestNode;
-}
-export function closestToLine(
-	nodes: JoinedPoint[],
-	index: Position
-): JoinedPoint | undefined {
-	if (nodes.length === 0) {
-		return undefined;
-	}
-
-	nodes.sort((a, b) => a.startPosition.row - b.startPosition.row);
-
-	let closestNode;
-	let isInside = true;
-
-	for (let i = 0; i < nodes.length; i++) {
-		const node = nodes[i];
-
-		if (
-			node.startPosition.row === index.line ||
-			node.endPosition.row === index.line
-		) {
-			return node;
-		}
-
-		let startDelta = node.startPosition.row - index.line;
-		let endDelta = node.endPosition.row - index.line;
-		if (startDelta < 0 && endDelta < 0) {
 			continue;
-		}
-		if (startDelta <= 0 && endDelta >= 0) {
-			isInside = true;
-		}
-
-		if (!closestNode) {
-			closestNode = node;
 		}
 
 		const closestDelta = closestNode!.startPosition.row - index.line;
