@@ -37,6 +37,12 @@ export const Languages = {
 	jsonc: {
 		module: 'json',
 	},
+	python: {
+		module: 'python',
+	},
+	cpp: {
+		module: 'cpp',
+	},
 };
 
 export type SupportedLanguages = keyof typeof Languages;
@@ -67,7 +73,8 @@ export class LanguageParser {
 			const parseName = Languages[langname as keyof typeof Languages];
 
 			assert(parseName, 'could not find parser for ' + langname);
-			lang = await parser.Language.load(this.path(parseName.module));
+			const p = this.path(parseName.module);
+			lang = await parser.Language.load(p);
 		} catch (err) {
 			console.error('could not set language', err);
 			return undefined;

@@ -15,7 +15,7 @@ func fueigh(b int, other string) (int, error) {
 }
 
 type P interface {
-	Clear()
+	Clear1()
 	Clear2()
 }
 

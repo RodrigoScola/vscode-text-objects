@@ -3,7 +3,7 @@ import fs, { ObjectEncodingOptions } from 'fs';
 import path from 'path';
 import * as vscode from 'vscode';
 import { Config } from './config';
-import { getLastExecCommand, initCommands } from './motions/commands';
+import { CommandHistory, initCommands } from './motions/commands';
 import { JoinedPoint } from './motions/selection';
 import { LanguageParser } from './parsing/parser';
 
@@ -120,7 +120,7 @@ export async function activate(context: vscode.ExtensionContext) {
                     ${comment} path: ${editor.document.fileName}\n
                     `;
 
-				const lastCommand = getLastExecCommand();
+				const lastCommand = CommandHistory.last();
 				if (lastCommand) {
 					file += `${comment} last command: ${lastCommand.name}\n`;
 				}
@@ -165,3 +165,4 @@ function getExtension(language: string) {
 		}
 	}
 }
+

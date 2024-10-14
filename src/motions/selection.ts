@@ -6,7 +6,7 @@ import {
 	TextEditor,
 	TextEditorRevealType,
 } from 'vscode';
-import Parser from 'web-tree-sitter';
+import Parser, { QueryMatch } from 'web-tree-sitter';
 import { closerToZero } from '../utils/math';
 
 export type JoinedPoint = {
@@ -75,10 +75,6 @@ export function closestPos(
 			}
 			continue;
 		}
-		// if (closerToZero(closestDelta, startDelta) === startDelta) {
-		// 	closestNode = node;
-		// 	isInside = true;
-		// }
 	}
 
 	return closestNode;
@@ -142,6 +138,40 @@ export function previousToLine(
 
 	return closestNode;
 }
+export function nextPosition(
+	nodes: JoinedPoint[],
+	index: Position
+): JoinedPoint | undefined {
+	if (nodes.length === 0) {
+		return;
+	}
+	assert(index.line >= 0, 'line cannot be outside of range');
+
+	nodes.sort((a, b) => a.startPosition.row - b.startPosition.row);
+
+	let closestDelta = -Infinity;
+	let closestNode: JoinedPoint | undefined;
+
+	for (const node of nodes) {
+		assert(node, 'invalid node to get position');
+		assert(
+			node.startPosition.row > 0,
+			'start position cannot be less than 0: ' + node.startPosition.row
+		);
+
+		let startDelta = node.startPosition.row - index.line;
+
+		if (
+			startDelta > 0 &&
+			closerToZero(startDelta, closestDelta) === startDelta
+		) {
+			closestDelta = startDelta;
+			closestNode = node;
+		}
+	}
+
+	return closestNode;
+}
 
 export function select(
 	startPos: Position,
@@ -166,3 +196,31 @@ export function select(
 
 	return editor;
 }
+
+export function groupElements(matches: QueryMatch[]): QueryMatch[] {
+	// remember to turn this on before publishing
+	// if (getConfig().groupElements() === false) {
+	// 	return matches;
+	// }
+
+	const captureParents = new Map<number, QueryMatch>();
+
+	for (const match of matches) {
+		for (const capture of match.captures) {
+			assert(capture.node.parent, 'i should worry about this now');
+
+			const parentId = capture.node.parent.id;
+			const parentNode = captureParents.get(parentId);
+			if (!parentNode) {
+				captureParents.set(parentId, match);
+				continue;
+			}
+
+			parentNode.captures.push(capture);
+			captureParents.set(parentId, parentNode);
+		}
+	}
+
+	return Array.from(captureParents.values());
+}
+

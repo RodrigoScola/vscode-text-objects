@@ -114,6 +114,10 @@
 		],
 		"commands": [
 			{
+				"command": "vscode-textobjects.goTo.next.outer.call",
+				"title": "go to the next  function or operation call"
+			},
+			{
 				"command": "vscode-textobjects.goTo.next.outer.function",
 				"title": "go to the next function"
 			},
@@ -300,3 +304,4 @@
 		"web-tree-sitter": "^0.23.0"
 	}
 }
+
