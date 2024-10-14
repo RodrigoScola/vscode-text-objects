@@ -2,7 +2,6 @@ import assert from 'assert';
 import fs, { ObjectEncodingOptions } from 'fs';
 import path from 'path';
 import * as vscode from 'vscode';
-import { SyntaxNode } from 'web-tree-sitter';
 import { Config } from './config';
 import { getLastExecCommand, initCommands } from './motions/commands';
 import { JoinedPoint } from './motions/selection';
@@ -27,7 +26,7 @@ const bugFileOptions: ObjectEncodingOptions = {
 
 let config: Config;
 
-function getConfig(): Config {
+export function getConfig(): Config {
 	assert(config, 'configuration has not setup yet');
 	return config;
 }
@@ -39,10 +38,12 @@ export function visualize(start: JoinedPoint): void {
 		console.log('there is no editor');
 		return;
 	}
+	assert(start, 'start needs to be defined');
 	const startPos = new vscode.Position(
 		start.endPosition.row,
 		start.endPosition.column
 	);
+
 	const endPos = new vscode.Position(
 		start.startPosition.row,
 		start.startPosition.column
@@ -67,89 +68,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	// );
 
 	await initCommands(context);
-
-	let decType: vscode.TextEditorDecorationType | undefined;
-
-	context.subscriptions.push(
-		vscode.commands.registerCommand(
-			'vscode-textobjects.treeSitter',
-			async function () {
-				const editor = vscode.window.activeTextEditor;
-
-				if (!editor) {
-					return;
-				}
-
-				let text = editor.document.getText();
-
-				let selection = editor.selection;
-
-				if (!selection.start.isEqual(selection.end)) {
-					text = editor.document.getText(selection);
-				}
-
-				const parser = await LanguageParser.get(
-					editor.document.languageId
-				);
-				assert(parser);
-
-				const tree = parser.parser.parse(text);
-
-				let treeView: SyntaxNode[] = [];
-
-				function printTree(node: SyntaxNode | null) {
-					if (!node) {
-						return;
-					}
-
-					treeView.push(node);
-
-					// Recurse on children
-					for (let i = 0; i < node.namedChildCount; i++) {
-						printTree(node.namedChild(i));
-					}
-				}
-
-				// Print the syntax tree
-				printTree(tree.rootNode);
-
-				if (decType) {
-					decType.dispose();
-					decType = undefined;
-					return;
-				}
-
-				treeView.sort((a, b) => a.startIndex - b.startIndex);
-
-				const decorations: vscode.DecorationOptions[] =
-					treeView.map((line) => {
-						return {
-							range: new vscode.Range(
-								line.startPosition.row +
-									selection.start.line,
-								0,
-								line.startPosition.row +
-									selection.start.line,
-								0
-							),
-							renderOptions: {
-								after: {
-									contentText: line.type,
-									color: 'rgba(173, 56, 56, 0.83)',
-									backgroundColor:
-										'rgba(255, 255, 255, 0.06)',
-									margin: '0 0 0 1em',
-								},
-							},
-						};
-					});
-
-				decType = vscode.window.createTextEditorDecorationType({});
-
-				editor.setDecorations(decType, decorations);
-			}
-		)
-	);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
@@ -247,4 +165,3 @@ function getExtension(language: string) {
 		}
 	}
 }
-
