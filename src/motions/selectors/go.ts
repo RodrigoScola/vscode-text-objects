@@ -11,22 +11,25 @@ export const GoQuery: Selector = {
 	'inner.type':
 		//todo: complete this
 		[
+			`(interface_type
+            (_) @types
+        )`,
 			`(struct_type
-               (field_declaration_list
-               (_)+ @types
-          )
-               )`,
-			`
-      (interface_type (method_declaration ) @types  ) 
-               `,
+			       (field_declaration_list
+			       (_)+ @types
+			  )
+			       )`,
 		].join('\n'),
-	'inner.call': '',
+	'inner.call': `
+    (call_expression (_) @call ) 
+    `,
 	'inner.parameters': [
 		`(parameter_list
     (_) @parameters
     )`,
 	].join('\n'),
-	'outer.call': '',
+	'outer.call': `
+    (call_expression) @call`,
 	'outer.parameters': [`(parameter_list) @parameters`].join('\n'),
 	'outer.function': [
 		`(function_declaration
@@ -107,10 +110,15 @@ export const GoQuery: Selector = {
                )
                ) @struct`,
 	].join('\n'),
-	'outer.rhs': '',
 	'outer.string': [
 		`(raw_string_literal) @string`,
 		`(interpreted_string_literal) @string`,
+	].join('\n'),
+
+	'outer.rhs': [
+		`(short_var_declaration
+        right: (_) @rhs
+    )`,
 	].join('\n'),
 	'outer.variable': [
 		`
@@ -121,3 +129,4 @@ export const GoQuery: Selector = {
                `,
 	].join('\n'),
 };
+

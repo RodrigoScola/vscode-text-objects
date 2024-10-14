@@ -36,7 +36,7 @@ function assertPos(actual: testChar, expected: testChar) {
 
 suite('function declarations', () => {
 	test('can select default functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -49,7 +49,7 @@ suite('function declarations', () => {
 	});
 
 	test('can select default exported functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -62,7 +62,7 @@ suite('function declarations', () => {
 	});
 
 	test('can select exports on functions from the inside', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -75,7 +75,7 @@ suite('function declarations', () => {
 	});
 
 	test('can select arrow functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -92,7 +92,7 @@ suite('function declarations', () => {
 		});
 	});
 	test('can select exported arrow functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -109,7 +109,7 @@ suite('function declarations', () => {
 		});
 	});
 	test('can select exported arrow functions from the inside', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -129,7 +129,7 @@ suite('function declarations', () => {
 
 suite('higher order functions', () => {
 	test('can select higher order functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -144,7 +144,7 @@ suite('higher order functions', () => {
 	});
 
 	test('can select higher order arrow functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -159,7 +159,7 @@ suite('higher order functions', () => {
 
 suite('anonymous functions', () => {
 	test('can select anonymous arrow functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -172,7 +172,7 @@ suite('anonymous functions', () => {
 	});
 
 	test('can select anonymous functions', async () => {
-		const position = await fncommand.select({
+		const position = await fncommand.exec({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
