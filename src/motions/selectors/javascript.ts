@@ -135,8 +135,15 @@ export const JsQuery: Selector = {
 	'outer.variable': [
 		//todo: go to a class with the public and check if node is good name
 		//`( public_field_definition) @lexical_declaration`,
-		` (lexical_declaration
 
+		` (export_statement
+         (lexical_declaration
+                    (variable_declarator 
+                         name: (identifier  )
+                         value: (_) 
+                         ) @variable_declarator
+    )) @lexical_declaration `,
+		` (lexical_declaration
                     (variable_declarator 
                          name: (identifier  )
                          value: (_) 
@@ -184,3 +191,4 @@ export const JsQuery: Selector = {
 		'\n'
 	),
 };
+
