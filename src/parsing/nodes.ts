@@ -1,6 +1,7 @@
 import * as parser from 'web-tree-sitter';
 import { JoinedPoint } from '../motions/selection';
 
+import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';
 import { NODES } from '../constants';
 
@@ -87,6 +88,11 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		if (!firstNode || !lastNode) {
 			continue;
 		}
+		assert(
+			firstNode.node.startPosition,
+			'needs to have a starting position'
+		);
+		assert(firstNode.node.endPosition, 'needs to have an end position');
 		const node = {
 			startPosition: firstNode.node.startPosition,
 			endPosition: lastNode.node.endPosition,
@@ -98,4 +104,3 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 
 	return nodes;
 }
-
