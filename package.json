@@ -1,307 +1,306 @@
 {
-	"name": "vscode-textobjects",
-	"displayName": "vscode text objects",
-	"description": "inspired by tree sitter. this is the vscode implementation of object selection",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/RodrigoScola/vscode-text-objects"
-	},
-	"version": "0.0.19",
-	"engines": {
-		"vscode": "^1.93.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"publisher": "rodrigoscola",
-	"activationEvents": [
-		"onLanguage:javascript",
-		"onLanguage:typescript",
-		"onLanguage:javascriptreact",
-		"onLanguage:typescriptreact",
-		"onLanguage:json",
-		"onLanguage:jsonc"
-	],
-	"main": "./dist/extension.js",
-	"contributes": {
-		"configuration": {
-			"title": "Vscode Text Objects",
-			"properties": {
-				"vscode-textobjects.selection.groupElements": {
-					"title": "Group elements",
-					"description": "group some nodes such as parameters so you can select them all at once",
-					"default": false,
-					"type": "boolean"
-				},
-				"vscode-textobjects.logs.bugsPath": {
-					"type": "string",
-					"description": " the selection bug file, for developers only "
-				},
-				"vscode-textobjects.selection.lookBack": {
-					"type": "boolean",
-					"description": "allows to select items before the cursor",
-					"default": false
-				}
-			}
-		},
-		"keybindings": [
-			{
-				"command": "vscode-textobjects.select.outer.call",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+f",
-				"mac": "cmd+alt+s cmd+alt+c"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.function",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+f",
-				"mac": "cmd+alt+s cmd+alt+f"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.loop",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+l",
-				"mac": "cmd+alt+s cmd+alt+l"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.conditional",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+i",
-				"mac": "cmd+alt+s cmd+alt+i"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.variable",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+v",
-				"mac": "cmd+alt+s cmd+alt+v"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.rhs",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+r",
-				"mac": "cmd+alt+s cmd+alt+r"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.class",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+c",
-				"mac": "cmd+alt+s cmd+alt+c"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.array",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+a",
-				"mac": "cmd+alt+s cmd+alt+a"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.object",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+o",
-				"mac": "cmd+alt+s cmd+alt+o"
-			},
-			{
-				"command": "vscode-textobjects.select.outer.string",
-				"when": "editorTextFocus",
-				"key": "ctrl+alt+s ctrl+alt+s",
-				"mac": "cmd+alt+s cmd+alt+s"
-			},
-			{
-				"key": "ctrl+alt+g ctrl+alt+f",
-				"mac": "cmd+alt+g cmd+alt+f",
-				"command": "vscode-textobjects.goTo.next.outer.function",
-				"when": "editorTextFocus"
-			}
-		],
-		"commands": [
-			{
-				"command": "vscode-textobjects.goTo.next.outer.call",
-				"title": "go to the next  function or operation call"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.function",
-				"title": "go to the next function"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.conditional",
-				"title": "go to the next if statement"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.loop",
-				"title": "go to the next if statement"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.rhs",
-				"title": "go to the next variable assignments"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.variable",
-				"title": "go to the next variable "
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.string",
-				"title": "go to the next string"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.array",
-				"title": "go to the next array"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.object",
-				"title": "go to the next object"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.parameters",
-				"title": "go to the next parameter"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.type",
-				"title": "go to the next type"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.comments",
-				"title": "go to the next comment"
-			},
-			{
-				"command": "vscode-textobjects.goTo.next.outer.class",
-				"title": "go to the next class"
-			},
-			{
-				"command": "vscode-textobjects.select.previous.outer.loop",
-				"title": "selects the previous loop"
-			},
-			{
-				"command": "vscode-textobjects.select.previous.outer.function",
-				"title": "selects the previous function"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.comment",
-				"title": "selects the inner comment"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.comment",
-				"title": "selects the nearest comment"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.call",
-				"title": "select a function or operation call"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.call",
-				"title": "select a function or operation call"
-			},
-			{
-				"command": "vscode-textobjects.treeSitter",
-				"title": "views the treesitter range"
-			},
-			{
-				"command": "vscode-textobjects.bugFile",
-				"title": "adds the current file or selection to bugs"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.string",
-				"title": "select the nearest inner string"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.string",
-				"title": "select the nearest string"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.object",
-				"title": "select the nearest object"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.array",
-				"title": "select the nearest array"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.class",
-				"title": "select the inner class"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.class",
-				"title": "select the nearest class"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.variable",
-				"title": "select variables"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.rhs",
-				"title": "select variable assignments"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.type",
-				"title": "select inner type"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.type",
-				"title": "select type "
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.parameters",
-				"title": "select inner parameters"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.parameters",
-				"title": "select parameters"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.conditional",
-				"title": "Select if statements"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.conditional",
-				"title": "Select inner if statements"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.loop",
-				"title": "select inner loops"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.loop",
-				"title": "Select Loops"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.function",
-				"title": "select inner function"
-			},
-			{
-				"command": "vscode-textobjects.select.next.outer.function",
-				"title": "Select Function"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "npm run package",
-		"compile": "npm run check-types && npm run lint && node esbuild.js",
-		"watch": "npm-run-all -p watch:*",
-		"watch:esbuild": "node esbuild.js --watch",
-		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-		"package": "npm run check-types && npm run lint && node esbuild.js --production",
-		"compile-tests": "tsc -p . --outDir out && cp -r ./parsers ./out/parsers",
-		"watch-tests": "tsc -p . -w --outDir out",
-		"pretest": "npm run compile-tests && npm run compile && npm run lint",
-		"check-types": "tsc --noEmit",
-		"lint": "eslint src",
-		"test": "vscode-test"
-	},
-	"devDependencies": {
-		"@types/mocha": "^10.0.7",
-		"@types/node": "20.x",
-		"@types/vscode": "^1.93.0",
-		"@typescript-eslint/eslint-plugin": "^8.3.0",
-		"@typescript-eslint/parser": "^8.3.0",
-		"@vscode/test-cli": "^0.0.10",
-		"@vscode/test-electron": "^2.4.1",
-		"esbuild": "^0.23.1",
-		"eslint": "^9.9.1",
-		"npm-run-all": "^4.1.5",
-		"tree-sitter-cli": "^0.23.0",
-		"tree-sitter-javascript": "^0.23.0",
-		"typescript": "^5.5.4"
-	},
-	"dependencies": {
-		"web-tree-sitter": "^0.23.0"
-	}
+  "name": "vscode-textobjects",
+  "displayName": "vscode text objects",
+  "description": "inspired by tree sitter. this is the vscode implementation of object selection",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RodrigoScola/vscode-text-objects"
+  },
+  "version": "0.0.20",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "publisher": "rodrigoscola",
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "onLanguage:json",
+    "onLanguage:jsonc"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Vscode Text Objects",
+      "properties": {
+        "vscode-textobjects.selection.groupElements": {
+          "title": "Group elements",
+          "description": "group some nodes such as parameters so you can select them all at once",
+          "default": false,
+          "type": "boolean"
+        },
+        "vscode-textobjects.logs.bugsPath": {
+          "type": "string",
+          "description": " the selection bug file, for developers only "
+        },
+        "vscode-textobjects.selection.lookBack": {
+          "type": "boolean",
+          "description": "allows to select items before the cursor",
+          "default": false
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "vscode-textobjects.select.outer.call",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+f",
+        "mac": "cmd+alt+s cmd+alt+c"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.function",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+f",
+        "mac": "cmd+alt+s cmd+alt+f"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.loop",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+l",
+        "mac": "cmd+alt+s cmd+alt+l"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.conditional",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+i",
+        "mac": "cmd+alt+s cmd+alt+i"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.variable",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+v",
+        "mac": "cmd+alt+s cmd+alt+v"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.rhs",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+r",
+        "mac": "cmd+alt+s cmd+alt+r"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.class",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+c",
+        "mac": "cmd+alt+s cmd+alt+c"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.array",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+a",
+        "mac": "cmd+alt+s cmd+alt+a"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.object",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+o",
+        "mac": "cmd+alt+s cmd+alt+o"
+      },
+      {
+        "command": "vscode-textobjects.select.outer.string",
+        "when": "editorTextFocus",
+        "key": "ctrl+alt+s ctrl+alt+s",
+        "mac": "cmd+alt+s cmd+alt+s"
+      },
+      {
+        "key": "ctrl+alt+g ctrl+alt+f",
+        "mac": "cmd+alt+g cmd+alt+f",
+        "command": "vscode-textobjects.goTo.next.outer.function",
+        "when": "editorTextFocus"
+      }
+    ],
+    "commands": [
+      {
+        "command": "vscode-textobjects.goTo.next.outer.call",
+        "title": "go to the next  function or operation call"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.function",
+        "title": "go to the next function"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.conditional",
+        "title": "go to the next if statement"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.loop",
+        "title": "go to the next if statement"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.rhs",
+        "title": "go to the next variable assignments"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.variable",
+        "title": "go to the next variable "
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.string",
+        "title": "go to the next string"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.array",
+        "title": "go to the next array"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.object",
+        "title": "go to the next object"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.parameters",
+        "title": "go to the next parameter"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.type",
+        "title": "go to the next type"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.comments",
+        "title": "go to the next comment"
+      },
+      {
+        "command": "vscode-textobjects.goTo.next.outer.class",
+        "title": "go to the next class"
+      },
+      {
+        "command": "vscode-textobjects.select.previous.outer.loop",
+        "title": "selects the previous loop"
+      },
+      {
+        "command": "vscode-textobjects.select.previous.outer.function",
+        "title": "selects the previous function"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.comment",
+        "title": "selects the inner comment"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.comment",
+        "title": "selects the nearest comment"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.call",
+        "title": "select a function or operation call"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.call",
+        "title": "select a function or operation call"
+      },
+      {
+        "command": "vscode-textobjects.treeSitter",
+        "title": "views the treesitter range"
+      },
+      {
+        "command": "vscode-textobjects.bugFile",
+        "title": "adds the current file or selection to bugs"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.string",
+        "title": "select the nearest inner string"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.string",
+        "title": "select the nearest string"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.object",
+        "title": "select the nearest object"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.array",
+        "title": "select the nearest array"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.class",
+        "title": "select the inner class"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.class",
+        "title": "select the nearest class"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.variable",
+        "title": "select variables"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.rhs",
+        "title": "select variable assignments"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.type",
+        "title": "select inner type"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.type",
+        "title": "select type "
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.parameters",
+        "title": "select inner parameters"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.parameters",
+        "title": "select parameters"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.conditional",
+        "title": "Select if statements"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.conditional",
+        "title": "Select inner if statements"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.loop",
+        "title": "select inner loops"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.loop",
+        "title": "Select Loops"
+      },
+      {
+        "command": "vscode-textobjects.select.next.inner.function",
+        "title": "select inner function"
+      },
+      {
+        "command": "vscode-textobjects.select.next.outer.function",
+        "title": "Select Function"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out && cp -r ./parsers ./out/parsers",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.93.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.23.1",
+    "eslint": "^9.9.1",
+    "npm-run-all": "^4.1.5",
+    "tree-sitter-cli": "^0.23.0",
+    "tree-sitter-javascript": "^0.23.0",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "web-tree-sitter": "^0.23.0"
+  }
 }
-
