@@ -7,6 +7,7 @@ import {
 	TextEditorRevealType,
 } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
+import { visualize } from '../extension';
 import { closerToZero } from '../utils/math';
 
 export type JoinedPoint = {
@@ -35,9 +36,12 @@ export function closestPos(
 	let closestNode;
 	let isInside = true;
 
-	for (let i = 0; i < nodes.length; i++) {
+	for (let i = nodes.length - 1; i >= 0; i--) {
 		const node = nodes[i];
-		const next = nodes[i + 1];
+		visualize(node);
+		const next = nodes[i - 1];
+
+		visualize(next);
 
 		if (
 			(node.startPosition.row === index.line ||
@@ -56,6 +60,7 @@ export function closestPos(
 		}
 		if (!closestNode) {
 			closestNode = node;
+			visualize(closestNode);
 			continue;
 		}
 
@@ -223,4 +228,3 @@ export function groupElements(matches: QueryMatch[]): QueryMatch[] {
 
 	return Array.from(captureParents.values());
 }
-

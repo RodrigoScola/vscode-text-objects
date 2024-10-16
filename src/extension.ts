@@ -3,7 +3,8 @@ import fs, { ObjectEncodingOptions } from 'fs';
 import path from 'path';
 import * as vscode from 'vscode';
 import { Config } from './config';
-import { CommandHistory, initCommands } from './motions/commands';
+import { initCommands } from './motions/commands';
+import { CommandHistory } from './motions/QueryCommands';
 import { JoinedPoint } from './motions/selection';
 import { LanguageParser } from './parsing/parser';
 
@@ -33,21 +34,19 @@ export function getConfig(): Config {
 export const editor = new Editor();
 
 export function visualize(start: JoinedPoint): void {
-	const ceditor = editor.getEditor();
-	if (!ceditor) {
-		console.log('there is no editor');
-		return;
-	}
 	assert(start, 'start needs to be defined');
 	const startPos = new vscode.Position(
+		start.startPosition.row,
+		start.startPosition.column
+	);
+	const endPos = new vscode.Position(
 		start.endPosition.row,
 		start.endPosition.column
 	);
 
-	const endPos = new vscode.Position(
-		start.startPosition.row,
-		start.startPosition.column
-	);
+	const ceditor = editor.getEditor();
+	assert(ceditor, 'editor is not present');
+
 	ceditor.revealRange(new vscode.Range(startPos, endPos));
 	ceditor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
 }
@@ -165,4 +164,3 @@ function getExtension(language: string) {
 		}
 	}
 }
-

@@ -3,12 +3,7 @@ import * as vscode from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
 import { LanguageParser } from '../parsing/parser';
-import {
-	CommandHistory,
-	QueryContext,
-	Selector,
-	SelectorFactory,
-} from './commands';
+import { QueryContext, Selector, SelectorFactory } from './commands';
 import {
 	closestPos,
 	groupElements,
@@ -297,3 +292,17 @@ export const QueryCommands: Record<
 	},
 };
 
+export class CommandHistory {
+	private static commands: QueryCommand[] = [];
+	static last() {
+		return CommandHistory.commands.at(-1);
+	}
+
+	static get(ind: number) {
+		return CommandHistory.commands.at(ind);
+	}
+	static add(command: QueryCommand) {
+		assert(command, 'this should never happen');
+		CommandHistory.commands.push(command);
+	}
+}
