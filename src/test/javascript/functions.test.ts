@@ -4,16 +4,14 @@ import assert from 'assert';
 import { before } from 'mocha';
 import * as vscode from 'vscode';
 import { QueryCommand } from '../../motions/commands';
-import { closestToLine } from '../../motions/selection';
+import { closestPos } from '../../motions/selection';
 import { LanguageParser } from '../../parsing/parser';
 
 let fncommand: QueryCommand;
 
 before(async () => {
 	await LanguageParser.init();
-	fncommand = new QueryCommand('outer.function').setGetPosition(
-		closestToLine
-	);
+	fncommand = new QueryCommand('outer.function').setGetPosition(closestPos);
 });
 
 async function makeDoc(content: string) {
@@ -36,7 +34,7 @@ function assertPos(actual: testChar, expected: testChar) {
 
 suite('function declarations', () => {
 	test('can select default functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -49,7 +47,7 @@ suite('function declarations', () => {
 	});
 
 	test('can select default exported functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -62,7 +60,7 @@ suite('function declarations', () => {
 	});
 
 	test('can select exports on functions from the inside', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -75,7 +73,7 @@ suite('function declarations', () => {
 	});
 
 	test('can select arrow functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -92,7 +90,7 @@ suite('function declarations', () => {
 		});
 	});
 	test('can select exported arrow functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -109,7 +107,7 @@ suite('function declarations', () => {
 		});
 	});
 	test('can select exported arrow functions from the inside', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -129,7 +127,7 @@ suite('function declarations', () => {
 
 suite('higher order functions', () => {
 	test('can select higher order functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -144,7 +142,7 @@ suite('higher order functions', () => {
 	});
 
 	test('can select higher order arrow functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -159,7 +157,7 @@ suite('higher order functions', () => {
 
 suite('anonymous functions', () => {
 	test('can select anonymous arrow functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -172,7 +170,7 @@ suite('anonymous functions', () => {
 	});
 
 	test('can select anonymous functions', async () => {
-		const position = await fncommand.exec({
+		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
 			text: await makeDoc(
@@ -188,7 +186,7 @@ suite('anonymous functions', () => {
 //todo ->
 // suite('variable functions', () => {
 // 	test('can select functions assigned on variables', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -205,7 +203,7 @@ suite('anonymous functions', () => {
 // 	});
 
 // 	test('can select inside the array of functions', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -227,7 +225,7 @@ suite('anonymous functions', () => {
 // 	});
 
 // 	test('can select inside the array of arrow functions', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -251,7 +249,7 @@ suite('anonymous functions', () => {
 
 // suite('functions within classes', () => {
 // 	test('can select methods', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -270,7 +268,7 @@ suite('anonymous functions', () => {
 // 	});
 
 // 	test('can select arrow function methods', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -291,7 +289,7 @@ suite('anonymous functions', () => {
 
 // suite('functions in objects', () => {
 // 	test('can select functions inside objects', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -310,7 +308,7 @@ suite('anonymous functions', () => {
 // 	});
 
 // 	test('can select arrow functions inside objects', async () => {
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 			cursor: new vscode.Position(2, 0),
 // 			language: 'javascript',
 // 			text: await makeDoc(
@@ -334,7 +332,7 @@ suite('anonymous functions', () => {
 // 		const doc = await makeDoc(
 // 			['function* generate() {', "console.log('this')", '}'].join('\n')
 // 		);
-// 		const position = await new JsCommands().function().exec({
+// 		const position = await new JsCommands().function().select({
 // 		cursor: new vscode.Position(2,0),
 // 		language: 'javascript',
 // 		text: doc,
@@ -345,4 +343,3 @@ suite('anonymous functions', () => {
 // 		assertPos(position.end, { character: 1, line: 2 });
 // 	});
 // });
-

@@ -13,6 +13,9 @@ export type Parsing = {
 };
 
 export const Languages = {
+	'tree-sitter': {
+		module: 'tree-sitter',
+	},
 	javascript: {
 		module: 'javascript',
 	},
@@ -51,14 +54,21 @@ export class LanguageParser {
 	private static initedLanguages: Partial<
 		Record<keyof typeof Languages, Parsing>
 	> = {};
-	static async init() {
+	static init() {
 		const wasmPath = LanguageParser.path('tree-sitter');
-		await parser.init({
+
+		return parser.init({
 			locateFile: () => wasmPath,
 		});
 	}
 	static path(name: string) {
-		return path.join(__dirname, '..', 'parsers', `${name}.wasm`); // Adjust the path if necessary
+		assert(name in Languages, 'invalid language to parse: ' + name);
+		return path.join(
+			__dirname,
+			'..',
+			'parsers',
+			`tree-sitter-${name}.wasm`
+		); // Adjust the path if necessary
 	}
 	static async get(langname: string) {
 		if (langname in LanguageParser.initedLanguages) {
@@ -77,7 +87,6 @@ export class LanguageParser {
 			lang = await parser.Language.load(p);
 		} catch (err) {
 			console.error('could not set language', err);
-			return undefined;
 		}
 		assert(lang, 'could not set language');
 		const p = new Parser();
@@ -92,4 +101,3 @@ export class LanguageParser {
 		];
 	}
 }
-
