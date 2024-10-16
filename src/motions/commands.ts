@@ -14,6 +14,7 @@ import {
 import { GoQuery } from './selectors/go';
 import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
+import { PythonQuery } from './selectors/python';
 import { TsSelector } from './selectors/typescript';
 
 export function makeName(str: string) {
@@ -71,6 +72,7 @@ SelectorFactory.set('typescript', TsSelector);
 SelectorFactory.set('typescriptreact', TsSelector);
 SelectorFactory.set('json', JsonSelector);
 SelectorFactory.set('jsonc', JsonSelector);
+SelectorFactory.set('python', PythonQuery);
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
