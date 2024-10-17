@@ -46,6 +46,13 @@ export const Languages = {
 	cpp: {
 		module: 'cpp',
 	},
+
+	csharp: {
+		module: 'csharp',
+	},
+	rust: {
+		module: 'rust',
+	},
 };
 
 export type SupportedLanguages = keyof typeof Languages;

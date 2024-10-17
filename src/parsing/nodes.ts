@@ -4,6 +4,7 @@ import { JoinedPoint } from '../motions/selection';
 import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';
 import { NODES } from '../constants';
+import { visualize } from '../extension';
 
 // Define a function to calculate the size of a match based on its start and end positions.
 function getMatchSize(match: QueryMatch): number {
@@ -31,14 +32,18 @@ export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
 	return matches.reduce((filtered: QueryMatch[], match: QueryMatch) => {
 		for (const cap of match.captures) {
 			if (idMap.has(cap.node.id)) {
+				visualize(idMap.get(cap.node.id)!.captures[0]!.node);
 				return filtered;
 			}
 			idMap.set(cap.node.id, match);
+			filtered.push(match);
+			return filtered;
 		}
 
 		//checks if function is anonymous
 		if (exists(match.captures, 'anonymous_function')) {
 			filtered.push(match);
+			visualize(match.captures[0].node);
 			return filtered;
 		}
 
@@ -57,6 +62,7 @@ export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
 
 		if (!existingMatch) {
 			filtered.push(match);
+			visualize(match.captures[0].node);
 			return filtered;
 		}
 
@@ -85,9 +91,11 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		match.captures.sort((a, b) => a.node.startIndex - b.node.startIndex);
 		const firstNode = match.captures.at(0);
 		const lastNode = match.captures.at(-1);
+
 		if (!firstNode || !lastNode) {
 			continue;
 		}
+
 		assert(
 			firstNode.node.startPosition,
 			'needs to have a starting position'

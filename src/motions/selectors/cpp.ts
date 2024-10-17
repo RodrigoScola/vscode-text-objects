@@ -1,20 +1,7 @@
 import { Selector } from '../commands';
 
 export const CppQuery: Selector = {
-	['outer.function']: [
-		`(function_definition) @function`,
-		// 	`(declaration
-		//     declarator: (abstract_function_declarator)
-		// ) @function`,
-		// 	`(declaration
-		//     declarator: (function_declarator)
-		// ) @function`,
-		` (declaration
-		    declarator: (function_definition)
-		) @function `,
-		` (function_definition) @function`,
-		` (template_declaration (function_definition)) @function`,
-	].join('\n'),
+	['outer.function']: [].join('\n'),
 	['inner.function']: '',
 	['inner.call']: '',
 	['outer.call']: '',
@@ -36,4 +23,3 @@ export const CppQuery: Selector = {
 	['outer.comment']: '',
 	['outer.type']: '',
 };
-

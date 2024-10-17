@@ -7,40 +7,51 @@ export const JsQuery: Selector = {
 	['inner.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
 	['outer.parameters']: [`(formal_parameters)+ @parameter`].join('\n'),
 	['outer.function']: [
-		`(method_definition 
-            name: (_) @function.name
-            body: (_) @function.body
-            ) @function`,
+		`(method_definition
+		            name: (_) @function.name
+		            body: (_) @function.body
+		            ) @function`,
 		`(function_expression
-  (identifier)? @function_name
-  (#not-eq? @function_name "identifier")) @anonymous_function`,
+		  (identifier)? @function_name
+		  (#not-eq? @function_name "identifier")) @anonymous_function`,
 
 		`
-               (arrow_function 
-            parameters: (formal_parameters 
-              (identifier)) 
-            body: (statement_block ) @function.body) @anonymous_function`,
+		               (arrow_function
+		            parameters: (formal_parameters
+		              (identifier))
+		            body: (statement_block ) @function.body) @anonymous_function`,
 
 		`(export_statement
-                    (function_declaration
-                    name: (identifier) @function.name
-                    body: (statement_block) @function.body
-                    ) @exportedFunction
-               ) @export`,
+		                    (function_declaration
+		                    name: (identifier) @function.name
+		                    body: (statement_block) @function.body
+		                    ) @exportedFunction
+		               ) @export`,
 		`
-			   (function_declaration
-			     name: (identifier) @function.name
-			     body: (statement_block) @function.body
-			   ) @function
-			                `,
+					   (function_declaration
+					     name: (identifier) @function.name
+					     body: (statement_block) @function.body
+					   ) @function
+					                `,
 		`
-			   (lexical_declaration
-			               (variable_declarator
-			               name : (identifier) @function.name
-			   value: (arrow_function) @function.body
-			     )
-			   ) @function
-			                `,
+					   (lexical_declaration
+					               (variable_declarator
+					               name : (identifier) @function.name
+					   value: (arrow_function) @function.body
+					     )
+					   ) @function
+					                `,
+		`
+        (export_statement
+        (lexical_declaration
+        (variable_declarator
+        (function_expression)
+    )
+    )
+    ) @function
+
+
+			      `,
 		`
 			     (export_statement
 			     (lexical_declaration
@@ -191,4 +202,3 @@ export const JsQuery: Selector = {
 		'\n'
 	),
 };
-

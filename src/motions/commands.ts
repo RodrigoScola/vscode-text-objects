@@ -11,10 +11,12 @@ import {
 	previousToLine,
 	select,
 } from './selection';
+import { CppQuery } from './selectors/cpp';
 import { GoQuery } from './selectors/go';
 import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
 import { PythonQuery } from './selectors/python';
+import { Rust } from './selectors/rust';
 import { TsSelector } from './selectors/typescript';
 
 export function makeName(str: string) {
@@ -73,6 +75,9 @@ SelectorFactory.set('typescriptreact', TsSelector);
 SelectorFactory.set('json', JsonSelector);
 SelectorFactory.set('jsonc', JsonSelector);
 SelectorFactory.set('python', PythonQuery);
+SelectorFactory.set('cpp', CppQuery);
+SelectorFactory.set('csharp', CppQuery);
+SelectorFactory.set('rust', Rust);
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
@@ -168,6 +173,8 @@ export class QueryCommand {
 			return;
 		}
 
+		console.log('matches ->', matches.length);
+
 		if (this.onMatch) {
 			assert(
 				typeof this.onMatch === 'function',
@@ -179,6 +186,13 @@ export class QueryCommand {
 				'needs to return an array of matches'
 			);
 		}
+
+		// for (const match of matches) {
+		// 	visualize(match.captures[0].node);
+		// 	console.log('last');
+		// }
+
+		console.log('matches', matches.length);
 
 		return this.makePosition(
 			this.getPosition(groupNodes(matches), context.cursor)
