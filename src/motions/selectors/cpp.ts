@@ -1,8 +1,34 @@
 import { Selector } from '../commands';
 
 export const CppQuery: Selector = {
-	['outer.function']: [].join('\n'),
-	['inner.function']: '',
+	['outer.function']: [
+		`
+        (function_definition) @function
+        `,
+		`(template_declaration (function_definition)) @function`,
+		`
+        (declaration
+        (init_declarator
+        value: 
+        (lambda_expression
+        declarator: (abstract_function_declarator)
+    ) )) @function 
+        `,
+		`
+        (lambda_expression
+        declarator: (abstract_function_declarator)
+        ) @function 
+        `,
+	].join('\n'),
+	['inner.function']: [
+		` (function_definition body: (
+		(compound_statement (_)+ @function))) `,
+		`
+        (lambda_expression
+        declarator: (abstract_function_declarator)
+        body: (compound_statement (_)+ @function)) 
+        `,
+	].join('\n'),
 	['inner.call']: '',
 	['outer.call']: '',
 	['outer.parameters']: '',
@@ -12,14 +38,50 @@ export const CppQuery: Selector = {
 	['inner.class']: '',
 	['outer.conditional']: '',
 	['inner.conditional']: '',
-	['inner.loop']: '',
-	['outer.loop']: '',
-	['inner.string']: '',
-	['outer.string']: '',
-	['outer.object']: '',
-	['outer.variable']: '',
-	['outer.rhs']: '',
-	['inner.type']: '',
-	['outer.comment']: '',
-	['outer.type']: '',
+	['inner.loop']: [
+		` (for_range_loop body: (compound_statement (_)+ @loop) ) `,
+		` (for_statement body: (compound_statement (_)+ @loop)) `,
+	].join('\n'),
+	['outer.loop']: [
+		` (for_range_loop) @loop `,
+		` (for_statement) @loop `,
+	].join('\n'),
+	['inner.string']: `
+    (string_content) @string
+    `,
+	['outer.string']: [
+		`(string_literal) @string`,
+		`(raw_string_literal) @string`,
+	].join('\n'),
+	['outer.object']: [
+		`(class_specifier) @object`,
+		`(struct_specifier) @object`,
+		`(declaration
+ declarator:(init_declarator
+ value:(initializer_list))) @object`,
+		`(type_definition
+type:(struct_specifier)
+ ) @object`,
+	].join('\n'),
+	['outer.variable']: [
+		` (declaration) @variable `,
+		` (field_declaration) @variable `,
+	].join('\n'),
+	['outer.rhs']: [
+		`(declaration
+ declarator:(init_declarator
+ value:(number_literal) @variable
+ ))`,
+		`
+ (declaration
+ declarator:(init_declarator
+ value:(_) @variable ))
+ `,
+		`
+ (field_declaration
+ default_value:(number_literal) @variable)`,
+	].join('\n'),
+	['inner.type']: ``,
+	['outer.type']: [`(primitive_type) @type`].join('\n'),
+	['outer.comment']: '(comment) @comment',
 };
