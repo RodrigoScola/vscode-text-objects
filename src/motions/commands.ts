@@ -4,13 +4,7 @@ import { QueryMatch } from 'web-tree-sitter';
 import { editor } from '../extension';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
-import {
-	closestPos,
-	JoinedPoint,
-	nextPosition,
-	previousToLine,
-	select,
-} from './selection';
+import { closestPos, JoinedPoint, nextPosition, previousToLine, select } from './selection';
 import { CppQuery } from './selectors/cpp';
 import { GoQuery } from './selectors/go';
 import { JsQuery } from './selectors/javascript';
@@ -59,10 +53,7 @@ export class SelectorFactory {
 		SelectorFactory.selectors[lang] = selector;
 	}
 	static get(lang: SupportedLanguages): Selector {
-		assert(
-			lang in SelectorFactory.selectors,
-			`language ${lang} not found in selectors`
-		);
+		assert(lang in SelectorFactory.selectors, `language ${lang} not found in selectors`);
 		return SelectorFactory.selectors[lang];
 	}
 }
@@ -88,10 +79,7 @@ export function getLastExecCommand() {
 
 type OnMatchFunc = (matches: QueryMatch[]) => QueryMatch[];
 
-type GetPositionFunc = (
-	points: JoinedPoint[],
-	index: vscode.Position
-) => JoinedPoint | undefined;
+type GetPositionFunc = (points: JoinedPoint[], index: vscode.Position) => JoinedPoint | undefined;
 
 export class QueryCommand {
 	readonly name: keyof Selector;
@@ -104,10 +92,7 @@ export class QueryCommand {
 	private onMatch: OnMatchFunc | undefined;
 
 	setOnMatch(fn: OnMatchFunc) {
-		assert(
-			typeof this.onMatch === 'undefined',
-			'cannot assign on match more than once'
-		);
+		assert(typeof this.onMatch === 'undefined', 'cannot assign on match more than once');
 		this.onMatch = fn;
 		return this;
 	}
@@ -125,10 +110,7 @@ export class QueryCommand {
 	async goTo(context: QueryContext) {
 		lastCommand = this;
 		const Parsing = await LanguageParser.get(context.language);
-		assert(
-			Parsing,
-			'could not init parser for ' + context.language + 'language'
-		);
+		assert(Parsing, 'could not init parser for ' + context.language + 'language');
 
 		assert(context.text, 'cannot parse text that is not there');
 
@@ -160,10 +142,7 @@ export class QueryCommand {
 		const tree = parser.parser.parse(context.text);
 
 		const selector = SelectorFactory.get(context.language)[this.name];
-		assert(
-			selector,
-			this.name + ' is an invalid selector for ' + context.language
-		);
+		assert(selector, this.name + ' is an invalid selector for ' + context.language);
 
 		const query = parser.language.query(selector);
 		assert(query, 'invalid query came out');
@@ -176,15 +155,9 @@ export class QueryCommand {
 		console.log('matches ->', matches.length);
 
 		if (this.onMatch) {
-			assert(
-				typeof this.onMatch === 'function',
-				'match function is function'
-			);
+			assert(typeof this.onMatch === 'function', 'match function is function');
 			matches = this.onMatch(matches);
-			assert(
-				matches.length > 0,
-				'needs to return an array of matches'
-			);
+			assert(matches.length > 0, 'needs to return an array of matches');
 		}
 
 		// for (const match of matches) {
@@ -194,9 +167,7 @@ export class QueryCommand {
 
 		console.log('matches', matches.length);
 
-		return this.makePosition(
-			this.getPosition(groupNodes(matches), context.cursor)
-		);
+		return this.makePosition(this.getPosition(groupNodes(matches), context.cursor));
 	}
 	private makePosition(position?: JoinedPoint) {
 		if (!position) {
@@ -209,10 +180,7 @@ export class QueryCommand {
 			position.startPosition.column
 		);
 
-		const endPos = new vscode.Position(
-			position.endPosition.row,
-			position.endPosition.column
-		);
+		const endPos = new vscode.Position(position.endPosition.row, position.endPosition.column);
 
 		return {
 			start: startPos,
@@ -254,17 +222,11 @@ export const commands = {
 		.setOnMatch(function (matches) {
 			return filterLargestMatches(matches);
 		}),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(
-		closestPos
-	),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(closestPos),
 	loop: new QueryCommand('outer.loop').setGetPosition(closestPos),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(closestPos),
-	conditional: new QueryCommand('outer.conditional').setGetPosition(
-		closestPos
-	),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(
-		closestPos
-	),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(closestPos),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(closestPos),
 	rhs: new QueryCommand('outer.rhs').setGetPosition(closestPos),
 	variables: new QueryCommand('outer.variable').setGetPosition(closestPos),
 	string: new QueryCommand('outer.string').setGetPosition(closestPos),
@@ -274,9 +236,7 @@ export const commands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(closestPos),
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(
-		closestPos
-	),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(closestPos),
 	//think of a good keybind for call
 	//make sure call works, at this moment dont know
 	call: new QueryCommand('outer.call').setGetPosition(closestPos),
@@ -293,37 +253,23 @@ export const previousCommands = {
 	function: new QueryCommand('outer.function')
 		.setGetPosition(previousToLine)
 		.setOnMatch(filterLargestMatches),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(
-		previousToLine
-	),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(previousToLine),
 	loop: new QueryCommand('outer.loop').setGetPosition(previousToLine),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousToLine),
-	conditional: new QueryCommand('outer.conditional').setGetPosition(
-		previousToLine
-	),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(
-		previousToLine
-	),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(previousToLine),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousToLine),
 	rhs: new QueryCommand('outer.rhs').setGetPosition(previousToLine),
-	variables: new QueryCommand('outer.variable').setGetPosition(
-		previousToLine
-	),
-	innerString: new QueryCommand('inner.string').setGetPosition(
-		previousToLine
-	),
+	variables: new QueryCommand('outer.variable').setGetPosition(previousToLine),
+	innerString: new QueryCommand('inner.string').setGetPosition(previousToLine),
 	class: new QueryCommand('outer.class').setGetPosition(previousToLine),
 	innerClass: new QueryCommand('inner.class').setGetPosition(previousToLine),
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
 	string: new QueryCommand('outer.string').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(
-		previousToLine
-	),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousToLine),
 	call: new QueryCommand('outer.call').setGetPosition(previousToLine),
 	innerCall: new QueryCommand('inner.call').setGetPosition(previousToLine),
-	innerParameters: new QueryCommand('inner.parameters').setGetPosition(
-		previousToLine
-	),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousToLine),
 	type: new QueryCommand('outer.type').setGetPosition(previousToLine),
 	innerType: new QueryCommand('inner.type').setGetPosition(previousToLine),
 	comments: new QueryCommand('outer.comment').setGetPosition(previousToLine),
@@ -336,41 +282,25 @@ function goTo(position: { start: vscode.Position; end: vscode.Position }) {
 
 export function initCommands(context: vscode.ExtensionContext) {
 	for (const command of Object.values(previousCommands)) {
-		InitCommand(
-			makeName(`goTo.previous.${command.name}`),
-			(ctx) => command.goTo(ctx),
-			goTo
-		);
+		InitCommand(makeName(`goTo.previous.${command.name}`), (ctx) => command.goTo(ctx), goTo);
 		context.subscriptions.push(
 			InitCommand(
 				makeName(`select.previous.${command.name}`),
 				(context) => command.select(context),
 				function (position) {
-					select(
-						position.start,
-						position.end,
-						editor.getEditor()
-					);
+					select(position.start, position.end, editor.getEditor());
 				}
 			)
 		);
 	}
 	for (const command of Object.values(commands)) {
-		InitCommand(
-			makeName(`goTo.next.${command.name}`),
-			(ctx) => command.goTo(ctx),
-			goTo
-		);
+		InitCommand(makeName(`goTo.next.${command.name}`), (ctx) => command.goTo(ctx), goTo);
 		context.subscriptions.push(
 			InitCommand(
 				makeName(`select.next.${command.name}`),
 				(context) => command.select(context),
 				function (position) {
-					select(
-						position.start,
-						position.end,
-						editor.getEditor()
-					);
+					select(position.start, position.end, editor.getEditor());
 				}
 			)
 		);
@@ -388,10 +318,7 @@ function InitCommand(
 		| undefined
 	>,
 
-	afterEnd: (position: {
-		start: vscode.Position;
-		end: vscode.Position;
-	}) => unknown
+	afterEnd: (position: { start: vscode.Position; end: vscode.Position }) => unknown
 ) {
 	return vscode.commands.registerCommand(name, async () => {
 		const currentEditor = vscode.window.activeTextEditor;
@@ -406,13 +333,8 @@ function InitCommand(
 			return;
 		}
 
-		const endPos = new vscode.Position(
-			position.end.line,
-			position.end.character + 1
-		);
-		const endLine = currentEditor.document.getText(
-			new vscode.Range(position.start, endPos)
-		);
+		const endPos = new vscode.Position(position.end.line, position.end.character + 1);
+		const endLine = currentEditor.document.getText(new vscode.Range(position.start, endPos));
 
 		if (greedyChars.includes(endLine.at(-1)!)) {
 			position.end = endPos;
@@ -422,9 +344,7 @@ function InitCommand(
 	});
 }
 
-async function getContext(
-	currentEditor: vscode.TextEditor
-): Promise<QueryContext> {
+async function getContext(currentEditor: vscode.TextEditor): Promise<QueryContext> {
 	const langName = currentEditor.document.languageId;
 	const parser = await LanguageParser.get(currentEditor.document.languageId);
 	assert(parser, `could not find parser for ${langName}`);
