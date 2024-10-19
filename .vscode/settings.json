@@ -1,3 +1,10 @@
 {
-	"vscode-textobjects.selection.groupElements": true
+	"github.copilot.chat.experimental.codeFeedback.instructions": [
+		{
+			"text": "when i ask for syntax in languages, just write the code and nothing else"
+		},
+		{
+			"text": "be as consise as possible "
+		}
+	]
 }

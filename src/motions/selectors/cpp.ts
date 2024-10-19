@@ -29,30 +29,44 @@ export const CppQuery: Selector = {
         body: (compound_statement (_)+ @function)) 
         `,
 	].join('\n'),
-	['inner.call']: '',
-	['outer.call']: '',
-	['outer.parameters']: '',
-	['inner.parameters']: '',
-	['outer.array']: '',
-	['outer.class']: '',
-	['inner.class']: '',
-	['outer.conditional']: '',
-	['inner.conditional']: '',
+	['inner.call']: `
+        (call_expression
+        arguments: (
+        argument_list (_)+ @call))
+        `,
+	['outer.call']: [
+		`
+        (call_expression) @call
+        `,
+	].join('\n'),
+	['outer.parameters']: `
+    (parameter_list) @params
+    `,
+	['inner.parameters']: `
+    (parameter_list (_) @params ) 
+    `,
+
+	['outer.array']: '(initializer_list ) @array',
+	['outer.class']: '(class_specifier) @class',
+	//todo fix this
+	['inner.class']: '(class_specifier body: ( field_declaration_list (_)+ @class ) )',
+	['outer.conditional']: [
+		`(if_statement) @conditional`,
+		`(conditional_expression) @conditional`,
+	].join('\n'),
+	['inner.conditional']: [
+		`(if_statement consequence: (compound_statement (_)+ @conditional)) `,
+		`(conditional_expression consequence: (_) @conditional )`,
+	].join('\n'),
 	['inner.loop']: [
 		` (for_range_loop body: (compound_statement (_)+ @loop) ) `,
 		` (for_statement body: (compound_statement (_)+ @loop)) `,
 	].join('\n'),
-	['outer.loop']: [
-		` (for_range_loop) @loop `,
-		` (for_statement) @loop `,
-	].join('\n'),
+	['outer.loop']: [` (for_range_loop) @loop `, ` (for_statement) @loop `].join('\n'),
 	['inner.string']: `
     (string_content) @string
     `,
-	['outer.string']: [
-		`(string_literal) @string`,
-		`(raw_string_literal) @string`,
-	].join('\n'),
+	['outer.string']: [`(string_literal) @string`, `(raw_string_literal) @string`].join('\n'),
 	['outer.object']: [
 		`(class_specifier) @object`,
 		`(struct_specifier) @object`,
@@ -63,10 +77,9 @@ export const CppQuery: Selector = {
 type:(struct_specifier)
  ) @object`,
 	].join('\n'),
-	['outer.variable']: [
-		` (declaration) @variable `,
-		` (field_declaration) @variable `,
-	].join('\n'),
+	['outer.variable']: [` (declaration) @variable `, ` (field_declaration) @variable `].join(
+		'\n'
+	),
 	['outer.rhs']: [
 		`(declaration
  declarator:(init_declarator

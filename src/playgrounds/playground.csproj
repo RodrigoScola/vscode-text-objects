@@ -1,0 +1,47 @@
+// Basic function
+public void MyFunction() {
+    // code
+}
+
+// Function with parameters
+public void MyFunction(int param1, string param2) {
+    // code
+}
+
+// Function with return type
+public int MyFunction() {
+    return 42;
+}
+
+// Static function
+public static void MyFunction() {
+    // code
+}
+
+// Function with default parameters
+public void MyFunction(int param1 = 10) {
+    // code
+}
+
+// Function with expression body
+public int MyFunction() => 42;
+
+// Generic function
+public T MyFunction<T>(T param) {
+    return param;
+}
+
+// Async function
+public async Task MyFunctionAsync() {
+    await Task.Delay(1000);
+}
+
+// Function with out parameter
+public void MyFunction(out int result) {
+    result = 42;
+}
+
+// Function with ref parameter
+public void MyFunction(ref int param) {
+    param = 42;
+}

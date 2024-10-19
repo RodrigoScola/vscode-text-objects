@@ -595,3 +595,84 @@ volatile int volVar = 200;
 
 // 44. std::function type (C++11)
 std::function<int(int, int)> func = add;
+
+#include <iostream>
+#include <string>
+
+void helloer(const std::string &message)
+{
+    std::cout << message << std::endl;
+}
+
+int main()
+{
+    std::string greeting = "Hello, World!";
+    helloer(greeting);
+    return 0;
+}
+
+int arr1[5];
+int arr2[] = {1, 2, 3, 4, 5};
+int arr3[5] = {1, 2, 3, 4, 5};
+std::array<int, 5> arr4;
+std::array<int, 5> arr5 = {1, 2, 3, 4, 5};
+std::vector<int> arr6(5);
+std::vector<int> arr7 = {1, 2, 3, 4, 5};
+
+class MyClass
+{
+public:
+    int myVar;
+    void myMethod() {}
+};
+
+class MyClass
+{
+public:
+    MyClass() {}
+    ~MyClass() {}
+};
+
+class MyClass
+{
+public:
+    MyClass(int x) : myVar(x) {}
+
+private:
+    int myVar;
+};
+
+struct MyStruct
+{
+    int myVar;
+    void myMethod() {}
+};
+
+class MyClass
+{
+public:
+    MyClass() = default;
+    ~MyClass() = default;
+};
+
+class MyClass
+{
+public:
+    MyClass(const MyClass &other) = delete;
+    MyClass &operator=(const MyClass &other) = delete;
+};
+
+// if statement with initialization (C++17)
+if (auto value = someFunction(); value > threshold)
+{
+    // code to execute if value is greater than threshold
+    // code to execute if value is greater than threshold
+}
+
+// Ternary operator
+condition ? true_expression : false_expression;
+
+if (condition)
+{
+    // code to execute if condition is true
+}
