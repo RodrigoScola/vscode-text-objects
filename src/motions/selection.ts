@@ -1,12 +1,7 @@
 import assert from 'assert';
-import {
-	Position,
-	Range,
-	Selection,
-	TextEditor,
-	TextEditorRevealType,
-} from 'vscode';
+import { Position, Range, Selection, TextEditor, TextEditorRevealType } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
+import { visualize } from '../extension';
 import { closerToZero } from '../utils/math';
 
 export type JoinedPoint = {
@@ -16,10 +11,7 @@ export type JoinedPoint = {
 	endIndex: number;
 };
 
-export function closestPos(
-	nodes: JoinedPoint[],
-	index: Position
-): JoinedPoint | undefined {
+export function closestPos(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
 	if (nodes.length === 0) {
 		return undefined;
 	}
@@ -32,49 +24,66 @@ export function closestPos(
 		return a.startPosition.row - b.startPosition.row;
 	});
 
-	let closestNode;
+	const ranges = new Array(nodes.length).fill(undefined).map((_, index) => {
+		const node = nodes[index];
+		return new Range(
+			new Position(node.startPosition.row, node.startPosition.column),
+			new Position(node.endPosition.row, node.endPosition.column)
+		);
+	});
 
-	for (let i = 0; i < nodes.length; i++) {
+	let closestRange: Range | undefined;
+	let closestNode: JoinedPoint | undefined;
+
+	for (let i = 0; i < ranges.length; i++) {
 		let isInside = false;
 		const node = nodes[i];
-		const next: JoinedPoint | undefined = nodes[i - 1];
+		const range = ranges[i];
+		const next = ranges[i + 1];
+
+		visualize(node);
 
 		if (
-			(node.startPosition.row === index.line ||
-				node.endPosition.row === index.line) &&
-			(!next ||
-				next.startPosition.row !== index.line ||
-				next.endPosition.row !== index.line)
+			(range.start.line === index.line || range.end.line === index.line) &&
+			(!next || next.start.line !== index.line || next.end.line !== index.line)
 		) {
-			return node;
+			return nodes[i];
 		}
 
-		let startDelta = node.startPosition.row - index.line;
-		let endDelta = node.endPosition.row - index.line;
-		if (startDelta < 0 && endDelta < 0) {
+		let startDelta = range.start.isBefore(index);
+		let endDelta = range.end.isBefore(index);
+
+		if (startDelta && endDelta) {
 			continue;
 		}
-		if (!closestNode) {
+		if (!closestRange) {
+			closestNode = node;
+			closestRange = range;
+			continue;
+		}
+
+		const closestDelta = closestRange!.start.line - index.line;
+
+		if (range.contains(index)) {
+			isInside = true;
+		}
+
+		if (isInside && closestRange.start.isAfter(range.start)) {
+			closestRange = range;
 			closestNode = node;
 			continue;
 		}
+		// } else if (closestRange. === startDelta) {
+		// 	const closestRow = closestRange.start.character - index.character;
+		// 	const currentRow = range.start.character - index.character;
 
-		const closestDelta = closestNode!.startPosition.row - index.line;
-
-		if (isInside && startDelta < closestDelta) {
-			closestNode = node;
-			continue;
-		} else if (closestDelta === startDelta) {
-			const closestRow =
-				closestNode.startPosition.column - index.character;
-			const currentRow = node.startPosition.column - index.character;
-
-			if (closerToZero(closestRow, currentRow) === currentRow) {
-				isInside = true;
-				closestNode = node;
-			}
-			continue;
-		}
+		// 	if (closerToZero(closestRow, currentRow) === currentRow) {
+		// 		isInside = true;
+		// 		closestRange = range;
+		// 		closestNode = node;
+		// 	}
+		// 	continue;
+		// }
 	}
 
 	return closestNode;
@@ -82,10 +91,7 @@ export function closestPos(
 //todo this selects inner functions
 //maybe should refactor to account for that?
 // ill just try it out and see how i feel about it
-export function previousToLine(
-	nodes: JoinedPoint[],
-	index: Position
-): JoinedPoint | undefined {
+export function previousToLine(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
 	if (nodes.length === 0) {
 		return undefined;
 	}
@@ -106,10 +112,7 @@ export function previousToLine(
 		const node = nodes[i];
 		let isInside = false;
 
-		if (
-			node.startPosition.row === index.line ||
-			node.endPosition.row === index.line
-		) {
+		if (node.startPosition.row === index.line || node.endPosition.row === index.line) {
 			return node;
 		}
 
@@ -138,10 +141,7 @@ export function previousToLine(
 
 	return closestNode;
 }
-export function nextPosition(
-	nodes: JoinedPoint[],
-	index: Position
-): JoinedPoint | undefined {
+export function nextPosition(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
 	if (nodes.length === 0) {
 		return;
 	}
@@ -161,10 +161,7 @@ export function nextPosition(
 
 		let startDelta = node.startPosition.row - index.line;
 
-		if (
-			startDelta > 0 &&
-			closerToZero(startDelta, closestDelta) === startDelta
-		) {
+		if (startDelta > 0 && closerToZero(startDelta, closestDelta) === startDelta) {
 			closestDelta = startDelta;
 			closestNode = node;
 		}
@@ -173,11 +170,7 @@ export function nextPosition(
 	return closestNode;
 }
 
-export function select(
-	startPos: Position,
-	endPos: Position,
-	editor: TextEditor
-) {
+export function select(startPos: Position, endPos: Position, editor: TextEditor) {
 	const cursor = editor.selection.active;
 
 	editor.selection = new Selection(startPos, endPos); // Move cursor to that position

@@ -45,7 +45,9 @@ export const JsQuery: Selector = {
         (export_statement
         (lexical_declaration
         (variable_declarator
-        (function_expression)
+        (function_expression
+		  name: (identifier)? @function_name
+        )
     )
     )
     ) @function
@@ -198,7 +200,5 @@ export const JsQuery: Selector = {
                     (_)* @string
                ) `,
 	].join('\n'),
-	'outer.string': [`( string ) @string`, `( template_string ) @string`].join(
-		'\n'
-	),
+	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
 };
