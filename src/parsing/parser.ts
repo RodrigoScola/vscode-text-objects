@@ -1,10 +1,6 @@
 import assert from 'assert';
 import path from 'path';
-import {
-	Language,
-	default as Parser,
-	default as parser,
-} from 'web-tree-sitter';
+import { Language, default as Parser, default as parser } from 'web-tree-sitter';
 
 export type Parsing = {
 	module: string;
@@ -48,7 +44,7 @@ export const Languages = {
 	},
 
 	csharp: {
-		module: 'csharp',
+		module: 'c_sharp',
 	},
 	rust: {
 		module: 'rust',
@@ -58,9 +54,7 @@ export const Languages = {
 export type SupportedLanguages = keyof typeof Languages;
 
 export class LanguageParser {
-	private static initedLanguages: Partial<
-		Record<keyof typeof Languages, Parsing>
-	> = {};
+	private static initedLanguages: Partial<Record<keyof typeof Languages, Parsing>> = {};
 	static init() {
 		const wasmPath = LanguageParser.path('tree-sitter');
 
@@ -70,18 +64,11 @@ export class LanguageParser {
 	}
 	static path(name: string) {
 		assert(name in Languages, 'invalid language to parse: ' + name);
-		return path.join(
-			__dirname,
-			'..',
-			'parsers',
-			`tree-sitter-${name}.wasm`
-		); // Adjust the path if necessary
+		return path.join(__dirname, '..', 'parsers', `tree-sitter-${name}.wasm`); // Adjust the path if necessary
 	}
 	static async get(langname: string) {
 		if (langname in LanguageParser.initedLanguages) {
-			return LanguageParser.initedLanguages[
-				langname as keyof typeof Languages
-			];
+			return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 		}
 
 		let lang: Language | undefined;
@@ -103,8 +90,6 @@ export class LanguageParser {
 			module: langname,
 			parser: p,
 		};
-		return LanguageParser.initedLanguages[
-			langname as keyof typeof Languages
-		];
+		return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 	}
 }

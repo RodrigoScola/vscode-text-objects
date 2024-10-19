@@ -1,3 +1,4 @@
+-    do the else on if statements
 -    do backward functions
 -    finalize gotos
 -    do backward gotos

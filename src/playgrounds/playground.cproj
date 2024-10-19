@@ -1,0 +1,27 @@
+// Method 1: Regular method
+public void MyMethod()
+{
+    // Method body
+}
+
+// Method 2: Static method
+public static void MyStaticMethod()
+{
+    // Method body
+}
+
+// Method 3: Method with parameters
+public void MyMethodWithParameters(int param1, string param2)
+{
+    // Method body
+}
+
+
+// Method 5: Expression-bodied method
+public int MyExpressionBodiedMethod() => 42;
+
+// Method 6: Local function
+void MyLocalFunction()
+{
+    // Method body
+}

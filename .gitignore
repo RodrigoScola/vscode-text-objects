@@ -9,3 +9,4 @@ out
 bugs
 
 .vscode-test
+.vscode/settings.json
