@@ -1,3 +1,6 @@
+-    check if inner parameter and/or calls would be better being
+     outer : all parameters or call arguments
+     inner : the first parameter or call argument
 -    do the else on if statements
 -    do backward functions
 -    finalize gotos

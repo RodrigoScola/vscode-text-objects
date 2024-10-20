@@ -3,7 +3,7 @@
 import assert from 'assert';
 import { before } from 'mocha';
 import * as vscode from 'vscode';
-import { QueryCommand } from '../../motions/commands';
+import { QueryCommand } from '../../motions/QueryCommand';
 import { closestPos } from '../../motions/selection';
 import { LanguageParser } from '../../parsing/parser';
 
@@ -24,11 +24,7 @@ async function makeDoc(content: string) {
 
 type testChar = { character: number; line: number };
 function assertPos(actual: testChar, expected: testChar) {
-	assert.equal(
-		actual.character,
-		expected.character,
-		'invalid character position'
-	);
+	assert.equal(actual.character, expected.character, 'invalid character position');
 	assert.equal(expected.line, actual.line, 'invalid line position');
 }
 
@@ -37,9 +33,7 @@ suite('function declarations', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['function foo () {', '  return 1;', '}'].join('\n')
-			),
+			text: await makeDoc(['function foo () {', '  return 1;', '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -50,9 +44,7 @@ suite('function declarations', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['export function foo () {', '  return 1;', '}'].join('\n')
-			),
+			text: await makeDoc(['export function foo () {', '  return 1;', '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -63,9 +55,7 @@ suite('function declarations', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['export function foo () {', '  return 1;', '}'].join('\n')
-			),
+			text: await makeDoc(['export function foo () {', '  return 1;', '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -76,11 +66,7 @@ suite('function declarations', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['const name = () => {', 'console.log("this")', '}'].join(
-					'\n'
-				)
-			),
+			text: await makeDoc(['const name = () => {', 'console.log("this")', '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -93,11 +79,7 @@ suite('function declarations', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['const name = () => {', 'console.log("this")', '}'].join(
-					'\n'
-				)
-			),
+			text: await makeDoc(['const name = () => {', 'console.log("this")', '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -110,11 +92,7 @@ suite('function declarations', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['const name = () => {', 'console.log("this")', '}'].join(
-					'\n'
-				)
-			),
+			text: await makeDoc(['const name = () => {', 'console.log("this")', '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -130,11 +108,7 @@ suite('higher order functions', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['setup(function () {', "console.log('this')", '})'].join(
-					'\n'
-				)
-			),
+			text: await makeDoc(['setup(function () {', "console.log('this')", '})'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 6, line: 0 });
@@ -145,9 +119,7 @@ suite('higher order functions', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(1, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['setup(() => {', "console.log('this')", '})'].join('\n')
-			),
+			text: await makeDoc(['setup(() => {', "console.log('this')", '})'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 6, line: 0 });
@@ -160,9 +132,7 @@ suite('anonymous functions', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['() => {', "console.log('this')", '}'].join('\n')
-			),
+			text: await makeDoc(['() => {', "console.log('this')", '}'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 0, line: 0 });
@@ -173,9 +143,7 @@ suite('anonymous functions', () => {
 		const position = await fncommand.select({
 			cursor: new vscode.Position(2, 0),
 			language: 'javascript',
-			text: await makeDoc(
-				['(function()  {', "console.log('this')", '})'].join('\n')
-			),
+			text: await makeDoc(['(function()  {', "console.log('this')", '})'].join('\n')),
 		});
 		assert(position, 'position not found');
 		assertPos(position.start, { character: 1, line: 0 });

@@ -3,8 +3,7 @@ import fs, { ObjectEncodingOptions } from 'fs';
 import path from 'path';
 import * as vscode from 'vscode';
 import { Config } from './config';
-import { initCommands } from './motions/commands';
-import { CommandHistory } from './motions/QueryCommands';
+import { CommandHistory, initCommands } from './motions/commands';
 import { JoinedPoint } from './motions/selection';
 import { LanguageParser } from './parsing/parser';
 
@@ -35,14 +34,8 @@ export const editor = new Editor();
 
 export function visualize(start: JoinedPoint): void {
 	assert(start, 'start needs to be defined');
-	const startPos = new vscode.Position(
-		start.startPosition.row,
-		start.startPosition.column
-	);
-	const endPos = new vscode.Position(
-		start.endPosition.row,
-		start.endPosition.column
-	);
+	const startPos = new vscode.Position(start.startPosition.row, start.startPosition.column);
+	const endPos = new vscode.Position(start.endPosition.row, start.endPosition.column);
 
 	const ceditor = editor.getEditor();
 	assert(ceditor, 'editor is not present');
@@ -55,9 +48,7 @@ export function visualize(start: JoinedPoint): void {
 export async function activate(context: vscode.ExtensionContext) {
 	LanguageParser.init();
 
-	config = new Config(
-		vscode.workspace.getConfiguration('vscode-textobjects')
-	);
+	config = new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
 
 	// const terminalDataListener = vscode.window.onDidChangeTerminalState(
 	// 	(e) => {
@@ -69,74 +60,60 @@ export async function activate(context: vscode.ExtensionContext) {
 	await initCommands(context);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand(
-			'vscode-textobjects.bugFile',
-			async () => {
-				const editor = vscode.window.activeTextEditor;
-				const bugsDir = config.bugPath();
-				if (!editor || !bugsDir) {
-					return;
-				}
+		vscode.commands.registerCommand('vscode-textobjects.bugFile', async () => {
+			const editor = vscode.window.activeTextEditor;
+			const bugsDir = config.bugPath();
+			if (!editor || !bugsDir) {
+				return;
+			}
 
-				let text = editor.document.getText();
+			let text = editor.document.getText();
 
-				let selection = editor.selection;
-				let start: string = '';
-				let end: string = '';
+			let selection = editor.selection;
+			let start: string = '';
+			let end: string = '';
 
-				if (!selection.start.isEqual(selection.end)) {
-					text = editor.document.getText(selection);
-					start = editor.document.getText(
-						new vscode.Range(
-							new vscode.Position(0, 0),
-							selection.start
-						)
-					);
-					end = editor.document.getText(
-						new vscode.Range(
-							selection.end,
-							new vscode.Position(
-								editor.document.lineCount,
-								Infinity
-							)
-						)
-					);
-				}
+			if (!selection.start.isEqual(selection.end)) {
+				text = editor.document.getText(selection);
+				start = editor.document.getText(
+					new vscode.Range(new vscode.Position(0, 0), selection.start)
+				);
+				end = editor.document.getText(
+					new vscode.Range(
+						selection.end,
+						new vscode.Position(editor.document.lineCount, Infinity)
+					)
+				);
+			}
 
-				const name =
-					new Date().getTime().toString() +
-					getExtension(editor.document.languageId);
+			const name =
+				new Date().getTime().toString() + getExtension(editor.document.languageId);
 
-				//add better validation?
-				fs.mkdirSync(bugsDir, { recursive: true });
+			//add better validation?
+			fs.mkdirSync(bugsDir, { recursive: true });
 
-				let comment = '//';
-				if (editor.document.languageId === 'python') {
-					comment = '#';
-				}
+			let comment = '//';
+			if (editor.document.languageId === 'python') {
+				comment = '#';
+			}
 
-				let file = `
+			let file = `
                     ${comment} path: ${editor.document.fileName}\n
                     `;
 
-				const lastCommand = CommandHistory.last();
-				if (lastCommand) {
-					file += `${comment} last command: ${lastCommand.name}\n`;
-				}
-
-				file += `${start}\n`;
-				file += `${comment}---- START \n`;
-				file += `${text}\n`;
-				file += `${comment}------ END \n`;
-				file += `${end}`;
-
-				fs.writeFileSync(
-					path.join(bugsDir, name),
-					file,
-					bugFileOptions
-				);
+			const lastCommand = CommandHistory.last();
+			if (lastCommand) {
+				file += `${comment} last command: ${lastCommand.name}\n`;
 			}
-		)
+
+			file += `${start}\n`;
+			file += `${comment}---- START \n`;
+			file += `${text}\n`;
+			file += `${comment}------ END \n`;
+			file += `${end}`;
+
+			fs.writeFileSync(path.join(bugsDir, name), file, bugFileOptions);
+		})
 	);
 }
 

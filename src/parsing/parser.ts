@@ -52,6 +52,15 @@ export const Languages = {
 	c: {
 		module: 'c',
 	},
+	css: {
+		module: 'css',
+	},
+	yaml: {
+		module: 'yaml',
+	},
+	lua: {
+		module: 'lua',
+	},
 };
 
 export type SupportedLanguages = keyof typeof Languages;

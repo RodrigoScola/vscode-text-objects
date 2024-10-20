@@ -48,16 +48,15 @@ Language Support in development:
 -    rust
 -    c++
 -    python
+-    c
 
 ### Planned Languages
 
 -    yaml
 -    css
--    c
 -    c#
 -    elixir
 -    elm
--    java
 -    kotlin
 -    lua
 -    ql
