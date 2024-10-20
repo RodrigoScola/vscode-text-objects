@@ -52,11 +52,6 @@
 				"vscode-textobjects.logs.bugsPath": {
 					"type": "string",
 					"description": " the selection bug file, for developers only "
-				},
-				"vscode-textobjects.selection.lookBack": {
-					"type": "boolean",
-					"description": "allows to select items before the cursor",
-					"default": false
 				}
 			}
 		},
