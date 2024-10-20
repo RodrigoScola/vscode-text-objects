@@ -7,5 +7,360 @@
 		{
 			"text": "be as consise as possible "
 		}
+	],
+	"vim.normalModeKeyBindings": [
+		{
+			"before": ["[", "m"],
+			"commands": ["vscode-textobjects.goTo.next.outer.call"]
+		},
+		{
+			"before": ["[", "i"],
+			"commands": ["vscode-textobjects.goTo.next.outer.conditional"]
+		},
+		{
+			"before": ["[", "l"],
+			"commands": ["vscode-textobjects.goTo.next.outer.loop"]
+		},
+		{
+			"before": ["[", "v"],
+			"commands": ["vscode-textobjects.goTo.next.outer.variable"]
+		},
+
+		{
+			"before": ["[", "s"],
+			"commands": ["vscode-textobjects.goTo.next.outer.string"]
+		},
+
+		{
+			"before": ["[", "p"],
+			"commands": ["vscode-textobjects.goTo.next.outer.parameters"]
+		},
+		{
+			"before": ["[", "c"],
+			"commands": ["vscode-textobjects.goTo.next.outer.comment"]
+		},
+		{
+			"before": ["[", "t"],
+			"commands": ["vscode-textobjects.goTo.next.outer.type"]
+		},
+		{
+			"before": ["[", "a"],
+			"commands": ["vscode-textobjects.goTo.next.outer.array"]
+		},
+		{
+			"before": ["[", "o"],
+			"commands": ["vscode-textobjects.goTo.next.outer.object"]
+		},
+		{
+			"before": ["[", "k"],
+			"commands": ["vscode-textobjects.goTo.next.outer.class"]
+		},
+		{
+			"before": ["[", "r"],
+			"commands": ["vscode-textobjects.goTo.next.outer.rhs"]
+		},
+		{
+			"before": ["[", "f"],
+			"commands": ["vscode-textobjects.goTo.next.outer.function"]
+		},
+		{
+			"before": ["v", "i", "t"],
+			"commands": ["vscode-textobjects.select.next.inner.type"]
+		},
+		{
+			"before": ["v", "a", "t"],
+			"commands": ["vscode-textobjects.select.next.outer.type"]
+		},
+		{
+			"before": ["v", "a", "v"],
+			"commands": ["vscode-textobjects.select.next.outer.variable"]
+		},
+		{
+			"before": ["v", "a", ";"],
+			"commands": ["vscode-textobjects.select.next.outer.rhs"]
+		},
+		{
+			"before": ["v", "a", "i"],
+			"commands": ["vscode-textobjects.select.next.outer.conditional"]
+		},
+		{
+			"before": ["v", "i", "i"],
+			"commands": ["vscode-textobjects.select.next.inner.conditional"]
+		},
+		{
+			"before": ["v", "a", "k"],
+			"commands": ["vscode-textobjects.select.next.outer.class"]
+		},
+		{
+			"before": ["v", "i", "k"],
+			"commands": ["vscode-textobjects.select.next.inner.class"]
+		},
+		{
+			"before": ["v", "i", "s"],
+			"commands": ["vscode-textobjects.select.next.inner.string"]
+		},
+		{
+			"before": ["d", "i", "s"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.string",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["v", "a", "s"],
+			"commands": ["vscode-textobjects.select.next.outer.string"]
+		},
+
+		{
+			"before": ["v", "a", "o"],
+			"commands": ["vscode-textobjects.select.next.outer.object"]
+		},
+		{
+			"before": ["d", "a", "o"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.object",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "o"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.object",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT OUTER ARRAY
+		{
+			"before": ["v", "a", "a"],
+			"commands": ["vscode-textobjects.select.next.outer.array"]
+		},
+		{
+			"before": ["d", "a", "a"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.array",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "a"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.array",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+
+		//SELECT OUTER COMMENT
+		{
+			"before": ["v", "a", "c"],
+			"commands": ["vscode-textobjects.select.next.outer.comment"]
+		},
+		{
+			"before": ["d", "a", "c"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.comment",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "c"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.comment",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+
+		//SELECT INNER PARAMETERS
+		{
+			"before": ["v", "i", "p"],
+			"commands": ["vscode-textobjects.select.next.inner.parameters"]
+		},
+		{
+			"before": ["d", "i", "p"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.parameters",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "i", "p"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.parameters",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT OUTER PARAMETERS
+		{
+			"before": ["v", "a", "p"],
+			"commands": ["vscode-textobjects.select.next.outer.parameters"]
+		},
+		{
+			"before": ["d", "a", "p"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.parameters",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "p"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.parameters",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT OUTER CALL
+		{
+			"before": ["v", "a", "m"],
+			"commands": ["vscode-textobjects.select.next.outer.call"]
+		},
+		{
+			"before": ["d", "a", "m"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.call",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "m"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.call",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT INNER CALL
+		{
+			"before": ["v", "i", "m"],
+			"commands": ["vscode-textobjects.select.next.inner.call"]
+		},
+		{
+			"before": ["d", "i", "m"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.call",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "i", "m"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.call",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT OUTER LOOP
+		{
+			"before": ["v", "a", "l"],
+			"commands": ["vscode-textobjects.select.next.outer.loop"]
+		},
+		{
+			"before": ["d", "a", "l"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.loop",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "l"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.loop",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT INNER LOOP
+		{
+			"before": ["v", "i", "l"],
+			"commands": ["vscode-textobjects.select.next.inner.loop"]
+		},
+		{
+			"before": ["d", "i", "l"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.loop",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "i", "l"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.loop",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT OUTER FUNCTION
+		{
+			"before": ["v", "a", "f"],
+			"commands": ["vscode-textobjects.select.next.outer.function"]
+		},
+		{
+			"before": ["d", "a", "f"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.function",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "a", "f"],
+			"commands": [
+				"vscode-textobjects.select.next.outer.function",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		// SELECT INNER FUNCTION
+		{
+			"before": ["v", "i", "f"],
+			"commands": ["vscode-textobjects.select.next.inner.function"]
+		},
+		{
+			"before": ["d", "i", "f"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.function",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "i", "f"],
+			"commands": [
+				"vscode-textobjects.select.next.inner.function",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+
+		// PREVIOUS KEYBINDS
+
+		// SELECT PREVIOUS FUNCTION
+		{
+			"before": ["v", "a", "F"],
+			"commands": ["vscode-textobjects.select.previous.outer.function"]
+		},
+		{
+			"before": ["d", "a", "F"],
+			"commands": [
+				"vscode-textobjects.select.previous.outer.function",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "i", "F"],
+			"commands": [
+				"vscode-textobjects.select.previous.outer.function",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		},
+		//SELECT PREVIOUS OUTER LOOP
+		{
+			"before": ["v", "a", "L"],
+			"commands": ["vscode-textobjects.select.previous.outer.loop"]
+		},
+		{
+			"before": ["d", "a", "L"],
+			"commands": [
+				"vscode-textobjects.select.previous.outer.loop",
+				{ "command": "vim.remap", "args": { "after": ["d"] } }
+			]
+		},
+		{
+			"before": ["c", "i", "L"],
+			"commands": [
+				"vscode-textobjects.select.previous.outer.loop",
+				{ "command": "vim.remap", "args": { "after": ["c"] } }
+			]
+		}
 	]
 }
