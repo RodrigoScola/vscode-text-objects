@@ -191,6 +191,7 @@ export function select(startPos: Position, endPos: Position, editor: TextEditor)
 }
 
 export function groupElements(matches: QueryMatch[]): QueryMatch[] {
+	console.log('grouping elements');
 	// remember to turn this on before publishing
 	// if (getConfig().groupElements() === false) {
 	// 	return matches;

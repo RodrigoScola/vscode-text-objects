@@ -49,6 +49,9 @@ export const Languages = {
 	rust: {
 		module: 'rust',
 	},
+	c: {
+		module: 'c',
+	},
 };
 
 export type SupportedLanguages = keyof typeof Languages;
