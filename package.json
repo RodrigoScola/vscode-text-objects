@@ -41,10 +41,12 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"configuration": {
-			"title": "Vscode Text Objects",
+			"title": "Vscode Text Objects",,
+                "enablement" :"editorTextFocus"
 			"properties": {
 				"vscode-textobjects.selection.groupElements": {
-					"title": "Group elements",
+					"title": "Group elements",,
+                "enablement" :"editorTextFocus"
 					"description": "group some nodes such as parameters so you can select them all at once",
 					"default": false,
 					"type": "boolean"
@@ -131,159 +133,198 @@
 		"commands": [
 			{
 				"command": "vscode-textobjects.goTo.next.outer.call",
-				"title": "Go to next function call"
+				"title": "Go to next function call",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.function",
-				"title": "go to the next function"
+				"title": "go to the next function",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.conditional",
-				"title": "go to the next if statement"
+				"title": "go to the next if statement",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.loop",
-				"title": "go to the next if statement"
+				"title": "go to the next if statement",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.rhs",
-				"title": "go to the next variable assignments"
+				"title": "go to the next variable assignments",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.variable",
-				"title": "go to the next variable "
+				"title": "go to the next variable ",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.string",
-				"title": "go to the next string"
+				"title": "go to the next string",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.array",
-				"title": "go to the next array"
+				"title": "go to the next array",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.object",
-				"title": "go to the next object"
+				"title": "go to the next object",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.parameters",
-				"title": "go to the next parameter"
+				"title": "go to the next parameter",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.type",
-				"title": "go to the next type"
+				"title": "go to the next type",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.comments",
-				"title": "go to the next comment"
+				"title": "go to the next comment",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.class",
-				"title": "go to the next class"
+				"title": "go to the next class",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.previous.outer.loop",
-				"title": "selects the previous loop"
+				"title": "selects the previous loop",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.previous.outer.function",
-				"title": "selects the previous function"
+				"title": "selects the previous function",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.comment",
-				"title": "selects the inner comment"
+				"title": "selects the inner comment",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.comment",
-				"title": "selects the nearest comment"
+				"title": "selects the nearest comment",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.call",
-				"title": "select a function or operation call"
+				"title": "select a function or operation call",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.call",
-				"title": "select a function or operation call"
+				"title": "select a function or operation call",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.treeSitter",
-				"title": "views the treesitter range"
+				"title": "views the treesitter range",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.bugFile",
-				"title": "adds the current file or selection to bugs"
+				"title": "adds the current file or selection to bugs",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.string",
-				"title": "select the nearest inner string"
+				"title": "select the nearest inner string",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.string",
-				"title": "select the nearest string"
+				"title": "select the nearest string",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.object",
-				"title": "select the nearest object"
+				"title": "select the nearest object",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.array",
-				"title": "select the nearest array"
+				"title": "select the nearest array",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.class",
-				"title": "select the inner class"
+				"title": "select the inner class",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.class",
-				"title": "select the nearest class"
+				"title": "select the nearest class",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.variable",
-				"title": "select variables"
+				"title": "select variables",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.rhs",
-				"title": "select variable assignments"
+				"title": "select variable assignments",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.type",
-				"title": "select inner type"
+				"title": "select inner type",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.type",
-				"title": "select type "
+				"title": "select type ",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.parameters",
-				"title": "Select parameters"
+				"title": "Select parameters",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.parameters",
-				"title": "Select parameter content"
+				"title": "Select parameter content",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.conditional",
-				"title": "Select If statement"
+				"title": "Select If statement",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.conditional",
-				"title": "Select If statement content"
+				"title": "Select If statement content",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.loop",
-				"title": "Select loop"
+				"title": "Select loop",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.loop",
-				"title": "Select loop content"
+				"title": "Select loop content",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.function",
-				"title": "Select Function"
+				"title": "Select Function",
+                "enablement" :"editorTextFocus"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.function",
-				"title": "Select function content"
+				"title": "Select function content",
+                "enablement" :"editorTextFocus"
 			}
 		]
 	},
