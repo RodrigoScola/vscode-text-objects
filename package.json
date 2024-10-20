@@ -41,12 +41,10 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"configuration": {
-			"title": "Vscode Text Objects",,
-                "enablement" :"editorTextFocus"
+			"title": "Vscode Text Objects",
 			"properties": {
 				"vscode-textobjects.selection.groupElements": {
-					"title": "Group elements",,
-                "enablement" :"editorTextFocus"
+					"title": "Group elements",
 					"description": "group some nodes such as parameters so you can select them all at once",
 					"default": false,
 					"type": "boolean"
