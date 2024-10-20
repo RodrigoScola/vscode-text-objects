@@ -9,8 +9,7 @@ export const JsQuery: Selector = {
 	['outer.function']: [
 		`(method_definition
 		            name: (_) @function.name
-		            body: (_) @function.body
-		            ) @function`,
+		            body: (_) @function.body) @function`,
 		`(function_expression
 		  (identifier)? @function_name
 		  (#not-eq? @function_name "identifier")) @anonymous_function`,
@@ -25,44 +24,31 @@ export const JsQuery: Selector = {
 		                    (function_declaration
 		                    name: (identifier) @function.name
 		                    body: (statement_block) @function.body
-		                    ) @exportedFunction
-		               ) @export`,
+		                    ) @exportedFunction) @export`,
 		`
 					   (function_declaration
 					     name: (identifier) @function.name
-					     body: (statement_block) @function.body
-					   ) @function
+					     body: (statement_block) @function.body) @function
 					                `,
 		`
 					   (lexical_declaration
 					               (variable_declarator
 					               name : (identifier) @function.name
-					   value: (arrow_function) @function.body
-					     )
-					   ) @function
+					   value: (arrow_function) @function.body)) @function
 					                `,
 		`
         (export_statement
         (lexical_declaration
         (variable_declarator
         (function_expression
-		  name: (identifier)? @function_name
-        )
-    )
-    )
-    ) @function
-
-
+		  name: (identifier)? @function_name)))) @function
 			      `,
 		`
 			     (export_statement
 			     (lexical_declaration
 			     (variable_declarator
 			     name: (identifier) @function.name
-			     value: (arrow_function) @function.body
-			)
-			)
-			) @function
+			     value: (arrow_function) @function.body))) @function
 			      `,
 		`
                (arrow_function
@@ -72,18 +58,10 @@ export const JsQuery: Selector = {
 	].join('\n'),
 
 	['inner.function']: [
-		`
-                         (
-                              (function_declaration
-                              body: (statement_block
-                                   (_)* @function_body
-                              )
-                         )
-                    )
-                         `,
-		`
-
-                    (function_expression
+		` ((function_declaration
+            body: (statement_block
+            (_)* @function_body)))`,
+		` (function_expression
                     body: (statement_block
                     (_)* @function.body
                     )

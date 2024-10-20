@@ -327,3 +327,28 @@ impl MyEnum {
         }
     }
 }
+
+
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn new(width: u32, height: u32) -> Rectangle {
+        Rectangle { width, height }
+    }
+}
+
+let rect = Rectangle::new(30, 50);
+
+
+let add = |a, b| a + b;
+let result = add(5, 3);
+
+fn multiply(a: i32, b: i32) -> i32 {
+    a * b
+}
+
+let multiply_ptr: fn(i32, i32) -> i32 = multiply;
+let result = multiply_ptr(4, 5);
