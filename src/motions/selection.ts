@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Position, Range, Selection, TextEditor, TextEditorRevealType } from 'vscode';
+import { Position, Range, Selection, TextEditor } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
 import { visualize } from '../extension';
 import { closerToZero } from '../utils/math';
@@ -171,21 +171,22 @@ export function nextPosition(nodes: JoinedPoint[], index: Position): JoinedPoint
 }
 
 export function select(startPos: Position, endPos: Position, editor: TextEditor) {
-	const cursor = editor.selection.active;
+	// const cursor = editor.selection.active;
 
 	editor.selection = new Selection(startPos, endPos); // Move cursor to that position
 
-	editor.document.lineCount;
+	// const delta = Math.abs(cursor.line - editor.selection.active.line);
 
-	const delta = Math.abs(cursor.line - editor.selection.active.line);
+	// let revealType = TextEditorRevealType.InCenterIfOutsideViewport;
 
-	let revealType = TextEditorRevealType.InCenterIfOutsideViewport;
+	// if (delta > editor.document.lineCount) {
+	// 	revealType = TextEditorRevealType.InCenter;
+	// }
 
-	if (delta > editor.document.lineCount) {
-		revealType = TextEditorRevealType.InCenter;
-	}
-
-	editor.revealRange(new Range(startPos, endPos), revealType);
+	editor.revealRange(
+		new Range(startPos, endPos)
+		// revealType
+	);
 
 	return editor;
 }
