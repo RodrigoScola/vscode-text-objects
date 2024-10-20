@@ -131,7 +131,7 @@
 		"commands": [
 			{
 				"command": "vscode-textobjects.goTo.next.outer.call",
-				"title": "go to the next  function or operation call"
+				"title": "Go to next function call"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.function",
@@ -254,36 +254,36 @@
 				"title": "select type "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.parameters",
-				"title": "select inner parameters"
+				"command": "vscode-textobjects.select.next.outer.parameters",
+				"title": "Select parameters"
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.parameters",
-				"title": "select parameters"
+				"command": "vscode-textobjects.select.next.inner.parameters",
+				"title": "Select parameter content"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.conditional",
-				"title": "Select if statements"
+				"title": "Select If statement"
 			},
 			{
 				"command": "vscode-textobjects.select.next.inner.conditional",
-				"title": "Select inner if statements"
-			},
-			{
-				"command": "vscode-textobjects.select.next.inner.loop",
-				"title": "select inner loops"
+				"title": "Select If statement content"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.loop",
-				"title": "Select Loops"
+				"title": "Select loop"
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.function",
-				"title": "select inner function"
+				"command": "vscode-textobjects.select.next.inner.loop",
+				"title": "Select loop content"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.function",
 				"title": "Select Function"
+			},
+			{
+				"command": "vscode-textobjects.select.next.inner.function",
+				"title": "Select function content"
 			}
 		]
 	},
