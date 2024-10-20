@@ -14,10 +14,13 @@ export const Rust: Selector = {
 	['inner.function']: [
 		//todo do the let function declaration
 	].join('\n'),
-	['inner.call']: '',
-	['outer.call']: '',
-	['outer.parameters']: '',
-	['inner.parameters']: '',
+	['outer.call']: [`(call_expression) @call`].join('\n'),
+	['inner.call']: [`(call_expression arguments: (arguments ) @call)`].join('\n'),
+	['outer.parameters']: '(parameters) @parameters',
+	//todo check if we can make this better
+	// now whenever i do (parameters (parameter) @parameters )
+	//just selects the first one
+	['inner.parameters']: '(parameters) @parameters',
 	['outer.array']: [
 		`(struct_item body: (field_declaration_list (_) @class)) `,
 		`(impl_item) @class`,
@@ -72,6 +75,10 @@ export const Rust: Selector = {
 	].join('\n'),
 	['outer.rhs']: [`(let_declaration value: (_) @rhs)`].join('\n'),
 	['outer.comment']: [` (line_comment) @comment `, ` (block_comment) @comment `].join('\n'),
-	['outer.type']: '',
-	['inner.type']: '',
+	['outer.type']: [
+		`(type_identifier) @type`,
+		`(primitive_type) @type`,
+		`(struct_item) @class`,
+	].join('\n'),
+	['inner.type']: '(struct_item body: (field_declaration_list (_) @types ))',
 };
