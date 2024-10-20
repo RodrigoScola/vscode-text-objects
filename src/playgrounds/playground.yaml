@@ -1,0 +1,66 @@
+# Basic strin
+name: 'John Doe'
+
+# Multi-line string
+description: |
+     This is a multi-line string.
+     It can span multiple lines.
+
+# Number
+age: 30
+
+# Boolean
+is_active: true
+
+# Null value
+nickname: null
+
+# Array
+skills:
+     - Python
+     - JavaScript
+     - DevOps
+
+# Object
+address:
+     street: '123 Main St'
+     city: 'Anytown'
+     state: 'CA'
+     zip: '12345'
+
+# Nested objects
+company:
+     name: 'Tech Corp'
+     location:
+          city: 'San Francisco'
+          state: 'CA'
+
+# Array of objects
+projects:
+     - name: 'Project Alpha'
+       status: 'Completed'
+     - name: 'Project Beta'
+       status: 'In Progress'
+
+# Variables (using anchors and aliases)
+defaults: &defaults
+     country: 'USA'
+     language: 'English'
+
+user1:
+     <<: *defaults
+     name: 'Alice'
+
+user2:
+     <<: *defaults
+     name: 'Bob'
+     language: 'Spanish'
+
+# Complex keys
+!!str 'complex key': 'value'
+
+# Timestamps
+created_at: 2023-10-01T12:00:00Z
+
+# Custom tags
+custom_tag: !<tag:yaml.org,2002:js/undefined> null

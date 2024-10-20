@@ -179,7 +179,7 @@ export function select(startPos: Position, endPos: Position, editor: TextEditor)
 
 	const delta = Math.abs(cursor.line - editor.selection.active.line);
 
-	let revealType = TextEditorRevealType.Default;
+	let revealType = TextEditorRevealType.InCenterIfOutsideViewport;
 
 	if (delta > editor.document.lineCount) {
 		revealType = TextEditorRevealType.InCenter;

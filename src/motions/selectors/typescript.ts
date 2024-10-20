@@ -103,7 +103,5 @@ export const TsSelector: Selector = {
                value: (_) @type   ) 
                `
 	),
-	['outer.variable']: JsQuery['outer.variable'].concat(
-		`(type_alias_declaration) @type`
-	),
+	['outer.variable']: JsQuery['outer.variable'].concat(`(type_alias_declaration) @type`),
 };
