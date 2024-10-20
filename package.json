@@ -1,6 +1,22 @@
 {
 	"name": "vscode-textobjects",
+	"publisher": "rodrigoscola",
+	"author": {
+		"name": "Rodrigo Scola",
+		"url": "https://github.com/RodrigoScola"
+	},
 	"displayName": "vscode text objects",
+	"keywords": [
+		"select",
+		"text",
+		"keybinds",
+		"shortcuts",
+		"movement"
+	],
+	"bugs": {
+		"url": "https://github.com/RodrigoScola/vscode-text-objects/issues"
+	},
+	"homepage": "https://github.com/RodrigoScola/vscode-text-objects",
 	"description": "inspired by tree sitter. this is the vscode implementation of object selection",
 	"repository": {
 		"type": "git",
@@ -11,9 +27,9 @@
 		"vscode": "^1.93.0"
 	},
 	"categories": [
-		"Other"
+		"Other",
+		"Keymaps"
 	],
-	"publisher": "rodrigoscola",
 	"activationEvents": [
 		"onLanguage:javascript",
 		"onLanguage:typescript",
