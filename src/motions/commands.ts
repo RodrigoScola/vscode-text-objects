@@ -11,6 +11,7 @@ import { CppQuery } from './selectors/cpp';
 import { GoQuery } from './selectors/go';
 import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
+import { LUA } from './selectors/lua';
 import { PythonQuery } from './selectors/python';
 import { Rust } from './selectors/rust';
 import { TsSelector } from './selectors/typescript';
@@ -73,6 +74,7 @@ SelectorFactory.set('csharp', CppQuery);
 SelectorFactory.set('rust', Rust);
 SelectorFactory.set('c', C);
 SelectorFactory.set('yaml', C);
+SelectorFactory.set('lua', LUA);
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
