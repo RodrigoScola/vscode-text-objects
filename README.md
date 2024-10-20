@@ -45,19 +45,26 @@ Language Support in development:
 -    Typescript and TSX
 -    JSON
 -    Golang
+-    rust
+-    c++
+-    python
 
 ### Planned Languages
 
--    python
 -    yaml
 -    css
--    c++
 -    c
 -    c#
--    lua
--    rust
+-    elixir
+-    elm
 -    java
--    r
+-    kotlin
+-    lua
+-    ql
+-    ruby
+-    scala
+-    vue
+-    java
 -    obj-c
 
 ## Disclaimer
