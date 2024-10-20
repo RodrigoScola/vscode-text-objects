@@ -21,28 +21,50 @@ export const LUA: Selector = {
 		  (expression_list value:(function_definition body: (block (_)+ @function ))))  `,
 		`(field value:(function_definition body: (block (_)+ @function))) `,
 	].join('\n'),
-	['inner.call']: '',
-	['outer.call']: '',
-	['outer.parameters']: '',
-	['inner.parameters']: '',
+	['outer.call']: '(call arguments: (argument_list) @call)',
+	['inner.call']: '(call arguments: (argument_list (_)@call )) ',
+	['outer.parameters']: '(parameter_list) @params',
+	['inner.parameters']: '(parameter_list (_) @params) ',
 	['outer.array']: '(block_node (block_sequence (block_sequence_item)+ )) @array',
 	['outer.class']: '',
 	['inner.class']: '',
-	['outer.conditional']: '',
-	['inner.conditional']: '',
-	['inner.loop']: '',
-	['outer.loop']: '',
-	['inner.string']: '',
-	['outer.string']: [
-		`(single_quote_scalar) @string`,
-		`(double_quote_scalar) @string`,
-		`(quote_scalar) @string`,
-		`(block_scalar) @string`,
+	['outer.conditional']: '(if_statement) @conditional',
+	//todo this doesnt select everyhing
+	['inner.conditional']: [
+		'(if_statement consequence: (_) @conditional )',
+		'(if_statement consequence: (_) @conditional (comment) @comment )',
 	].join('\n'),
-	['outer.object']: '',
-	['outer.variable']: '',
-	['outer.rhs']: '',
+	['outer.loop']: [
+		`(while_statement) @loop`,
+		`(repeat_statement) @loop`,
+		`(for_numeric_statement) @loop`,
+		`(for_generic_statement) @loop`,
+	].join('\n'),
+
+	['inner.loop']: [
+		`(while_statement body: (block (_)+ @loop )) `,
+		`(repeat_statement body: (block (_)+ @loop )) `,
+		`(for_numeric_statement body: (block (_)+ @loop )) `,
+		`(for_generic_statement body: (block (_)+ @loop )) `,
+	].join('\n'),
+	['inner.string']: '(string) @string',
+	['outer.string']: '(string) @string',
+	['outer.object']: '(table) @object',
+	['outer.variable']: [
+		`(variable_assignment) @variable`,
+		`(local_variable_declaration) @variable`,
+	].join('\n'),
+	['outer.rhs']: [
+		` (local_variable_declaration
+  (expression_list value:(_) @rhs))
+        `,
+		`
+        (variable_assignment
+ (variable_list)
+  (expression_list value:(_) @rhs ))
+        `,
+	].join('\n'),
+	['outer.comment']: '(comment) @comment',
 	['inner.type']: '',
-	['outer.comment']: '',
 	['outer.type']: '',
 };
