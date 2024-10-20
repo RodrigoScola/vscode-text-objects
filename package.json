@@ -317,7 +317,6 @@
 		"typescript": "^5.5.4"
 	},
 	"dependencies": {
-		"tree-sitter-jsdoc": "^0.23.0",
 		"web-tree-sitter": "^0.23.0"
 	}
 }
