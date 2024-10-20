@@ -5,6 +5,7 @@ import { editor } from '../extension';
 import { filterLargestMatches, groupNodes } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, JoinedPoint, nextPosition, previousToLine, select } from './selection';
+import { C } from './selectors/c';
 import { CppQuery } from './selectors/cpp';
 import { GoQuery } from './selectors/go';
 import { JsQuery } from './selectors/javascript';
@@ -69,6 +70,7 @@ SelectorFactory.set('python', PythonQuery);
 SelectorFactory.set('cpp', CppQuery);
 SelectorFactory.set('csharp', CppQuery);
 SelectorFactory.set('rust', Rust);
+SelectorFactory.set('c', C);
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
@@ -353,4 +355,19 @@ async function getContext(currentEditor: vscode.TextEditor): Promise<QueryContex
 		cursor: currentEditor.selection.active,
 		language: langName as SupportedLanguages,
 	};
+}
+
+export class CommandHistory {
+	private static commands: QueryCommand[] = [];
+	static last() {
+		return CommandHistory.commands.at(-1);
+	}
+
+	static get(ind: number) {
+		return CommandHistory.commands.at(ind);
+	}
+	static add(command: QueryCommand) {
+		assert(command, 'this should never happen');
+		CommandHistory.commands.push(command);
+	}
 }
