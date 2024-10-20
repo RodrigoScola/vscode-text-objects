@@ -53,18 +53,12 @@ Language Support in development:
 ### Planned Languages
 
 -    yaml
--    css
 -    c#
 -    elixir
--    elm
--    kotlin
 -    lua
--    ql
 -    ruby
 -    scala
--    vue
 -    java
--    obj-c
 
 ## Disclaimer
 
