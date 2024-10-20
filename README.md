@@ -51,15 +51,14 @@ Language Support in development:
 -    c
 -    lua
 -    java
+-    toml
 
 ### Planned Languages
 
 -    yaml
--    toml
 -    c#
 -    elixir
 -    ruby
--    scala
 
 ## Roadmap
 

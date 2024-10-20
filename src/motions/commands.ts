@@ -9,13 +9,14 @@ import { closestPos, previousToLine, select } from './selection';
 import { C } from './selectors/c';
 import { CppQuery } from './selectors/cpp';
 import { GoQuery } from './selectors/go';
+import { JAVA } from './selectors/java';
 import { JsQuery } from './selectors/javascript';
 import { JsonSelector } from './selectors/json';
 import { LUA } from './selectors/lua';
 import { PythonQuery } from './selectors/python';
 import { Rust } from './selectors/rust';
+import { TOML } from './selectors/toml';
 import { TsSelector } from './selectors/typescript';
-import { JAVA } from './selectors/java';
 
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
@@ -77,6 +78,7 @@ SelectorFactory.set('c', C);
 SelectorFactory.set('yaml', C);
 SelectorFactory.set('lua', LUA);
 SelectorFactory.set('java', JAVA);
+SelectorFactory.set('toml', TOML);
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
