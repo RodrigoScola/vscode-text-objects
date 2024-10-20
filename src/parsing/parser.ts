@@ -61,9 +61,11 @@ export const Languages = {
 	lua: {
 		module: 'lua',
 	},
-
 	java: {
 		module: 'java',
+	},
+	toml: {
+		module: 'toml',
 	},
 };
 

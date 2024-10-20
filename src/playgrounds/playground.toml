@@ -1,0 +1,44 @@
+names = ["Alice", "Bob", "Charlie"]
+
+basic_string = "Hello, World!"
+
+multiline_basic_string = """This is a 
+multiline string."""
+
+literal_string = 'This is a literal string with special characters like \n and \t but they are not escaped.'
+
+multiline_literal_string = '''This is a 
+multiline literal string.'''
+
+escaped_string = "This string contains a newline character:\nAnd a tab character:\tTab"
+
+
+[person]
+name = "Alice"
+age = 30
+is_student = false
+
+
+person = { name = "Alice", age = 30, is_student = false }
+
+
+
+othername= "Alice"
+greeting = 'Hello, World!'
+multiline_string = """This is a
+multiline string."""
+multiline_literal_string = '''This is a
+multiline literal string.'''
+ageo = 30
+price = 19.99
+date = 2024-10-20
+time = 13:45:30
+iois_student = false
+
+datetime = 2024-10-20T13:45:30
+datetime_offset = 2024-10-20T13:45:30Z
+numbers = [1, 2, 3, 4, 5]
+
+# This is a multi-line comment
+# that explains the following
+# configuration settings.
