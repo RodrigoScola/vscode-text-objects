@@ -49,16 +49,34 @@ Language Support in development:
 -    c++
 -    python
 -    c
+-    lua
+-    java
 
 ### Planned Languages
 
 -    yaml
+-    toml
 -    c#
 -    elixir
--    lua
 -    ruby
 -    scala
--    java
+
+## Roadmap
+
+-    check if inner parameter and/or calls would be better being
+     outer : all parameters or call arguments
+     inner : the first parameter or call argument
+-    add methods to language queries
+-    do the else on if statements
+-    do backward functions
+-    finalize gotos
+-    do backward gotos
+-    finalize keybinds
+-    add more configs?
+-    finish the languages support
+-    vim integration with delete and change
+-    add rest of inner and outers? (arrays, objects...)
+-    rhs is not for assignign, but reassigning
 
 ## Disclaimer
 

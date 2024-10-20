@@ -61,6 +61,10 @@ export const Languages = {
 	lua: {
 		module: 'lua',
 	},
+
+	java: {
+		module: 'java',
+	},
 };
 
 export type SupportedLanguages = keyof typeof Languages;
@@ -94,7 +98,7 @@ export class LanguageParser {
 		} catch (err) {
 			console.error('could not set language', err);
 		}
-		assert(lang, 'could not set language');
+		assert(lang, 'could not set language ' + lang);
 		const p = new Parser();
 		p.setLanguage(lang);
 		LanguageParser.initedLanguages[langname as keyof typeof Languages] = {

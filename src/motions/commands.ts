@@ -15,6 +15,7 @@ import { LUA } from './selectors/lua';
 import { PythonQuery } from './selectors/python';
 import { Rust } from './selectors/rust';
 import { TsSelector } from './selectors/typescript';
+import { JAVA } from './selectors/java';
 
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
@@ -75,6 +76,7 @@ SelectorFactory.set('rust', Rust);
 SelectorFactory.set('c', C);
 SelectorFactory.set('yaml', C);
 SelectorFactory.set('lua', LUA);
+SelectorFactory.set('java', JAVA);
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
