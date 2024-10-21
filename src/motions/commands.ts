@@ -1,11 +1,12 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
-import { editor, visualize } from '../extension';
+import { editor } from '../extension';
 import { filterLargestMatches } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
+import { nextPos } from './move';
+import { closestPos, previousPos, select } from './position/selection';
 import { QueryCommand } from './QueryCommand';
-import { closestPos, previousToLine, select } from './selection';
 import { C } from './selectors/c';
 import { CppQuery } from './selectors/cpp';
 import { GoQuery } from './selectors/go';
@@ -108,15 +109,10 @@ function groupElements(matches: QueryMatch[]): QueryMatch[] {
 	}
 	const arrays = Array.from(captureParents.values());
 
-	for (const array of arrays) {
-		visualize(array.captures[0].node);
-		visualize(array.captures[array.captures.length - 1].node);
-	}
-
 	return arrays;
 }
 
-export const commands = {
+export const selectCommands = {
 	function: new QueryCommand('outer.function')
 		.setGetPosition(closestPos)
 		.setOnMatch(function (matches) {
@@ -149,65 +145,162 @@ export const commands = {
 	comments: new QueryCommand('outer.comment').setGetPosition(closestPos),
 };
 
-export const previousCommands = {
+export const selectPreviousCommands = {
 	function: new QueryCommand('outer.function')
-		.setGetPosition(previousToLine)
+		.setGetPosition(previousPos)
 		.setOnMatch(filterLargestMatches),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(previousToLine),
-	loop: new QueryCommand('outer.loop').setGetPosition(previousToLine),
-	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousToLine),
-	conditional: new QueryCommand('outer.conditional').setGetPosition(previousToLine),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousToLine),
-	rhs: new QueryCommand('outer.rhs').setGetPosition(previousToLine),
-	variables: new QueryCommand('outer.variable').setGetPosition(previousToLine),
-	innerString: new QueryCommand('inner.string').setGetPosition(previousToLine),
-	class: new QueryCommand('outer.class').setGetPosition(previousToLine),
-	innerClass: new QueryCommand('inner.class').setGetPosition(previousToLine),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPos),
+	loop: new QueryCommand('outer.loop').setGetPosition(previousPos),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPos),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPos),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPos),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPos),
+	variables: new QueryCommand('outer.variable').setGetPosition(previousPos),
+	innerString: new QueryCommand('inner.string').setGetPosition(previousPos),
+	class: new QueryCommand('outer.class').setGetPosition(previousPos),
+	innerClass: new QueryCommand('inner.class').setGetPosition(previousPos),
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
 	string: new QueryCommand('outer.string').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(previousToLine),
-	call: new QueryCommand('outer.call').setGetPosition(previousToLine),
-	innerCall: new QueryCommand('inner.call').setGetPosition(previousToLine),
-	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousToLine),
-	type: new QueryCommand('outer.type').setGetPosition(previousToLine),
-	innerType: new QueryCommand('inner.type').setGetPosition(previousToLine),
-	comments: new QueryCommand('outer.comment').setGetPosition(previousToLine),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPos),
+	call: new QueryCommand('outer.call').setGetPosition(previousPos),
+	innerCall: new QueryCommand('inner.call').setGetPosition(previousPos),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPos),
+	type: new QueryCommand('outer.type').setGetPosition(previousPos),
+	innerType: new QueryCommand('inner.type').setGetPosition(previousPos),
+	comments: new QueryCommand('outer.comment').setGetPosition(previousPos),
+};
+
+export const GotoCommands = {
+	function: new QueryCommand('outer.function')
+		.setGetPosition(nextPos)
+		.setOnMatch(function (matches) {
+			return filterLargestMatches(matches);
+		}),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(nextPos),
+	loop: new QueryCommand('outer.loop').setGetPosition(nextPos),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(nextPos),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(nextPos),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(nextPos),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(nextPos),
+	variables: new QueryCommand('outer.variable').setGetPosition(nextPos),
+	string: new QueryCommand('outer.string').setGetPosition(nextPos),
+	innerString: new QueryCommand('inner.string').setGetPosition(nextPos),
+	//bug on going to class
+	class: new QueryCommand('outer.class').setGetPosition(nextPos),
+	innerClass: new QueryCommand('inner.class').setGetPosition(nextPos),
+	array: new QueryCommand('outer.array').setGetPosition(nextPos),
+	object: new QueryCommand('outer.object').setGetPosition(nextPos),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(nextPos),
+	call: new QueryCommand('outer.call').setGetPosition(nextPos),
+	innerCall: new QueryCommand('inner.call').setOnMatch(groupElements).setGetPosition(nextPos),
+	innerParameters: new QueryCommand('inner.parameters')
+		.setGetPosition(nextPos)
+		.setOnMatch(groupElements),
+	type: new QueryCommand('outer.type').setGetPosition(nextPos),
+	innerType: new QueryCommand('inner.type').setGetPosition(nextPos),
+	comments: new QueryCommand('outer.comment').setGetPosition(nextPos),
+};
+export const GotoPreviousCommands = {
+	function: new QueryCommand('outer.function')
+		.setGetPosition(previousPos)
+		.setOnMatch(function (matches) {
+			return filterLargestMatches(matches);
+		}),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPos),
+	loop: new QueryCommand('outer.loop').setGetPosition(previousPos),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPos),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPos),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPos),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPos),
+	variables: new QueryCommand('outer.variable').setGetPosition(previousPos),
+	string: new QueryCommand('outer.string').setGetPosition(previousPos),
+	innerString: new QueryCommand('inner.string').setGetPosition(previousPos),
+	//bug on going to class
+	class: new QueryCommand('outer.class').setGetPosition(previousPos),
+	innerClass: new QueryCommand('inner.class').setGetPosition(previousPos),
+	array: new QueryCommand('outer.array').setGetPosition(previousPos),
+	object: new QueryCommand('outer.object').setGetPosition(previousPos),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPos),
+	call: new QueryCommand('outer.call').setGetPosition(previousPos),
+	innerCall: new QueryCommand('inner.call')
+		.setOnMatch(groupElements)
+		.setGetPosition(previousPos),
+	innerParameters: new QueryCommand('inner.parameters')
+		.setGetPosition(previousPos)
+		.setOnMatch(groupElements),
+	type: new QueryCommand('outer.type').setGetPosition(previousPos),
+	innerType: new QueryCommand('inner.type').setGetPosition(previousPos),
+	comments: new QueryCommand('outer.comment').setGetPosition(previousPos),
 };
 
 function goTo(position: { start: vscode.Position; end: vscode.Position }) {
 	const ceditor = editor.getEditor();
 	ceditor.selection = new vscode.Selection(position.start, position.start);
+	ceditor.revealRange(new vscode.Range(position.start, position.start));
 }
+const greedyChars = [';', ','];
 
 export function initCommands(context: vscode.ExtensionContext) {
-	for (const command of Object.values(previousCommands)) {
-		InitCommand(makeName(`goTo.previous.${command.name}`), (ctx) => command.goTo(ctx), goTo);
+	for (const command of Object.values(GotoCommands)) {
+		InitCommand(makeName(`goTo.next.${command.name}`), (ctx) => command.select(ctx), goTo);
+	}
+	for (const command of Object.values(GotoPreviousCommands)) {
+		InitCommand(
+			makeName(`goTo.previous.${command.name}`),
+			(ctx) => command.select(ctx),
+			goTo
+		);
+	}
+
+	for (const command of Object.values(selectPreviousCommands)) {
 		context.subscriptions.push(
 			InitCommand(
 				makeName(`select.previous.${command.name}`),
 				(context) => command.select(context),
 				function (position) {
+					const currentEditor = editor.getEditor();
+
+					const endPos = new vscode.Position(
+						position.end.line,
+						position.end.character + 1
+					);
+					const endLine = currentEditor.document.getText(
+						new vscode.Range(position.start, endPos)
+					);
+
+					if (greedyChars.includes(endLine.at(-1)!)) {
+						position.end = endPos;
+					}
 					select(position.start, position.end, editor.getEditor());
 				}
 			)
 		);
 	}
-	for (const command of Object.values(commands)) {
-		InitCommand(makeName(`goTo.next.${command.name}`), (ctx) => command.goTo(ctx), goTo);
-		context.subscriptions.push(
-			InitCommand(
-				makeName(`select.next.${command.name}`),
-				(context) => command.select(context),
-				function (position) {
-					select(position.start, position.end, editor.getEditor());
+	for (const command of Object.values(selectCommands)) {
+		InitCommand(
+			makeName(`select.next.${command.name}`),
+			(context) => command.select(context),
+			function (position) {
+				const currentEditor = editor.getEditor();
+
+				const endPos = new vscode.Position(
+					position.end.line,
+					position.end.character + 1
+				);
+				const endLine = currentEditor.document.getText(
+					new vscode.Range(position.start, endPos)
+				);
+
+				if (greedyChars.includes(endLine.at(-1)!)) {
+					position.end = endPos;
 				}
-			)
+				select(position.start, position.end, editor.getEditor());
+			}
 		);
 	}
 }
 
-const greedyChars = [';', ','];
 function InitCommand(
 	name: string,
 	execFunc: (context: QueryContext) => Promise<
@@ -231,13 +324,6 @@ function InitCommand(
 
 		if (!position) {
 			return;
-		}
-
-		const endPos = new vscode.Position(position.end.line, position.end.character + 1);
-		const endLine = currentEditor.document.getText(new vscode.Range(position.start, endPos));
-
-		if (greedyChars.includes(endLine.at(-1)!)) {
-			position.end = endPos;
 		}
 
 		afterEnd(position);
@@ -269,3 +355,4 @@ export class CommandHistory {
 		CommandHistory.commands.push(command);
 	}
 }
+

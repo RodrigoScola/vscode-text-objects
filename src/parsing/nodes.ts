@@ -1,10 +1,9 @@
 import * as parser from 'web-tree-sitter';
-import { JoinedPoint } from '../motions/selection';
+import { JoinedPoint } from '../motions/position/selection';
 
 import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';
 import { NODES } from '../constants';
-import { visualize } from '../extension';
 
 // Define a function to calculate the size of a match based on its start and end positions.
 function getMatchSize(match: QueryMatch): number {
@@ -14,10 +13,7 @@ function getMatchSize(match: QueryMatch): number {
 	return endNode - startNode;
 }
 
-function exists(
-	captures: parser.QueryCapture[],
-	name: string
-): parser.QueryCapture | undefined {
+function exists(captures: parser.QueryCapture[], name: string): parser.QueryCapture | undefined {
 	for (const capture of captures) {
 		if (capture.name === name) {
 			return capture;
@@ -32,7 +28,6 @@ export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
 	return matches.reduce((filtered: QueryMatch[], match: QueryMatch) => {
 		for (const cap of match.captures) {
 			if (idMap.has(cap.node.id)) {
-				visualize(idMap.get(cap.node.id)!.captures[0]!.node);
 				return filtered;
 			}
 			idMap.set(cap.node.id, match);
@@ -43,26 +38,22 @@ export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
 		//checks if function is anonymous
 		if (exists(match.captures, 'anonymous_function')) {
 			filtered.push(match);
-			visualize(match.captures[0].node);
 			return filtered;
 		}
 
 		// Extract the function name (or unique identifier) from the match
-		const functionName =
-			exists(match.captures, NODES.FUNCTION_NAME)?.node.text || '';
+		const functionName = exists(match.captures, NODES.FUNCTION_NAME)?.node.text || '';
 
 		// Check if there is an existing match for the same function
 		const existingMatch = filtered.find((f) => {
 			const existingFunctionName =
-				f.captures.find(
-					(capture) => capture.name === NODES.FUNCTION_NAME
-				)?.node.text || '';
+				f.captures.find((capture) => capture.name === NODES.FUNCTION_NAME)?.node.text ||
+				'';
 			return existingFunctionName === functionName;
 		});
 
 		if (!existingMatch) {
 			filtered.push(match);
-			visualize(match.captures[0].node);
 			return filtered;
 		}
 
@@ -73,9 +64,8 @@ export function filterLargestMatches(matches: QueryMatch[]): QueryMatch[] {
 		if (currentSize > existingSize) {
 			return filtered.map((f) => {
 				const existingFunctionName =
-					f.captures.find(
-						(capture) => capture.name === NODES.FUNCTION_NAME
-					)?.node.text || '';
+					f.captures.find((capture) => capture.name === NODES.FUNCTION_NAME)?.node
+						.text || '';
 				return existingFunctionName === functionName ? match : f;
 			});
 		}
@@ -96,11 +86,9 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 			continue;
 		}
 
-		assert(
-			firstNode.node.startPosition,
-			'needs to have a starting position'
-		);
+		assert(firstNode.node.startPosition, 'needs to have a starting position');
 		assert(firstNode.node.endPosition, 'needs to have an end position');
+
 		const node = {
 			startPosition: firstNode.node.startPosition,
 			endPosition: lastNode.node.endPosition,
@@ -110,5 +98,8 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		nodes.push(node);
 	}
 
+	console.assert(nodes.length < 200, 'should think of a pool');
+
 	return nodes;
 }
+
