@@ -67,13 +67,6 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 		const range = nodes[i];
 		const next = nodes[i + 1];
 
-		if (
-			(range.start.line === index.line || range.end.line === index.line) &&
-			(!next || next.start.line !== index.line || next.end.line !== index.line)
-		) {
-			return nodes[i];
-		}
-
 		let startDelta = range.start.isBefore(index);
 		let endDelta = range.end.isBefore(index);
 
@@ -84,8 +77,6 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 			closestRange = range;
 			continue;
 		}
-
-		const closestDelta = closestRange!.start.line - index.line;
 
 		if (range.contains(index)) {
 			isInside = true;

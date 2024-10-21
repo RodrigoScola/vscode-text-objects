@@ -1,4 +1,3 @@
-import assert from 'assert';
 import { WorkspaceConfiguration } from 'vscode';
 
 interface Inspection {
@@ -27,27 +26,5 @@ export class Config {
 		}
 		return configKey.defaultValue;
 	}
-	bugPath(): string | undefined {
-		const inspection = this.config.inspect('logs.bugsPath');
-		if (!inspection) {
-			return;
-		}
-		const configValue = this.value(inspection);
-
-		if (!configValue || typeof configValue !== 'string') {
-			return;
-		}
-
-		return configValue;
-	}
-	groupElements(): boolean {
-		const inspection = this.config.inspect('selection.groupElements');
-		assert(inspection, 'group elements config should be defined');
-
-		assert(typeof inspection.defaultValue === 'boolean', 'group elements type is boolean');
-		const configValue = this.value(inspection);
-		assert(typeof configValue === 'boolean', 'current configuration value is not boolean');
-
-		return configValue;
-	}
 }
+
