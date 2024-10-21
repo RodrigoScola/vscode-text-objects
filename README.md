@@ -65,6 +65,8 @@ Language Support in development:
 -    vim integration with delete and change - DONE
 -    add keybinds and vim integration on gotos - DONE
 -    finalize keybinds - DONE
+-    finalize gotos - DONE
+-    do backward gotos - DONE
 
 -    add rest of inner and outers (arrays, objects...)
 -    check if inner parameter and/or calls would be better being
@@ -72,8 +74,6 @@ Language Support in development:
      inner : the first parameter or call argument
 -    add methods to language queries and add them on functions
 -    do the else on if statements
--    finalize gotos
--    do backward gotos
 -    do backward selection
 -    add more configs?
 -    finish the languages support

@@ -129,8 +129,16 @@ export function nextPosition(nodes: JoinedPoint[], index: Position): JoinedPoint
 	return closestNode;
 }
 
+const greedyChars = [';', ','];
 export function select(startPos: Position, endPos: Position, editor: TextEditor) {
 	// const cursor = editor.selection.active;
+
+	endPos = new Position(endPos.line, endPos.character + 1);
+	const endLine = editor.document.getText(new Range(startPos, endPos));
+
+	if (greedyChars.includes(endLine.at(-1)!)) {
+		endPos = endPos;
+	}
 
 	editor.selection = new Selection(startPos, endPos); // Move cursor to that position
 
