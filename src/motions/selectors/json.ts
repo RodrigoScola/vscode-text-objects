@@ -2,15 +2,16 @@ import { Selector } from '../commands';
 import { JsQuery } from './javascript';
 
 export const JsonSelector: Selector = {
-	['outer.parameters']: '',
-	['inner.parameters']: '',
-	['outer.type']: '',
-	['inner.type']: '',
-	['outer.comment']: JsQuery['outer.comment'],
 	['outer.function']: '',
 	['inner.function']: '',
 	['inner.call']: '',
 	['outer.call']: '',
+	['outer.parameters']: '',
+	['inner.parameters']: '',
+	['outer.type']: '',
+	['inner.type']: '',
+
+	['outer.comment']: JsQuery['outer.comment'],
 	['outer.array']: JsQuery['outer.array'],
 
 	['outer.class']: '',
@@ -28,3 +29,4 @@ export const JsonSelector: Selector = {
 };
 
 //since the syntax is mostly the same, for now we can keep it the same
+
