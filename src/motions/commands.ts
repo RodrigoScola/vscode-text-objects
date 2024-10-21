@@ -5,7 +5,7 @@ import { editor } from '../extension';
 import { filterLargestMatches } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { nextPosition } from './position/move';
-import { closestPos, previousPos, select } from './position/selection';
+import { closestPos, previousPosition, select } from './position/selection';
 import { QueryCommand } from './QueryCommand';
 import { C } from './selectors/c';
 import { CppQuery } from './selectors/cpp';
@@ -142,28 +142,28 @@ export const selectCommands = {
 
 export const selectPreviousCommands = {
 	function: new QueryCommand('outer.function')
-		.setGetPosition(previousPos)
+		.setGetPosition(previousPosition)
 		.setOnMatch(filterLargestMatches),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPos),
-	loop: new QueryCommand('outer.loop').setGetPosition(previousPos),
-	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPos),
-	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPos),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPos),
-	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPos),
-	variables: new QueryCommand('outer.variable').setGetPosition(previousPos),
-	innerString: new QueryCommand('inner.string').setGetPosition(previousPos),
-	class: new QueryCommand('outer.class').setGetPosition(previousPos),
-	innerClass: new QueryCommand('inner.class').setGetPosition(previousPos),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
+	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPosition),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPosition),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPosition),
+	variables: new QueryCommand('outer.variable').setGetPosition(previousPosition),
+	innerString: new QueryCommand('inner.string').setGetPosition(previousPosition),
+	class: new QueryCommand('outer.class').setGetPosition(previousPosition),
+	innerClass: new QueryCommand('inner.class').setGetPosition(previousPosition),
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
 	string: new QueryCommand('outer.string').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPos),
-	call: new QueryCommand('outer.call').setGetPosition(previousPos),
-	innerCall: new QueryCommand('inner.call').setGetPosition(previousPos),
-	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPos),
-	type: new QueryCommand('outer.type').setGetPosition(previousPos),
-	innerType: new QueryCommand('inner.type').setGetPosition(previousPos),
-	comments: new QueryCommand('outer.comment').setGetPosition(previousPos),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPosition),
+	call: new QueryCommand('outer.call').setGetPosition(previousPosition),
+	innerCall: new QueryCommand('inner.call').setGetPosition(previousPosition),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPosition),
+	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
+	innerType: new QueryCommand('inner.type').setGetPosition(previousPosition),
+	comments: new QueryCommand('outer.comment').setGetPosition(previousPosition),
 };
 
 export const GotoCommands = {
@@ -198,35 +198,35 @@ export const GotoCommands = {
 };
 export const GotoPreviousCommands = {
 	function: new QueryCommand('outer.function')
-		.setGetPosition(previousPos)
+		.setGetPosition(previousPosition)
 		.setOnMatch(function (matches) {
 			return filterLargestMatches(matches);
 		}),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPos),
-	loop: new QueryCommand('outer.loop').setGetPosition(previousPos),
-	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPos),
-	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPos),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPos),
-	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPos),
-	variables: new QueryCommand('outer.variable').setGetPosition(previousPos),
-	string: new QueryCommand('outer.string').setGetPosition(previousPos),
-	innerString: new QueryCommand('inner.string').setGetPosition(previousPos),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
+	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),
+	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPosition),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPosition),
+	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPosition),
+	variables: new QueryCommand('outer.variable').setGetPosition(previousPosition),
+	string: new QueryCommand('outer.string').setGetPosition(previousPosition),
+	innerString: new QueryCommand('inner.string').setGetPosition(previousPosition),
 	//bug on going to class
-	class: new QueryCommand('outer.class').setGetPosition(previousPos),
-	innerClass: new QueryCommand('inner.class').setGetPosition(previousPos),
-	array: new QueryCommand('outer.array').setGetPosition(previousPos),
-	object: new QueryCommand('outer.object').setGetPosition(previousPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPos),
-	call: new QueryCommand('outer.call').setGetPosition(previousPos),
+	class: new QueryCommand('outer.class').setGetPosition(previousPosition),
+	innerClass: new QueryCommand('inner.class').setGetPosition(previousPosition),
+	array: new QueryCommand('outer.array').setGetPosition(previousPosition),
+	object: new QueryCommand('outer.object').setGetPosition(previousPosition),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPosition),
+	call: new QueryCommand('outer.call').setGetPosition(previousPosition),
 	innerCall: new QueryCommand('inner.call')
 		.setOnMatch(groupElements)
-		.setGetPosition(previousPos),
+		.setGetPosition(previousPosition),
 	innerParameters: new QueryCommand('inner.parameters')
-		.setGetPosition(previousPos)
+		.setGetPosition(previousPosition)
 		.setOnMatch(groupElements),
-	type: new QueryCommand('outer.type').setGetPosition(previousPos),
-	innerType: new QueryCommand('inner.type').setGetPosition(previousPos),
-	comments: new QueryCommand('outer.comment').setGetPosition(previousPos),
+	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
+	innerType: new QueryCommand('inner.type').setGetPosition(previousPosition),
+	comments: new QueryCommand('outer.comment').setGetPosition(previousPosition),
 };
 
 function goTo(position: { start: vscode.Position; end: vscode.Position }) {

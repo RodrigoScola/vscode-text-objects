@@ -4,7 +4,6 @@ import path from 'path';
 import * as vscode from 'vscode';
 import { Config } from './config';
 import { CommandHistory, initCommands } from './motions/commands';
-import { JoinedPoint } from './motions/position/selection';
 import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file
@@ -32,16 +31,14 @@ export function getConfig(): Config {
 }
 export const editor = new Editor();
 
-export function visualize(start: JoinedPoint): void {
+export function visualize(start: vscode.Range): void {
 	assert(start, 'start needs to be defined');
-	const startPos = new vscode.Position(start.startPosition.row, start.startPosition.column);
-	const endPos = new vscode.Position(start.endPosition.row, start.endPosition.column);
 
 	const ceditor = editor.getEditor();
 	assert(ceditor, 'editor is not present');
 
-	ceditor.revealRange(new vscode.Range(startPos, endPos));
-	ceditor.selection = new vscode.Selection(startPos, endPos); // Move cursor to that position
+	ceditor.revealRange(start);
+	ceditor.selection = new vscode.Selection(start.start, start.end); // Move cursor to that position
 }
 
 // This method is called when your extension is activated
