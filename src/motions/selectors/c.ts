@@ -10,7 +10,7 @@ export const C: Selector = {
 	),
 	['outer.call']: '(call_expression) @call',
 	['inner.call']: '(call_expression arguments: (argument_list (_) @call )) ',
-	['outer.parameters']: '(parameter_list) @parameters',
+	['outer.parameters']: '(parameter_list (_) @parameters) ',
 	['inner.parameters']: '(parameter_list (_) @parameters) ',
 	['outer.array']: `(init_declarator
                         declarator:(array_declarator)

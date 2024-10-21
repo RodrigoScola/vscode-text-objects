@@ -1,7 +1,7 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
-import { editor, getConfig } from '../extension';
+import { editor } from '../extension';
 import { filterLargestMatches } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { nextPosition } from './position/move';
@@ -85,9 +85,9 @@ SelectorFactory.set('toml', TOML);
 // just trying to prove the idea for now
 function groupElements(matches: QueryMatch[]): QueryMatch[] {
 	//remember to turn this on before publishing
-	if (getConfig().groupElements() === false) {
-		return matches;
-	}
+	// if (getConfig().groupElements() === false) {
+	// 	return matches;
+	// }
 
 	const captureParents = new Map<number, QueryMatch>();
 
@@ -129,12 +129,12 @@ export const selectCommands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(closestPos),
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(closestPos),
-	call: new QueryCommand('outer.call').setGetPosition(closestPos),
-	innerCall: new QueryCommand('inner.call').setOnMatch(groupElements).setGetPosition(closestPos),
-	innerParameters: new QueryCommand('inner.parameters')
+	parameters: new QueryCommand('outer.parameters')
 		.setGetPosition(closestPos)
 		.setOnMatch(groupElements),
+	call: new QueryCommand('outer.call').setOnMatch(groupElements).setGetPosition(closestPos),
+	innerCall: new QueryCommand('inner.call').setGetPosition(closestPos),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(closestPos),
 	type: new QueryCommand('outer.type').setGetPosition(closestPos),
 	innerType: new QueryCommand('inner.type').setGetPosition(closestPos),
 	comments: new QueryCommand('outer.comment').setGetPosition(closestPos),
@@ -157,8 +157,12 @@ export const selectPreviousCommands = {
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
 	string: new QueryCommand('outer.string').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPosition),
-	call: new QueryCommand('outer.call').setGetPosition(previousPosition),
+	parameters: new QueryCommand('outer.parameters')
+		.setGetPosition(previousPosition)
+		.setOnMatch(groupElements),
+	call: new QueryCommand('outer.call')
+		.setGetPosition(previousPosition)
+		.setOnMatch(groupElements),
 	innerCall: new QueryCommand('inner.call').setGetPosition(previousPosition),
 	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPosition),
 	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
@@ -184,8 +188,10 @@ export const GotoCommands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(nextPosition),
 	array: new QueryCommand('outer.array').setGetPosition(nextPosition),
 	object: new QueryCommand('outer.object').setGetPosition(nextPosition),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(nextPosition),
-	call: new QueryCommand('outer.call').setGetPosition(nextPosition),
+	parameters: new QueryCommand('outer.parameters')
+		.setGetPosition(nextPosition)
+		.setOnMatch(groupElements),
+	call: new QueryCommand('outer.call').setOnMatch(groupElements).setGetPosition(nextPosition),
 	innerCall: new QueryCommand('inner.call')
 		.setOnMatch(groupElements)
 		.setGetPosition(nextPosition),
@@ -216,14 +222,14 @@ export const GotoPreviousCommands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(previousPosition),
 	array: new QueryCommand('outer.array').setGetPosition(previousPosition),
 	object: new QueryCommand('outer.object').setGetPosition(previousPosition),
-	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPosition),
+	parameters: new QueryCommand('outer.parameters')
+		.setGetPosition(previousPosition)
+		.setOnMatch(groupElements),
 	call: new QueryCommand('outer.call').setGetPosition(previousPosition),
 	innerCall: new QueryCommand('inner.call')
 		.setOnMatch(groupElements)
 		.setGetPosition(previousPosition),
-	innerParameters: new QueryCommand('inner.parameters')
-		.setGetPosition(previousPosition)
-		.setOnMatch(groupElements),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPosition),
 	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
 	innerType: new QueryCommand('inner.type').setGetPosition(previousPosition),
 	comments: new QueryCommand('outer.comment').setGetPosition(previousPosition),

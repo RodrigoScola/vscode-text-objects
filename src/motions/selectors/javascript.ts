@@ -5,7 +5,7 @@ export const JsQuery: Selector = {
 	['outer.comment']: '(comment)+ @comment',
 	['outer.type']: '',
 	['inner.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
-	['outer.parameters']: [`(formal_parameters)+ @parameter`].join('\n'),
+	['outer.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
 	['outer.function']: [
 		`(method_definition
 		            name: (_) @function.name
@@ -141,8 +141,8 @@ export const JsQuery: Selector = {
                          ) @variable_declarator
                     ) @lexical_declaration `,
 	].join('\n'),
-	'outer.call': [`(call_expression ) @call `].join('\n'),
-	'inner.call': [`(call_expression (_) @call )  `].join('\n'),
+	'outer.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
+	'inner.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
 	'outer.class': [
 		`
                     (export_statement
@@ -180,3 +180,4 @@ export const JsQuery: Selector = {
 	].join('\n'),
 	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
 };
+

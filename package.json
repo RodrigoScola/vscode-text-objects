@@ -40,21 +40,7 @@
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
-		"configuration": {
-			"title": "Vscode Text Objects",
-			"properties": {
-				"vscode-textobjects.selection.groupElements": {
-					"title": "Group elements",
-					"description": "group some nodes such as parameters so you can select them all at once",
-					"default": false,
-					"type": "boolean"
-				},
-				"vscode-textobjects.logs.bugsPath": {
-					"type": "string",
-					"description": " the selection bug file, for developers only "
-				}
-			}
-		},
+		"configuration": {},
 		"keybindings": [
 			{
 				"command": "vscode-textobjects.select.next.outer.parameters",
