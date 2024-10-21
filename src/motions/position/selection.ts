@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { Position, Range, Selection, TextEditor } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
-import { closerToZero } from '../../utils/math';
+import { visualize } from '../../extension';
 
 export type JoinedPoint = {
 	startPosition: Parser.Point;
@@ -11,17 +11,17 @@ export type JoinedPoint = {
 };
 
 //fix this one
-export function previousPos(nodes: Range[], index: Position): Range | undefined {
+export function previousPosition(nodes: Range[], index: Position): Range | undefined {
 	if (nodes.length === 0) {
 		return undefined;
 	}
 
 	let closestRange: Range | undefined;
 
-	for (let i = 0; i < nodes.length; i++) {
+	for (let i = nodes.length - 1; i >= 0; i--) {
 		let isInside = false;
 		const range = nodes[i];
-		const next = nodes[i + 1];
+		const next = nodes[i - 1];
 
 		if (
 			(range.start.line === index.line || range.end.line === index.line) &&
@@ -99,34 +99,6 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 	}
 
 	return closestRange;
-}
-export function nextPosition(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
-	if (nodes.length === 0) {
-		return;
-	}
-	assert(index.line >= 0, 'line cannot be outside of range');
-
-	nodes.sort((a, b) => a.startPosition.row - b.startPosition.row);
-
-	let closestDelta = -Infinity;
-	let closestNode: JoinedPoint | undefined;
-
-	for (const node of nodes) {
-		assert(node, 'invalid node to get position');
-		assert(
-			node.startPosition.row > 0,
-			'start position cannot be less than 0: ' + node.startPosition.row
-		);
-
-		let startDelta = node.startPosition.row - index.line;
-
-		if (startDelta > 0 && closerToZero(startDelta, closestDelta) === startDelta) {
-			closestDelta = startDelta;
-			closestNode = node;
-		}
-	}
-
-	return closestNode;
 }
 
 const greedyChars = [';', ','];

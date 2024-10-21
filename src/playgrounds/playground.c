@@ -69,22 +69,21 @@ for (int i = 0; i < 10; i++)
 // For loop with multiple variables
 
 // For loop with no initialization
-int i = 0;
 // Standard for loop
 for (int i = 0; i < 10; i++)
 {
     // code to execute
 }
 
-// For loop with multiple variables
+// here
+//  For loop with multiple variables
 for (int i = 0, j = 10; i < j; i++, j--)
 {
     // code to execute
 }
 
 // For loop with no initialization
-int i = 0;
-for (; i < 10; i++)
+for (int i = 0; i < 10; i++)
 {
     // code to execute
 }
