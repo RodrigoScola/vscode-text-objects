@@ -4,7 +4,7 @@ import assert from 'assert';
 import { before } from 'mocha';
 import * as vscode from 'vscode';
 import { QueryCommand } from '../../motions/QueryCommand';
-import { closestPos } from '../../motions/selection';
+import { closestPos } from '../../motions/position/selection';
 import { LanguageParser } from '../../parsing/parser';
 
 let fncommand: QueryCommand;
@@ -311,3 +311,4 @@ suite('anonymous functions', () => {
 // 		assertPos(position.end, { character: 1, line: 2 });
 // 	});
 // });
+

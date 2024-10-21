@@ -1,8 +1,7 @@
 import assert from 'assert';
 import { Position, Range, Selection, TextEditor } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
-import { visualize } from '../extension';
-import { closerToZero } from '../utils/math';
+import { closerToZero } from '../../utils/math';
 
 export type JoinedPoint = {
 	startPosition: Parser.Point;
@@ -11,37 +10,63 @@ export type JoinedPoint = {
 	endIndex: number;
 };
 
-export function closestPos(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
+//fix this one
+export function previousPos(nodes: Range[], index: Position): Range | undefined {
 	if (nodes.length === 0) {
 		return undefined;
 	}
 
-	nodes.sort((a, b) => {
-		if (a.startPosition.row === b.startPosition.row) {
-			return a.startPosition.column - b.startPosition.column;
+	let closestRange: Range | undefined;
+
+	for (let i = 0; i < nodes.length; i++) {
+		let isInside = false;
+		const range = nodes[i];
+		const next = nodes[i + 1];
+
+		if (
+			(range.start.line === index.line || range.end.line === index.line) &&
+			(!next || next.start.line !== index.line || next.end.line !== index.line)
+		) {
+			continue;
 		}
 
-		return a.startPosition.row - b.startPosition.row;
-	});
+		let startDelta = range.start.isAfter(index);
+		let endDelta = range.end.isAfter(index);
 
-	const ranges = new Array(nodes.length).fill(undefined).map((_, index) => {
-		const node = nodes[index];
-		return new Range(
-			new Position(node.startPosition.row, node.startPosition.column),
-			new Position(node.endPosition.row, node.endPosition.column)
-		);
-	});
+		if (startDelta && endDelta) {
+			continue;
+		}
+		if (!closestRange) {
+			closestRange = range;
+			continue;
+		}
+
+		const closestDelta = closestRange!.start.line - index.line;
+
+		if (range.contains(index)) {
+			isInside = true;
+		}
+
+		if (isInside && closestRange.start.isBefore(range.start)) {
+			closestRange = range;
+			continue;
+		}
+	}
+
+	return closestRange;
+}
+
+export function closestPos(nodes: Range[], index: Position): Range | undefined {
+	if (nodes.length === 0) {
+		return undefined;
+	}
 
 	let closestRange: Range | undefined;
-	let closestNode: JoinedPoint | undefined;
 
-	for (let i = 0; i < ranges.length; i++) {
+	for (let i = 0; i < nodes.length; i++) {
 		let isInside = false;
-		const node = nodes[i];
-		const range = ranges[i];
-		const next = ranges[i + 1];
-
-		visualize(node);
+		const range = nodes[i];
+		const next = nodes[i + 1];
 
 		if (
 			(range.start.line === index.line || range.end.line === index.line) &&
@@ -57,7 +82,6 @@ export function closestPos(nodes: JoinedPoint[], index: Position): JoinedPoint |
 			continue;
 		}
 		if (!closestRange) {
-			closestNode = node;
 			closestRange = range;
 			continue;
 		}
@@ -70,76 +94,11 @@ export function closestPos(nodes: JoinedPoint[], index: Position): JoinedPoint |
 
 		if (isInside && closestRange.start.isAfter(range.start)) {
 			closestRange = range;
-			closestNode = node;
 			continue;
-		}
-		// } else if (closestRange. === startDelta) {
-		// 	const closestRow = closestRange.start.character - index.character;
-		// 	const currentRow = range.start.character - index.character;
-
-		// 	if (closerToZero(closestRow, currentRow) === currentRow) {
-		// 		isInside = true;
-		// 		closestRange = range;
-		// 		closestNode = node;
-		// 	}
-		// 	continue;
-		// }
-	}
-
-	return closestNode;
-}
-//todo this selects inner functions
-//maybe should refactor to account for that?
-// ill just try it out and see how i feel about it
-export function previousToLine(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
-	if (nodes.length === 0) {
-		return undefined;
-	}
-
-	nodes.sort((a, b) => {
-		assert(a, 'a is undefined');
-		assert(b, 'b is undefined');
-		if (a.startPosition.row === b.startPosition.row) {
-			return a.startPosition.column - b.startPosition.column;
-		}
-
-		return a.startPosition.row - b.startPosition.row;
-	});
-
-	let closestNode;
-
-	for (let i = 0; i < nodes.length; i++) {
-		const node = nodes[i];
-		let isInside = false;
-
-		if (node.startPosition.row === index.line || node.endPosition.row === index.line) {
-			return node;
-		}
-
-		let startDelta = node.startPosition.row - index.line;
-		let endDelta = node.endPosition.row - index.line;
-		if (startDelta > 0 && endDelta > 0) {
-			continue;
-		}
-		if (startDelta <= 0 && endDelta >= 0) {
-			isInside = true;
-		}
-
-		if (!closestNode) {
-			closestNode = node;
-			continue;
-		}
-
-		const closestDelta = closestNode!.startPosition.row - index.line;
-
-		if (isInside && startDelta < closestDelta) {
-			closestNode = node;
-		} else if (closerToZero(closestDelta, startDelta) === startDelta) {
-			closestNode = node;
 		}
 	}
 
-	return closestNode;
+	return closestRange;
 }
 export function nextPosition(nodes: JoinedPoint[], index: Position): JoinedPoint | undefined {
 	if (nodes.length === 0) {
@@ -222,3 +181,4 @@ export function groupElements(matches: QueryMatch[]): QueryMatch[] {
 function throws() {
 	throw new Error('this throws');
 }
+

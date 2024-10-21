@@ -1,10 +1,9 @@
 import assert from 'assert';
-import { Position } from 'vscode';
+import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { groupNodes } from '../parsing/nodes';
 import { LanguageParser } from '../parsing/parser';
 import { QueryContext, Selector, SelectorFactory } from './commands';
-import { JoinedPoint, nextPosition } from './selection';
 
 let lastCommand: QueryCommand | undefined;
 export function getLastExecCommand() {
@@ -12,7 +11,7 @@ export function getLastExecCommand() {
 }
 
 type OnMatchFunc = (matches: QueryMatch[]) => QueryMatch[];
-type GetPositionFunc = (points: JoinedPoint[], index: Position) => JoinedPoint | undefined;
+type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
 export class QueryCommand {
 	readonly name: keyof Selector;
 	private getPosition: GetPositionFunc | undefined;
@@ -39,33 +38,12 @@ export class QueryCommand {
 		return this;
 	}
 
-	async goTo(context: QueryContext) {
-		lastCommand = this;
-		const Parsing = await LanguageParser.get(context.language);
-		assert(Parsing, 'could not init parser for ' + context.language + 'language');
-
-		assert(context.text, 'cannot parse text that is not there');
-
-		const tree = Parsing.parser.parse(context.text);
-
-		const selector = SelectorFactory.get(context.language)[this.name];
-		assert(selector, 'invalid query for ' + context.language);
-
-		const query = Parsing.language.query(selector);
-		let matches = query.matches(tree.rootNode);
-		if (typeof this.onMatch === 'function') {
-			matches = this.onMatch(matches);
-		}
-
-		const position = nextPosition(groupNodes(matches), context.cursor);
-
-		return this.makePosition(position);
-	}
-
 	async select(context: QueryContext) {
 		assert(this, 'this is undefined');
-
-		assert(this.getPosition, 'get position function is undefined');
+		assert(
+			typeof this.getPosition === 'function',
+			'this.getPosition is not a function, received:' + typeof this.getPosition
+		);
 		lastCommand = this;
 		const parser = await LanguageParser.get(context.language);
 
@@ -84,36 +62,33 @@ export class QueryCommand {
 			return;
 		}
 
-		console.log('matches ->', matches.length);
-
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
 			matches = this.onMatch(matches);
 			assert(matches.length > 0, 'needs to return an array of matches');
 		}
 
-		// for (const match of matches) {
-		// 	visualize(match.captures[0].node);
-		// 	console.log('last');
-		// }
+		const nodes = groupNodes(matches);
+		const ranges = new Array(nodes.length).fill(undefined).map((_, index) => {
+			const node = nodes[index];
+			assert(
+				node.startPosition.column >= 0,
+				'cannot be less than 0, received: ' + node.startPosition.column
+			);
+			return new Range(
+				new Position(node.startPosition.row, node.startPosition.column),
+				new Position(node.endPosition.row, node.endPosition.column)
+			);
+		});
 
-		console.log('matches', matches.length);
-
-		return this.makePosition(this.getPosition(groupNodes(matches), context.cursor));
-	}
-	private makePosition(position?: JoinedPoint) {
+		const position = this.getPosition(ranges, context.cursor);
 		if (!position) {
 			return;
 		}
-		assert(position.startPosition, 'needs to have an start');
-		assert(position.endPosition, 'needs to have an end');
-		const startPos = new Position(position.startPosition.row, position.startPosition.column);
+		assert(position.start.isBeforeOrEqual(position.end), 'start needs to be first');
+		assert(position.end.isAfterOrEqual(position.start), 'end needs to be after');
 
-		const endPos = new Position(position.endPosition.row, position.endPosition.column);
-
-		return {
-			start: startPos,
-			end: endPos,
-		};
+		return position;
 	}
 }
+

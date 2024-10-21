@@ -64,6 +64,7 @@ Language Support in development:
 
 -    vim integration with delete and change - DONE
 -    add keybinds and vim integration on gotos - DONE
+-    finalize keybinds - DONE
 
 -    add rest of inner and outers (arrays, objects...)
 -    check if inner parameter and/or calls would be better being
@@ -74,7 +75,6 @@ Language Support in development:
 -    finalize gotos
 -    do backward gotos
 -    do backward selection
--    finalize keybinds
 -    add more configs?
 -    finish the languages support
 -    rhs is not for assignign, but reassigning

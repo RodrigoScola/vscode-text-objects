@@ -4,7 +4,7 @@ import path from 'path';
 import * as vscode from 'vscode';
 import { Config } from './config';
 import { CommandHistory, initCommands } from './motions/commands';
-import { JoinedPoint } from './motions/selection';
+import { JoinedPoint } from './motions/position/selection';
 import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file
@@ -141,3 +141,4 @@ function getExtension(language: string) {
 		}
 	}
 }
+
