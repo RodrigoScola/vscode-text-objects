@@ -1,9 +1,9 @@
 import assert from 'assert';
 import { Position, Range } from 'vscode';
 
-export function nextPos(nodes: Range[], index: Position): Range | undefined {
+export function nextPosition(nodes: Range[], index: Position): Range | undefined {
 	assert(index.line >= 0, 'line is less than 0');
-	assert(nodes.length <= 1000, 'better rethink my strategy');
+	console.assert(nodes.length <= 1000, 'better rethink my strategy');
 	if (nodes.length === 0) {
 		return undefined;
 	}

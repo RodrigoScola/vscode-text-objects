@@ -86,7 +86,6 @@ export class QueryCommand {
 			return;
 		}
 		assert(position.start.isBeforeOrEqual(position.end), 'start needs to be first');
-		assert(position.end.isAfterOrEqual(position.start), 'end needs to be after');
 
 		return position;
 	}
