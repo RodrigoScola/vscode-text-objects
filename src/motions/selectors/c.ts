@@ -50,3 +50,4 @@ export const C: Selector = {
 	].join('\n'),
 	['outer.comment']: [`(comment) @comment`].join('\n'),
 };
+

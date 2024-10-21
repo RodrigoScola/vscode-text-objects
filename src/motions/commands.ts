@@ -1,7 +1,7 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
-import { editor } from '../extension';
+import { editor, getConfig } from '../extension';
 import { filterLargestMatches } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { nextPosition } from './position/move';
@@ -84,10 +84,10 @@ SelectorFactory.set('toml', TOML);
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
 function groupElements(matches: QueryMatch[]): QueryMatch[] {
-	// remember to turn this on before publishing
-	// if (getConfig().groupElements() === false) {
-	// return matches;
-	// }
+	//remember to turn this on before publishing
+	if (getConfig().groupElements() === false) {
+		return matches;
+	}
 
 	const captureParents = new Map<number, QueryMatch>();
 

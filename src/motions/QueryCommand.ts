@@ -69,16 +69,19 @@ export class QueryCommand {
 		}
 
 		const nodes = groupNodes(matches);
+
 		const ranges = new Array(nodes.length).fill(undefined).map((_, index) => {
 			const node = nodes[index];
 			assert(
 				node.startPosition.column >= 0,
 				'cannot be less than 0, received: ' + node.startPosition.column
 			);
-			return new Range(
+
+			const range = new Range(
 				new Position(node.startPosition.row, node.startPosition.column),
 				new Position(node.endPosition.row, node.endPosition.column)
 			);
+			return range;
 		});
 
 		const position = this.getPosition(ranges, context.cursor);
