@@ -70,19 +70,20 @@ export class QueryCommand {
 
 		const nodes = groupNodes(matches);
 
-		const ranges = new Array(nodes.length).fill(undefined).map((_, index) => {
-			const node = nodes[index];
-			assert(
-				node.startPosition.column >= 0,
-				'cannot be less than 0, received: ' + node.startPosition.column
-			);
-
-			const range = new Range(
-				new Position(node.startPosition.row, node.startPosition.column),
-				new Position(node.endPosition.row, node.endPosition.column)
-			);
-			return range;
-		});
+		const ranges = new Array(nodes.length)
+			.fill(undefined)
+			.map((_, index) => {
+				const node = nodes[index];
+				assert(
+					node.startPosition.column >= 0,
+					'cannot be less than 0, received: ' + node.startPosition.column
+				);
+				return new Range(
+					new Position(node.startPosition.row, node.startPosition.column),
+					new Position(node.endPosition.row, node.endPosition.column)
+				);
+			})
+			.sort((a, b) => (a.start.isAfter(b.start) ? 1 : -1));
 
 		const position = this.getPosition(ranges, context.cursor);
 		if (!position) {
@@ -93,4 +94,3 @@ export class QueryCommand {
 		return position;
 	}
 }
-

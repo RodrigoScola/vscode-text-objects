@@ -63,9 +63,7 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 	let closestRange: Range | undefined;
 
 	for (let i = 0; i < nodes.length; i++) {
-		let isInside = false;
 		const range = nodes[i];
-		const next = nodes[i + 1];
 
 		let startDelta = range.start.isBefore(index);
 		let endDelta = range.end.isBefore(index);
@@ -78,13 +76,11 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 			continue;
 		}
 
-		if (range.contains(index)) {
-			isInside = true;
-		}
-
-		if (isInside && closestRange.start.isAfter(range.start)) {
+		if (
+			(closestRange.start.isAfter(range.start) && closestRange.end.isAfter(range.start)) ||
+			(range.contains(index) && closestRange.contains(range))
+		) {
 			closestRange = range;
-			continue;
 		}
 	}
 
@@ -150,4 +146,3 @@ export function groupElements(matches: QueryMatch[]): QueryMatch[] {
 function throws() {
 	throw new Error('this throws');
 }
-
