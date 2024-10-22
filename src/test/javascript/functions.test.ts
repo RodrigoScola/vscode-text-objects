@@ -311,4 +311,3 @@ suite('anonymous functions', () => {
 // 		assertPos(position.end, { character: 1, line: 2 });
 // 	});
 // });
-
