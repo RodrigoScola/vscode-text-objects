@@ -58,26 +58,26 @@ export async function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
-function getExtension(language: string) {
-	switch (language.trim()) {
-		case 'javascript': {
-			return '.js';
-		}
-		case 'typescript': {
-			return '.ts';
-		}
-		case 'javascriptreact': {
-			return '.jsx';
-		}
-		case 'typescriptreact': {
-			return '.tsx';
-		}
-		case 'python': {
-			return '.py';
-		}
-		default: {
-			return language;
-		}
-	}
-}
+// function getExtension(language: string) {
+// 	switch (language.trim()) {
+// 		case 'javascript': {
+// 			return '.js';
+// 		}
+// 		case 'typescript': {
+// 			return '.ts';
+// 		}
+// 		case 'javascriptreact': {
+// 			return '.jsx';
+// 		}
+// 		case 'typescriptreact': {
+// 			return '.tsx';
+// 		}
+// 		case 'python': {
+// 			return '.py';
+// 		}
+// 		default: {
+// 			return language;
+// 		}
+// 	}
+// }
 
