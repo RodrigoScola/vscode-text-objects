@@ -1,8 +1,8 @@
 function a(b: number, c: string) {
 	function d() {
-		console.log('this');
+		console.log(b);
 		function e() {
-			console.log('this');
+			console.log(c);
 		}
 	}
 	console.log('this');
@@ -15,3 +15,4 @@ function b() {
 function c() {}
 
 a(3, 'asdfadf');
+

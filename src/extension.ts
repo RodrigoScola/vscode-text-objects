@@ -1,9 +1,8 @@
 import assert from 'assert';
-import fs, { ObjectEncodingOptions } from 'fs';
-import path from 'path';
+import { ObjectEncodingOptions } from 'fs';
 import * as vscode from 'vscode';
 import { Config } from './config';
-import { CommandHistory, initCommands } from './motions/commands';
+import { initCommands } from './motions/commands';
 import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file
@@ -55,63 +54,6 @@ export async function activate(context: vscode.ExtensionContext) {
 	// );
 
 	await initCommands(context);
-
-	context.subscriptions.push(
-		vscode.commands.registerCommand('vscode-textobjects.bugFile', async () => {
-			const editor = vscode.window.activeTextEditor;
-			const bugsDir = config.bugPath();
-			if (!editor || !bugsDir) {
-				return;
-			}
-
-			let text = editor.document.getText();
-
-			let selection = editor.selection;
-			let start: string = '';
-			let end: string = '';
-
-			if (!selection.start.isEqual(selection.end)) {
-				text = editor.document.getText(selection);
-				start = editor.document.getText(
-					new vscode.Range(new vscode.Position(0, 0), selection.start)
-				);
-				end = editor.document.getText(
-					new vscode.Range(
-						selection.end,
-						new vscode.Position(editor.document.lineCount, Infinity)
-					)
-				);
-			}
-
-			const name =
-				new Date().getTime().toString() + getExtension(editor.document.languageId);
-
-			//add better validation?
-			fs.mkdirSync(bugsDir, { recursive: true });
-
-			let comment = '//';
-			if (editor.document.languageId === 'python') {
-				comment = '#';
-			}
-
-			let file = `
-                    ${comment} path: ${editor.document.fileName}\n
-                    `;
-
-			const lastCommand = CommandHistory.last();
-			if (lastCommand) {
-				file += `${comment} last command: ${lastCommand.name}\n`;
-			}
-
-			file += `${start}\n`;
-			file += `${comment}---- START \n`;
-			file += `${text}\n`;
-			file += `${comment}------ END \n`;
-			file += `${end}`;
-
-			fs.writeFileSync(path.join(bugsDir, name), file, bugFileOptions);
-		})
-	);
 }
 
 export function deactivate() {}
