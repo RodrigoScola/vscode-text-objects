@@ -40,8 +40,6 @@ export function previousPosition(nodes: Range[], index: Position): Range | undef
 			continue;
 		}
 
-		const closestDelta = closestRange!.start.line - index.line;
-
 		if (range.contains(index)) {
 			isInside = true;
 		}
