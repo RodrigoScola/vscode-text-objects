@@ -75,7 +75,6 @@ Language Support in development:
 
 -    add rest of inner and outers (arrays, objects...)
 -    change call to be all out and inner to be nearest
--    add methods to language queries and add them on functions
 -    do the else on if statements
 -    finish the languages support
 -    rhs is not for assignign, but reassigning

@@ -59,6 +59,10 @@ if (condition)
 {
     // code to execute if condition is true
 }
+else
+{
+    // code to execute if condition is true
+}
 
 // Standard for loop
 for (int i = 0; i < 10; i++)
@@ -315,7 +319,7 @@ data.intValue = 10;
 volatile int o = 0;
 
 // Static variables
-static int p = 50;
+static int p = data.intValue;
 
 extern int q;
 
