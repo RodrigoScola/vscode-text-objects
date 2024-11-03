@@ -50,18 +50,14 @@ export const CppQuery: Selector = {
 	['outer.class']: '(class_specifier) @class',
 	//todo fix this
 	['inner.class']: '(class_specifier body: ( field_declaration_list (_)+ @class ) )',
-	['outer.conditional']: [
-		`(if_statement) @conditional`,
-		`(conditional_expression) @conditional`,
-	].join('\n'),
+	['outer.conditional']: [`(if_statement) @conditional`, `(conditional_expression) @conditional`].join('\n'),
 	['inner.conditional']: [
 		`(if_statement consequence: (compound_statement (_)+ @conditional)) `,
 		`(conditional_expression consequence: (_) @conditional )`,
 	].join('\n'),
-	['inner.loop']: [
-		` (for_range_loop body: (compound_statement (_)+ @loop) ) `,
-		` (for_statement body: (compound_statement (_)+ @loop)) `,
-	].join('\n'),
+	['inner.loop']: [` (for_range_loop body: (compound_statement (_)+ @loop) ) `, ` (for_statement body: (compound_statement (_)+ @loop)) `].join(
+		'\n'
+	),
 	['outer.loop']: [` (for_range_loop) @loop `, ` (for_statement) @loop `].join('\n'),
 	['inner.string']: `
     (string_content) @string
@@ -77,9 +73,7 @@ export const CppQuery: Selector = {
 type:(struct_specifier)
  ) @object`,
 	].join('\n'),
-	['outer.variable']: [` (declaration) @variable `, ` (field_declaration) @variable `].join(
-		'\n'
-	),
+	['outer.variable']: [` (declaration) @variable `, ` (field_declaration) @variable `].join('\n'),
 	['outer.rhs']: [
 		`(declaration
  declarator:(init_declarator
@@ -97,4 +91,10 @@ type:(struct_specifier)
 	['inner.type']: ``,
 	['outer.type']: [`(primitive_type) @type`].join('\n'),
 	['outer.comment']: '(comment) @comment',
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

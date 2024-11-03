@@ -3,13 +3,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.parameters",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+p",
+			"key": "ctrl+t ctrl+p",
 			"mac": "cmd+s cmd+p"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.parameters",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+p",
+			"key": "ctrl+shift+t ctrl+shift+p",
 			"mac": "cmd+shift+s cmd+shift+p"
 		},
 		{
@@ -51,13 +51,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.type",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+t",
+			"key": "ctrl+t ctrl+t",
 			"mac": "cmd+s cmd+t"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.type",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+t",
+			"key": "ctrl+shift+t ctrl+shift+t",
 			"mac": "cmd+shift+s cmd+shift+t"
 		},
 		{
@@ -99,13 +99,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.comment",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+c",
+			"key": "ctrl+t ctrl+c",
 			"mac": "cmd+s cmd+c"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.comment",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+c",
+			"key": "ctrl+shift+t ctrl+shift+c",
 			"mac": "cmd+shift+s cmd+shift+c"
 		},
 		{
@@ -123,13 +123,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.function",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+f",
+			"key": "ctrl+t ctrl+f",
 			"mac": "cmd+s cmd+f"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.function",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+f",
+			"key": "ctrl+shift+t ctrl+shift+f",
 			"mac": "cmd+shift+s cmd+shift+f"
 		},
 		{
@@ -171,13 +171,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.call",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+m",
+			"key": "ctrl+t ctrl+m",
 			"mac": "cmd+s cmd+m"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.call",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+m",
+			"key": "ctrl+shift+t ctrl+shift+m",
 			"mac": "cmd+shift+s cmd+shift+m"
 		},
 		{
@@ -219,13 +219,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.array",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+a",
+			"key": "ctrl+t ctrl+a",
 			"mac": "cmd+s cmd+a"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.array",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+a",
+			"key": "ctrl+shift+t ctrl+shift+a",
 			"mac": "cmd+shift+s cmd+shift+a"
 		},
 		{
@@ -267,13 +267,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.class",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+k",
+			"key": "ctrl+t ctrl+k",
 			"mac": "cmd+s cmd+k"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.class",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+k",
+			"key": "ctrl+shift+t ctrl+shift+k",
 			"mac": "cmd+shift+s cmd+shift+k"
 		},
 		{
@@ -315,13 +315,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.conditional",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+s",
+			"key": "ctrl+t ctrl+s",
 			"mac": "cmd+s cmd+s"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.conditional",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+s",
+			"key": "ctrl+shift+t ctrl+shift+t",
 			"mac": "cmd+shift+s cmd+shift+s"
 		},
 		{
@@ -333,7 +333,7 @@
 		{
 			"command": "vscode-textobjects.select.previous.inner.conditional",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+i ctrl+shift+s",
+			"key": "ctrl+shift+i ctrl+shift+t",
 			"mac": "cmd+shift+i cmd+shift+s"
 		},
 		{
@@ -345,7 +345,7 @@
 		{
 			"command": "vscode-textobjects.goTo.previous.outer.conditional",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+g ctrl+shift+s",
+			"key": "ctrl+shift+g ctrl+shift+t",
 			"mac": "cmd+shift+g cmd+shift+s"
 		},
 		{
@@ -363,13 +363,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.loop",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+l",
+			"key": "ctrl+t ctrl+l",
 			"mac": "cmd+s cmd+l"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.loop",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+l",
+			"key": "ctrl+shift+t ctrl+shift+l",
 			"mac": "cmd+shift+s cmd+shift+l"
 		},
 		{
@@ -411,13 +411,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.string",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+s",
+			"key": "ctrl+t ctrl+s",
 			"mac": "cmd+s cmd+s"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.string",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+s",
+			"key": "ctrl+shift+t ctrl+shift+t",
 			"mac": "cmd+shift+s cmd+shift+s"
 		},
 		{
@@ -429,7 +429,7 @@
 		{
 			"command": "vscode-textobjects.select.previous.inner.string",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+i ctrl+shift+s",
+			"key": "ctrl+shift+i ctrl+shift+t",
 			"mac": "cmd+shift+i cmd+shift+s"
 		},
 		{
@@ -441,7 +441,7 @@
 		{
 			"command": "vscode-textobjects.goTo.previous.outer.string",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+g ctrl+shift+s",
+			"key": "ctrl+shift+g ctrl+shift+t",
 			"mac": "cmd+shift+g cmd+shift+s"
 		},
 		{
@@ -459,13 +459,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.object",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+s",
+			"key": "ctrl+t ctrl+s",
 			"mac": "cmd+s cmd+s"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.object",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+s",
+			"key": "ctrl+shift+t ctrl+shift+t",
 			"mac": "cmd+shift+s cmd+shift+s"
 		},
 		{
@@ -477,7 +477,7 @@
 		{
 			"command": "vscode-textobjects.select.previous.inner.object",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+i ctrl+shift+s",
+			"key": "ctrl+shift+i ctrl+shift+t",
 			"mac": "cmd+shift+i cmd+shift+s"
 		},
 		{
@@ -489,7 +489,7 @@
 		{
 			"command": "vscode-textobjects.goTo.previous.outer.object",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+g ctrl+shift+s",
+			"key": "ctrl+shift+g ctrl+shift+t",
 			"mac": "cmd+shift+g cmd+shift+s"
 		},
 		{
@@ -507,13 +507,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.variable",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+v",
+			"key": "ctrl+t ctrl+v",
 			"mac": "cmd+s cmd+v"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.variable",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+v",
+			"key": "ctrl+shift+t ctrl+shift+v",
 			"mac": "cmd+shift+s cmd+shift+v"
 		},
 		{
@@ -531,13 +531,13 @@
 		{
 			"command": "vscode-textobjects.select.next.outer.rhs",
 			"when": "editorTextFocus",
-			"key": "ctrl+s ctrl+r",
+			"key": "ctrl+t ctrl+r",
 			"mac": "cmd+s cmd+r"
 		},
 		{
 			"command": "vscode-textobjects.select.previous.outer.rhs",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+s ctrl+shift+r",
+			"key": "ctrl+shift+t ctrl+shift+r",
 			"mac": "cmd+shift+s cmd+shift+r"
 		},
 		{
@@ -578,4 +578,3 @@
 		}
 	]
 }
-

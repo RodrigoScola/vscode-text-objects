@@ -93,10 +93,7 @@ export const GoQuery: Selector = {
 	].join('\n'),
 	'inner.string':
 		//golang doesnt have inner string?
-		[
-			`(raw_string_literal) @string`,
-			`(interpreted_string_literal) @string`,
-		].join('\n'),
+		[`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 	'outer.loop': '',
 	'outer.object': [
 		`(type_declaration
@@ -110,10 +107,7 @@ export const GoQuery: Selector = {
                )
                ) @struct`,
 	].join('\n'),
-	'outer.string': [
-		`(raw_string_literal) @string`,
-		`(interpreted_string_literal) @string`,
-	].join('\n'),
+	'outer.string': [`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 
 	'outer.rhs': [
 		`(short_var_declaration
@@ -128,5 +122,10 @@ export const GoQuery: Selector = {
                (var_declaration) @variable
                `,
 	].join('\n'),
-};
 
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
+};

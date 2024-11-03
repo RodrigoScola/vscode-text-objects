@@ -26,7 +26,12 @@ export const JsonSelector: Selector = {
 	['outer.object']: JsQuery['outer.object'],
 	['outer.variable']: '',
 	['outer.rhs']: JsQuery['outer.rhs'],
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };
 
 //since the syntax is mostly the same, for now we can keep it the same
-

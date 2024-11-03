@@ -81,7 +81,6 @@ export class LanguageParser {
 		});
 	}
 	static path(name: string) {
-		assert(name in Languages, 'invalid language to parse: ' + name);
 		return path.join(__dirname, '..', 'parsers', `tree-sitter-${name}.wasm`); // Adjust the path if necessary
 	}
 	static async get(langname: string) {
@@ -95,12 +94,14 @@ export class LanguageParser {
 			const parseName = Languages[langname as keyof typeof Languages];
 
 			assert(parseName, 'could not find parser for ' + langname);
+			console.log(parseName, 'parsename');
 			const p = this.path(parseName.module);
+			console.log('path', p);
 			lang = await parser.Language.load(p);
 		} catch (err) {
 			console.error('could not set language', err);
 		}
-		assert(lang, 'could not set language ' + lang);
+		assert(lang, 'could not set language ' + langname);
 		const p = new Parser();
 		p.setLanguage(lang);
 		LanguageParser.initedLanguages[langname as keyof typeof Languages] = {

@@ -1,6 +1,7 @@
 import assert from 'assert';
 import { Position, Range, Selection, TextEditor } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
+import { QueryCommand } from '../QueryCommand';
 
 export type JoinedPoint = {
 	startPosition: Parser.Point;
@@ -86,10 +87,15 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 }
 
 const greedyChars = [';', ','];
-export function select(startPos: Position, endPos: Position, editor: TextEditor) {
+export function formatSelection(command: QueryCommand, startPos: Position, endPos: Position, editor: TextEditor) {
 	// const cursor = editor.selection.active;
 
 	const endLine = editor.document.getText(new Range(startPos, endPos));
+
+	if (command.name === 'inner.string' && endLine.match(/['"`]/)) {
+		startPos = new Position(startPos.line, startPos.character + 1);
+		endPos = new Position(endPos.line, endPos.character - 1);
+	}
 
 	if (greedyChars.includes(endLine.at(-1)!)) {
 		endPos = new Position(endPos.line, endPos.character + 1);

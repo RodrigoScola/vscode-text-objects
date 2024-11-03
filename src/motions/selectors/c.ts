@@ -1,13 +1,8 @@
 import { Selector } from '../commands';
 
 export const C: Selector = {
-	['outer.function']: [
-		`(function_definition) @function`,
-		`(declaration declarator: (function_declarator)) @function`,
-	].join('\n'),
-	['inner.function']: [`(function_definition body: (compound_statement (_)+ @function)) `].join(
-		'\n'
-	),
+	['outer.function']: [`(function_definition) @function`, `(declaration declarator: (function_declarator)) @function`].join('\n'),
+	['inner.function']: [`(function_definition body: (compound_statement (_)+ @function)) `].join('\n'),
 	['outer.call']: '(call_expression) @call',
 	['inner.call']: '(call_expression arguments: (argument_list (_) @call )) ',
 	['outer.parameters']: '(parameter_list (_) @parameters) ',
@@ -17,19 +12,12 @@ export const C: Selector = {
                         value:(_) @array)`,
 	['outer.class']: `(struct_specifier) @class`,
 	['inner.class']: `(struct_specifier body: (field_declaration_list (_)+ @class ))`,
-	['outer.conditional']: [
-		`(if_statement) @conditional`,
-		` (conditional_expression) @conditional`,
-	].join('\n'),
+	['outer.conditional']: [`(if_statement) @conditional`, ` (conditional_expression) @conditional`].join('\n'),
 	['inner.conditional']: [
 		`(if_statement consequence: (compound_statement (_)+ @conditional))`,
 		` (conditional_expression consequence: (_) @conditional)`,
 	].join('\n'),
-	['outer.loop']: [
-		`(for_statement) @loops`,
-		`(while_statement) @loops`,
-		`(do_statement) @loops`,
-	].join('\n'),
+	['outer.loop']: [`(for_statement) @loops`, `(while_statement) @loops`, `(do_statement) @loops`].join('\n'),
 	['inner.loop']: [
 		`(for_statement body: (compound_statement (_)+ @loops)) `,
 		`(while_statement body: (compound_statement (_)+ @loops)) `,
@@ -49,5 +37,10 @@ export const C: Selector = {
 		`(struct_specifier) @types`,
 	].join('\n'),
 	['outer.comment']: [`(comment) @comment`].join('\n'),
-};
 
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
+};

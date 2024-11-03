@@ -5,10 +5,11 @@ import { editor } from '../extension';
 import { filterLargestMatches } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { nextPosition } from './position/move';
-import { closestPos, previousPosition, select } from './position/selection';
+import { closestPos, formatSelection, previousPosition } from './position/selection';
 import { QueryCommand } from './QueryCommand';
 import { C } from './selectors/c';
 import { CppQuery } from './selectors/cpp';
+import { Csharp } from './selectors/csharp';
 import { GoQuery } from './selectors/go';
 import { JAVA } from './selectors/java';
 import { JsQuery } from './selectors/javascript';
@@ -45,10 +46,15 @@ export interface Selector {
 	['inner.conditional']: string;
 	['outer.variable']: string;
 	['outer.rhs']: string;
+	['inner.rhs']: string;
+	['outer.lhs']: string;
+	['inner.lhs']: string;
 	['outer.class']: string;
 	['inner.class']: string;
 	['outer.array']: string;
+	['inner.array']: string;
 	['outer.object']: string;
+	['inner.object']: string;
 	['outer.string']: string;
 	['inner.string']: string;
 }
@@ -73,7 +79,7 @@ SelectorFactory.set('json', JsonSelector);
 SelectorFactory.set('jsonc', JsonSelector);
 SelectorFactory.set('python', PythonQuery);
 SelectorFactory.set('cpp', CppQuery);
-SelectorFactory.set('csharp', CppQuery);
+SelectorFactory.set('csharp', Csharp);
 SelectorFactory.set('rust', Rust);
 SelectorFactory.set('c', C);
 SelectorFactory.set('yaml', C);
@@ -112,9 +118,7 @@ function groupElements(matches: QueryMatch[]): QueryMatch[] {
 }
 
 export const selectCommands = {
-	function: new QueryCommand('outer.function')
-		.setGetPosition(closestPos)
-		.setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function').setGetPosition(closestPos).setOnMatch(filterLargestMatches),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(closestPos),
 	loop: new QueryCommand('outer.loop').setGetPosition(closestPos),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(closestPos),
@@ -129,9 +133,7 @@ export const selectCommands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(closestPos),
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters')
-		.setGetPosition(closestPos)
-		.setOnMatch(groupElements),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(closestPos).setOnMatch(groupElements),
 	call: new QueryCommand('outer.call').setOnMatch(groupElements).setGetPosition(closestPos),
 	innerCall: new QueryCommand('inner.call').setGetPosition(closestPos),
 	innerParameters: new QueryCommand('inner.parameters').setGetPosition(closestPos),
@@ -141,9 +143,7 @@ export const selectCommands = {
 };
 
 export const selectPreviousCommands = {
-	function: new QueryCommand('outer.function')
-		.setGetPosition(previousPosition)
-		.setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function').setGetPosition(previousPosition).setOnMatch(filterLargestMatches),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
 	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),
@@ -157,12 +157,8 @@ export const selectPreviousCommands = {
 	array: new QueryCommand('outer.array').setGetPosition(closestPos),
 	object: new QueryCommand('outer.object').setGetPosition(closestPos),
 	string: new QueryCommand('outer.string').setGetPosition(closestPos),
-	parameters: new QueryCommand('outer.parameters')
-		.setGetPosition(previousPosition)
-		.setOnMatch(groupElements),
-	call: new QueryCommand('outer.call')
-		.setGetPosition(previousPosition)
-		.setOnMatch(groupElements),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPosition).setOnMatch(groupElements),
+	call: new QueryCommand('outer.call').setGetPosition(previousPosition).setOnMatch(groupElements),
 	innerCall: new QueryCommand('inner.call').setGetPosition(previousPosition),
 	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPosition),
 	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
@@ -171,9 +167,7 @@ export const selectPreviousCommands = {
 };
 
 export const GotoCommands = {
-	function: new QueryCommand('outer.function')
-		.setGetPosition(nextPosition)
-		.setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function').setGetPosition(nextPosition).setOnMatch(filterLargestMatches),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(nextPosition),
 	loop: new QueryCommand('outer.loop').setGetPosition(nextPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(nextPosition),
@@ -188,26 +182,16 @@ export const GotoCommands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(nextPosition),
 	array: new QueryCommand('outer.array').setGetPosition(nextPosition),
 	object: new QueryCommand('outer.object').setGetPosition(nextPosition),
-	parameters: new QueryCommand('outer.parameters')
-		.setGetPosition(nextPosition)
-		.setOnMatch(groupElements),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(nextPosition).setOnMatch(groupElements),
 	call: new QueryCommand('outer.call').setOnMatch(groupElements).setGetPosition(nextPosition),
-	innerCall: new QueryCommand('inner.call')
-		.setOnMatch(groupElements)
-		.setGetPosition(nextPosition),
-	innerParameters: new QueryCommand('inner.parameters')
-		.setGetPosition(nextPosition)
-		.setOnMatch(groupElements),
+	innerCall: new QueryCommand('inner.call').setOnMatch(groupElements).setGetPosition(nextPosition),
+	innerParameters: new QueryCommand('inner.parameters').setGetPosition(nextPosition).setOnMatch(groupElements),
 	type: new QueryCommand('outer.type').setGetPosition(nextPosition),
 	innerType: new QueryCommand('inner.type').setGetPosition(nextPosition),
 	comments: new QueryCommand('outer.comment').setGetPosition(nextPosition),
 };
 export const GotoPreviousCommands = {
-	function: new QueryCommand('outer.function')
-		.setGetPosition(previousPosition)
-		.setOnMatch(function (matches) {
-			return filterLargestMatches(matches);
-		}),
+	function: new QueryCommand('outer.function').setGetPosition(previousPosition).setOnMatch(filterLargestMatches),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
 	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),
@@ -222,13 +206,9 @@ export const GotoPreviousCommands = {
 	innerClass: new QueryCommand('inner.class').setGetPosition(previousPosition),
 	array: new QueryCommand('outer.array').setGetPosition(previousPosition),
 	object: new QueryCommand('outer.object').setGetPosition(previousPosition),
-	parameters: new QueryCommand('outer.parameters')
-		.setGetPosition(previousPosition)
-		.setOnMatch(groupElements),
+	parameters: new QueryCommand('outer.parameters').setGetPosition(previousPosition).setOnMatch(groupElements),
 	call: new QueryCommand('outer.call').setGetPosition(previousPosition),
-	innerCall: new QueryCommand('inner.call')
-		.setOnMatch(groupElements)
-		.setGetPosition(previousPosition),
+	innerCall: new QueryCommand('inner.call').setOnMatch(groupElements).setGetPosition(previousPosition),
 	innerParameters: new QueryCommand('inner.parameters').setGetPosition(previousPosition),
 	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
 	innerType: new QueryCommand('inner.type').setGetPosition(previousPosition),
@@ -246,11 +226,7 @@ export function initCommands(context: vscode.ExtensionContext) {
 		InitCommand(makeName(`goTo.next.${command.name}`), (ctx) => command.select(ctx), goTo);
 	}
 	for (const command of Object.values(GotoPreviousCommands)) {
-		InitCommand(
-			makeName(`goTo.previous.${command.name}`),
-			(ctx) => command.select(ctx),
-			goTo
-		);
+		InitCommand(makeName(`goTo.previous.${command.name}`), (ctx) => command.select(ctx), goTo);
 	}
 
 	for (const command of Object.values(selectPreviousCommands)) {
@@ -259,7 +235,7 @@ export function initCommands(context: vscode.ExtensionContext) {
 				makeName(`select.previous.${command.name}`),
 				(context) => command.select(context),
 				function (position) {
-					select(position.start, position.end, editor.getEditor());
+					formatSelection(command, position.start, position.end, editor.getEditor());
 				}
 			)
 		);
@@ -269,7 +245,7 @@ export function initCommands(context: vscode.ExtensionContext) {
 			makeName(`select.next.${command.name}`),
 			(context) => command.select(context),
 			function (position) {
-				select(position.start, position.end, editor.getEditor());
+				formatSelection(command, position.start, position.end, editor.getEditor());
 			}
 		);
 	}
@@ -330,4 +306,3 @@ export class CommandHistory {
 		CommandHistory.commands.push(command);
 	}
 }
-

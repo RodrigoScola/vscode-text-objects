@@ -34,12 +34,9 @@ export const LUA: Selector = {
 		'(if_statement consequence: (_) @conditional )',
 		'(if_statement consequence: (_) @conditional (comment) @comment )',
 	].join('\n'),
-	['outer.loop']: [
-		`(while_statement) @loop`,
-		`(repeat_statement) @loop`,
-		`(for_numeric_statement) @loop`,
-		`(for_generic_statement) @loop`,
-	].join('\n'),
+	['outer.loop']: [`(while_statement) @loop`, `(repeat_statement) @loop`, `(for_numeric_statement) @loop`, `(for_generic_statement) @loop`].join(
+		'\n'
+	),
 
 	['inner.loop']: [
 		`(while_statement body: (block (_)+ @loop )) `,
@@ -50,10 +47,7 @@ export const LUA: Selector = {
 	['inner.string']: '(string) @string',
 	['outer.string']: '(string) @string',
 	['outer.object']: '(table) @object',
-	['outer.variable']: [
-		`(variable_assignment) @variable`,
-		`(local_variable_declaration) @variable`,
-	].join('\n'),
+	['outer.variable']: [`(variable_assignment) @variable`, `(local_variable_declaration) @variable`].join('\n'),
 	['outer.rhs']: [
 		` (local_variable_declaration
   (expression_list value:(_) @rhs))
@@ -67,4 +61,10 @@ export const LUA: Selector = {
 	['outer.comment']: '(comment) @comment',
 	['inner.type']: '',
 	['outer.type']: '',
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

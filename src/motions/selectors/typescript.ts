@@ -104,4 +104,10 @@ export const TsSelector: Selector = {
                `
 	),
 	['outer.variable']: JsQuery['outer.variable'].concat(`(type_alias_declaration) @type`),
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

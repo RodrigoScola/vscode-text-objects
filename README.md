@@ -54,11 +54,11 @@ Language Support in development:
 -    lua
 -    java
 -    toml
+-    c#
 
 ### Planned Languages
 
 -    yaml
--    c#
 
 ## Roadmap
 
@@ -68,12 +68,13 @@ Language Support in development:
 -    finalize gotos - DONE
 -    do backward gotos - DONE
 -    do backward selection - DONE
+-    add yank commands - DONE
+-    add an inner string convention for languages that do not have it? should be good - DONE
+-    fix command titles - DONE
+-    put back the keybinds - DONE
 
--    add yank commands
 -    add rest of inner and outers (arrays, objects...)
--    check if inner parameter and/or calls would be better being
-     outer : all parameters or call arguments
-     inner : the first parameter or call argument
+-    change call to be all out and inner to be nearest
 -    add methods to language queries and add them on functions
 -    do the else on if statements
 -    finish the languages support
@@ -2546,4 +2547,3 @@ Vscode vim does not allow editing of the yank register. And using vscode's api t
 ## Disclaimer
 
 Although i like this extension, I am uncertain about the development past my needs. Since extension development is not my career (at least not for now). I dont intend to have a lot going on for this extension.
-

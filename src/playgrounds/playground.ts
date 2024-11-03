@@ -1,4 +1,5 @@
-function a(b: number, c: string) {
+export function a(b: number, c: string) {
+	console.log(b);
 	function d() {
 		console.log(b);
 		function e() {
@@ -16,3 +17,4 @@ function c() {}
 
 a(3, 'asdfadf');
 
+export class M {}

@@ -27,12 +27,7 @@ export const Rust: Selector = {
 		`(trait_item) @class`,
 		`(enum_item) @class`,
 	].join('\n'),
-	['outer.class']: [
-		`(struct_item) @class`,
-		`(impl_item) @class`,
-		`(trait_item) @class`,
-		`(enum_item) @class`,
-	].join('\n'),
+	['outer.class']: [`(struct_item) @class`, `(impl_item) @class`, `(trait_item) @class`, `(enum_item) @class`].join('\n'),
 	['inner.class']: [
 		`(struct_item body: (field_declaration_list (_)+ @class )) `,
 		`(impl_item body: (declaration_list (_)+ @class )) `,
@@ -55,30 +50,20 @@ export const Rust: Selector = {
 		`(while_expression body: (block (_)+ @loop )) `,
 		`(for_expression body: (block (_)+ @loop )) `,
 	].join('\n'),
-	['outer.loop']: [
-		`(loop_expression) @loop`,
-		`(while_expression) @loop`,
-		`(for_expression) @loop`,
-	].join('\n'),
+	['outer.loop']: [`(loop_expression) @loop`, `(while_expression) @loop`, `(for_expression) @loop`].join('\n'),
 	// maybe? figure out a way that they can have inner string, because strings are only "
 	['inner.string']: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
 	['outer.string']: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
-	['outer.object']: [
-		`(struct_item) @object`,
-		`(struct_expression) @object`,
-		`(enum_item) @object`,
-	].join('\n'),
-	['outer.variable']: [
-		`(let_declaration) @variable`,
-		`(const_item) @variable`,
-		`(static_item) @variable`,
-	].join('\n'),
+	['outer.object']: [`(struct_item) @object`, `(struct_expression) @object`, `(enum_item) @object`].join('\n'),
+	['outer.variable']: [`(let_declaration) @variable`, `(const_item) @variable`, `(static_item) @variable`].join('\n'),
 	['outer.rhs']: [`(let_declaration value: (_) @rhs)`].join('\n'),
 	['outer.comment']: [` (line_comment) @comment `, ` (block_comment) @comment `].join('\n'),
-	['outer.type']: [
-		`(type_identifier) @type`,
-		`(primitive_type) @type`,
-		`(struct_item) @class`,
-	].join('\n'),
+	['outer.type']: [`(type_identifier) @type`, `(primitive_type) @type`, `(struct_item) @class`].join('\n'),
 	['inner.type']: '(struct_item body: (field_declaration_list (_) @types ))',
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

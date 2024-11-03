@@ -24,4 +24,10 @@ export const TOML: Selector = {
 	['inner.type']: '',
 	['outer.comment']: '(comment)+ @comment',
 	['outer.type']: '',
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

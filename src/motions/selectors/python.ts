@@ -47,4 +47,10 @@ export const PythonQuery: Selector = {
     `,
 	['outer.type']: '',
 	['inner.type']: '',
+
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

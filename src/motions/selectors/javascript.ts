@@ -10,51 +10,53 @@ export const JsQuery: Selector = {
 		`(method_definition
 		            name: (_) @function.name
 		            body: (_) @function.body) @function`,
-		`(function_expression
-		  (identifier)? @function_name
-		  (#not-eq? @function_name "identifier")) @anonymous_function`,
-
-		`
-		               (arrow_function
-		            parameters: (formal_parameters
-		              (identifier))
-		            body: (statement_block ) @function.body) @anonymous_function`,
 
 		`(export_statement
 		                    (function_declaration
 		                    name: (identifier) @function.name
 		                    body: (statement_block) @function.body
-		                    ) @exportedFunction) @export`,
+		                    )) @function`,
+
 		`
 					   (function_declaration
 					     name: (identifier) @function.name
 					     body: (statement_block) @function.body) @function
 					                `,
+		`(function_expression
+				  (identifier)? @function_name
+				  (#not-eq? @function_name "identifier")) @anonymous_function`,
+
 		`
-					   (lexical_declaration
-					               (variable_declarator
-					               name : (identifier) @function.name
-					   value: (arrow_function) @function.body)) @function
-					                `,
+				               (arrow_function
+				            parameters: (formal_parameters
+				              (identifier))
+				            body: (statement_block ) @function.body) @anonymous_function`,
+
 		`
-        (export_statement
-        (lexical_declaration
-        (variable_declarator
-        (function_expression
-		  name: (identifier)? @function_name)))) @function
-			      `,
+							   (lexical_declaration
+							               (variable_declarator
+							               name : (identifier) @function.name
+							   value: (arrow_function) @function.body)) @function
+							                `,
 		`
-			     (export_statement
-			     (lexical_declaration
-			     (variable_declarator
-			     name: (identifier) @function.name
-			     value: (arrow_function) @function.body))) @function
-			      `,
+		        (export_statement
+		        (lexical_declaration
+		        (variable_declarator
+		        (function_expression
+				  name: (identifier)? @function_name)))) @function
+					      `,
 		`
-               (arrow_function
-  (identifier)? @function_name
-  (#not-eq? @function_name "identifier")) @anonymous_function
-                `,
+					     (export_statement
+					     (lexical_declaration
+					     (variable_declarator
+					     name: (identifier) @function.name
+					     value: (arrow_function) @function.body))) @function
+					      `,
+		`
+		               (arrow_function
+		  (identifier)? @function_name
+		  (#not-eq? @function_name "identifier")) @anonymous_function
+		                `,
 	].join('\n'),
 
 	['inner.function']: [
@@ -110,6 +112,11 @@ export const JsQuery: Selector = {
      (_) @inner_statement))
      `,
 	].join('\n'),
+
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
+
 	'outer.rhs': [
 		`(variable_declarator
      value: (_) @rhs)`,
@@ -144,14 +151,15 @@ export const JsQuery: Selector = {
 	'outer.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
 	'inner.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
 	'outer.class': [
+		` ( class_declaration ) @class
+                    `,
 		`
                     (export_statement
                     declaration: (
                     class_declaration 
-                    name: (identifier) @class.name
+                    name: (type_identifier) @class.name
                     body: (class_body) @class.body
-                    ) @class
-                    ) @export
+                    ) ) @export
                     `,
 	].join('\n'),
 	'inner.class': [
@@ -168,16 +176,17 @@ export const JsQuery: Selector = {
 	].join('\n'),
 
 	'outer.array': ['(array) @array'].join('\n'),
+	'inner.array': ['(array (_) @array) '].join('\n'),
 	'outer.object': ['(object) @object'].join('\n'),
+	'inner.object': ['(object (_) @object ) '].join('\n'),
 	'inner.string': [
 		`(string
-                    (_)* @string
-               ) `,
+	                (_)* @string
+	           ) `,
 
 		`(template_string
-                    (_)* @string
-               ) `,
+	                (_)* @string
+	           ) `,
 	].join('\n'),
 	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
 };
-
