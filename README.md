@@ -21,18 +21,6 @@ The current Fully supported nodes are:
 -    Objects
 -    Comments
 
-The current in development nodes are
-
--    Conditionals: unsure if they work in all cases
--    Variables: unsure if they work in all cases
--    Variable assignments:
-     -    unsure if they work in all cases
-     -    only work in assignment for the first time, working on whenever the variable is assigned the subsequent times
--    Types: very bare bones (only in typescript and only on type and interface creations)
--    Inner Strings: Only supported in javascript for now
--    Calls: only started
--    inner Calls: only started
-
 #### Possible nodes support
 
 Blocks:
