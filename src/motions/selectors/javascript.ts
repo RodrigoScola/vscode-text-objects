@@ -7,56 +7,31 @@ export const JsQuery: Selector = {
 	['inner.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
 	['outer.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
 	['outer.function']: [
-		`(method_definition
-		            name: (_) @function.name
-		            body: (_) @function.body) @function`,
+		`(method_definition) @function`,
 
-		`(export_statement
-		                    (function_declaration
-		                    name: (identifier) @function.name
-		                    body: (statement_block) @function.body
-		                    )) @function`,
+		`(export_statement (function_declaration)) @function`,
 
-		`
-					   (function_declaration
-					     name: (identifier) @function.name
-					     body: (statement_block) @function.body) @function
-					                `,
-		`(function_expression
-				  (identifier)? @function_name
-				  (#not-eq? @function_name "identifier")) @anonymous_function`,
+		` (function_declaration) @function `,
+		` (arrow_function) @function`,
 
-		`
-				               (arrow_function
-				            parameters: (formal_parameters
-				              (identifier))
-				            body: (statement_block ) @function.body) @anonymous_function`,
-
-		`
-							   (lexical_declaration
+		` (lexical_declaration
 							               (variable_declarator
-							               name : (identifier) @function.name
 							   value: (arrow_function) @function.body)) @function
 							                `,
 		`
 		        (export_statement
 		        (lexical_declaration
 		        (variable_declarator
-		        (function_expression
-				  name: (identifier)? @function_name)))) @function
+		        (function_expression)))) @function
 					      `,
 		`
 					     (export_statement
 					     (lexical_declaration
 					     (variable_declarator
-					     name: (identifier) @function.name
-					     value: (arrow_function) @function.body))) @function
+					     value: (arrow_function) ))) @function
 					      `,
-		`
-		               (arrow_function
-		  (identifier)? @function_name
-		  (#not-eq? @function_name "identifier")) @anonymous_function
-		                `,
+		,
+		`(function_expression) @function`,
 	].join('\n'),
 
 	['inner.function']: [

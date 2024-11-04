@@ -3,16 +3,28 @@ import { JoinedPoint } from '../motions/position/selection';
 
 import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';
-import { NODES } from '../constants';
-import { QueryContext } from '../motions/commands';
 import { NodePool } from '../utils/pooling';
 
 // Define a function to calculate the size of a match based on its start and end positions.
 function getMatchSize(match: QueryMatch): number {
-	const captures = match.captures;
-	const startNode = captures[0].node.startIndex;
-	const endNode = captures[captures.length - 1].node.endIndex;
-	return endNode - startNode;
+	let minNode = Infinity;
+	let maxNode = -Infinity;
+
+	for (let i = 0; i < match.captures.length; i++) {
+		const capture = match.captures[i];
+		assert.ok(capture, 'invalid capture');
+		if (capture.node.startIndex < minNode) {
+			minNode = capture.node.startIndex;
+		}
+
+		if (capture.node.endIndex > maxNode) {
+			maxNode = capture.node.endIndex;
+		}
+	}
+
+	assert(maxNode >= minNode, 'they should never be less than one another');
+
+	return maxNode - minNode;
 }
 
 function exists(captures: parser.QueryCapture[], name: string): parser.QueryCapture | undefined {
@@ -25,55 +37,31 @@ function exists(captures: parser.QueryCapture[], name: string): parser.QueryCapt
 }
 
 // Function to filter the largest matches
-export function filterLargestMatches(matches: QueryMatch[], context: QueryContext): QueryMatch[] {
-	if (context.language !== 'javascript') {
-		return matches;
+export function filterDuplicates(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
+	const matchSelector = new Map<string, QueryMatch>();
+
+	for (const match of matches) {
+		for (const capture of match.captures) {
+			console.log(capture);
+
+			if (selectors.includes(capture.name) && matchSelector.has(capture.node.text)) {
+				console.log(`file: nodes.ts:49 ~ filterDuplicates ~ capture.node.text:`, capture.node.text);
+
+				console.log(capture.name);
+				console.log(matchSelector.get(capture.node.text));
+			}
+
+			if (selectors.includes(capture.name) && !matchSelector.has(capture.node.text)) {
+				matchSelector.set(capture.node.text, match);
+				break;
+			}
+		}
 	}
 
-	const idMap = new Map<number, QueryMatch>();
+	console.log(matches.length);
+	console.log(matchSelector.size);
 
-	return matches.reduce((filtered: QueryMatch[], match: QueryMatch) => {
-		for (const cap of match.captures) {
-			if (idMap.has(cap.node.id)) {
-				return filtered;
-			}
-			idMap.set(cap.node.id, match);
-			filtered.push(match);
-			// return filtered;
-		}
-
-		if (exists(match.captures, 'anonymous_function')) {
-			filtered.push(match);
-			return filtered;
-		}
-
-		// Extract the function name (or unique identifier) from the match
-		const functionName = exists(match.captures, NODES.FUNCTION_NAME)?.node.text || '';
-
-		// Check if there is an existing match for the same function
-		const existingMatch = filtered.find((f) => {
-			const existingFunctionName = f.captures.find((capture) => capture.name === NODES.FUNCTION_NAME)?.node.text || '';
-			return existingFunctionName === functionName;
-		});
-
-		if (!existingMatch) {
-			filtered.push(match);
-			return filtered;
-		}
-
-		// Calculate the sizes
-		const existingSize = getMatchSize(existingMatch);
-		const currentSize = getMatchSize(match);
-
-		if (currentSize > existingSize) {
-			return filtered.map((f) => {
-				const existingFunctionName = f.captures.find((capture) => capture.name === NODES.FUNCTION_NAME)?.node.text || '';
-				return existingFunctionName === functionName ? match : f;
-			});
-		}
-
-		return filtered;
-	}, []);
+	return Array.from(matchSelector.values());
 }
 
 export const pointPool = new NodePool<JoinedPoint>(() => ({

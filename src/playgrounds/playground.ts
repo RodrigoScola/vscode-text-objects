@@ -9,6 +9,8 @@ export function a(b: number, c: string) {
 	console.log('this');
 }
 
+export const d = function () {};
+
 function b() {
 	console.log('');
 }

@@ -1,8 +1,9 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
+import { NODES } from '../constants';
 import { editor } from '../extension';
-import { filterLargestMatches } from '../parsing/nodes';
+import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { nextPosition } from './position/move';
 import { closestPos, formatSelection, previousPosition } from './position/selection';
@@ -118,7 +119,9 @@ function groupElements(matches: QueryMatch[]): QueryMatch[] {
 }
 
 export const selectCommands = {
-	function: new QueryCommand('outer.function').setGetPosition(closestPos).setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function')
+		.setGetPosition(closestPos)
+		.setOnMatch((matches) => filterDuplicates(matches, [NODES.FUNCTION])),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(closestPos),
 	loop: new QueryCommand('outer.loop').setGetPosition(closestPos),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(closestPos),
@@ -148,7 +151,9 @@ export const selectCommands = {
 };
 
 export const selectPreviousCommands = {
-	function: new QueryCommand('outer.function').setGetPosition(previousPosition).setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function')
+		.setGetPosition(previousPosition)
+		.setOnMatch((matches) => filterDuplicates(matches, [NODES.FUNCTION])),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
 	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),
@@ -177,7 +182,9 @@ export const selectPreviousCommands = {
 };
 
 export const GotoCommands = {
-	function: new QueryCommand('outer.function').setGetPosition(nextPosition).setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function')
+		.setGetPosition(nextPosition)
+		.setOnMatch((m) => filterDuplicates(m, [NODES.FUNCTION])),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(nextPosition),
 	loop: new QueryCommand('outer.loop').setGetPosition(nextPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(nextPosition),
@@ -206,7 +213,9 @@ export const GotoCommands = {
 	comments: new QueryCommand('outer.comment').setGetPosition(nextPosition),
 };
 export const GotoPreviousCommands = {
-	function: new QueryCommand('outer.function').setGetPosition(previousPosition).setOnMatch(filterLargestMatches),
+	function: new QueryCommand('outer.function')
+		.setGetPosition(previousPosition)
+		.setOnMatch((m) => filterDuplicates(m, [NODES.FUNCTION])),
 	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
 	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),

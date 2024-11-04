@@ -37,7 +37,10 @@ export class QueryCommand {
 
 	async select(context: QueryContext) {
 		assert(this, 'this is undefined');
-		assert(typeof this.getPosition === 'function', 'this.getPosition is not a function, received:' + typeof this.getPosition);
+		assert(
+			typeof this.getPosition === 'function',
+			'this.getPosition is not a function, received:' + typeof this.getPosition
+		);
 		lastCommand = this;
 		const parser = await LanguageParser.get(context.language);
 
@@ -47,7 +50,7 @@ export class QueryCommand {
 
 		const selector = SelectorFactory.get(context.language)[this.name];
 
-		console.log(selector, context.language);
+		// console.log(selector, context.language);
 		assert(selector, this.name + ' is an invalid selector for ' + context.language);
 
 		const query = parser.language.query(selector);
@@ -72,7 +75,10 @@ export class QueryCommand {
 			.fill(undefined)
 			.map((_, index) => {
 				const node = nodes[index];
-				assert(node.startPosition.column >= 0, 'cannot be less than 0, received: ' + node.startPosition.column);
+				assert(
+					node.startPosition.column >= 0,
+					'cannot be less than 0, received: ' + node.startPosition.column
+				);
 				return new Range(
 					new Position(node.startPosition.row, node.startPosition.column),
 					new Position(node.endPosition.row, node.endPosition.column)
