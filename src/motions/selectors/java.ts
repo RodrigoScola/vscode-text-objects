@@ -40,7 +40,12 @@ export const JAVA: Selector = {
 		` (while_statement body:(block (_) @loop)) `,
 		` (do_statement body:(block (_) @loop)) `,
 	].join('\n'),
-	['outer.loop']: [`(for_statement) @loop`, `(enhanced_for_statement) @loop`, `(while_statement) @loop`, `(do_statement) @loop`].join('\n'),
+	['outer.loop']: [
+		`(for_statement) @loop`,
+		`(enhanced_for_statement) @loop`,
+		`(while_statement) @loop`,
+		`(do_statement) @loop`,
+	].join('\n'),
 	['inner.string']: ['(string_fragment) @string', `(multiline_string_fragment) @string`].join('\n'),
 	['outer.string']: [`(string_literal) @string`, `(character_literal) @string`].join('\n'),
 	['outer.object']: [
@@ -49,7 +54,10 @@ export const JAVA: Selector = {
  declarator:(variable_declarator
  value:(object_creation_expression))) @object `,
 	].join('\n'),
-	['outer.variable']: [` (local_variable_declaration) @variable `, `(expression_statement (assignment_expression)) @variable`].join('\n'),
+	['outer.variable']: [
+		` (local_variable_declaration) @variable `,
+		`(expression_statement (assignment_expression)) @variable`,
+	].join('\n'),
 	['outer.rhs']: [
 		` (assignment_expression left:(identifier) right:(_) @rhs) `,
 		` (local_variable_declaration
@@ -68,9 +76,30 @@ export const JAVA: Selector = {
 	['outer.comment']: [`(line_comment) @comment`, `(block_comment) @comment`].join('\n'),
 	['inner.type']: [`(interface_declaration body:(interface_body (_) @type))`].join('\n'),
 
-	'inner.array': [].join('\n'),
-	'inner.object': [].join('\n'),
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	'inner.array': [`(array_initializer (_) @array )`].join('\n'),
+	'inner.object': [
+		'(class_declaration body: (class_body (_) @class) ) ',
+		` (local_variable_declaration
+ declarator:(variable_declarator
+ value:(object_creation_expression) @object )) `,
+	].join('\n'),
+	'outer.lhs': [
+		`
+  (local_variable_declaration
+type:(_) @lhs
+ declarator:(variable_declarator name:(identifier) @lhs)) `,
+
+		` (assignment_expression left:(_) @lhs ) `,
+	].join('\n'),
+	'inner.lhs': [
+		`(local_variable_declaration
+ declarator:(variable_declarator name:(identifier) @lhs))
+        `,
+	].join('\n'),
+	'inner.rhs': [
+		` (assignment_expression  right:(_ (_) @rhs)) `,
+		` (local_variable_declaration
+ declarator:(variable_declarator
+ value:(_ (_) @rhs ))) `,
+	].join('\n'),
 };
