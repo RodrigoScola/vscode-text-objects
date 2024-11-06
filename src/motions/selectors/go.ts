@@ -3,26 +3,22 @@ import { Selector } from '../commands';
 export const GoQuery: Selector = {
 	'outer.comment': ['(comment)+ @comment'].join('\n'),
 	'outer.type': [
-		`(parameter_list
-               (parameter_declaration)
-               ) @types`,
+		`(parameter_list (parameter_declaration)) @types`,
 		`(type_declaration) @types`,
+		`(pointer_type) @types `,
+		`(type_identifier) @types`,
+		`(interface_type) @types `,
+		`(qualified_type  ) @types `,
 	].join('\n'),
 	'inner.type':
 		//todo: complete this
 		[
-			`(interface_type
-            (_) @types
-        )`,
-			`(struct_type
-			       (field_declaration_list
-			       (_)+ @types
-			  )
-			       )`,
+			`(pointer_type (_) @types ) `,
+			`(interface_type (_) @types)`,
+			`(struct_type (field_declaration_list (_)+ @types))`,
+			`(qualified_type (_) @types ) `,
 		].join('\n'),
-	'inner.call': `
-    (call_expression (_) @call ) 
-    `,
+	'inner.call': ` (call_expression arguments:(argument_list (_) @call )) `,
 	'inner.parameters': [
 		`(parameter_list
     (_) @parameters
@@ -33,14 +29,11 @@ export const GoQuery: Selector = {
 	'outer.parameters': [`(parameter_list) @parameters`].join('\n'),
 	'outer.function': [
 		`(function_declaration
-               name :(identifier)? @function.name
-               body: (_)? @function.body
-               ) @function`,
+               name :(identifier)? @function.name) @function`,
 		`
-                (func_literal
-                body: (_) @function.body
-                ) @function
+                (func_literal) @function
                 `,
+		`(method_declaration) @function`,
 	].join('\n'),
 
 	'outer.array': [
@@ -77,10 +70,13 @@ export const GoQuery: Selector = {
 	].join('\n'),
 	'inner.function': [
 		`
-                (func_literal
-                block (_) @function.body
-                ) 
-                `,
+  (method_declaration body: (block (_)+ @function))
+        `,
+		`(function_declaration
+        body: (_) @function
+               )
+		`,
+		` (func_literal body : (block (_)+ @function.body))`,
 	].join('\n'),
 	'inner.loop': [
 		`
@@ -89,7 +85,8 @@ export const GoQuery: Selector = {
                (_) @loop
           )
           )
-               `,
+               
+          `,
 	].join('\n'),
 	'inner.string':
 		//golang doesnt have inner string?
@@ -99,13 +96,10 @@ export const GoQuery: Selector = {
 		`(type_declaration
                (type_spec
                type: (struct_type)
-          )
-          ) @struct`,
-		`(composite_literal
-               body: (literal_value
-               (keyed_element)
-               )
-               ) @struct`,
+          )) @struct`,
+		`
+(expression_list
+  (composite_literal (_) ) ) @struct`,
 	].join('\n'),
 	'outer.string': [`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 
