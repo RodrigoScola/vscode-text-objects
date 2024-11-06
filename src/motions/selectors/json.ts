@@ -20,18 +20,17 @@ export const JsonSelector: Selector = {
 	['inner.conditional']: '',
 	['inner.loop']: '',
 	['outer.loop']: '',
-	['inner.string']: JsQuery['inner.string'],
-	['outer.string']: JsQuery['outer.string'],
+	['inner.string']: `(string_content) @string`,
+	['outer.string']: `(string) @string`,
 
 	['outer.object']: JsQuery['outer.object'],
-	['outer.variable']: '',
-	['outer.rhs']: JsQuery['outer.rhs'],
-
-	'inner.array': [].join('\n'),
-	'inner.object': [].join('\n'),
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	['outer.variable']: `
+  (pair) @variable
+    `,
+	['outer.rhs']: `(pair value: (_) @rhs)`,
+	'inner.array': JsQuery['inner.array'],
+	'inner.object': JsQuery['inner.object'],
+	'outer.lhs': `(pair key :(_) @key)`,
+	'inner.lhs': `(pair key : (string (_) @key))`,
+	'inner.rhs': '(pair value : (_ (_) @rhs))',
 };
-
-//since the syntax is mostly the same, for now we can keep it the same
