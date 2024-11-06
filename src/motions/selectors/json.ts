@@ -10,10 +10,8 @@ export const JsonSelector: Selector = {
 	['inner.parameters']: '',
 	['outer.type']: '',
 	['inner.type']: '',
-
 	['outer.comment']: JsQuery['outer.comment'],
 	['outer.array']: JsQuery['outer.array'],
-
 	['outer.class']: '',
 	['inner.class']: '',
 	['outer.conditional']: '',
@@ -22,11 +20,8 @@ export const JsonSelector: Selector = {
 	['outer.loop']: '',
 	['inner.string']: `(string_content) @string`,
 	['outer.string']: `(string) @string`,
-
 	['outer.object']: JsQuery['outer.object'],
-	['outer.variable']: `
-  (pair) @variable
-    `,
+	['outer.variable']: `(pair) @variable`,
 	['outer.rhs']: `(pair value: (_) @rhs)`,
 	'inner.array': JsQuery['inner.array'],
 	'inner.object': JsQuery['inner.object'],
