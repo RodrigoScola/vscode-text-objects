@@ -69,8 +69,6 @@ export class QueryCommand {
 
 		const nodes = groupNodes(matches);
 
-		console.log(matches.length);
-
 		const ranges = new Array(nodes.length)
 			.fill(undefined)
 			.map((_, index) => {
@@ -89,8 +87,6 @@ export class QueryCommand {
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);
 		}
-
-		console.log(ranges.length);
 
 		// for (const r of ranges) {
 		// 	visualize(r);
