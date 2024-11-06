@@ -13,44 +13,23 @@ export const PythonQuery: Selector = {
 	['inner.class']: ' (class_definition body: (_) @class )',
 	['outer.conditional']: ` (if_statement)  @conditional `,
 	['inner.conditional']: ` (if_statement consequence: (_) @conditional)  `,
-	['inner.loop']: `
-    (for_statement
-    body: (block
-    (_)+ @loop
-)
-)
-    `,
-	['outer.loop']: [
-		`
-    (for_statement) @loop
-    `,
-		`(while_statement) @loop`,
-		`(list_comprehension) @loop`,
-	].join('\n'),
+	['inner.loop']: ` (for_statement body: (block (_)+ @loop)) `,
+	['outer.loop']: [` (for_statement) @loop `, `(while_statement) @loop`, `(list_comprehension) @loop`].join(
+		'\n'
+	),
 	['inner.string']: `
     (string_content) @string
     `,
-	['outer.string']: `
-    (string) @string
-    `,
-	['outer.variable']: `
-    (expression_statement) @variable
-    `,
-
-	['outer.rhs']: `
-    (assignment
-    right: (_) @rhs
-    )
-    `,
-	['outer.comment']: `
-    (comment)+ @comment
-    `,
+	['outer.string']: ` (string) @string `,
+	['outer.variable']: ` (expression_statement) @variable `,
+	['outer.rhs']: ` (assignment right: (_) @rhs) `,
+	['outer.comment']: ` (comment)+ @comment `,
 	['outer.type']: '',
 	['inner.type']: '',
 
-	'inner.array': [].join('\n'),
-	'inner.object': [].join('\n'),
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	'inner.array': [`(list (_) @array )`].join('\n'),
+	'inner.object': ['(dictionary (_) @object) '].join('\n'),
+	'outer.lhs': [` (assignment left: (_) @lhs) `].join('\n'),
+	'inner.lhs': [`(assignment left:(_ attribute: (_)@lhs))`].join('\n'),
+	'inner.rhs': [` (assignment right:(_ (_)@rhs)) `].join('\n'),
 };

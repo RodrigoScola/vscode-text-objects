@@ -9,7 +9,10 @@
 			"name": "Run Extension",
 			"type": "extensionHost",
 			"request": "launch",
-			"args": ["--extensionDevelopmentPath=${workspaceFolder}", "${workspaceFolder}/src/playgrounds/playground.c"],
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"${workspaceFolder}/src/playgrounds/playground.py"
+			],
 			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
 			"preLaunchTask": "${defaultBuildTask}"
 		}
