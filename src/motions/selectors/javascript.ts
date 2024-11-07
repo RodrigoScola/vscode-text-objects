@@ -82,9 +82,7 @@ export const JsQuery: Selector = {
      ) `,
 	].join('\n'),
 	['inner.conditional']: [
-		` (if_statement
-     consequence: (statement_block
-     (_) @inner_statement))
+		` (if_statement consequence: (statement_block (_)+ @inner_statement))
      `,
 	].join('\n'),
 
