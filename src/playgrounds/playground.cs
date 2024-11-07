@@ -1,10 +1,10 @@
 // Basic function
-public void MyFunction() {
+public void myfunction() {
     // code
 }
 
-// Function with parameters
-public void MyFunction(int param1, string param2) {
+// function with parameters
+public void myfunction(int param1, string param2) {
     // code
 }
 

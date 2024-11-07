@@ -28,27 +28,16 @@ export const GoQuery: Selector = {
     (call_expression) @call`,
 	'outer.parameters': [`(parameter_list) @parameters`].join('\n'),
 	'outer.function': [
-		`(function_declaration
-               name :(identifier)? @function.name) @function`,
-		`
-                (func_literal) @function
-                `,
+		`(go_expression (function_declaration)) @function`,
+		`(function_declaration) @function`,
+		` (func_literal) @function `,
 		`(method_declaration) @function`,
 	].join('\n'),
 
 	'outer.array': [
 		`
-     (composite_literal
-     
-     type: (array_type)
-     ) @array`,
-
-		`
-               (var_declaration
-               (var_spec
-               type : (array_type)
-          )
-               ) @array `,
+     (composite_literal type: (array_type)) @array`,
+		` (var_declaration (var_spec type : (array_type))) @array `,
 	].join('\n'),
 	//this would be a struct
 	['outer.class']: '',
@@ -82,24 +71,15 @@ export const GoQuery: Selector = {
 		`
                (for_statement
                body: (block
-               (_) @loop
-          )
-          )
-               
-          `,
+               (_) @loop)) `,
 	].join('\n'),
 	'inner.string':
 		//golang doesnt have inner string?
 		[`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 	'outer.loop': '',
 	'outer.object': [
-		`(type_declaration
-               (type_spec
-               type: (struct_type)
-          )) @struct`,
-		`
-(expression_list
-  (composite_literal (_) ) ) @struct`,
+		`(type_declaration (type_spec type: (struct_type))) @struct`,
+		` (expression_list (composite_literal (_) ) ) @struct`,
 	].join('\n'),
 	'outer.string': [`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 

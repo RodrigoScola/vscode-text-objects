@@ -60,9 +60,10 @@ Language Support in development:
 -    add an inner string convention for languages that do not have it? should be good - DONE
 -    fix command titles - DONE
 -    put back the keybinds - DONE
+-    change call to be all out and inner to be nearest - DONE
 
 -    add rest of inner and outers (arrays, objects...)
--    change call to be all out and inner to be nearest
+-    add go to empty params and calls?
 -    do the else on if statements
 -    finish the languages support
 -    rhs is not for assignign, but reassigning

@@ -58,9 +58,6 @@ export function filterDuplicates(matches: QueryMatch[], selectors: string[]): Qu
 		}
 	}
 
-	console.log(matches.length);
-	console.log(matchSelector.size);
-
 	return Array.from(matchSelector.values());
 }
 
