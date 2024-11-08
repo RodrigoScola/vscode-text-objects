@@ -76,7 +76,10 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		const firstNode = match.captures.at(0);
 		const lastNode = match.captures.at(-1);
 
-		assert(firstNode && lastNode, 'nodes came undefined on capture');
+		if (!firstNode || !lastNode) {
+			continue;
+		}
+
 		assert(firstNode.node.startPosition, 'needs to have a starting position');
 		assert(firstNode.node.endPosition, 'needs to have an end position');
 

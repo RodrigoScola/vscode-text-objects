@@ -152,14 +152,6 @@ export const JsQuery: Selector = {
 	'inner.array': ['(array (_) @array) '].join('\n'),
 	'outer.object': ['(object) @object'].join('\n'),
 	'inner.object': ['(object (_) @object ) '].join('\n'),
-	'inner.string': [
-		`(string
-	                (_)* @string
-	           ) `,
-
-		`(template_string
-	                (_)* @string
-	           ) `,
-	].join('\n'),
+	'inner.string': [`(string (_)* @string) `, `(template_string (_)* @string) `].join('\n'),
 	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
 };

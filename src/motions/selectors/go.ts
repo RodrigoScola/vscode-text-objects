@@ -28,43 +28,45 @@ export const GoQuery: Selector = {
     (call_expression) @call`,
 	'outer.parameters': [`(parameter_list) @parameters`].join('\n'),
 	'outer.function': [
-		`(go_expression (function_declaration)) @function`,
+		`
+  (go_statement
+ (call_expression
+function:(parenthesized_expression
+  (func_literal)))) @function
+        `,
+		`
+  (var_declaration
+ (var_spec
+ value:(expression_list
+  (func_literal)))) @function
+        `,
 		`(function_declaration) @function`,
 		` (func_literal) @function `,
 		`(method_declaration) @function`,
 	].join('\n'),
 
 	'outer.array': [
-		`
-     (composite_literal type: (array_type)) @array`,
+		` (composite_literal type: (array_type)) @array`,
 		` (var_declaration (var_spec type : (array_type))) @array `,
 	].join('\n'),
 	//this would be a struct
-	['outer.class']: '',
-	'outer.conditional': [
-		`(if_statement
-               consequence: (block
-               (_)
-               )
-          ) @conditional
-               `,
-	].join('\n'),
-	'inner.class': '',
+	['outer.class']: '(type_declaration (type_spec type: (struct_type) )) @struct ',
+	'outer.conditional': [` (if_statement) @conditional `].join('\n'),
+	'inner.class': `
+ (struct_type (field_declaration_list (_)+ @struct) )
+    `,
 	'inner.conditional': [
 		`(if_statement
                consequence: (block
-               (_) @conditional
-               )
-          )`,
+               (_)* @conditional))`,
 	].join('\n'),
 	'inner.function': [
+		// 		`
+		//   (method_declaration body: (block: (_)+ @function))
+		//         `,
 		`
-  (method_declaration body: (block (_)+ @function))
+  (function_declaration body : (block (_)+ ))
         `,
-		`(function_declaration
-        body: (_) @function
-               )
-		`,
 		` (func_literal body : (block (_)+ @function.body))`,
 	].join('\n'),
 	'inner.loop': [
