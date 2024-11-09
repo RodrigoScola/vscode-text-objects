@@ -163,6 +163,30 @@
 				"mac": "cmd+shift+g cmd+shift+c"
 			},
 			{
+				"command": "vscode-textobjects.select.next.inner.comment",
+				"when": "editorTextFocus",
+				"key": "ctrl+shift+i ctrl+shift+c",
+				"mac": "cmd+s cmd+c"
+			},
+			{
+				"command": "vscode-textobjects.select.previous.inner.comment",
+				"when": "editorTextFocus",
+				"key": "ctrl+shift+i ctrl+shift+c",
+				"mac": "cmd+shift+n cmd+shift+c"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.inner.comment",
+				"when": "editorTextFocus",
+				"key": "ctrl+n ctrl+c",
+				"mac": "cmd+n cmd+c"
+			},
+			{
+				"command": "vscode-textobjects.goTo.previous.inner.comment",
+				"when": "editorTextFocus",
+				"key": "ctrl+shift+n ctrl+shift+c",
+				"mac": "cmd+shift+n cmd+shift+c"
+			},
+			{
 				"command": "vscode-textobjects.select.next.outer.function",
 				"when": "editorTextFocus",
 				"key": "ctrl+t ctrl+f",
@@ -811,6 +835,22 @@
 			{
 				"command": "vscode-textobjects.select.previous.outer.comment",
 				"title": "Select previous outer comment"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.inner.comment",
+				"title": "Go to next comment content"
+			},
+			{
+				"command": "vscode-textobjects.goTo.previous.inner.comment",
+				"title": "Go to previous comment content "
+			},
+			{
+				"command": "vscode-textobjects.select.next.inner.comment",
+				"title": "Select next comment content"
+			},
+			{
+				"command": "vscode-textobjects.select.previous.inner.comment",
+				"title": "Select previous comment content"
 			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.array",

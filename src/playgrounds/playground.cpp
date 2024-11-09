@@ -1,4 +1,8 @@
 // 1. Regular function definition
+// Function with no return value and no parameters
+// Function with no return value and no parameters
+// Function with no return value and no parameters
+// Function with no return value and no parameters
 int add(int a, int b)
 {
     return a + b;

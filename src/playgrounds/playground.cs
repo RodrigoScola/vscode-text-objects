@@ -1,4 +1,7 @@
 // Basic function
+// Basic function
+// Basic function
+// Basic function
 public void myfunction() {
     // code
 }

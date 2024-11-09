@@ -3,6 +3,7 @@ import { Selector } from '../commands';
 export const JsQuery: Selector = {
 	['inner.type']: '',
 	['outer.comment']: '(comment)+ @comment',
+	['inner.comment']: '(comment) @comment',
 	['outer.type']: '',
 	['inner.parameters']: [`(formal_parameters (_)* @parameter )`].join('\n'),
 	['outer.parameters']: [`(formal_parameters) @parameter`].join('\n'),

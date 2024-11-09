@@ -87,7 +87,8 @@ type:(struct_specifier)
 	].join('\n'),
 	['inner.type']: ``,
 	['outer.type']: [`(primitive_type) @type`].join('\n'),
-	['outer.comment']: '(comment) @comment',
+	['outer.comment']: '(comment)+ @comment',
+	['inner.comment']: '(comment) @comment',
 
 	['inner.array']: '(initializer_list (_) @array ) ',
 	'inner.object': [

@@ -2,6 +2,7 @@ import { Selector } from '../commands';
 
 export const GoQuery: Selector = {
 	'outer.comment': ['(comment)+ @comment'].join('\n'),
+	'inner.comment': ['(comment) @comment'].join('\n'),
 	'outer.type': [
 		`(parameter_list (parameter_declaration)) @types`,
 		`(type_declaration) @types`,

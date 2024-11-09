@@ -32,6 +32,7 @@ export type QueryContext = {
 
 export interface Selector {
 	['outer.comment']: string;
+	['inner.comment']: string;
 	['outer.type']: string;
 	['inner.type']: string;
 	['outer.function']: string;
@@ -117,6 +118,7 @@ export const selectCommands = {
 	type: new QueryCommand('outer.type').setGetPosition(closestPos),
 	innerType: new QueryCommand('inner.type').setGetPosition(closestPos),
 	comments: new QueryCommand('outer.comment').setGetPosition(closestPos),
+	innerComment: new QueryCommand('inner.comment').setGetPosition(closestPos),
 };
 
 export const selectPreviousCommands = {
@@ -151,6 +153,7 @@ export const selectPreviousCommands = {
 	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
 	innerType: new QueryCommand('inner.type').setGetPosition(previousPosition),
 	comments: new QueryCommand('outer.comment').setGetPosition(previousPosition),
+	innerComment: new QueryCommand('inner.comment').setGetPosition(previousPosition),
 };
 
 export const GotoCommands = {
@@ -183,6 +186,7 @@ export const GotoCommands = {
 	type: new QueryCommand('outer.type').setGetPosition(nextPosition),
 	innerType: new QueryCommand('inner.type').setGetPosition(nextPosition),
 	comments: new QueryCommand('outer.comment').setGetPosition(nextPosition),
+	innerComment: new QueryCommand('inner.comment').setGetPosition(nextPosition),
 };
 export const GotoPreviousCommands = {
 	function: new QueryCommand('outer.function')
@@ -215,6 +219,7 @@ export const GotoPreviousCommands = {
 	type: new QueryCommand('outer.type').setGetPosition(previousPosition),
 	innerType: new QueryCommand('inner.type').setGetPosition(previousPosition),
 	comments: new QueryCommand('outer.comment').setGetPosition(previousPosition),
+	innercomment: new QueryCommand('inner.comment').setGetPosition(previousPosition),
 };
 
 function goTo(position: { start: vscode.Position; end: vscode.Position }) {

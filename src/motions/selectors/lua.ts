@@ -62,7 +62,8 @@ value:(table (field_list)) @array)`,
   (expression_list value:(_) @rhs ))
         `,
 	].join('\n'),
-	['outer.comment']: '(comment) @comment',
+	['outer.comment']: '(comment)+ @comment',
+	['inner.comment']: '(comment) @comment',
 	['inner.type']: '',
 	['outer.type']: '',
 

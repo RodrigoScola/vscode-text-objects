@@ -63,15 +63,15 @@ Language Support in development:
 -    change call to be all out and inner to be nearest - DONE
 -    add go to empty params - DONE
 -    add rest of inner and outers (arrays, objects...) - DONE
+-    inner comment - DONE
 
 -    do the else on if statements
--    inner comment?
 -    rhs is not for assignign, but reassigning
-
 -    finish the languages support
 
 ### Misc
 
+-    remove the console logs
 -    Make an icon, revamp the name?
 -    make sure keybinds and vim are okay
 -    LAUNCH (add tags and releases)

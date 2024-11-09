@@ -50,7 +50,8 @@ export const C: Selector = {
 
 		`(union_specifier  ) @type`,
 	].join('\n'),
-	['outer.comment']: [`(comment) @comment`].join('\n'),
+	['outer.comment']: [`(comment)* @comment`].join('\n'),
+	['inner.comment']: [`(comment) @comment`].join('\n'),
 
 	['inner.array']: `(init_declarator
                         declarator:(array_declarator)

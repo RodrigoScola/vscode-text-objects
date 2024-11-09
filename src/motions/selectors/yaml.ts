@@ -17,14 +17,18 @@ export const YAML: Selector = {
 	['inner.loop']: '',
 	['outer.loop']: '',
 	['inner.string']: '',
-	['outer.string']: [`(single_quote_scalar) @string`, `(double_quote_scalar) @string`, `(quote_scalar) @string`, `(block_scalar) @string`].join(
-		'\n'
-	),
+	['outer.string']: [
+		`(single_quote_scalar) @string`,
+		`(double_quote_scalar) @string`,
+		`(quote_scalar) @string`,
+		`(block_scalar) @string`,
+	].join('\n'),
 	['outer.object']: '',
 	['outer.variable']: '',
 	['outer.rhs']: '',
 	['inner.type']: '',
 	['outer.comment']: '',
+	['inner.comment']: '',
 	['outer.type']: '',
 	'inner.array': [].join('\n'),
 	'inner.object': [].join('\n'),

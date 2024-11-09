@@ -24,6 +24,7 @@ export const PythonQuery: Selector = {
 	['outer.variable']: ` (expression_statement) @variable `,
 	['outer.rhs']: ` (assignment right: (_) @rhs) `,
 	['outer.comment']: ` (comment)+ @comment `,
+	['inner.comment']: ` (comment) @comment `,
 	['outer.type']: '',
 	['inner.type']: '',
 

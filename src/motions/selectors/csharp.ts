@@ -50,6 +50,7 @@ export const Csharp: Selector = {
 	['outer.rhs']: [` (equals_value_clause (_) @rhs )`, ` (assignment_expression right:(_) @rhs )`].join('\n'),
 
 	['outer.comment']: [`(comment)+ @comment`].join('\n'),
+	['inner.comment']: [`(comment) @comment`].join('\n'),
 	['inner.type']: [
 		// ` (variable_declaration type: (_) @type) `,
 		`(type_argumented_list) @type`,

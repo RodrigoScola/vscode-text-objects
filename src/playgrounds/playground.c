@@ -1,4 +1,7 @@
 // Function with no return value and no parameters
+// Function with no return value and no parameters
+// Function with no return value and no parameters
+// Function with no return value and no parameters
 void functionName()
 {
     // function body

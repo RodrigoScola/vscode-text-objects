@@ -23,6 +23,7 @@ export const TOML: Selector = {
 	['outer.rhs']: [`(pair (bare_key) (_) @rhs)`].join('\n'),
 	['inner.type']: '',
 	['outer.comment']: '(comment)+ @comment',
+	['inner.comment']: '(comment)  @comment',
 	['outer.type']: '',
 
 	['inner.array']: '(array (_) @array ) ',

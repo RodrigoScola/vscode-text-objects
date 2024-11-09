@@ -1,3 +1,6 @@
+
+-- Function declaration using the function keyword
+-- Function declaration using the function keyword
 -- Function declaration using the function keyword
 function myFunction()
     print("Hello, World!")

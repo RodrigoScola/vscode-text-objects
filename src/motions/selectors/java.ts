@@ -72,7 +72,8 @@ export const JAVA: Selector = {
 		`(integral_type) @types`,
 		`(catch_type) @types`,
 	].join('\n'),
-	['outer.comment']: [`(line_comment) @comment`, `(block_comment) @comment`].join('\n'),
+	['outer.comment']: [`(line_comment)+ @comment`, `(block_comment)+ @comment`].join('\n'),
+	['inner.comment']: [`(line_comment) @comment`, `(block_comment) @comment`].join('\n'),
 	['inner.type']: [`(interface_declaration body:(interface_body (_) @type))`].join('\n'),
 
 	'inner.array': [`(array_initializer (_) @array )`].join('\n'),

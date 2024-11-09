@@ -60,7 +60,8 @@ export const Rust: Selector = {
 		`(static_item) @variable`,
 	].join('\n'),
 	['outer.rhs']: [`(let_declaration value: (_) @rhs)`].join('\n'),
-	['outer.comment']: [` (line_comment) @comment `, ` (block_comment) @comment `].join('\n'),
+	['outer.comment']: [` (line_comment)+ @comment `, ` (block_comment)+ @comment `].join('\n'),
+	['inner.comment']: [` (line_comment) @comment `, ` (block_comment) @comment `].join('\n'),
 	['outer.type']: [`(type_identifier) @type`, `(primitive_type) @type`, `(struct_item) @class`].join('\n'),
 	['inner.type']: '(struct_item body: (field_declaration_list (_) @types ))',
 

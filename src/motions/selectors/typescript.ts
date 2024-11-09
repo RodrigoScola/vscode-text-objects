@@ -4,6 +4,7 @@ import { JsQuery } from './javascript';
 export const TsSelector: Selector = {
 	['inner.type']: '',
 	['outer.comment']: JsQuery['outer.comment'],
+	['inner.comment']: JsQuery['inner.comment'],
 	['outer.type']: [
 		`
                (export_statement
