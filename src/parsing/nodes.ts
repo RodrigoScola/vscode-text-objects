@@ -42,15 +42,6 @@ export function filterDuplicates(matches: QueryMatch[], selectors: string[]): Qu
 
 	for (const match of matches) {
 		for (const capture of match.captures) {
-			console.log(capture);
-
-			if (selectors.includes(capture.name) && matchSelector.has(capture.node.text)) {
-				console.log(`file: nodes.ts:49 ~ filterDuplicates ~ capture.node.text:`, capture.node.text);
-
-				console.log(capture.name);
-				console.log(matchSelector.get(capture.node.text));
-			}
-
 			if (selectors.includes(capture.name) && !matchSelector.has(capture.node.text)) {
 				matchSelector.set(capture.node.text, match);
 				break;
@@ -90,8 +81,6 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		node.endIndex = firstNode.node.endIndex;
 		nodes.push(node);
 	}
-
-	console.assert(nodes.length < 200, 'should think of a pool');
 
 	return nodes;
 }

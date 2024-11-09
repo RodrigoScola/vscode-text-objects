@@ -50,7 +50,6 @@ export class QueryCommand {
 
 		const selector = SelectorFactory.get(context.language)[this.name];
 
-		// console.log(selector, context.language);
 		assert(selector, this.name + ' is an invalid selector for ' + context.language);
 
 		const query = parser.language.query(selector);
@@ -58,19 +57,13 @@ export class QueryCommand {
 
 		let matches = query.matches(tree.rootNode);
 
-		console.log('mlen', matches.length);
-
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
 			matches = this.onMatch(matches, context);
 			assert(matches.length > 0, 'needs to return an array of matches');
 		}
 
-		console.log('outlen', matches.length);
 		const nodes = groupNodes(matches);
-		console.log('grouped', nodes.length);
-
-		console.log('grouped', nodes.length);
 
 		const ranges = new Array(nodes.length)
 			.fill(undefined)
@@ -90,7 +83,6 @@ export class QueryCommand {
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);
 		}
-		console.log('ranges', ranges.length);
 
 		const position = this.getPosition(ranges, context.cursor);
 		if (!position) {
