@@ -39,12 +39,8 @@ export const CppQuery: Selector = {
         (call_expression) @call
         `,
 	].join('\n'),
-	['outer.parameters']: `
-    (parameter_list) @params
-    `,
-	['inner.parameters']: `
-    (parameter_list (_) @params ) 
-    `,
+	['outer.parameters']: ` (parameter_list) @params `,
+	['inner.parameters']: ` (parameter_list (_) @params ) `,
 
 	['outer.array']: '(initializer_list ) @array',
 	['outer.class']: '(class_specifier) @class',
@@ -55,9 +51,10 @@ export const CppQuery: Selector = {
 		`(if_statement consequence: (compound_statement (_)+ @conditional)) `,
 		`(conditional_expression consequence: (_) @conditional )`,
 	].join('\n'),
-	['inner.loop']: [` (for_range_loop body: (compound_statement (_)+ @loop) ) `, ` (for_statement body: (compound_statement (_)+ @loop)) `].join(
-		'\n'
-	),
+	['inner.loop']: [
+		` (for_range_loop body: (compound_statement (_)+ @loop) ) `,
+		` (for_statement body: (compound_statement (_)+ @loop)) `,
+	].join('\n'),
 	['outer.loop']: [` (for_range_loop) @loop `, ` (for_statement) @loop `].join('\n'),
 	['inner.string']: `
     (string_content) @string

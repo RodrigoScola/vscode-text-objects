@@ -26,7 +26,7 @@ export const GoQuery: Selector = {
 	].join('\n'),
 	'outer.call': `
     (call_expression) @call`,
-	'outer.parameters': [`(parameter_list (_) @parameters ) `].join('\n'),
+	'outer.parameters': [`(parameter_list   )@parameters `].join('\n'),
 	'outer.function': [
 		`
   (go_statement

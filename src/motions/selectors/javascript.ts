@@ -4,8 +4,8 @@ export const JsQuery: Selector = {
 	['inner.type']: '',
 	['outer.comment']: '(comment)+ @comment',
 	['outer.type']: '',
-	['inner.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
-	['outer.parameters']: [`(formal_parameters (_) @parameter )`].join('\n'),
+	['inner.parameters']: [`(formal_parameters (_)* @parameter )`].join('\n'),
+	['outer.parameters']: [`(formal_parameters) @parameter`].join('\n'),
 	['outer.function']: [
 		`(method_definition) @function`,
 
@@ -82,10 +82,6 @@ export const JsQuery: Selector = {
      `,
 	].join('\n'),
 
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
-
 	'outer.rhs': [
 		`(variable_declarator
      value: (_) @rhs)`,
@@ -117,7 +113,7 @@ export const JsQuery: Selector = {
                          ) @variable_declarator
                     ) @lexical_declaration `,
 	].join('\n'),
-	'outer.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
+	'outer.call': [`(call_expression   ) @call  `].join('\n'),
 	'inner.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
 	'outer.class': [
 		` ( class_declaration ) @class
@@ -137,11 +133,7 @@ export const JsQuery: Selector = {
                     declaration: (
                     class_declaration 
                     body: (class_body
-               (_)* @class.body
-                    ) 
-                    )
-                    )
-                    `,
+               (_)* @class.body) )) `,
 	].join('\n'),
 
 	'outer.array': ['(array) @array'].join('\n'),
@@ -150,4 +142,8 @@ export const JsQuery: Selector = {
 	'inner.object': ['(object (_) @object ) '].join('\n'),
 	'inner.string': [`(string (_)* @string) `, `(template_string (_)* @string) `].join('\n'),
 	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
+
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };

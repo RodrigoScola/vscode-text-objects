@@ -8,7 +8,7 @@ export const C: Selector = {
 	['inner.function']: [`(function_definition body: (compound_statement (_)+ @function)) `].join('\n'),
 	['outer.call']: '(call_expression) @call',
 	['inner.call']: '(call_expression arguments: (argument_list (_) @call )) ',
-	['outer.parameters']: '(parameter_list (_) @parameters) ',
+	['outer.parameters']: '(parameter_list ) @parameters ',
 	['inner.parameters']: '(parameter_list (_) @parameters) ',
 	['outer.array']: `(init_declarator
                         declarator:(array_declarator)

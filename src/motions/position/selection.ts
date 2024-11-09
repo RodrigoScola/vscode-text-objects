@@ -126,6 +126,7 @@ export function groupElements(matches: QueryMatch[]): QueryMatch[] {
 
 	for (const match of matches) {
 		for (const capture of match.captures) {
+			console.log(capture);
 			const node = capture.node;
 			assert(node.parent, 'i should worry about this now');
 

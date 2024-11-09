@@ -62,8 +62,9 @@ Language Support in development:
 -    put back the keybinds - DONE
 -    change call to be all out and inner to be nearest - DONE
 
--    add rest of inner and outers (arrays, objects...)
--    add go to empty params and calls?
+-    add go to empty params
+
+-    add rest of inner and outers (arrays, objects...) - js cpp c#
 -    do the else on if statements
 -    finish the languages support
 -    rhs is not for assignign, but reassigning

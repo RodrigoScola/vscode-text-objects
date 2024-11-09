@@ -5,7 +5,7 @@ export const PythonQuery: Selector = {
 	['inner.function']: '( right: (lambda) @function) ',
 	['inner.call']: '(call arguments: (argument_list (_) @call)  )',
 	['outer.call']: '(call) @call',
-	['outer.parameters']: '(parameters)+ @parameters',
+	['outer.parameters']: '(parameters) @parameters',
 	['inner.parameters']: '(parameters (_) @parameters )',
 	['outer.object']: '(dictionary) @object',
 	['outer.array']: ' (list) @array',

@@ -66,7 +66,9 @@ export class QueryCommand {
 			assert(matches.length > 0, 'needs to return an array of matches');
 		}
 
+		console.log('outlen', matches.length);
 		const nodes = groupNodes(matches);
+		console.log('grouped', nodes.length);
 
 		console.log('grouped', nodes.length);
 
@@ -88,10 +90,7 @@ export class QueryCommand {
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);
 		}
-		console.log(ranges.length);
-		// for (const node of ranges) {
-		// 	visualize(node);
-		// }
+		console.log('ranges', ranges.length);
 
 		const position = this.getPosition(ranges, context.cursor);
 		if (!position) {

@@ -17,8 +17,7 @@ export const JAVA: Selector = {
  (method_invocation
  arguments:(argument_list (_) @call))) `,
 
-	['outer.parameters']: ` (method_declaration
- parameters:(formal_parameters) @parameters) `,
+	['outer.parameters']: ` (formal_parameters) @parameters `,
 	['inner.parameters']: ` (method_declaration
  parameters:(formal_parameters (_) @parameters) ) `,
 	['outer.array']: '(array_initializer) @array',
