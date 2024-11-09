@@ -25,7 +25,8 @@ export const LUA: Selector = {
 	['inner.call']: '(call arguments: (argument_list (_)@call )) ',
 	['outer.parameters']: '(parameter_list) @params',
 	['inner.parameters']: '(parameter_list (_) @params) ',
-	['outer.array']: '(block_node (block_sequence (block_sequence_item)+ )) @array',
+	['outer.array']: ` (expression_list
+value:(table (field_list)) @array)`,
 	['outer.class']: '',
 	['inner.class']: '',
 	['outer.conditional']: '(if_statement) @conditional',
@@ -34,9 +35,12 @@ export const LUA: Selector = {
 		'(if_statement consequence: (_) @conditional )',
 		'(if_statement consequence: (_) @conditional (comment) @comment )',
 	].join('\n'),
-	['outer.loop']: [`(while_statement) @loop`, `(repeat_statement) @loop`, `(for_numeric_statement) @loop`, `(for_generic_statement) @loop`].join(
-		'\n'
-	),
+	['outer.loop']: [
+		`(while_statement) @loop`,
+		`(repeat_statement) @loop`,
+		`(for_numeric_statement) @loop`,
+		`(for_generic_statement) @loop`,
+	].join('\n'),
 
 	['inner.loop']: [
 		`(while_statement body: (block (_)+ @loop )) `,
@@ -62,9 +66,18 @@ export const LUA: Selector = {
 	['inner.type']: '',
 	['outer.type']: '',
 
-	'inner.array': [].join('\n'),
-	'inner.object': [].join('\n'),
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	'inner.array': [` (expression_list value:(table (field_list (_) @array )) )`].join('\n'),
+	'inner.object': [`(table (field_list (_) @object )) `].join('\n'),
+	'outer.lhs': [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
+	'inner.lhs': [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
+	'inner.rhs': [
+		` (local_variable_declaration
+  (expression_list value:(_ (_) @rhs ) ))
+        `,
+		`
+        (variable_assignment
+ (variable_list)
+  (expression_list value:(_ (_) @rhs )  ))
+        `,
+	].join('\n'),
 };
