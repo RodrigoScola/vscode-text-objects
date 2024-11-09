@@ -25,9 +25,9 @@ export const TOML: Selector = {
 	['outer.comment']: '(comment)+ @comment',
 	['outer.type']: '',
 
-	'inner.array': [].join('\n'),
-	'inner.object': [].join('\n'),
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	['inner.array']: '(array (_) @array ) ',
+	['inner.object']: ['(table (_) @object ) ', `(inline_table (_) @object) `].join('\n'),
+	'outer.lhs': [`(pair (bare_key) @lhs) `].join('\n'),
+	'inner.lhs': [`(pair (bare_key) @lhs) `].join('\n'),
+	['inner.rhs']: [`(pair (bare_key) (_ (_) @rhs) )`].join('\n'),
 };
