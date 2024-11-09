@@ -34,9 +34,12 @@ export const LUA: Selector = {
 		'(if_statement consequence: (_) @conditional )',
 		'(if_statement consequence: (_) @conditional (comment) @comment )',
 	].join('\n'),
-	['outer.loop']: [`(while_statement) @loop`, `(repeat_statement) @loop`, `(for_numeric_statement) @loop`, `(for_generic_statement) @loop`].join(
-		'\n'
-	),
+	['outer.loop']: [
+		`(while_statement) @loop`,
+		`(repeat_statement) @loop`,
+		`(for_numeric_statement) @loop`,
+		`(for_generic_statement) @loop`,
+	].join('\n'),
 
 	['inner.loop']: [
 		`(while_statement body: (block (_)+ @loop )) `,
