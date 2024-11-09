@@ -1,12 +1,11 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { QueryMatch } from 'web-tree-sitter';
 import { NODES } from '../constants';
 import { editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { nextPosition } from './position/move';
-import { closestPos, formatSelection, previousPosition } from './position/selection';
+import { closestPos, formatSelection, groupElements, previousPosition } from './position/selection';
 import { QueryCommand } from './QueryCommand';
 import { C } from './selectors/c';
 import { CppQuery } from './selectors/cpp';
@@ -88,45 +87,15 @@ SelectorFactory.set('lua', LUA);
 SelectorFactory.set('java', JAVA);
 SelectorFactory.set('toml', TOML);
 
-// there is a better way, could make a state class with all the current state of the extension
-// just trying to prove the idea for now
-function groupElements(matches: QueryMatch[]): QueryMatch[] {
-	//remember to turn this on before publishing
-	// if (getConfig().groupElements() === false) {
-	// 	return matches;
-	// }
-
-	const captureParents = new Map<number, QueryMatch>();
-
-	for (const match of matches) {
-		for (const capture of match.captures) {
-			assert(capture.node.parent, 'i should worry about this now');
-
-			const parentId = capture.node.parent.id;
-			const parentNode = captureParents.get(parentId);
-			if (!parentNode) {
-				captureParents.set(parentId, match);
-				continue;
-			}
-
-			parentNode.captures.push(capture);
-			captureParents.set(parentId, parentNode);
-		}
-	}
-	const arrays = Array.from(captureParents.values());
-
-	return arrays;
-}
-
 export const selectCommands = {
 	function: new QueryCommand('outer.function')
 		.setGetPosition(closestPos)
 		.setOnMatch((matches) => filterDuplicates(matches, [NODES.FUNCTION])),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(closestPos),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(closestPos).setOnMatch(groupElements),
 	loop: new QueryCommand('outer.loop').setGetPosition(closestPos),
-	innerLoop: new QueryCommand('inner.loop').setGetPosition(closestPos),
+	innerLoop: new QueryCommand('inner.loop').setGetPosition(closestPos).setOnMatch(groupElements),
 	conditional: new QueryCommand('outer.conditional').setGetPosition(closestPos),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(closestPos),
+	innerConditional: new QueryCommand('inner.conditional').setGetPosition(closestPos).setOnMatch(groupElements),
 	rhs: new QueryCommand('outer.rhs').setGetPosition(closestPos),
 	innerRhs: new QueryCommand('inner.rhs').setGetPosition(closestPos),
 	lhs: new QueryCommand('outer.lhs').setGetPosition(closestPos),
@@ -154,11 +123,14 @@ export const selectPreviousCommands = {
 	function: new QueryCommand('outer.function')
 		.setGetPosition(previousPosition)
 		.setOnMatch((matches) => filterDuplicates(matches, [NODES.FUNCTION])),
-	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition),
+	innerFunction: new QueryCommand('inner.function').setGetPosition(previousPosition).setOnMatch(groupElements),
 	loop: new QueryCommand('outer.loop').setGetPosition(previousPosition),
 	innerLoop: new QueryCommand('inner.loop').setGetPosition(previousPosition),
 	conditional: new QueryCommand('outer.conditional').setGetPosition(previousPosition),
-	innerConditional: new QueryCommand('inner.conditional').setGetPosition(previousPosition),
+	innerConditional: new QueryCommand('inner.conditional')
+		.setGetPosition(previousPosition)
+		//golang...
+		.setOnMatch(groupElements),
 	rhs: new QueryCommand('outer.rhs').setGetPosition(previousPosition),
 	innerRhs: new QueryCommand('inner.rhs').setGetPosition(previousPosition),
 	lhs: new QueryCommand('outer.lhs').setGetPosition(previousPosition),

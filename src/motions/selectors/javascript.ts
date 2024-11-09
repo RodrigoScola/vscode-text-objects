@@ -76,11 +76,7 @@ export const JsQuery: Selector = {
      (_)* @loop_body))
      `,
 	].join('\n'),
-	['outer.conditional']: [
-		` (
-          (if_statement) @if.statement
-     ) `,
-	].join('\n'),
+	['outer.conditional']: [` ( (if_statement) @if.statement) `].join('\n'),
 	['inner.conditional']: [
 		` (if_statement consequence: (statement_block (_)+ @inner_statement))
      `,

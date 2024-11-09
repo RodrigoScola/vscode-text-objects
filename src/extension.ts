@@ -30,16 +30,6 @@ export function getConfig(): Config {
 }
 export const editor = new Editor();
 
-export function visualize(start: vscode.Range): void {
-	assert(start, 'start needs to be defined');
-
-	const ceditor = editor.getEditor();
-	assert(ceditor, 'editor is not present');
-
-	ceditor.revealRange(start);
-	ceditor.selection = new vscode.Selection(start.start, start.end); // Move cursor to that position
-}
-
 // This method is called when your extension is activated
 export async function activate(context: vscode.ExtensionContext) {
 	LanguageParser.init();
@@ -80,4 +70,3 @@ export function deactivate() {}
 // 		}
 // 	}
 // }
-

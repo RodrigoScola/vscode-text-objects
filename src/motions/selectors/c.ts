@@ -1,7 +1,10 @@
 import { Selector } from '../commands';
 
 export const C: Selector = {
-	['outer.function']: [`(function_definition) @function`, `(declaration declarator: (function_declarator)) @function`].join('\n'),
+	['outer.function']: [
+		`(function_definition) @function`,
+		`(declaration declarator: (function_declarator)) @function`,
+	].join('\n'),
 	['inner.function']: [`(function_definition body: (compound_statement (_)+ @function)) `].join('\n'),
 	['outer.call']: '(call_expression) @call',
 	['inner.call']: '(call_expression arguments: (argument_list (_) @call )) ',
@@ -27,7 +30,11 @@ export const C: Selector = {
 	].join('\n'),
 	['outer.string']: ['(string_literal) @string', '(char_literal) @string'].join('\n'),
 	['inner.string']: ['(string_content) @string', '(character) @string'].join('\n'),
-	['outer.object']: [`(struct_specifier) @object `, `(enum_specifier   ) @object `, `(union_specifier ) @object `].join('\n'),
+	['outer.object']: [
+		`(struct_specifier) @object `,
+		`(enum_specifier   ) @object `,
+		`(union_specifier ) @object `,
+	].join('\n'),
 	['outer.variable']: [`(declaration declarator: (init_declarator)) @variable`].join('\n'),
 	['inner.type']: [
 		`(struct_specifier body: (field_declaration_list (_)+ @types ))`,
@@ -74,7 +81,6 @@ type:(primitive_type) @lhs
 	].join('\n'),
 	'inner.rhs': [
 		`( field_expression field:(field_identifier) @rhs ) `,
-
 		`
  (init_declarator value:(initializer_list (_) @rhs))`,
 	].join('\n'),

@@ -1,30 +1,17 @@
-import assert from 'assert';
 import { Position, Range } from 'vscode';
 
 export function nextPosition(nodes: Range[], index: Position): Range | undefined {
-	assert(index.line >= 0, 'line is less than 0');
-	console.assert(nodes.length <= 1000, 'better rethink my strategy');
-	if (nodes.length === 0) {
-		return undefined;
-	}
-
 	let closestRange: Range | undefined;
 
 	for (let i = 0; i < nodes.length; i++) {
 		const range = nodes[i];
-		assert(range, 'undefined range');
 
-		if (
-			range.start.line === index.line ||
-			range.end.line === index.line ||
-			(range.start.isBefore(index) && range.end.isBefore(index))
-		) {
+		if (index.isAfterOrEqual(range.start)) {
 			continue;
 		}
 
 		if (!closestRange || closestRange.start.isAfter(range.start)) {
 			closestRange = range;
-			continue;
 		}
 	}
 
@@ -32,22 +19,12 @@ export function nextPosition(nodes: Range[], index: Position): Range | undefined
 }
 
 export function previousPos(nodes: Range[], index: Position): Range | undefined {
-	assert(index.line >= 0, 'line is less than 0');
-	console.assert(nodes.length <= 1000, 'better rethink my strategy');
-	if (nodes.length === 0) {
-		return undefined;
-	}
-
 	let closestRange: Range | undefined;
 
-	for (let i = 0; i < nodes.length; i++) {
+	for (let i = nodes.length; i >= 0; i--) {
 		const range = nodes[i];
 
-		if (
-			range.start.line === index.line ||
-			range.end.line === index.line ||
-			(range.start.isAfter(index) && range.end.isAfter(index))
-		) {
+		if (index.isBeforeOrEqual(range.start)) {
 			continue;
 		}
 
@@ -58,4 +35,3 @@ export function previousPos(nodes: Range[], index: Position): Range | undefined 
 
 	return closestRange;
 }
-

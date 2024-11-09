@@ -3,7 +3,7 @@ import { JoinedPoint } from '../motions/position/selection';
 
 import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';
-import { NodePool } from '../utils/pooling';
+import { NodePool } from '../utils';
 
 // Define a function to calculate the size of a match based on its start and end positions.
 function getMatchSize(match: QueryMatch): number {

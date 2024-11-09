@@ -57,9 +57,8 @@ export class QueryCommand {
 		assert(query, 'invalid query came out');
 
 		let matches = query.matches(tree.rootNode);
-		if (matches.length === 0) {
-			return;
-		}
+
+		console.log('mlen', matches.length);
 
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
@@ -68,6 +67,8 @@ export class QueryCommand {
 		}
 
 		const nodes = groupNodes(matches);
+
+		console.log('grouped', nodes.length);
 
 		const ranges = new Array(nodes.length)
 			.fill(undefined)
@@ -87,10 +88,9 @@ export class QueryCommand {
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);
 		}
-
-		// for (const r of ranges) {
-		// 	visualize(r);
-		// 	console.log();
+		console.log(ranges.length);
+		// for (const node of ranges) {
+		// 	visualize(node);
 		// }
 
 		const position = this.getPosition(ranges, context.cursor);

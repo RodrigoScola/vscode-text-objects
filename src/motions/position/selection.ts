@@ -119,34 +119,29 @@ export function formatSelection(command: QueryCommand, startPos: Position, endPo
 	return editor;
 }
 
+// there is a better way, could make a state class with all the current state of the extension
+// just trying to prove the idea for now
 export function groupElements(matches: QueryMatch[]): QueryMatch[] {
-	console.log('grouping elements');
-	// remember to turn this on before publishing
-	// if (getConfig().groupElements() === false) {
-	// 	return matches;
-	// }
-
 	const captureParents = new Map<number, QueryMatch>();
 
 	for (const match of matches) {
 		for (const capture of match.captures) {
-			assert(capture.node.parent, 'i should worry about this now');
+			const node = capture.node;
+			assert(node.parent, 'i should worry about this now');
 
-			const parentId = capture.node.parent.id;
+			const parentId = node.parent.id;
 			const parentNode = captureParents.get(parentId);
 			if (!parentNode) {
 				captureParents.set(parentId, match);
 				continue;
 			}
 
-			parentNode.captures.push(capture);
+			if (!parentNode.captures.some((s) => s.node.id === capture.node.id)) {
+				parentNode.captures.push(capture);
+			}
 			captureParents.set(parentId, parentNode);
 		}
 	}
 
 	return Array.from(captureParents.values());
-}
-
-function throws() {
-	throw new Error('this throws');
 }
