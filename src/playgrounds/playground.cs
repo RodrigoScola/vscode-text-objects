@@ -395,3 +395,60 @@ dynamicVariable = "Now I'm a string";
 public int MyFunctionWithParams(int a, int b) {
     return a + b;
 }
+
+using System;
+
+public class MyClass {
+    public int Property1 { get; set; }
+    public string Property2 { get; set; }
+}
+
+public struct MyStruct {
+    public int Property1 { get; set; }
+    public string Property2 { get; set; }
+}
+
+public enum DayOfWeek {
+    Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+}
+
+public record MyRecord(int Property1, string Property2);
+
+public class Program {
+    public static void Main() {
+        // Using classes
+        MyClass obj = new MyClass();
+        obj.Property1 = 10;
+        obj.Property2 = "example";
+
+        // Using object initializers
+        MyClass obj2 = new MyClass { Property1 = 10, Property2 = "example" };
+
+        // Using anonymous types
+        var anonymousType = new { Property1 = 10, Property2 = "example" };
+
+        // Using structs
+        MyStruct myStruct = new MyStruct { Property1 = 10, Property2 = "example" };
+
+        // Using tuples
+        var tuple = (Property1: 10, Property2: "example");
+
+        // Using dynamic types
+        dynamic dynamicVariable = new { Property1 = 10, Property2 = "example" };
+
+        // Using enums
+        DayOfWeek today = DayOfWeek.Monday;
+
+        // Using records
+        MyRecord myRecord = new MyRecord(10, "example");
+
+        // Output examples
+        Console.WriteLine($"Class: {obj.Property1}, {obj.Property2}");
+        Console.WriteLine($"Anonymous Type: {anonymousType.Property1}, {anonymousType.Property2}");
+        Console.WriteLine($"Struct: {myStruct.Property1}, {myStruct.Property2}");
+        Console.WriteLine($"Tuple: {tuple.Property1}, {tuple.Property2}");
+        Console.WriteLine($"Dynamic: {dynamicVariable.Property1}, {dynamicVariable.Property2}");
+        Console.WriteLine($"Enum: {today}");
+        Console.WriteLine($"Record: {myRecord.Property1}, {myRecord.Property2}");
+    }
+}

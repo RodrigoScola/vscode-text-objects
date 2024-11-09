@@ -14,10 +14,7 @@ export const JsQuery: Selector = {
 		` (function_declaration) @function `,
 		` (arrow_function) @function`,
 
-		` (lexical_declaration
-							               (variable_declarator
-							   value: (arrow_function) @function.body)) @function
-							                `,
+		` (lexical_declaration (variable_declarator value: (arrow_function) @function.body)) @function `,
 		`
 		        (export_statement
 		        (lexical_declaration
@@ -38,32 +35,11 @@ export const JsQuery: Selector = {
 		` ((function_declaration
             body: (statement_block
             (_)* @function_body)))`,
-		` (function_expression
-                    body: (statement_block
-                    (_)* @function.body
-                    )
-
-               )
-                    `,
-		`
-                              (arrow_function
-                              body: (statement_block
-                         (_)* @function_body
-                         )
-                         )
-                              `,
-		`(method_definition
-                              body: (statement_block
-                         (_)* @function.body
-                              )
-
-                              )
-                              `,
+		` (function_expression body: (statement_block (_)* @function.body)) `,
+		` (arrow_function body: (statement_block (_)* @function_body)) `,
+		`(method_definition body: (statement_block (_)* @function.body)) `,
 	].join('\n'),
-	['outer.loop']: [
-		` (for_statement) @loop
-               (for_in_statement) @loop `,
-	].join('\n'),
+	['outer.loop']: [` (for_statement) @loop (for_in_statement) @loop `].join('\n'),
 
 	['inner.loop']: [
 		`     
@@ -83,12 +59,8 @@ export const JsQuery: Selector = {
 	].join('\n'),
 
 	'outer.rhs': [
-		`(variable_declarator
-     value: (_) @rhs)`,
-		`(
-     assignment_expression
-     (_) @rhs
-     )
+		`(variable_declarator value: (_) @rhs)`,
+		`( assignment_expression (_) @rhs)
      `,
 		//todo: go to a class with the public and check if node is good name
 		// `( public_field_definition
@@ -99,41 +71,17 @@ export const JsQuery: Selector = {
 		//todo: go to a class with the public and check if node is good name
 		//`( public_field_definition) @lexical_declaration`,
 
-		` (export_statement
-         (lexical_declaration
-                    (variable_declarator 
-                         name: (identifier  )
-                         value: (_) 
-                         ) @variable_declarator
-    )) @lexical_declaration `,
-		` (lexical_declaration
-                    (variable_declarator 
-                         name: (identifier  )
-                         value: (_) 
-                         ) @variable_declarator
-                    ) @lexical_declaration `,
+		` (export_statement (lexical_declaration (variable_declarator ) @variable_declarator)) @lexical_declaration `,
+		` (lexical_declaration (variable_declarator ) @variable_declarator) @lexical_declaration `,
 	].join('\n'),
 	'outer.call': [`(call_expression   ) @call  `].join('\n'),
 	'inner.call': [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
 	'outer.class': [
-		` ( class_declaration ) @class
-                    `,
-		`
-                    (export_statement
-                    declaration: (
-                    class_declaration 
-                    name: (type_identifier) @class.name
-                    body: (class_body) @class.body
-                    ) ) @export
-                    `,
+		` ( class_declaration ) @class `,
+		` (export_statement declaration: ( class_declaration ) ) @export `,
 	].join('\n'),
 	'inner.class': [
-		`
-                    (export_statement
-                    declaration: (
-                    class_declaration 
-                    body: (class_body
-               (_)* @class.body) )) `,
+		` (export_statement declaration: ( class_declaration body: (class_body (_)* @class.body) )) `,
 	].join('\n'),
 
 	'outer.array': ['(array) @array'].join('\n'),
@@ -143,7 +91,7 @@ export const JsQuery: Selector = {
 	'inner.string': [`(string (_)* @string) `, `(template_string (_)* @string) `].join('\n'),
 	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
 
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	'outer.lhs': [` (variable_declarator name:(_) @lhs) `].join('\n'),
+	'inner.lhs': [` (variable_declarator name:(_ (_) @lhs) ) `].join('\n'),
+	'inner.rhs': [` (variable_declarator value:(_ (_) @rhs)) `].join('\n'),
 };

@@ -89,9 +89,16 @@ type:(struct_specifier)
 	['outer.type']: [`(primitive_type) @type`].join('\n'),
 	['outer.comment']: '(comment) @comment',
 
-	'inner.array': [].join('\n'),
-	'inner.object': [].join('\n'),
-	'outer.lhs': [].join('\n'),
-	'inner.lhs': [].join('\n'),
-	'inner.rhs': [].join('\n'),
+	['inner.array']: '(initializer_list (_) @array ) ',
+	'inner.object': [
+		` (class_specifier body:(field_declaration_list (_) @class))`,
+		`(struct_specifier body : (field_declaration_list (_)@object) ) `,
+		`(declaration
+		 declarator:(init_declarator
+		 value:(initializer_list (_) @object))) `,
+		`(type_definition type:(struct_specifier body:(field_declaration_list (_) @object ))) `,
+	].join('\n'),
+	'outer.lhs': [` (declaration   declarator:(init_declarator (_) @lhs) ) `].join('\n'),
+	'inner.lhs': [` (declaration   declarator:(init_declarator (_ (_) @lhs) )) `].join('\n'),
+	'inner.rhs': [` (init_declarator value:(_ (_)@rhs ))`].join('\n'),
 };

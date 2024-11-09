@@ -62,11 +62,19 @@ Language Support in development:
 -    put back the keybinds - DONE
 -    change call to be all out and inner to be nearest - DONE
 -    add go to empty params - DONE
+-    add rest of inner and outers (arrays, objects...) - DONE
 
--    add rest of inner and outers (arrays, objects...) - js cpp c#
 -    do the else on if statements
--    finish the languages support
+-    inner comment?
 -    rhs is not for assignign, but reassigning
+
+-    finish the languages support
+
+### Misc
+
+-    Make an icon, revamp the name?
+-    make sure keybinds and vim are okay
+-    LAUNCH (add tags and releases)
 
 # VIM Integration
 
