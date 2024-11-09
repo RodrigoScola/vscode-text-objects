@@ -61,8 +61,7 @@ Language Support in development:
 -    fix command titles - DONE
 -    put back the keybinds - DONE
 -    change call to be all out and inner to be nearest - DONE
-
--    add go to empty params
+-    add go to empty params - DONE
 
 -    add rest of inner and outers (arrays, objects...) - js cpp c#
 -    do the else on if statements
