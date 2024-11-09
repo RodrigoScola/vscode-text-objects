@@ -105,9 +105,9 @@ export const TsSelector: Selector = {
 	),
 	['outer.variable']: JsQuery['outer.variable'].concat(`(type_alias_declaration) @type`),
 
-	'inner.array': JsQuery['inner.array'],
-	'inner.object': JsQuery['inner.object'],
-	'outer.lhs': JsQuery['outer.lhs'],
-	'inner.lhs': JsQuery['inner.lhs'],
-	'inner.rhs': JsQuery['inner.rhs'],
+	'inner.array': [].join('\n'),
+	'inner.object': [].join('\n'),
+	'outer.lhs': [].join('\n'),
+	'inner.lhs': [].join('\n'),
+	'inner.rhs': [].join('\n'),
 };
