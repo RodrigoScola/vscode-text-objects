@@ -52,7 +52,7 @@ let mut y = 10;
 const PI: f64 = 3.14159;
 
 // Static variable
-static GLOBAL_VAR: i32 = 100;
+static GLOBAL_VAR: int = 100;
 
 // Shadowing a variable
 let z = 1;
@@ -352,3 +352,47 @@ fn multiply(a: i32, b: i32) -> i32 {
 
 let multiply_ptr: fn(i32, i32) -> i32 = multiply;
 let result = multiply_ptr(4, 5);
+
+
+fn main() {
+    // Basic array declaration
+    let arr = [1, 2, 3, 4, 5];
+
+    // Array with explicit type and length
+    let arr: [i32; 5] = [1, 2, 3, 4, 5];
+
+    // Array with default values
+    let arr = [0; 5]; // Creates an array of length 5, all elements initialized to 0
+
+    // Accessing array elements
+    let first = arr[0];
+    let second = arr[1];
+
+    // Iterating over an array
+    for element in arr.iter() {
+        println!("{}", element);
+    }
+
+    // Using arrays in functions
+    fn sum(arr: [i32; 5]) -> i32 {
+        let mut sum = 0;
+        for &num in arr.iter() {
+            sum += num;
+        }
+        sum
+    }
+
+    let arr = [1, 2, 3, 4, 5];
+    let result = sum(arr);
+    println!("Sum: {}", result);
+
+    // Multidimensional arrays
+    let matrix: [[i32; 3]; 2] = [
+        [1, 2, 3],
+        [4, 5, 6],
+    ];
+
+    // Slicing arrays
+    let slice = &arr[1..3]; // Creates a slice containing elements at index 1 and 2
+    println!("Slice: {:?}", slice);
+}
