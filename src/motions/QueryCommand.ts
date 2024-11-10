@@ -5,12 +5,7 @@ import { groupNodes, pointPool } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { QueryContext, QuerySelector } from './commands';
 
-let lastCommand: QueryCommand | undefined;
-export function getLastExecCommand() {
-	return lastCommand;
-}
-
-type CommandNames =
+export type CommandNames =
 	| 'function'
 	| 'comment'
 	| 'type'
@@ -26,9 +21,9 @@ type CommandNames =
 	| 'object'
 	| 'string';
 
-type CommandScope = 'inner' | 'outer';
-type CommandDirection = 'next' | 'previous';
-type CommandAction = 'select' | 'goTo';
+export type CommandScope = 'inner' | 'outer';
+export type CommandDirection = 'next' | 'previous';
+export type CommandAction = 'select' | 'goTo';
 
 type CommandProps = {
 	name: CommandNames;
@@ -51,7 +46,7 @@ export class QueryCommand {
 
 	readonly direction: CommandDirection;
 	readonly action: CommandAction;
-	private readonly onMatch: OnMatchFunc | undefined;
+	onMatch: OnMatchFunc | undefined;
 
 	constructor(props: CommandProps) {
 		this.name = props.name;

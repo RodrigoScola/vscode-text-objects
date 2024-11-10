@@ -18,6 +18,4 @@ export const JsonSelector = {
 	['outer.variable']: `(pair) @variable`,
 	'inner.array': JsQuery['inner.array'],
 	'inner.object': JsQuery['inner.object'],
-	'outer.lhs': `(pair key :(_) @key)`,
-	'inner.lhs': `(pair key : (string (_) @key))`,
 };

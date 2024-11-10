@@ -20,6 +20,4 @@ export const TOML = {
 
 	['inner.array']: '(array (_) @array ) ',
 	['inner.object']: ['(table (_) @object ) ', `(inline_table (_) @object) `].join('\n'),
-	'outer.lhs': [`(pair (bare_key) @lhs) `].join('\n'),
-	'inner.lhs': [`(pair (bare_key) @lhs) `].join('\n'),
 };

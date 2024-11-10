@@ -29,7 +29,4 @@ export const JsQuery = {
 	'inner.object': ['(object (_) @object ) '].join('\n'),
 	'inner.string': [`(string (_)* @string) `, `(template_string (_)* @string) `].join('\n'),
 	'outer.string': [`( string ) @string`, `( template_string ) @string`].join('\n'),
-
-	'outer.lhs': [` (variable_declarator name:(_) @lhs) `].join('\n'),
-	'inner.lhs': [` (variable_declarator name:(_ (_) @lhs) ) `].join('\n'),
 };

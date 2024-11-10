@@ -43,17 +43,4 @@ export const JAVA = {
  declarator:(variable_declarator
  value:(object_creation_expression) @object )) `,
 	].join('\n'),
-	'outer.lhs': [
-		`
-  (local_variable_declaration
-type:(_) @lhs
- declarator:(variable_declarator name:(identifier) @lhs)) `,
-
-		` (assignment_expression left:(_) @lhs ) `,
-	].join('\n'),
-	'inner.lhs': [
-		`(local_variable_declaration
- declarator:(variable_declarator name:(identifier) @lhs))
-        `,
-	].join('\n'),
 };

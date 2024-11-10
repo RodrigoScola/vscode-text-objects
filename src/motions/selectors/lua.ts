@@ -20,6 +20,4 @@ value:(table (field_list)) @array)`,
 
 	'inner.array': [` (expression_list value:(table (field_list (_) @array )) )`].join('\n'),
 	'inner.object': [`(table (field_list (_) @object )) `].join('\n'),
-	'outer.lhs': [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
-	'inner.lhs': [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
 };

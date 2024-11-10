@@ -19,6 +19,4 @@ export const PythonQuery = {
 
 	'inner.array': [`(list (_) @array )`].join('\n'),
 	'inner.object': ['(dictionary (_) @object) '].join('\n'),
-	'outer.lhs': [` (assignment left: (_) @lhs) `].join('\n'),
-	'inner.lhs': [`(assignment left:(_ attribute: (_)@lhs))`].join('\n'),
 };

@@ -62,17 +62,5 @@ export const GoQuery = {
 		`(type_declaration (type_spec type: (struct_type))) @struct`,
 		` (expression_list (composite_literal (_) ) ) @struct`,
 	].join('\n'),
-	'outer.lhs': [
-		`
-               (short_var_declaration left : (_) @variable ) 
-               `,
-		` (var_declaration (var_spec name:(identifier) @variable type:(_)* @variable ))  `,
-		` (const_declaration (const_spec name:(identifier) @variable  type:(_)* @variable ))  `,
-	].join('\n'),
 	//TODO:make the golang inner lhs better
-	'inner.lhs': [
-		` (var_declaration (var_spec value:(expression_list (_) @variable )    ))  `,
-		` (const_declaration (const_spec value:(expression_list (_) @variable )    ))  `,
-		` (short_var_declaration left:(expression_list (_) @variable )) `,
-	].join('\n'),
 };

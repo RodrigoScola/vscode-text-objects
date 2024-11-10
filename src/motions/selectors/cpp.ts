@@ -43,6 +43,4 @@ type:(struct_specifier)
 		 value:(initializer_list (_) @object))) `,
 		`(type_definition type:(struct_specifier body:(field_declaration_list (_) @object ))) `,
 	].join('\n'),
-	'outer.lhs': [` (declaration   declarator:(init_declarator (_) @lhs) ) `].join('\n'),
-	'inner.lhs': [` (declaration   declarator:(init_declarator (_ (_) @lhs) )) `].join('\n'),
 };

@@ -7,13 +7,15 @@ import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
 import selectInnerConditional from './queries/selectInnerConditional';
 import selectInnerFunction from './queries/selectInnerFunction';
+import selectInnerLhsCommand from './queries/selectInnerLhs';
 import selectInnerLoop from './queries/selectInnerLoop';
 import selectInnerRhs from './queries/selectInnerRhs';
+import selectLhs from './queries/selectLhs';
 import selectConditional from './queries/selectOuterConditional';
 import selectOuterFunction from './queries/selectOuterFunction';
 import selectLoop from './queries/selectOuterLoop';
 import selectRhs from './queries/selectRhs';
-import { QueryCommand } from './QueryCommand';
+import { CommandNames, CommandScope, QueryCommand } from './QueryCommand';
 
 export type QueryContext = {
 	cursor: vscode.Position;
@@ -31,89 +33,59 @@ export function addSelectors(command: QueryCommand, funcs: Record<string, () => 
 		command.addSelector(func());
 	}
 }
+function newSelectNextCommand(scope: CommandScope, name: CommandNames) {
+	return new QueryCommand({
+		name,
+		scope,
+		direction: 'next',
+		action: 'select',
+		pos: closestPos,
+	});
+}
 
-const selectOuterFunctionCommand = new QueryCommand({
-	name: 'function',
-	action: 'select',
-	direction: 'next',
-	scope: 'outer',
-	onMatch: (matches) => filterDuplicates(matches, [NODES.FUNCTION]),
-	pos: closestPos,
-});
+const selectOuterFunctionCommand = newSelectNextCommand('outer', 'function');
+selectOuterFunctionCommand.onMatch = (matches) => filterDuplicates(matches, [NODES.FUNCTION]);
 
 addSelectors(selectOuterFunctionCommand, selectOuterFunction);
 
-const selectInnerFunctionCommand = new QueryCommand({
-	scope: 'inner',
-	name: 'function',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-	onMatch: groupElements,
-});
+const selectInnerFunctionCommand = newSelectNextCommand('inner', 'function');
+selectInnerFunctionCommand.onMatch = groupElements;
+
 addSelectors(selectInnerFunctionCommand, selectInnerFunction);
 
-const selectOuterLoopCommand = new QueryCommand({
-	scope: 'outer',
-	name: 'loop',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-});
+const selectOuterLoopCommand = newSelectNextCommand('outer', 'loop');
 
 addSelectors(selectOuterLoopCommand, selectLoop);
 
-const selectInnerLoopCommand = new QueryCommand({
-	scope: 'inner',
-	name: 'loop',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-	onMatch: groupElements,
-});
+const selectInnerLoopCommand = newSelectNextCommand('inner', 'loop');
+selectInnerLoopCommand.onMatch = groupElements;
 
 addSelectors(selectInnerLoopCommand, selectInnerLoop);
 
-const selectouterConditionalCommand = new QueryCommand({
-	scope: 'outer',
-	name: 'conditional',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-});
+const selectouterConditionalCommand = newSelectNextCommand('outer', 'conditional');
 
 addSelectors(selectouterConditionalCommand, selectConditional);
 
-const selectInnerconditional = new QueryCommand({
-	scope: 'inner',
-	name: 'conditional',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-	onMatch: groupElements,
-});
+const selectInnerconditional = newSelectNextCommand('inner', 'conditional');
+selectInnerconditional.onMatch = groupElements;
 
 addSelectors(selectInnerconditional, selectInnerConditional);
 
-const selectrhsCommand = new QueryCommand({
-	scope: 'outer',
-	name: 'rhs',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-});
+const selectrhsCommand = newSelectNextCommand('outer', 'rhs');
 
 addSelectors(selectrhsCommand, selectRhs);
 
-const selectInnerRhsCommand = new QueryCommand({
-	scope: 'inner',
-	name: 'rhs',
-	action: 'select',
-	direction: 'next',
-	pos: closestPos,
-});
+const selectInnerRhsCommand = newSelectNextCommand('inner', 'rhs');
 
 addSelectors(selectInnerRhsCommand, selectInnerRhs);
+
+const selectlhsCommand = newSelectNextCommand('outer', 'lhs');
+
+addSelectors(selectlhsCommand, selectLhs);
+
+const selectInnerLhsCommand = newSelectNextCommand('inner', 'lhs');
+
+addSelectors(selectInnerLhsCommand, selectLhs);
 
 export const selectCommands = {
 	function: selectOuterFunctionCommand,
@@ -124,21 +96,9 @@ export const selectCommands = {
 	innerConditional: selectInnerconditional,
 	rhs: selectrhsCommand,
 	innerRhs: selectInnerRhsCommand,
+	lhs: selectlhsCommand,
+	innerLhs: selectInnerLhsCommand,
 
-	lhs: new QueryCommand({
-		scope: 'outer',
-		name: 'lhs',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
-	innerLhs: new QueryCommand({
-		scope: 'inner',
-		name: 'lhs',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
 	variables: new QueryCommand({
 		scope: 'outer',
 		name: 'variable',

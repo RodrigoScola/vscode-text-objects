@@ -39,16 +39,4 @@ export const Rust = {
 		`(struct_expression body: (field_initializer_list (_) @object)) `,
 		`(enum_item body: (enum_variant_list (_) @object)) `,
 	].join('\n'),
-	'outer.lhs': [
-		` (let_declaration pattern:(_) @lhs)`,
-		` (static_item name:(_) @lhs type:(_)+ @lhs)`,
-		` (let_declaration (mutable_specifier) @lhs pattern:(identifier) @lhs )`,
-		` (const_item name:(_) @lhs type:(_)+ @lhs)`,
-	].join('\n'),
-	'inner.lhs': [
-		` (let_declaration pattern:(tuple_pattern (_) @lhs)) `,
-		` (static_item name:(_) @lhs )`,
-		` (let_declaration   pattern:(identifier) @lhs )`,
-		` (const_item name:(_) @lhs )`,
-	].join('\n'),
 };

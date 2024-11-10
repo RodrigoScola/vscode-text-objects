@@ -44,20 +44,4 @@ export const C = {
         
         `,
 	].join('\n'),
-	'outer.lhs': [
-		`
- (assignment_expression left:(_) @lhs)
-        `,
-		`
-  (declaration
- (storage_class_specifier) @lhs
-type:(primitive_type) @lhs
- declarator:(init_declarator
- declarator:(identifier) @lhs))`,
-	].join('\n'),
-	'inner.lhs': [
-		` (field_expression field:(field_identifier) @lhs ) `,
-		`
- (init_declarator declarator:(identifier) @lhs)`,
-	].join('\n'),
 };

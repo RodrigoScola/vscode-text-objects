@@ -46,6 +46,4 @@ export const Csharp = {
 			`(tuple_expression (_) @object ) `,
 		],
 	].join('\n'),
-	'outer.lhs': [` (variable_declaration  (variable_declarator (_) @lhs)) `].join('\n'),
-	'inner.lhs': [` (variable_declaration  (variable_declarator (_ (_) @lhs) )) `].join('\n'),
 };
