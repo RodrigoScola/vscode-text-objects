@@ -74,7 +74,6 @@ export class QueryCommand {
 			typeof this.getPosition === 'function',
 			'this.getPosition is not a function, received:' + typeof this.getPosition
 		);
-		lastCommand = this;
 		const parser = await LanguageParser.get(context.language);
 
 		assert(parser, `could not init parser for ${context.language}`);

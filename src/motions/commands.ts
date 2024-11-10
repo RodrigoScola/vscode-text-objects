@@ -145,7 +145,8 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectNextCommand('inner', 'array'), selectInnerArray),
 	addSelectors(newSelectNextCommand('outer', 'object'), selectOuterObject),
 	addSelectors(newSelectNextCommand('inner', 'object'), selectInnerObject),
-	addSelectors(newSelectNextCommand('outer', 'parameters'), selectParams),
+
+	addSelectors(withMatchFunc(newSelectNextCommand('outer', 'parameters'), groupElements), selectParams),
 	addSelectors(newSelectNextCommand('inner', 'parameters'), selectInnerParams),
 	addSelectors(newSelectNextCommand('outer', 'call'), selectCall),
 	addSelectors(newSelectNextCommand('inner', 'call'), selectInnercall),

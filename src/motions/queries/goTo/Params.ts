@@ -1,39 +1,71 @@
 import { QuerySelector } from '../../commands';
-import params from '../select/Params';
 
 function C(): QuerySelector {
-	return params.C();
+	return {
+		language: 'c',
+		selector: ['(parameter_list   )@params  '].join('\n'),
+	};
 }
 
 function cpp(): QuerySelector {
-	return params.cpp();
+	return {
+		language: 'cpp',
+		selector: [` (parameter_list) @params `].join('\n'),
+	};
 }
 function csharp(): QuerySelector {
-	return params.csharp();
+	return {
+		language: 'csharp',
+		selector: [`(parameter_list) @parameters `].join('\n'),
+	};
 }
 function go(): QuerySelector {
-	return params.go();
+	return {
+		language: 'go',
+		selector: [`(parameter_list   )@parameters `].join('\n'),
+	};
 }
 function java(): QuerySelector {
-	return params.java();
+	return {
+		language: 'java',
+		selector: [` (formal_parameters) @parameters `].join('\n'),
+	};
 }
 function javascript(): QuerySelector {
-	return params.javascript();
+	return {
+		language: 'javascript',
+		selector: [`(formal_parameters) @parameter`].join('\n'),
+	};
 }
 
 function lua(): QuerySelector {
-	return params.lua();
+	return {
+		language: 'lua',
+		selector: ['(parameter_list) @params'].join('\n'),
+	};
 }
 
 function python(): QuerySelector {
-	return params.python();
+	return {
+		language: 'python',
+		//todo: this cannot be the only way to define a function
+		selector: ['(parameters) @parameters'].join('\n'),
+	};
 }
 function rust(): QuerySelector {
-	return params.rust();
+	return {
+		language: 'rust',
+		//todo: come on mannnn
+		selector: ['(parameters) @parameters'].join('\n'),
+	};
 }
 
 function typescript(): QuerySelector {
-	return params.typescript();
+	return {
+		language: 'typescript',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
 }
 
 export default {
