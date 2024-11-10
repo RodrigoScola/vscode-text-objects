@@ -64,6 +64,7 @@ Language Support in development:
 -    add go to empty params - DONE
 -    add rest of inner and outers (arrays, objects...) - DONE
 -    inner comment - DONE
+-    change the commands interface for better devs - DONE
 
 -    do the else on if statements
 -    rhs is not for assignign, but reassigning

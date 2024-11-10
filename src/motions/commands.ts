@@ -32,7 +32,6 @@ import selectRhs from './queries/select/Rhs';
 import selectString from './queries/select/String';
 import selectType from './queries/select/Type';
 import selectVariable from './queries/select/Variables';
-import { CommandNames, CommandScope, OnMatchFunc, QueryCommand } from './QueryCommand';
 
 import goToArray from './queries/goTo/Array';
 import goToCall from './queries/goTo/call';
@@ -59,8 +58,9 @@ import goToOuterObject from './queries/goTo/Object';
 import goToParams from './queries/goTo/Params';
 import goToRhs from './queries/goTo/Rhs';
 import goToString from './queries/goTo/String';
-import goToType from './queries/goTo/type';
-import goToVariable from './queries/goTo/variables';
+import goToType from './queries/goTo/Type';
+import goToVariable from './queries/goTo/Variables';
+import { CommandNames, CommandScope, OnMatchFunc, QueryCommand } from './QueryCommand';
 
 export type QueryContext = {
 	cursor: vscode.Position;
