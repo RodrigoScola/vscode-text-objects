@@ -10,14 +10,52 @@ export function getLastExecCommand() {
 	return lastCommand;
 }
 
+type CommandNames =
+	| 'function'
+	| 'comment'
+	| 'type'
+	| 'call'
+	| 'parameters'
+	| 'loop'
+	| 'conditional'
+	| 'variable'
+	| 'rhs'
+	| 'lhs'
+	| 'class'
+	| 'array'
+	| 'object'
+	| 'string';
+
+type CommandScope = 'inner' | 'outer';
+type CommandDirection = 'next' | 'previous';
+type CommandAction = 'select' | 'goTo';
+type CommandProps = {
+	name: CommandNames;
+	scope: CommandScope;
+	direction: CommandDirection;
+	action: CommandAction;
+};
+
 type OnMatchFunc = (matches: QueryMatch[], context: QueryContext) => QueryMatch[];
 type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
 export class QueryCommand {
-	readonly name: keyof Selector;
+	readonly name: CommandNames;
 	private getPosition: GetPositionFunc | undefined;
 
-	constructor(name: keyof Selector) {
-		this.name = name;
+	readonly scope: CommandScope;
+	readonly direction: CommandDirection;
+	readonly action: CommandAction;
+
+	constructor(props: CommandProps) {
+		this.name = props.name;
+		this.scope = props.scope;
+		this.direction = props.direction;
+		this.action = props.action;
+	}
+
+	//make a better name
+	commandName() {
+		return `${this.action}.${this.direction}.${this.scope}.${this.name}`;
 	}
 
 	private onMatch: OnMatchFunc | undefined;
@@ -48,7 +86,9 @@ export class QueryCommand {
 
 		const tree = parser.parser.parse(context.text);
 
-		const selector = SelectorFactory.get(context.language)[this.name];
+		const cname = `${this.scope}.${this.name}` as keyof Selector;
+
+		const selector = SelectorFactory.get(context.language)[cname];
 
 		assert(selector, this.name + ' is an invalid selector for ' + context.language);
 

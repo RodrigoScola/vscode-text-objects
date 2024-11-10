@@ -1,7 +1,43 @@
 import assert from 'assert';
 import { Position, Range, Selection, TextEditor } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
-import { QueryCommand } from '../QueryCommand';
+import { QueryCommand } from './QueryCommand';
+
+export function nextPosition(nodes: Range[], index: Position): Range | undefined {
+	let closestRange: Range | undefined;
+
+	for (let i = 0; i < nodes.length; i++) {
+		const range = nodes[i];
+
+		if (index.isAfterOrEqual(range.start)) {
+			continue;
+		}
+
+		if (!closestRange || closestRange.start.isAfter(range.start)) {
+			closestRange = range;
+		}
+	}
+
+	return closestRange;
+}
+
+export function previousPos(nodes: Range[], index: Position): Range | undefined {
+	let closestRange: Range | undefined;
+
+	for (let i = nodes.length; i >= 0; i--) {
+		const range = nodes[i];
+
+		if (index.isBeforeOrEqual(range.start)) {
+			continue;
+		}
+
+		if (!closestRange || closestRange.start.isBefore(range.start)) {
+			closestRange = range;
+		}
+	}
+
+	return closestRange;
+}
 
 export type JoinedPoint = {
 	startPosition: Parser.Point;
@@ -88,11 +124,11 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 
 const greedyChars = [';', ','];
 export function formatSelection(command: QueryCommand, startPos: Position, endPos: Position, editor: TextEditor) {
-	// const cursor = editor.selection.active;
-
 	const endLine = editor.document.getText(new Range(startPos, endPos));
 
-	if (command.name === 'inner.string' && endLine.match(/['"`]/)) {
+	//TODO: Important to remember to change this
+
+	if (command.commandName().includes('inner.string') && endLine.match(/['"`]/)) {
 		startPos = new Position(startPos.line, startPos.character + 1);
 		endPos = new Position(endPos.line, endPos.character - 1);
 	}
@@ -101,20 +137,8 @@ export function formatSelection(command: QueryCommand, startPos: Position, endPo
 		endPos = new Position(endPos.line, endPos.character + 1);
 	}
 
-	editor.selection = new Selection(startPos, endPos); // Move cursor to that position
-
-	// const delta = Math.abs(cursor.line - editor.selection.active.line);
-
-	// let revealType = TextEditorRevealType.InCenterIfOutsideViewport;
-
-	// if (delta > editor.document.lineCount) {
-	// 	revealType = TextEditorRevealType.InCenter;
-	// }
-
-	editor.revealRange(
-		new Range(startPos, endPos)
-		// revealType
-	);
+	editor.selection = new Selection(startPos, endPos);
+	editor.revealRange(new Range(startPos, endPos));
 
 	return editor;
 }

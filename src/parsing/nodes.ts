@@ -1,5 +1,5 @@
 import * as parser from 'web-tree-sitter';
-import { JoinedPoint } from '../motions/position/selection';
+import { JoinedPoint } from '../motions/position';
 
 import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';

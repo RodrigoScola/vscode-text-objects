@@ -4,14 +4,19 @@ import assert from 'assert';
 import { before } from 'mocha';
 import * as vscode from 'vscode';
 import { QueryCommand } from '../../motions/QueryCommand';
-import { closestPos } from '../../motions/position/selection';
+import { closestPos } from '../../motions/position';
 import { LanguageParser } from '../../parsing/parser';
 
 let fncommand: QueryCommand;
 
 before(async () => {
 	await LanguageParser.init();
-	fncommand = new QueryCommand('outer.function').setGetPosition(closestPos);
+	fncommand = new QueryCommand({
+		name: 'function',
+		action: 'select',
+		scope: 'outer',
+		direction: 'next',
+	}).setGetPosition(closestPos);
 });
 
 async function makeDoc(content: string) {
