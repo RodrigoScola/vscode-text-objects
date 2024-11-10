@@ -17,3 +17,7 @@ command_name: new Command(name, action, props);
 -    fast to iterate (at least in the beginning). Because it was fast to develop i could use it right away and see the potential
 
 -    focused on the details. that was nice, i think that the keybinds and shortcuts are really sweet
+
+# things i want to try out
+
+a global types, no need to import them out

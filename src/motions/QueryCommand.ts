@@ -34,8 +34,8 @@ type CommandProps = {
 	pos: GetPositionFunc;
 };
 
-type OnMatchFunc = (matches: QueryMatch[], context: QueryContext) => QueryMatch[];
-type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
+export type OnMatchFunc = (matches: QueryMatch[], context: QueryContext) => QueryMatch[];
+export type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
 
 export class QueryCommand {
 	readonly name: CommandNames;
