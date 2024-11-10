@@ -5,16 +5,21 @@ import { editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
+import selectClass from './queries/selectClass';
+import selectInnerClass from './queries/selectInnerClass';
 import selectInnerConditional from './queries/selectInnerConditional';
 import selectInnerFunction from './queries/selectInnerFunction';
-import selectInnerLhsCommand from './queries/selectInnerLhs';
+import selectInnerLhs from './queries/selectInnerLhs';
 import selectInnerLoop from './queries/selectInnerLoop';
 import selectInnerRhs from './queries/selectInnerRhs';
+import selectInnerString from './queries/selectInnerString';
 import selectLhs from './queries/selectLhs';
 import selectConditional from './queries/selectOuterConditional';
 import selectOuterFunction from './queries/selectOuterFunction';
 import selectLoop from './queries/selectOuterLoop';
 import selectRhs from './queries/selectRhs';
+import selectString from './queries/selectString';
+import selectVariable from './queries/selectVariables';
 import { CommandNames, CommandScope, QueryCommand } from './QueryCommand';
 
 export type QueryContext = {
@@ -85,7 +90,22 @@ addSelectors(selectlhsCommand, selectLhs);
 
 const selectInnerLhsCommand = newSelectNextCommand('inner', 'lhs');
 
-addSelectors(selectInnerLhsCommand, selectLhs);
+addSelectors(selectInnerLhsCommand, selectInnerLhs);
+
+const selectOuterVariableCommand = newSelectNextCommand('outer', 'variable');
+addSelectors(selectOuterVariableCommand, selectVariable);
+
+const selectOuterStringCommand = newSelectNextCommand('outer', 'string');
+addSelectors(selectOuterStringCommand, selectString);
+
+const selectInnerStringCommand = newSelectNextCommand('inner', 'string');
+addSelectors(selectInnerStringCommand, selectInnerString);
+
+const selectOuterClassCommand = newSelectNextCommand('outer', 'class');
+addSelectors(selectOuterClassCommand, selectClass);
+
+const selectInnerClassCommand = newSelectNextCommand('inner', 'class');
+addSelectors(selectInnerClassCommand, selectInnerClass);
 
 export const selectCommands = {
 	function: selectOuterFunctionCommand,
@@ -98,43 +118,12 @@ export const selectCommands = {
 	innerRhs: selectInnerRhsCommand,
 	lhs: selectlhsCommand,
 	innerLhs: selectInnerLhsCommand,
+	variables: selectOuterVariableCommand,
+	string: selectOuterStringCommand,
+	innerString: selectInnerStringCommand,
+	class: selectOuterClassCommand,
+	innerclass: selectInnerClass,
 
-	variables: new QueryCommand({
-		scope: 'outer',
-		name: 'variable',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
-	string: new QueryCommand({
-		scope: 'outer',
-		name: 'string',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
-	innerString: new QueryCommand({
-		scope: 'inner',
-		name: 'string',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
-	//bug on going to class
-	class: new QueryCommand({
-		scope: 'outer',
-		name: 'class',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
-	innerClass: new QueryCommand({
-		scope: 'inner',
-		name: 'class',
-		action: 'select',
-		direction: 'next',
-		pos: closestPos,
-	}),
 	array: new QueryCommand({
 		scope: 'outer',
 		name: 'array',

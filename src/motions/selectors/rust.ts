@@ -7,26 +7,7 @@ export const Rust = {
 	//just selects the first one
 	['inner.parameters']: '(parameters) @parameters',
 	['outer.array']: [`(array_expression ) @array`].join('\n'),
-	['outer.class']: [
-		`(struct_item) @class`,
-		`(impl_item) @class`,
-		`(trait_item) @class`,
-		`(enum_item) @class`,
-	].join('\n'),
-	['inner.class']: [
-		`(struct_item body: (field_declaration_list (_)+ @class )) `,
-		`(impl_item body: (declaration_list (_)+ @class )) `,
-		`(trait_item body: (declaration_list (_)+ @class)) `,
-		`(enum_item body: (enum_variant_list (_)+ @class )) `,
-	].join('\n'),
-	['inner.string']: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
-	['outer.string']: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
 	['outer.object']: [`(struct_item) @object`, `(struct_expression) @object`, `(enum_item) @object`].join('\n'),
-	['outer.variable']: [
-		`(let_declaration) @variable`,
-		`(const_item) @variable`,
-		`(static_item) @variable`,
-	].join('\n'),
 	['outer.rhs']: [`(let_declaration value: (_) @rhs)`].join('\n'),
 	['outer.comment']: [` (line_comment)+ @comment `, ` (block_comment)+ @comment `].join('\n'),
 	['inner.comment']: [` (line_comment) @comment `, ` (block_comment) @comment `].join('\n'),

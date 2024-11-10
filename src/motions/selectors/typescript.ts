@@ -86,11 +86,7 @@ export const TsSelector = {
                 `,
 	].join('\n'),
 	['outer.array']: JsQuery['outer.array'],
-	['outer.class']: JsQuery['outer.class'],
 	['inner.class']: JsQuery['inner.class'],
-	['inner.string']: JsQuery['inner.string'],
-	['outer.string']: JsQuery['outer.string'],
 	['outer.object']: JsQuery['outer.object'],
 	['outer.parameters']: JsQuery['outer.parameters'],
-	['outer.variable']: JsQuery['outer.variable'].concat(`(type_alias_declaration) @type`),
 };

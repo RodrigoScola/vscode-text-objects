@@ -9,19 +9,11 @@ export const JAVA = {
 	['inner.parameters']: ` (method_declaration
  parameters:(formal_parameters (_) @parameters) ) `,
 	['outer.array']: '(array_initializer) @array',
-	['outer.class']: '(class_declaration) @class',
-	['inner.class']: '(class_declaration body: (class_body (_) @class))',
-	['inner.string']: ['(string_fragment) @string', `(multiline_string_fragment) @string`].join('\n'),
-	['outer.string']: [`(string_literal) @string`, `(character_literal) @string`].join('\n'),
 	['outer.object']: [
 		'(class_declaration) @class',
 		` (local_variable_declaration
  declarator:(variable_declarator
  value:(object_creation_expression))) @object `,
-	].join('\n'),
-	['outer.variable']: [
-		` (local_variable_declaration) @variable `,
-		`(expression_statement (assignment_expression)) @variable`,
 	].join('\n'),
 	['outer.type']: [
 		` (interface_declaration) @types `,

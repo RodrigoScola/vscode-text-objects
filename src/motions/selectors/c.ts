@@ -6,16 +6,11 @@ export const C = {
 	['outer.array']: `(init_declarator
                         declarator:(array_declarator)
                         value:(_) @array)`,
-	['outer.class']: `(struct_specifier) @class`,
-	['inner.class']: `(struct_specifier body: (field_declaration_list (_)+ @class ))`,
-	['outer.string']: ['(string_literal) @string', '(char_literal) @string'].join('\n'),
-	['inner.string']: ['(string_content) @string', '(character) @string'].join('\n'),
 	['outer.object']: [
 		`(struct_specifier) @object `,
 		`(enum_specifier   ) @object `,
 		`(union_specifier ) @object `,
 	].join('\n'),
-	['outer.variable']: [`(declaration declarator: (init_declarator)) @variable`].join('\n'),
 	['inner.type']: [
 		`(struct_specifier body: (field_declaration_list (_)+ @types ))`,
 		`(union_specifier body:(field_declaration_list (_)+ @object) )`,

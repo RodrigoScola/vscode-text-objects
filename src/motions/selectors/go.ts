@@ -33,24 +33,9 @@ export const GoQuery = {
 		` (var_declaration (var_spec type : (slice_type))) @slice `,
 	].join('\n'),
 	//this would be a struct
-	['outer.class']: '(type_declaration (type_spec type: (struct_type) )) @struct ',
-	'inner.class': `
- (struct_type (field_declaration_list (_)+ @struct) )
-    `,
-	'inner.string': [`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 	'outer.object': [
 		`(type_declaration (type_spec type: (struct_type))) @struct`,
 		` (expression_list (composite_literal (_) ) ) @struct`,
-	].join('\n'),
-	'outer.string': [`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
-
-	'outer.variable': [
-		`
-               (short_var_declaration) @variable
-               `,
-		` (var_declaration) @variable `,
-		` (const_declaration) @variable `,
-		` (const_spec) @variable `,
 	].join('\n'),
 
 	'inner.array': [

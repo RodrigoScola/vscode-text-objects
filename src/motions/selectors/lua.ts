@@ -7,12 +7,7 @@ export const LUA = {
 	['inner.parameters']: '(parameter_list (_) @params) ',
 	['outer.array']: ` (expression_list
 value:(table (field_list)) @array)`,
-	['outer.class']: '',
-	['inner.class']: '',
-	['inner.string']: '(string) @string',
-	['outer.string']: '(string) @string',
 	['outer.object']: '(table) @object',
-	['outer.variable']: [`(variable_assignment) @variable`, `(local_variable_declaration) @variable`].join('\n'),
 	['outer.comment']: '(comment)+ @comment',
 	['inner.comment']: '(comment) @comment',
 	['inner.type']: '',

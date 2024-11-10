@@ -13,11 +13,7 @@ export const CppQuery = {
 	['inner.parameters']: ` (parameter_list (_) @params ) `,
 
 	['outer.array']: '(initializer_list ) @array',
-	['outer.class']: '(class_specifier) @class',
 	//todo fix this
-	['inner.class']: '(class_specifier body: ( field_declaration_list (_)+ @class ) )',
-	['inner.string']: ` (string_content) @string `,
-	['outer.string']: [`(string_literal) @string`, `(raw_string_literal) @string`].join('\n'),
 	['outer.object']: [
 		`(class_specifier) @object`,
 		`(struct_specifier) @object`,
@@ -28,7 +24,6 @@ export const CppQuery = {
 type:(struct_specifier)
  ) @object`,
 	].join('\n'),
-	['outer.variable']: [` (declaration) @variable `, ` (field_declaration) @variable `].join('\n'),
 	['inner.type']: ``,
 	['outer.type']: [`(primitive_type) @type`].join('\n'),
 	['outer.comment']: '(comment)+ @comment',

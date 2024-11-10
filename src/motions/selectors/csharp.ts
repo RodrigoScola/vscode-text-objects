@@ -4,20 +4,6 @@ export const Csharp = {
 	['outer.parameters']: [`(parameter_list) @parameters `].join('\n'),
 	['inner.parameters']: ` ((parameter_list (_) @parameters) `,
 	['outer.array']: [` (initializer_expression) @array `].join('\n'),
-	['outer.class']: [`(class_declaration) @class`].join('\n'),
-	['inner.class']: [` (class_declaration body: (declaration_list (_)+ @body)) `].join('\n'),
-	['inner.string']: [
-		` (string_literal) @string `,
-		`(interpolated_string_expression) @string`,
-		`(character_literal) @string`,
-	].join('\n'),
-	['outer.string']: [
-		` (string_literal) @string `,
-		`(interpolated_string_expression) @string`,
-		`(character_literal) @string`,
-	].join('\n'),
-	// todo
-	['outer.variable']: [`(variable_declaration) @variable`].join('\n'),
 
 	['outer.comment']: [`(comment)+ @comment`].join('\n'),
 	['inner.comment']: [`(comment) @comment`].join('\n'),
