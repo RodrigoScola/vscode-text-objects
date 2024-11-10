@@ -31,7 +31,7 @@ export function getConfig(): Config {
 export const editor = new Editor();
 
 // This method is called when your extension is activated
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate() {
 	LanguageParser.init();
 
 	config = new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
@@ -43,7 +43,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	// 	}
 	// );
 
-	await initCommands(context);
+	initCommands();
 }
 
 export function deactivate() {}

@@ -683,26 +683,12 @@ function goTo(position: { start: vscode.Position; end: vscode.Position }) {
 export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
-export function initCommands(context: vscode.ExtensionContext) {
-	for (const command of Object.values(GotoCommands)) {
+export function initCommands() {
+	//todo change this to the commands just be an array lol
+	for (const command of Object.values(GotoCommands).concat(Object.values(GotoPreviousCommands))) {
 		InitCommand(makeName(command.commandName()), (ctx) => command.select(ctx), goTo);
 	}
-	for (const command of Object.values(GotoPreviousCommands)) {
-		InitCommand(makeName(command.commandName()), (ctx) => command.select(ctx), goTo);
-	}
-
-	for (const command of Object.values(selectPreviousCommands)) {
-		context.subscriptions.push(
-			InitCommand(
-				makeName(command.commandName()),
-				(context) => command.select(context),
-				function (position) {
-					formatSelection(command, position.start, position.end, editor.getEditor());
-				}
-			)
-		);
-	}
-	for (const command of Object.values(selectCommands)) {
+	for (const command of Object.values(selectCommands).concat(Object.values(selectPreviousCommands))) {
 		InitCommand(
 			makeName(command.commandName()),
 			(context) => command.select(context),
