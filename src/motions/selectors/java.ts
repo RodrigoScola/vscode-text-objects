@@ -1,16 +1,4 @@
-import { Selector } from '../commands';
-
-export const JAVA: Selector = {
-	['outer.function']: [
-		`(method_declaration) @function`,
-		`(local_variable_declaration
- declarator:(variable_declarator
- value:(lambda_expression))) @function`,
-	].join('\n'),
-	['inner.function']: [
-		` (method_declaration body:(block (_)+ @function)) `,
-		` (variable_declarator value:(lambda_expression body:(block (_)+ @function)))`,
-	].join('\n'),
+export const JAVA = {
 	['outer.call']: ` (expression_statement
                         (method_invocation arguments:(argument_list ) @call)) `,
 	['inner.call']: ` (expression_statement
@@ -23,28 +11,6 @@ export const JAVA: Selector = {
 	['outer.array']: '(array_initializer) @array',
 	['outer.class']: '(class_declaration) @class',
 	['inner.class']: '(class_declaration body: (class_body (_) @class))',
-	['outer.conditional']: [
-		`(if_statement) @conditional`,
-		`(switch_expression) @conditional`,
-		` (assignment_expression right:(ternary_expression)) @conditional `,
-	].join('\n'),
-	['inner.conditional']: [
-		`(if_statement consequence: (block (_)+ @conditional )) `,
-		`(switch_expression body: (switch_block (_)+ @conditional )) `,
-		` (assignment_expression right:(ternary_expression consequence: (_) @conditional )) `,
-	].join('\n'),
-	['inner.loop']: [
-		` (for_statement body:(block (_) @loop)) `,
-		` (enhanced_for_statement body:(block (_) @loop)) `,
-		` (while_statement body:(block (_) @loop)) `,
-		` (do_statement body:(block (_) @loop)) `,
-	].join('\n'),
-	['outer.loop']: [
-		`(for_statement) @loop`,
-		`(enhanced_for_statement) @loop`,
-		`(while_statement) @loop`,
-		`(do_statement) @loop`,
-	].join('\n'),
 	['inner.string']: ['(string_fragment) @string', `(multiline_string_fragment) @string`].join('\n'),
 	['outer.string']: [`(string_literal) @string`, `(character_literal) @string`].join('\n'),
 	['outer.object']: [
@@ -56,12 +22,6 @@ export const JAVA: Selector = {
 	['outer.variable']: [
 		` (local_variable_declaration) @variable `,
 		`(expression_statement (assignment_expression)) @variable`,
-	].join('\n'),
-	['outer.rhs']: [
-		` (assignment_expression left:(identifier) right:(_) @rhs) `,
-		` (local_variable_declaration
- declarator:(variable_declarator
- value:(_) @rhs)) `,
 	].join('\n'),
 	['outer.type']: [
 		` (interface_declaration) @types `,
@@ -95,11 +55,5 @@ type:(_) @lhs
 		`(local_variable_declaration
  declarator:(variable_declarator name:(identifier) @lhs))
         `,
-	].join('\n'),
-	'inner.rhs': [
-		` (assignment_expression  right:(_ (_) @rhs)) `,
-		` (local_variable_declaration
- declarator:(variable_declarator
- value:(_ (_) @rhs ))) `,
 	].join('\n'),
 };

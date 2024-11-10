@@ -1,7 +1,6 @@
-import { Selector } from '../commands';
 import { JsQuery } from './javascript';
 
-export const TsSelector: Selector = {
+export const TsSelector = {
 	['inner.type']: '',
 	['outer.comment']: JsQuery['outer.comment'],
 	['inner.comment']: JsQuery['inner.comment'],
@@ -28,7 +27,6 @@ export const TsSelector: Selector = {
 
 		`(type_annotation (_) @type)`,
 	].join('\n'),
-	['inner.function']: JsQuery['inner.function'],
 	['inner.call']: JsQuery['inner.call'],
 	['outer.call']: JsQuery['outer.call'],
 	['inner.parameters']: JsQuery['inner.parameters'],
@@ -90,20 +88,10 @@ export const TsSelector: Selector = {
 	['outer.array']: JsQuery['outer.array'],
 	['outer.class']: JsQuery['outer.class'],
 	['inner.class']: JsQuery['inner.class'],
-	['outer.conditional']: JsQuery['outer.conditional'],
-	['inner.conditional']: JsQuery['inner.conditional'],
-	['inner.loop']: JsQuery['inner.loop'],
-	['outer.loop']: JsQuery['outer.loop'],
 	['inner.string']: JsQuery['inner.string'],
 	['outer.string']: JsQuery['outer.string'],
 	['outer.object']: JsQuery['outer.object'],
 	['outer.parameters']: JsQuery['outer.parameters'],
-	['outer.rhs']: JsQuery['outer.rhs'].concat(
-		`
-               (type_alias_declaration
-               value: (_) @type   ) 
-               `
-	),
 	['outer.variable']: JsQuery['outer.variable'].concat(`(type_alias_declaration) @type`),
 
 	'inner.array': [].join('\n'),

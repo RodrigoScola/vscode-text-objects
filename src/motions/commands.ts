@@ -5,19 +5,15 @@ import { editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
+import selectInnerConditional from './queries/selectInnerConditional';
+import selectInnerFunction from './queries/selectInnerFunction';
+import selectInnerLoop from './queries/selectInnerLoop';
+import selectInnerRhs from './queries/selectInnerRhs';
+import selectConditional from './queries/selectOuterConditional';
+import selectOuterFunction from './queries/selectOuterFunction';
+import selectLoop from './queries/selectOuterLoop';
+import selectRhs from './queries/selectRhs';
 import { QueryCommand } from './QueryCommand';
-import { C } from './selectors/c';
-import { CppQuery } from './selectors/cpp';
-import { Csharp } from './selectors/csharp';
-import { GoQuery } from './selectors/go';
-import { JAVA } from './selectors/java';
-import { JsQuery } from './selectors/javascript';
-import { JsonSelector } from './selectors/json';
-import { LUA } from './selectors/lua';
-import { PythonQuery } from './selectors/python';
-import { Rust } from './selectors/rust';
-import { TOML } from './selectors/toml';
-import { TsSelector } from './selectors/typescript';
 
 export type QueryContext = {
 	cursor: vscode.Position;
@@ -25,208 +21,247 @@ export type QueryContext = {
 	language: SupportedLanguages;
 };
 
-export interface Selector {
-	['outer.comment']: string;
-	['inner.comment']: string;
-	['outer.type']: string;
-	['inner.type']: string;
-	['outer.function']: string;
-	['inner.function']: string;
-	['outer.call']: string;
-	['inner.call']: string;
-	['outer.parameters']: string;
-	['inner.parameters']: string;
-	['outer.loop']: string;
-	['inner.loop']: string;
-	['outer.conditional']: string;
-	['inner.conditional']: string;
-	['outer.variable']: string;
-	['outer.rhs']: string;
-	['inner.rhs']: string;
-	['outer.lhs']: string;
-	['inner.lhs']: string;
-	['outer.class']: string;
-	['inner.class']: string;
-	['outer.array']: string;
-	['inner.array']: string;
-	['outer.object']: string;
-	['inner.object']: string;
-	['outer.string']: string;
-	['inner.string']: string;
+export interface QuerySelector {
+	language: SupportedLanguages;
+	selector: string;
 }
 
-export class SelectorFactory {
-	private static selectors: Record<string, Selector> = {};
-	static set(lang: SupportedLanguages, selector: Selector) {
-		SelectorFactory.selectors[lang] = selector;
-	}
-	static get(lang: SupportedLanguages): Selector {
-		assert(lang in SelectorFactory.selectors, `language ${lang} not found in selectors`);
-		return SelectorFactory.selectors[lang];
+export function addSelectors(command: QueryCommand, funcs: Record<string, () => QuerySelector>) {
+	for (const func of Object.values(funcs)) {
+		command.addSelector(func());
 	}
 }
 
-SelectorFactory.set('go', GoQuery);
-SelectorFactory.set('javascript', JsQuery);
-SelectorFactory.set('javascriptreact', JsQuery);
-SelectorFactory.set('typescript', TsSelector);
-SelectorFactory.set('typescriptreact', TsSelector);
-SelectorFactory.set('json', JsonSelector);
-SelectorFactory.set('jsonc', JsonSelector);
-SelectorFactory.set('python', PythonQuery);
-SelectorFactory.set('cpp', CppQuery);
-SelectorFactory.set('csharp', Csharp);
-SelectorFactory.set('rust', Rust);
-SelectorFactory.set('c', C);
-SelectorFactory.set('yaml', C);
-SelectorFactory.set('lua', LUA);
-SelectorFactory.set('java', JAVA);
-SelectorFactory.set('toml', TOML);
+const selectOuterFunctionCommand = new QueryCommand({
+	name: 'function',
+	action: 'select',
+	direction: 'next',
+	scope: 'outer',
+	onMatch: (matches) => filterDuplicates(matches, [NODES.FUNCTION]),
+	pos: closestPos,
+});
+
+addSelectors(selectOuterFunctionCommand, selectOuterFunction);
+
+const selectInnerFunctionCommand = new QueryCommand({
+	scope: 'inner',
+	name: 'function',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+	onMatch: groupElements,
+});
+addSelectors(selectInnerFunctionCommand, selectInnerFunction);
+
+const selectOuterLoopCommand = new QueryCommand({
+	scope: 'outer',
+	name: 'loop',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+});
+
+addSelectors(selectOuterLoopCommand, selectLoop);
+
+const selectInnerLoopCommand = new QueryCommand({
+	scope: 'inner',
+	name: 'loop',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+	onMatch: groupElements,
+});
+
+addSelectors(selectInnerLoopCommand, selectInnerLoop);
+
+const selectouterConditionalCommand = new QueryCommand({
+	scope: 'outer',
+	name: 'conditional',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+});
+
+addSelectors(selectouterConditionalCommand, selectConditional);
+
+const selectInnerconditional = new QueryCommand({
+	scope: 'inner',
+	name: 'conditional',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+	onMatch: groupElements,
+});
+
+addSelectors(selectInnerconditional, selectInnerConditional);
+
+const selectrhsCommand = new QueryCommand({
+	scope: 'outer',
+	name: 'rhs',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+});
+
+addSelectors(selectrhsCommand, selectRhs);
+
+const selectInnerRhsCommand = new QueryCommand({
+	scope: 'inner',
+	name: 'rhs',
+	action: 'select',
+	direction: 'next',
+	pos: closestPos,
+});
+
+addSelectors(selectInnerRhsCommand, selectInnerRhs);
 
 export const selectCommands = {
-	function: new QueryCommand({
-		name: 'function',
-		action: 'select',
-		direction: 'next',
+	function: selectOuterFunctionCommand,
+	innerFunction: selectInnerFunctionCommand,
+	loop: selectOuterLoopCommand,
+	innerLoop: selectInnerLoopCommand,
+	conditional: selectouterConditionalCommand,
+	innerConditional: selectInnerconditional,
+	rhs: selectrhsCommand,
+	innerRhs: selectInnerRhsCommand,
+
+	lhs: new QueryCommand({
 		scope: 'outer',
-	})
-		.setGetPosition(closestPos)
-		.setOnMatch((matches) => filterDuplicates(matches, [NODES.FUNCTION])),
-	innerFunction: new QueryCommand({ scope: 'inner', name: 'function', action: 'select', direction: 'next' })
-		.setGetPosition(closestPos)
-		.setOnMatch(groupElements),
-	loop: new QueryCommand({ scope: 'outer', name: 'loop', action: 'select', direction: 'next' }).setGetPosition(
-		closestPos
-	),
-	innerLoop: new QueryCommand({ scope: 'inner', name: 'loop', action: 'select', direction: 'next' })
-		.setGetPosition(closestPos)
-		.setOnMatch(groupElements),
-	conditional: new QueryCommand({
-		scope: 'outer',
-		name: 'conditional',
+		name: 'lhs',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
-	innerConditional: new QueryCommand({
-		scope: 'inner',
-		name: 'conditional',
-		action: 'select',
-		direction: 'next',
-	})
-		.setGetPosition(closestPos)
-		.setOnMatch(groupElements),
-	rhs: new QueryCommand({ scope: 'outer', name: 'rhs', action: 'select', direction: 'next' }).setGetPosition(
-		closestPos
-	),
-	innerRhs: new QueryCommand({
-		scope: 'inner',
-		name: 'rhs',
-		action: 'select',
-		direction: 'next',
-	}).setGetPosition(closestPos),
-	lhs: new QueryCommand({ scope: 'outer', name: 'lhs', action: 'select', direction: 'next' }).setGetPosition(
-		closestPos
-	),
+		pos: closestPos,
+	}),
 	innerLhs: new QueryCommand({
 		scope: 'inner',
 		name: 'lhs',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	variables: new QueryCommand({
 		scope: 'outer',
 		name: 'variable',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	string: new QueryCommand({
 		scope: 'outer',
 		name: 'string',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	innerString: new QueryCommand({
 		scope: 'inner',
 		name: 'string',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	//bug on going to class
 	class: new QueryCommand({
 		scope: 'outer',
 		name: 'class',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	innerClass: new QueryCommand({
 		scope: 'inner',
 		name: 'class',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	array: new QueryCommand({
 		scope: 'outer',
 		name: 'array',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	innerArray: new QueryCommand({
 		scope: 'inner',
 		name: 'array',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	object: new QueryCommand({
 		scope: 'outer',
 		name: 'object',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	innerObject: new QueryCommand({
 		scope: 'inner',
 		name: 'object',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
-	parameters: new QueryCommand({ scope: 'outer', name: 'parameters', action: 'select', direction: 'next' })
-		.setGetPosition(closestPos)
-		.setOnMatch(groupElements),
-	call: new QueryCommand({ scope: 'outer', name: 'call', action: 'select', direction: 'next' })
-		.setOnMatch(groupElements)
-		.setGetPosition(closestPos),
+		pos: closestPos,
+	}),
+	parameters: new QueryCommand({
+		scope: 'outer',
+		name: 'parameters',
+		action: 'select',
+		direction: 'next',
+		pos: closestPos,
+		onMatch: groupElements,
+	}),
+	call: new QueryCommand({
+		scope: 'outer',
+		name: 'call',
+		action: 'select',
+		direction: 'next',
+		onMatch: groupElements,
+
+		pos: closestPos,
+	}),
 	innerCall: new QueryCommand({
 		scope: 'inner',
 		name: 'call',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	innerParameters: new QueryCommand({
 		scope: 'inner',
 		name: 'parameters',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
-	type: new QueryCommand({ scope: 'outer', name: 'type', action: 'select', direction: 'next' }).setGetPosition(
-		closestPos
-	),
+		pos: closestPos,
+	}),
+	type: new QueryCommand({
+		scope: 'outer',
+		name: 'type',
+		action: 'select',
+		direction: 'next',
+		pos: closestPos,
+	}),
 	innerType: new QueryCommand({
 		scope: 'inner',
 		name: 'type',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	comments: new QueryCommand({
 		scope: 'outer',
 		name: 'comment',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 	innerComment: new QueryCommand({
 		scope: 'inner',
 		name: 'comment',
 		action: 'select',
 		direction: 'next',
-	}).setGetPosition(closestPos),
+		pos: closestPos,
+	}),
 };
 
 export const selectPreviousCommands = {

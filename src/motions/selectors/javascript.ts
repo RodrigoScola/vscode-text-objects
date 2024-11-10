@@ -1,73 +1,11 @@
-import { Selector } from '../commands';
-
-export const JsQuery: Selector = {
+export const JsQuery = {
 	['inner.type']: '',
 	['outer.comment']: '(comment)+ @comment',
 	['inner.comment']: '(comment) @comment',
 	['outer.type']: '',
 	['inner.parameters']: [`(formal_parameters (_)* @parameter )`].join('\n'),
 	['outer.parameters']: [`(formal_parameters) @parameter`].join('\n'),
-	['outer.function']: [
-		`(method_definition) @function`,
 
-		`(export_statement (function_declaration)) @function`,
-
-		` (function_declaration) @function `,
-		` (arrow_function) @function`,
-
-		` (lexical_declaration (variable_declarator value: (arrow_function) @function.body)) @function `,
-		`
-		        (export_statement
-		        (lexical_declaration
-		        (variable_declarator
-		        (function_expression)))) @function
-					      `,
-		`
-					     (export_statement
-					     (lexical_declaration
-					     (variable_declarator
-					     value: (arrow_function) ))) @function
-					      `,
-		,
-		`(function_expression) @function`,
-	].join('\n'),
-
-	['inner.function']: [
-		` ((function_declaration
-            body: (statement_block
-            (_)* @function_body)))`,
-		` (function_expression body: (statement_block (_)* @function.body)) `,
-		` (arrow_function body: (statement_block (_)* @function_body)) `,
-		`(method_definition body: (statement_block (_)* @function.body)) `,
-	].join('\n'),
-	['outer.loop']: [` (for_statement) @loop (for_in_statement) @loop `].join('\n'),
-
-	['inner.loop']: [
-		`     
-     (for_statement
-     body: (statement_block
-     (_)* @loop_body))
-
-     (for_in_statement
-     body: (statement_block
-     (_)* @loop_body))
-     `,
-	].join('\n'),
-	['outer.conditional']: [` ( (if_statement) @if.statement) `].join('\n'),
-	['inner.conditional']: [
-		` (if_statement consequence: (statement_block (_)+ @inner_statement))
-     `,
-	].join('\n'),
-
-	'outer.rhs': [
-		`(variable_declarator value: (_) @rhs)`,
-		`( assignment_expression (_) @rhs)
-     `,
-		//todo: go to a class with the public and check if node is good name
-		// `( public_field_definition
-		// value: (_) @rhs
-		// )`,
-	].join('\n'),
 	'outer.variable': [
 		//todo: go to a class with the public and check if node is good name
 		//`( public_field_definition) @lexical_declaration`,
@@ -94,5 +32,4 @@ export const JsQuery: Selector = {
 
 	'outer.lhs': [` (variable_declarator name:(_) @lhs) `].join('\n'),
 	'inner.lhs': [` (variable_declarator name:(_ (_) @lhs) ) `].join('\n'),
-	'inner.rhs': [` (variable_declarator value:(_ (_) @rhs)) `].join('\n'),
 };

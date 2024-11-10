@@ -1,19 +1,4 @@
-import { NODES } from '../../constants';
-import { Selector } from '../commands';
-
-export const Rust: Selector = {
-	['outer.function']: [
-		`(let_declaration
-        pattern: (identifier) 
-        (_) 
-        ) @anonymous_function`,
-		`(function_item name: (identifier) @${NODES.FUNCTION_NAME}) @function.declaration `,
-		`(function_item ) @function.declaration`,
-		`(function_signature_item) @function.declaration`,
-	].join('\n'),
-	['inner.function']: [
-		//todo do the let function declaration
-	].join('\n'),
+export const Rust = {
 	['outer.call']: [`(call_expression) @call`].join('\n'),
 	['inner.call']: [`(call_expression arguments: (arguments ) @call)`].join('\n'),
 	['outer.parameters']: '(parameters) @parameters',
@@ -34,23 +19,6 @@ export const Rust: Selector = {
 		`(trait_item body: (declaration_list (_)+ @class)) `,
 		`(enum_item body: (enum_variant_list (_)+ @class )) `,
 	].join('\n'),
-	['outer.conditional']: [
-		`(if_expression) @conditional`,
-		`(match_expression) @conditional`,
-		`(let_declaration value: (if_expression)) @conditional`,
-	].join('\n'),
-	['inner.conditional']: [
-		`(if_expression consequence: (block (_)+ @conditional )) `,
-		`(match_expression body: (match_block (_)+ @conditional )) `,
-		`(let_declaration value: (if_expression consequence: (block (_)+ @conditional))) `,
-		//todo do the else ones
-	].join('\n'),
-	['inner.loop']: [
-		`(loop_expression body: (block (_)+ @loop )) `,
-		`(while_expression body: (block (_)+ @loop )) `,
-		`(for_expression body: (block (_)+ @loop )) `,
-	].join('\n'),
-	['outer.loop']: [`(loop_expression) @loop`, `(while_expression) @loop`, `(for_expression) @loop`].join('\n'),
 	['inner.string']: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
 	['outer.string']: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
 	['outer.object']: [`(struct_item) @object`, `(struct_expression) @object`, `(enum_item) @object`].join('\n'),
@@ -82,11 +50,5 @@ export const Rust: Selector = {
 		` (static_item name:(_) @lhs )`,
 		` (let_declaration   pattern:(identifier) @lhs )`,
 		` (const_item name:(_) @lhs )`,
-	].join('\n'),
-	'inner.rhs': [
-		` (let_declaration value: (_ (_) @rhs)) `,
-		` (static_item value:(_(_) @rhs) )`,
-		` (let_declaration   value: (_(_) @rhs) )`,
-		` (const_item value:(_(_) @lhs) )`,
 	].join('\n'),
 };

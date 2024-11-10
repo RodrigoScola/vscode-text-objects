@@ -2,8 +2,8 @@ import assert from 'assert';
 import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { groupNodes, pointPool } from '../parsing/nodes';
-import { LanguageParser } from '../parsing/parser';
-import { QueryContext, Selector, SelectorFactory } from './commands';
+import { LanguageParser, SupportedLanguages } from '../parsing/parser';
+import { QueryContext, QuerySelector } from './commands';
 
 let lastCommand: QueryCommand | undefined;
 export function getLastExecCommand() {
@@ -29,48 +29,48 @@ type CommandNames =
 type CommandScope = 'inner' | 'outer';
 type CommandDirection = 'next' | 'previous';
 type CommandAction = 'select' | 'goTo';
+
 type CommandProps = {
 	name: CommandNames;
 	scope: CommandScope;
 	direction: CommandDirection;
 	action: CommandAction;
+	onMatch?: OnMatchFunc;
+	pos: GetPositionFunc;
 };
 
 type OnMatchFunc = (matches: QueryMatch[], context: QueryContext) => QueryMatch[];
 type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
+
 export class QueryCommand {
 	readonly name: CommandNames;
 	private getPosition: GetPositionFunc | undefined;
 
 	readonly scope: CommandScope;
+	selectors: Partial<Record<SupportedLanguages, QuerySelector>>;
+
 	readonly direction: CommandDirection;
 	readonly action: CommandAction;
+	private readonly onMatch: OnMatchFunc | undefined;
 
 	constructor(props: CommandProps) {
 		this.name = props.name;
 		this.scope = props.scope;
 		this.direction = props.direction;
 		this.action = props.action;
+		this.selectors = {};
+		this.onMatch = props.onMatch;
+		this.getPosition = props.pos;
+	}
+
+	addSelector(selector: QuerySelector) {
+		this.selectors[selector.language] = selector;
+		return this;
 	}
 
 	//make a better name
 	commandName() {
 		return `${this.action}.${this.direction}.${this.scope}.${this.name}`;
-	}
-
-	private onMatch: OnMatchFunc | undefined;
-
-	setOnMatch(fn: OnMatchFunc) {
-		assert(typeof this.onMatch === 'undefined', 'cannot assign on match more than once');
-		this.onMatch = fn;
-		return this;
-	}
-
-	setGetPosition(fn: GetPositionFunc) {
-		assert(typeof this.getPosition === 'undefined', 'cannot assign on get position more than once');
-		assert(fn, 'undefined function ?');
-		this.getPosition = fn;
-		return this;
 	}
 
 	async select(context: QueryContext) {
@@ -86,13 +86,11 @@ export class QueryCommand {
 
 		const tree = parser.parser.parse(context.text);
 
-		const cname = `${this.scope}.${this.name}` as keyof Selector;
-
-		const selector = SelectorFactory.get(context.language)[cname];
+		const selector = this.selectors[context.language];
 
 		assert(selector, this.name + ' is an invalid selector for ' + context.language);
 
-		const query = parser.language.query(selector);
+		const query = parser.language.query(selector.selector);
 		assert(query, 'invalid query came out');
 
 		let matches = query.matches(tree.rootNode);
@@ -125,10 +123,10 @@ export class QueryCommand {
 		}
 
 		const position = this.getPosition(ranges, context.cursor);
-		if (!position) {
-			return;
+
+		if (position) {
+			assert(position.start.isBeforeOrEqual(position.end), 'start needs to be first');
 		}
-		assert(position.start.isBeforeOrEqual(position.end), 'start needs to be first');
 
 		return position;
 	}

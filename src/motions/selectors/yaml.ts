@@ -1,8 +1,6 @@
-import { Selector } from '../commands';
-
 //still need to do this one
 // was giving a lot of errors like resolved is not a function
-export const YAML: Selector = {
+export const YAML = {
 	['outer.function']: [].join('\n'),
 	['inner.function']: '',
 	['inner.call']: '',

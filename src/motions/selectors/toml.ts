@@ -1,10 +1,6 @@
-import { Selector } from '../commands';
-
 //still need to do this one
 // was giving a lot of errors like resolved is not a function
-export const TOML: Selector = {
-	['outer.function']: [].join('\n'),
-	['inner.function']: '',
+export const TOML = {
 	['inner.call']: '',
 	['outer.call']: '',
 	['outer.parameters']: '',
@@ -12,10 +8,6 @@ export const TOML: Selector = {
 	['outer.array']: '(array) @array',
 	['outer.class']: '',
 	['inner.class']: '',
-	['outer.conditional']: '',
-	['inner.conditional']: '',
-	['inner.loop']: '',
-	['outer.loop']: '',
 	['inner.string']: [`(string) @string`].join('\n'),
 	['outer.string']: [`(string) @string`].join('\n'),
 	['outer.object']: ['(table) @object', `(inline_table) @object`].join('\n'),
@@ -30,5 +22,4 @@ export const TOML: Selector = {
 	['inner.object']: ['(table (_) @object ) ', `(inline_table (_) @object) `].join('\n'),
 	'outer.lhs': [`(pair (bare_key) @lhs) `].join('\n'),
 	'inner.lhs': [`(pair (bare_key) @lhs) `].join('\n'),
-	['inner.rhs']: [`(pair (bare_key) (_ (_) @rhs) )`].join('\n'),
 };

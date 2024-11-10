@@ -1,9 +1,6 @@
-import { Selector } from '../commands';
 import { JsQuery } from './javascript';
 
-export const JsonSelector: Selector = {
-	['outer.function']: '',
-	['inner.function']: '',
+export const JsonSelector = {
 	['inner.call']: '',
 	['outer.call']: '',
 	['outer.parameters']: '',
@@ -15,18 +12,12 @@ export const JsonSelector: Selector = {
 	['outer.array']: JsQuery['outer.array'],
 	['outer.class']: '',
 	['inner.class']: '',
-	['outer.conditional']: '',
-	['inner.conditional']: '',
-	['inner.loop']: '',
-	['outer.loop']: '',
 	['inner.string']: `(string_content) @string`,
 	['outer.string']: `(string) @string`,
 	['outer.object']: JsQuery['outer.object'],
 	['outer.variable']: `(pair) @variable`,
-	['outer.rhs']: `(pair value: (_) @rhs)`,
 	'inner.array': JsQuery['inner.array'],
 	'inner.object': JsQuery['inner.object'],
 	'outer.lhs': `(pair key :(_) @key)`,
 	'inner.lhs': `(pair key : (string (_) @key))`,
-	'inner.rhs': '(pair value : (_ (_) @rhs))',
 };

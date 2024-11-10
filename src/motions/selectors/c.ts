@@ -1,11 +1,4 @@
-import { Selector } from '../commands';
-
-export const C: Selector = {
-	['outer.function']: [
-		`(function_definition) @function`,
-		`(declaration declarator: (function_declarator)) @function`,
-	].join('\n'),
-	['inner.function']: [`(function_definition body: (compound_statement (_)+ @function)) `].join('\n'),
+export const C = {
 	['outer.call']: '(call_expression) @call',
 	['inner.call']: '(call_expression arguments: (argument_list (_) @call )) ',
 	['outer.parameters']: '(parameter_list ) @parameters ',
@@ -15,19 +8,6 @@ export const C: Selector = {
                         value:(_) @array)`,
 	['outer.class']: `(struct_specifier) @class`,
 	['inner.class']: `(struct_specifier body: (field_declaration_list (_)+ @class ))`,
-	['outer.conditional']: [`(if_statement) @conditional`, ` (conditional_expression) @conditional`].join('\n'),
-	['inner.conditional']: [
-		`(if_statement consequence: (compound_statement (_)+ @conditional))`,
-		`(if_statement alternative: (else_clause (_)+ @conditional))`,
-		` (conditional_expression consequence: (_) @conditional)`,
-		` (conditional_expression alternative: (_) @conditional)`,
-	].join('\n'),
-	['outer.loop']: [`(for_statement) @loops`, `(while_statement) @loops`, `(do_statement) @loops`].join('\n'),
-	['inner.loop']: [
-		`(for_statement body: (compound_statement (_)+ @loops)) `,
-		`(while_statement body: (compound_statement (_)+ @loops)) `,
-		`(do_statement body: (compound_statement (_)+ @loops)) `,
-	].join('\n'),
 	['outer.string']: ['(string_literal) @string', '(char_literal) @string'].join('\n'),
 	['inner.string']: ['(string_content) @string', '(character) @string'].join('\n'),
 	['outer.object']: [
@@ -80,10 +60,4 @@ type:(primitive_type) @lhs
 		`
  (init_declarator declarator:(identifier) @lhs)`,
 	].join('\n'),
-	'inner.rhs': [
-		`( field_expression field:(field_identifier) @rhs ) `,
-		`
- (init_declarator value:(initializer_list (_) @rhs))`,
-	].join('\n'),
-	['outer.rhs']: [`(init_declarator value: (_) @rhs ) `, `(assignment_expression right:(_) @lhs)`].join('\n'),
 };
