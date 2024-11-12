@@ -69,6 +69,7 @@ export class QueryCommand {
 	}
 
 	async select(context: QueryContext) {
+		console.log('ass');
 		assert(this, 'this is undefined');
 		assert(
 			typeof this.getPosition === 'function',
@@ -78,16 +79,21 @@ export class QueryCommand {
 
 		assert(parser, `could not init parser for ${context.language}`);
 
+		console.log(context.language);
+
 		const tree = parser.parser.parse(context.text);
 
 		const selector = this.selectors[context.language];
 
 		assert(selector, this.name + ' is an invalid selector for ' + context.language);
+		console.log('getting');
 
 		const query = parser.language.query(selector.selector);
+
 		assert(query, 'invalid query came out');
 
 		let matches = query.matches(tree.rootNode);
+		console.log('original match len', matches.length);
 
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
@@ -96,6 +102,8 @@ export class QueryCommand {
 		}
 
 		const nodes = groupNodes(matches);
+
+		console.log('ra');
 
 		const ranges = new Array(nodes.length)
 			.fill(undefined)

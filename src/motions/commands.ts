@@ -5,61 +5,34 @@ import { editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
-import selectArray from './queries/select/Array';
-import selectCall from './queries/select/call';
-import selectClass from './queries/select/class';
-import selectComment from './queries/select/comment';
-import selectConditional from './queries/select/Conditional';
-import selectOuterFunction from './queries/select/Function';
-import selectInnerArray from './queries/select/innerArray';
-import selectInnercall from './queries/select/innerCall';
-import selectInnerClass from './queries/select/innerClass';
-import selectInnerComment from './queries/select/innercomment';
-import selectInnerConditional from './queries/select/innerConditional';
-import selectInnerFunction from './queries/select/innerFunction';
-import selectInnerLhs from './queries/select/innerLhs';
-import selectInnerLoop from './queries/select/innerLoop';
-import selectInnerObject from './queries/select/innerObject';
-import selectInnerParams from './queries/select/innerParams';
-import selectInnerRhs from './queries/select/innerRhs';
-import selectInnerString from './queries/select/innerString';
-import selectInnerType from './queries/select/innerType';
-import selectLhs from './queries/select/Lhs';
-import selectLoop from './queries/select/Loop';
-import selectOuterObject from './queries/select/Object';
-import selectParams from './queries/select/Params';
-import selectRhs from './queries/select/Rhs';
-import selectString from './queries/select/String';
-import selectType from './queries/select/Type';
-import selectVariable from './queries/select/Variables';
+import { select as selectOuterArray } from './queries/Array';
+import selectCall from './queries/call';
+import selectClass from './queries/class';
+import selectComment from './queries/comment';
+import selectConditional from './queries/Conditional';
+import selectOuterFunction from './queries/Function';
+import selectInnerArray from './queries/innerArray';
+import selectInnercall from './queries/innerCall';
+import selectInnerClass from './queries/innerClass';
+import selectInnerComment from './queries/innercomment';
+import selectInnerConditional from './queries/innerConditional';
+import selectInnerFunction from './queries/innerFunction';
+import selectInnerLhs from './queries/innerLhs';
+import selectInnerLoop from './queries/innerLoop';
+import selectInnerObject from './queries/innerObject';
+import selectInnerParams from './queries/innerParams';
+import selectInnerRhs from './queries/innerRhs';
+import selectInnerString from './queries/innerString';
+import selectInnerType from './queries/innerType';
+import selectLhs from './queries/Lhs';
+import selectLoop from './queries/Loop';
+import selectOuterObject from './queries/Object';
+import { select as selectParams } from './queries/Params';
+import selectRhs from './queries/Rhs';
+import selectString from './queries/String';
+import selectType from './queries/Type';
+import selectVariable from './queries/Variables';
 
-import goToArray from './queries/goTo/Array';
-import goToCall from './queries/goTo/call';
-import goToClass from './queries/goTo/class';
-import goToComment from './queries/goTo/comment';
-import goToConditional from './queries/goTo/Conditional';
-import goToOuterFunction from './queries/goTo/Function';
-import goToInnerArray from './queries/goTo/innerArray';
-import goToInnercall from './queries/goTo/innerCall';
-import goToInnerClass from './queries/goTo/innerClass';
-import goToInnerComment from './queries/goTo/innercomment';
-import goToInnerConditional from './queries/goTo/innerConditional';
-import goToInnerFunction from './queries/goTo/innerFunction';
-import goToInnerLhs from './queries/goTo/innerLhs';
-import goToInnerLoop from './queries/goTo/innerLoop';
-import goToInnerObject from './queries/goTo/innerObject';
-import goToInnerParams from './queries/goTo/innerParams';
-import goToInnerRhs from './queries/goTo/innerRhs';
-import goToInnerString from './queries/goTo/innerString';
-import goToInnerType from './queries/goTo/innerType';
-import goToLhs from './queries/goTo/Lhs';
-import goToLoop from './queries/goTo/Loop';
-import goToOuterObject from './queries/goTo/Object';
-import goToParams from './queries/goTo/Params';
-import goToRhs from './queries/goTo/Rhs';
-import goToString from './queries/goTo/String';
-import goToType from './queries/goTo/Type';
-import goToVariable from './queries/goTo/Variables';
 import { CommandNames, CommandScope, OnMatchFunc, QueryCommand } from './QueryCommand';
 
 export type QueryContext = {
@@ -141,7 +114,7 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString),
 	addSelectors(newSelectNextCommand('outer', 'class'), selectClass),
 	addSelectors(newSelectNextCommand('inner', 'class'), selectInnerClass),
-	addSelectors(newSelectNextCommand('outer', 'array'), selectArray),
+	addSelectors(newSelectNextCommand('outer', 'array'), selectOuterArray),
 	addSelectors(newSelectNextCommand('inner', 'array'), selectInnerArray),
 	addSelectors(newSelectNextCommand('outer', 'object'), selectOuterObject),
 	addSelectors(newSelectNextCommand('inner', 'object'), selectInnerObject),
@@ -184,7 +157,7 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectPreviousCommand('inner', 'string'), selectInnerString),
 	addSelectors(newSelectPreviousCommand('outer', 'class'), selectClass),
 	addSelectors(newSelectPreviousCommand('inner', 'class'), selectInnerClass),
-	addSelectors(newSelectPreviousCommand('outer', 'array'), selectArray),
+	addSelectors(newSelectPreviousCommand('outer', 'array'), selectOuterArray),
 	addSelectors(newSelectPreviousCommand('inner', 'array'), selectInnerArray),
 	addSelectors(newSelectPreviousCommand('outer', 'object'), selectOuterObject),
 	addSelectors(newSelectPreviousCommand('inner', 'object'), selectInnerObject),
@@ -203,34 +176,37 @@ export const goToCommands: QueryCommand[] = [
 		withMatchFunc(newGoToNextCommand('outer', 'function'), (matches) =>
 			filterDuplicates(matches, [NODES.FUNCTION])
 		),
-		goToOuterFunction
+		selectOuterFunction
 	),
-	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'function'), groupElements), goToInnerFunction),
-	addSelectors(newGoToNextCommand('outer', 'loop'), goToLoop),
-	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'loop'), groupElements), goToInnerLoop),
-	addSelectors(newGoToNextCommand('outer', 'conditional'), goToConditional),
-	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'conditional'), groupElements), goToInnerConditional),
-	addSelectors(newGoToNextCommand('outer', 'rhs'), goToRhs),
-	addSelectors(newGoToNextCommand('inner', 'rhs'), goToInnerRhs),
-	addSelectors(newGoToNextCommand('outer', 'lhs'), goToLhs),
-	addSelectors(newGoToNextCommand('inner', 'lhs'), goToInnerLhs),
-	addSelectors(newGoToNextCommand('outer', 'variable'), goToVariable),
-	addSelectors(newGoToNextCommand('outer', 'string'), goToString),
-	addSelectors(newGoToNextCommand('inner', 'string'), goToInnerString),
-	addSelectors(newGoToNextCommand('outer', 'class'), goToClass),
-	addSelectors(newGoToNextCommand('inner', 'class'), goToInnerClass),
-	addSelectors(newGoToNextCommand('outer', 'array'), goToArray),
-	addSelectors(newGoToNextCommand('inner', 'array'), goToInnerArray),
-	addSelectors(newGoToNextCommand('outer', 'object'), goToOuterObject),
-	addSelectors(newGoToNextCommand('inner', 'object'), goToInnerObject),
-	addSelectors(newGoToNextCommand('outer', 'parameters'), goToParams),
-	addSelectors(newGoToNextCommand('inner', 'parameters'), goToInnerParams),
-	addSelectors(newGoToNextCommand('outer', 'call'), goToCall),
-	addSelectors(newGoToNextCommand('inner', 'call'), goToInnercall),
-	addSelectors(newGoToNextCommand('outer', 'type'), goToType),
-	addSelectors(newGoToNextCommand('inner', 'type'), goToInnerType),
-	addSelectors(newGoToNextCommand('outer', 'comment'), goToComment),
-	addSelectors(newGoToNextCommand('inner', 'comment'), goToInnerComment),
+	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'function'), groupElements), selectInnerFunction),
+	addSelectors(newGoToNextCommand('outer', 'loop'), selectLoop),
+	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
+	addSelectors(newGoToNextCommand('outer', 'conditional'), selectConditional),
+	addSelectors(
+		withMatchFunc(newGoToNextCommand('inner', 'conditional'), groupElements),
+		selectInnerConditional
+	),
+	addSelectors(newGoToNextCommand('outer', 'rhs'), selectRhs),
+	addSelectors(newGoToNextCommand('inner', 'rhs'), selectInnerRhs),
+	addSelectors(newGoToNextCommand('outer', 'lhs'), selectLhs),
+	addSelectors(newGoToNextCommand('inner', 'lhs'), selectInnerLhs),
+	addSelectors(newGoToNextCommand('outer', 'variable'), selectVariable),
+	addSelectors(newGoToNextCommand('outer', 'string'), selectString),
+	addSelectors(newGoToNextCommand('inner', 'string'), selectInnerString),
+	addSelectors(newGoToNextCommand('outer', 'class'), selectClass),
+	addSelectors(newGoToNextCommand('inner', 'class'), selectInnerClass),
+	addSelectors(newGoToNextCommand('outer', 'array'), selectOuterArray),
+	addSelectors(newGoToNextCommand('inner', 'array'), selectInnerArray),
+	addSelectors(newGoToNextCommand('outer', 'object'), selectOuterObject),
+	addSelectors(newGoToNextCommand('inner', 'object'), selectInnerObject),
+	addSelectors(newGoToNextCommand('outer', 'parameters'), selectParams),
+	addSelectors(newGoToNextCommand('inner', 'parameters'), selectInnerParams),
+	addSelectors(newGoToNextCommand('outer', 'call'), selectCall),
+	addSelectors(newGoToNextCommand('inner', 'call'), selectInnercall),
+	addSelectors(newGoToNextCommand('outer', 'type'), selectType),
+	addSelectors(newGoToNextCommand('inner', 'type'), selectInnerType),
+	addSelectors(newGoToNextCommand('outer', 'comment'), selectComment),
+	addSelectors(newGoToNextCommand('inner', 'comment'), selectInnerComment),
 
 	//previous command
 
@@ -238,38 +214,38 @@ export const goToCommands: QueryCommand[] = [
 		withMatchFunc(newGoToPreviousCommand('outer', 'function'), (matches) =>
 			filterDuplicates(matches, [NODES.FUNCTION])
 		),
-		goToOuterFunction
+		selectOuterFunction
 	),
 
-	addSelectors(withMatchFunc(newGoToPreviousCommand('inner', 'function'), groupElements), goToInnerFunction),
-	addSelectors(newGoToPreviousCommand('outer', 'loop'), goToLoop),
-	addSelectors(newGoToPreviousCommand('inner', 'loop'), goToInnerLoop),
-	addSelectors(newGoToPreviousCommand('outer', 'conditional'), goToConditional),
+	addSelectors(withMatchFunc(newGoToPreviousCommand('inner', 'function'), groupElements), selectInnerFunction),
+	addSelectors(newGoToPreviousCommand('outer', 'loop'), selectLoop),
+	addSelectors(newGoToPreviousCommand('inner', 'loop'), selectInnerLoop),
+	addSelectors(newGoToPreviousCommand('outer', 'conditional'), selectConditional),
 	addSelectors(
 		withMatchFunc(newGoToPreviousCommand('inner', 'conditional'), groupElements),
-		goToInnerConditional
+		selectInnerConditional
 	),
-	addSelectors(newGoToPreviousCommand('outer', 'rhs'), goToRhs),
-	addSelectors(newGoToPreviousCommand('inner', 'rhs'), goToInnerRhs),
-	addSelectors(newGoToPreviousCommand('outer', 'lhs'), goToLhs),
-	addSelectors(newGoToPreviousCommand('inner', 'lhs'), goToInnerLhs),
-	addSelectors(newGoToPreviousCommand('outer', 'variable'), goToVariable),
-	addSelectors(newGoToPreviousCommand('outer', 'string'), goToString),
-	addSelectors(newGoToPreviousCommand('inner', 'string'), goToInnerString),
-	addSelectors(newGoToPreviousCommand('outer', 'class'), goToClass),
-	addSelectors(newGoToPreviousCommand('inner', 'class'), goToInnerClass),
-	addSelectors(newGoToPreviousCommand('outer', 'array'), goToArray),
-	addSelectors(newGoToPreviousCommand('inner', 'array'), goToInnerArray),
-	addSelectors(newGoToPreviousCommand('outer', 'object'), goToOuterObject),
-	addSelectors(newGoToPreviousCommand('inner', 'object'), goToInnerObject),
-	addSelectors(newGoToPreviousCommand('inner', 'parameters'), goToInnerParams),
-	addSelectors(withMatchFunc(newGoToPreviousCommand('outer', 'parameters'), groupElements), goToParams),
-	addSelectors(withMatchFunc(newGoToPreviousCommand('outer', 'call'), groupElements), goToCall),
-	addSelectors(newGoToPreviousCommand('inner', 'call'), goToInnercall),
-	addSelectors(newGoToPreviousCommand('outer', 'type'), goToType),
-	addSelectors(newGoToPreviousCommand('inner', 'type'), goToInnerType),
-	addSelectors(newGoToPreviousCommand('outer', 'comment'), goToComment),
-	addSelectors(newGoToPreviousCommand('inner', 'comment'), goToInnerComment),
+	addSelectors(newGoToPreviousCommand('outer', 'rhs'), selectRhs),
+	addSelectors(newGoToPreviousCommand('inner', 'rhs'), selectInnerRhs),
+	addSelectors(newGoToPreviousCommand('outer', 'lhs'), selectLhs),
+	addSelectors(newGoToPreviousCommand('inner', 'lhs'), selectInnerLhs),
+	addSelectors(newGoToPreviousCommand('outer', 'variable'), selectVariable),
+	addSelectors(newGoToPreviousCommand('outer', 'string'), selectString),
+	addSelectors(newGoToPreviousCommand('inner', 'string'), selectInnerString),
+	addSelectors(newGoToPreviousCommand('outer', 'class'), selectClass),
+	addSelectors(newGoToPreviousCommand('inner', 'class'), selectInnerClass),
+	addSelectors(newGoToPreviousCommand('outer', 'array'), selectOuterArray),
+	addSelectors(newGoToPreviousCommand('inner', 'array'), selectInnerArray),
+	addSelectors(newGoToPreviousCommand('outer', 'object'), selectOuterObject),
+	addSelectors(newGoToPreviousCommand('inner', 'object'), selectInnerObject),
+	addSelectors(newGoToPreviousCommand('inner', 'parameters'), selectInnerParams),
+	addSelectors(withMatchFunc(newGoToPreviousCommand('outer', 'parameters'), groupElements), selectParams),
+	addSelectors(withMatchFunc(newGoToPreviousCommand('outer', 'call'), groupElements), selectCall),
+	addSelectors(newGoToPreviousCommand('inner', 'call'), selectInnercall),
+	addSelectors(newGoToPreviousCommand('outer', 'type'), selectType),
+	addSelectors(newGoToPreviousCommand('inner', 'type'), selectInnerType),
+	addSelectors(newGoToPreviousCommand('outer', 'comment'), selectComment),
+	addSelectors(newGoToPreviousCommand('inner', 'comment'), selectInnerComment),
 ];
 
 function goTo(position: { start: vscode.Position; end: vscode.Position }) {
