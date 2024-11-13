@@ -35,6 +35,15 @@ function exists(captures: parser.QueryCapture[], name: string): parser.QueryCapt
 	}
 	return;
 }
+export function removeNamed(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
+	for (const match of matches) {
+		match.captures = match.captures.filter((capture) => {
+			return !selectors.includes(capture.name);
+		});
+	}
+
+	return matches;
+}
 
 // Function to filter the largest matches
 export function filterDuplicates(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
@@ -68,6 +77,7 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		const lastNode = match.captures.at(-1);
 
 		if (!firstNode || !lastNode) {
+			console.log('no first node or last');
 			continue;
 		}
 
@@ -79,6 +89,7 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		node.endPosition = lastNode.node.endPosition;
 		node.startIndex = firstNode.node.startIndex;
 		node.endIndex = firstNode.node.endIndex;
+		console.log('adding node', node);
 		nodes.push(node);
 	}
 

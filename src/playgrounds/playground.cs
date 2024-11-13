@@ -149,8 +149,8 @@ if (x < y) {
 
 // If-else statement
 if (x > y) {
-    Console.WriteLine("x is greater than y");
-} else {
+    // Console.WriteLine("x is greater than y");
+} else if (x < y)  {
     Console.WriteLine("x is not greater than y");
 }
 

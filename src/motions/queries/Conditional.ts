@@ -10,13 +10,22 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [`(if_statement) @conditional`, `(conditional_expression) @conditional`].join('\n'),
+		selector: [
+			`(if_statement) @conditional`,
+
+			` (switch_statement ) @conditional `,
+			`(conditional_expression) @conditional`,
+		].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (if_statement) @conditional `, `(conditional_expression) @conditional`].join('\n'),
+		selector: [
+			` (if_statement) @conditional `,
+			` (switch_statement ) @conditional `,
+			`(conditional_expression) @conditional`,
+		].join('\n'),
 	};
 }
 function go(): QuerySelector {

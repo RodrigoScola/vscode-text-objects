@@ -48,17 +48,36 @@ func (f *b) Call(a int) string {
 
 	g := []int{1, 2, 3}
 	_ = g
+
 	if a == 3 {
 		fmt.Printf("Hello there")
 		fmt.Printf("Hello there")
 		fmt.Printf("Hello there")
 		fmt.Printf("Hello there")
+	} else if a == 4 {
+
+		fmt.Printf("Hello there")
+		fmt.Printf("Hello there")
+		fmt.Printf("Hello there")
+	} else {
+
+		//comment
 	}
+
 	fmt.Printf("%d", a)
 	for i := range 10 {
 		fmt.Println(i)
 		fmt.Println(i)
 		fmt.Println(i)
+	}
+
+	switch a {
+	case 4:
+		fmt.Println("he")
+		break
+	case 5:
+		fmt.Println("he")
+		break
 	}
 
 	asdf := retA(4)

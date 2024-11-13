@@ -672,11 +672,30 @@ if (auto value = someFunction(); value > threshold)
     // code to execute if value is greater than threshold
     // code to execute if value is greater than threshold
 }
+else
+{
+
+    // code to execute if value is greater than threshold
+    // code to execute if value is greater than threshold
+}
 
 // Ternary operator
 condition ? true_expression : false_expression;
 
 if (condition)
 {
-    // code to execute if condition is true
+    doSomething();
+}
+
+else if (condition)
+{
+    doSomething();
+}
+else if (condition)
+{
+    doSomething();
+}
+else
+{
+    doSomething();
 }

@@ -2,7 +2,7 @@ import assert from 'assert';
 import * as vscode from 'vscode';
 import { NODES } from '../constants';
 import { editor } from '../extension';
-import { filterDuplicates } from '../parsing/nodes';
+import { filterDuplicates, removeNamed } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
 import { select as selectOuterArray } from './queries/Array';
@@ -102,7 +102,11 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
 	addSelectors(newSelectNextCommand('outer', 'conditional'), selectConditional),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('inner', 'conditional'), groupElements),
+		withMatchFunc(
+			newSelectNextCommand('inner', 'conditional'),
+
+			(matches) => removeNamed(matches, ['outer_statement'])
+		),
 		selectInnerConditional
 	),
 	addSelectors(newSelectNextCommand('outer', 'rhs'), selectRhs),

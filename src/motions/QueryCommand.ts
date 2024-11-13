@@ -3,6 +3,7 @@ import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { groupNodes, pointPool } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
+import { visualize } from '../utils';
 import { QueryContext, QuerySelector } from './commands';
 
 export type CommandNames =
@@ -93,17 +94,21 @@ export class QueryCommand {
 		assert(query, 'invalid query came out');
 
 		let matches = query.matches(tree.rootNode);
-		console.log('original match len', matches.length);
 
+		const originalLen = matches.length;
+
+		console.log(originalLen, 'orignal');
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
 			matches = this.onMatch(matches, context);
-			assert(matches.length > 0, 'needs to return an array of matches');
 		}
+
+		console.log('current', matches.length);
+		console.log('current', originalLen);
 
 		const nodes = groupNodes(matches);
 
-		console.log('ra');
+		console.log('ra', nodes.length);
 
 		const ranges = new Array(nodes.length)
 			.fill(undefined)
@@ -119,6 +124,10 @@ export class QueryCommand {
 				);
 			})
 			.sort((a, b) => (a.start.isAfter(b.start) ? 1 : -1));
+
+		for (const rang of ranges) {
+			visualize(rang);
+		}
 
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);

@@ -4,10 +4,19 @@ function C(): QuerySelector {
 	return {
 		language: 'c',
 		selector: [
-			`(if_statement consequence: (compound_statement (_)+ @conditional))`,
-			`(if_statement alternative: (else_clause (_)+ @conditional))`,
-			` (conditional_expression consequence: (_) @conditional)`,
-			` (conditional_expression alternative: (_) @conditional)`,
+			` (conditional_expression consequence:(_)+ @conditional) `,
+			` (conditional_expression alternative:(_)+ @conditional ) `,
+
+			` (if_statement consequence:(compound_statement
+  (_)+ @conditional))
+			
+			`,
+			`(else_clause (compound_statement (_)+ @conditional))`,
+			`(else_clause (expression_statement (_)+ @conditional))`,
+
+			` (if_statement consequence:(expression_statement (_)+ @conditional )) `,
+
+			,
 		].join('\n'),
 	};
 }
@@ -16,8 +25,13 @@ function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
 		selector: [
-			`(if_statement consequence: (compound_statement (_)+ @conditional)) `,
-			`(conditional_expression consequence: (_) @conditional )`,
+			` (conditional_expression consequence:(_)+ @conditional) `,
+			` (conditional_expression alternative:(_)+ @conditional ) `,
+			` (if_statement consequence:(compound_statement
+  (_)+ @conditional)) `,
+			`(else_clause (compound_statement (_)+ @conditional))`,
+			` (if_statement consequence:(expression_statement (_)+ @conditional )) `,
+			,
 		].join('\n'),
 	};
 }
@@ -25,15 +39,31 @@ function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
 		selector: [
-			` (if_statement consequence: (block (_)@conditional)) `,
-			`(conditional_expression consequence: (_) @conditional )`,
+			` (conditional_expression consequence:(_)+ @conditional) `,
+			` (conditional_expression alternative:(_)+ @conditional ) `,
+
+			` (if_statement consequence:(block
+  (_)+ @conditional)) `,
+			` (switch_statement body: (switch_body (_) @conditional)) `,
+			`(if_statement alternative: (block (_)+ @conditional))`,
+
+			` (if_statement consequence:(expression_statement (_)+ @conditional )) `,
+
+			,
 		].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [`(if_statement consequence: (block (_) @inner_statement)) `].join('\n'),
+		selector: [
+			` (if_statement consequence:(block (_)+ @conditional)) `,
+			` (expression_switch_statement (expression_case (_) @conditional )) `,
+			`(if_statement alternative: (block (_)+ @conditional))`,
+
+			`(if_statement consequence:(block (_)+ @conditional ))
+	`,
+		].join('\n'),
 	};
 }
 function java(): QuerySelector {

@@ -64,8 +64,13 @@ if (condition)
 }
 else
 {
-    // code to execute if condition is true
+    result += 1;
 }
+
+if (condition)
+    result += 1;
+else
+    result -= 1;
 
 // Standard for loop
 for (int i = 0; i < 10; i++)
