@@ -3,7 +3,6 @@ import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { groupNodes, pointPool } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
-import { visualize } from '../utils';
 import { QueryContext, QuerySelector } from './commands';
 
 export type CommandNames =
@@ -108,8 +107,6 @@ export class QueryCommand {
 
 		const nodes = groupNodes(matches);
 
-		console.log('ra', nodes.length);
-
 		const ranges = new Array(nodes.length)
 			.fill(undefined)
 			.map((_, index) => {
@@ -125,9 +122,9 @@ export class QueryCommand {
 			})
 			.sort((a, b) => (a.start.isAfter(b.start) ? 1 : -1));
 
-		for (const rang of ranges) {
-			visualize(rang);
-		}
+		// for (const rang of ranges) {
+		// 	visualize(rang);
+		// }
 
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);

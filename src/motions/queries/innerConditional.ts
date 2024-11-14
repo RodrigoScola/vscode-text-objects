@@ -57,22 +57,31 @@ function go(): QuerySelector {
 	return {
 		language: 'go',
 		selector: [
-			` (if_statement consequence:(block (_)+ @conditional)) `,
-			` (expression_switch_statement (expression_case (_) @conditional )) `,
-			`(if_statement alternative: (block (_)+ @conditional))`,
+			`
+(if_statement 
+    consequence: (block (_) @consequence) 
+)
 
-			`(if_statement consequence:(block (_)+ @conditional ))
-	`,
+`,
+			`(if_statement consequence: (block (_)* @conditional) )`,
+			`(if_statement alternative: (block (_)* @conditional))`,
+
+			//todo: this grabs the condition aswell
+			`(expression_switch_statement (expression_case  (_) @conditional ))`,
 		].join('\n'),
 	};
 }
+
 function java(): QuerySelector {
 	return {
 		language: 'java',
 		selector: [
-			`(if_statement consequence: (block (_)+ @conditional )) `,
+			`( (if_statement consequence: (_) @conditional))
+			
+			`,
+			// `(if_statement consequence: (block (_)+ @conditional )) `,
 			`(switch_expression body: (switch_block (_)+ @conditional )) `,
-			` (assignment_expression right:(ternary_expression consequence: (_) @conditional )) `,
+			` (ternary_expression consequence: (_) @conditional )`,
 		].join('\n'),
 	};
 }

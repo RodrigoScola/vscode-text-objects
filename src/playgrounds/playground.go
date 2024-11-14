@@ -50,15 +50,15 @@ func (f *b) Call(a int) string {
 	_ = g
 
 	if a == 3 {
-		fmt.Printf("Hello there")
-		fmt.Printf("Hello there")
-		fmt.Printf("Hello there")
-		fmt.Printf("Hello there")
+		fmt.Printf("Hello i")
+		fmt.Printf("alskjdfklsjdf")
+		fmt.Printf("Hello ii")
+		fmt.Printf("Hello ")
 	} else if a == 4 {
 
 		fmt.Printf("Hello there")
 		fmt.Printf("Hello there")
-		fmt.Printf("Hello there")
+		//this is a cmment
 	} else {
 
 		//comment

@@ -679,6 +679,8 @@ else
     // code to execute if value is greater than threshold
 }
 
+bool condition = false;
+
 // Ternary operator
 condition ? true_expression : false_expression;
 
@@ -699,3 +701,10 @@ else
 {
     doSomething();
 }
+
+if (condition)
+    doSomething();
+else if (condition)
+    doSomething();
+else
+    doSomething();

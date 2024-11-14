@@ -80,6 +80,8 @@ if (condition) {
     // code to be executed if condition is true
 }
 
+if (condition) System.out.println("hello world")
+
 switch (variable) {
     case value1:
         // code to be executed if variable equals value1

@@ -2,7 +2,7 @@ import assert from 'assert';
 import * as vscode from 'vscode';
 import { NODES } from '../constants';
 import { editor } from '../extension';
-import { filterDuplicates, removeNamed } from '../parsing/nodes';
+import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
 import { select as selectOuterArray } from './queries/Array';
@@ -102,11 +102,7 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
 	addSelectors(newSelectNextCommand('outer', 'conditional'), selectConditional),
 	addSelectors(
-		withMatchFunc(
-			newSelectNextCommand('inner', 'conditional'),
-
-			(matches) => removeNamed(matches, ['outer_statement'])
-		),
+		withMatchFunc(newSelectNextCommand('inner', 'conditional'), groupElements),
 		selectInnerConditional
 	),
 	addSelectors(newSelectNextCommand('outer', 'rhs'), selectRhs),
@@ -148,10 +144,7 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectPreviousCommand('outer', 'loop'), selectLoop),
 	addSelectors(newSelectPreviousCommand('inner', 'loop'), selectInnerLoop),
 	addSelectors(newSelectPreviousCommand('outer', 'conditional'), selectConditional),
-	addSelectors(
-		withMatchFunc(newSelectPreviousCommand('inner', 'conditional'), groupElements),
-		selectInnerConditional
-	),
+	addSelectors(newSelectPreviousCommand('inner', 'conditional'), selectInnerConditional),
 	addSelectors(newSelectPreviousCommand('outer', 'rhs'), selectRhs),
 	addSelectors(newSelectPreviousCommand('inner', 'rhs'), selectInnerRhs),
 	addSelectors(newSelectPreviousCommand('outer', 'lhs'), selectLhs),
