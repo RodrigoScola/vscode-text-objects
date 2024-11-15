@@ -102,6 +102,8 @@ t       Hello,
         This is a multiline string.
         """;
 
+        multiLineTextBlock = """hello"""
+
         char myChar = 'A';
 
 

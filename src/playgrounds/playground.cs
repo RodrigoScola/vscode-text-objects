@@ -142,6 +142,8 @@ while (enumerator.MoveNext()) {
 int x = 10;
 int y = 20;
 
+x = 20;
+
 // If statement
 if (x < y) {
     Console.WriteLine("x is less than y");

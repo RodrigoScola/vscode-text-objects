@@ -7,9 +7,9 @@
 			"request": "launch",
 			"args": [
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"${workspaceFolder}/src/playgrounds/playground.rs"
+				"${workspaceFolder}/src/playgrounds/playground.ts"
 			],
-			"outFiles": ["${workspaceFolder}/dist/**/*.py"],
+			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
 			"preLaunchTask": "${defaultBuildTask}"
 		}
 	]

@@ -66,10 +66,11 @@ Language Support in development:
 -    inner comment - DONE
 -    change the commands interface for better devs - DONE
 -    do the else on if statements - DONE
+-    rhs is not for assignign, but reassigning - DONE
 
--    rhs is not for assignign, but reassigning
+-    do inner rhs aswell
 -    finish the languages support
-
+-    revise all selectors (remember to put the inner conditonal in the conditional)
 -    see if the todos are valid still
 
 ### Misc

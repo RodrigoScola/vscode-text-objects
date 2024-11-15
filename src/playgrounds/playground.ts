@@ -19,4 +19,9 @@ function c() {}
 
 a(3, 'asdfadf');
 
-export class M {}
+export class M {
+	private thign = 34;
+	things = 4;
+	static other = 4;
+	#o = 4;
+}

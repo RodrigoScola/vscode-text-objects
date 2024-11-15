@@ -113,6 +113,7 @@ std::function<int(int, int)> modulo = [](int a, int b)
 // 1. Traditional for loop
 for (int i = 0; i < n; ++i)
 {
+    i = 4;
     // body
 }
 

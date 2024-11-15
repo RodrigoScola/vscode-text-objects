@@ -47,8 +47,8 @@ function javascript(): QuerySelector {
 			//todo: go to a class with the public and check if node is good name
 			//`( public_field_definition) @lexical_declaration`,
 
-			` (export_statement (lexical_declaration (variable_declarator ) @variable_declarator)) @lexical_declaration `,
-			` (lexical_declaration (variable_declarator ) @variable_declarator) @lexical_declaration `,
+			` (export_statement (lexical_declaration (variable_declarator ) @variable)) @lexical_declaration `,
+			` (lexical_declaration (variable_declarator ) @variable ) @lexical_declaration `,
 		].join('\n'),
 	};
 }

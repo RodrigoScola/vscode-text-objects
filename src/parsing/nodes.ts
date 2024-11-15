@@ -5,36 +5,6 @@ import assert from 'assert';
 import { QueryMatch } from 'web-tree-sitter';
 import { NodePool } from '../utils';
 
-// Define a function to calculate the size of a match based on its start and end positions.
-function getMatchSize(match: QueryMatch): number {
-	let minNode = Infinity;
-	let maxNode = -Infinity;
-
-	for (let i = 0; i < match.captures.length; i++) {
-		const capture = match.captures[i];
-		assert.ok(capture, 'invalid capture');
-		if (capture.node.startIndex < minNode) {
-			minNode = capture.node.startIndex;
-		}
-
-		if (capture.node.endIndex > maxNode) {
-			maxNode = capture.node.endIndex;
-		}
-	}
-
-	assert(maxNode >= minNode, 'they should never be less than one another');
-
-	return maxNode - minNode;
-}
-
-function exists(captures: parser.QueryCapture[], name: string): parser.QueryCapture | undefined {
-	for (const capture of captures) {
-		if (capture.name === name) {
-			return capture;
-		}
-	}
-	return;
-}
 export function removeNamed(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
 	for (const match of matches) {
 		match.captures = match.captures.filter((capture) => {
@@ -45,11 +15,28 @@ export function removeNamed(matches: QueryMatch[], selectors: string[]): QueryMa
 	return matches;
 }
 
+/** this is kinda dirty (in a good way)...  i dont know if i like it or not yet... */
+function checkName(selectors: string[]): (cap: parser.QueryCapture) => boolean {
+	return function (capture: parser.QueryCapture) {
+		return selectors.includes(capture.name);
+	};
+}
+
 // Function to filter the largest matches
 export function filterDuplicates(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
+	const fn = checkName(selectors);
+
 	const matchSelector = new Map<string, QueryMatch>();
 
 	for (const match of matches) {
+		if (!match.captures.some(fn)) {
+			const first = match.captures[0];
+			assert(first, 'first node came undefined?');
+
+			matchSelector.set(first.node.text, match);
+			continue;
+		}
+
 		for (const capture of match.captures) {
 			if (selectors.includes(capture.name) && !matchSelector.has(capture.node.text)) {
 				matchSelector.set(capture.node.text, match);
@@ -61,12 +48,14 @@ export function filterDuplicates(matches: QueryMatch[], selectors: string[]): Qu
 	return Array.from(matchSelector.values());
 }
 
-export const pointPool = new NodePool<JoinedPoint>(() => ({
-	endIndex: 0,
-	endPosition: { column: 0, row: 0 },
-	startIndex: 0,
-	startPosition: { column: 0, row: 0 },
-}));
+export const pointPool = new NodePool<JoinedPoint>(function () {
+	return {
+		endIndex: 0,
+		endPosition: { column: 0, row: 0 },
+		startIndex: 0,
+		startPosition: { column: 0, row: 0 },
+	};
+});
 
 export function groupNodes(matches: parser.QueryMatch[]) {
 	const nodes: JoinedPoint[] = [];
@@ -85,6 +74,7 @@ export function groupNodes(matches: parser.QueryMatch[]) {
 		assert(firstNode.node.endPosition, 'needs to have an end position');
 
 		let node = pointPool.get();
+		assert(node, 'point node came undefined?');
 		node.startPosition = firstNode.node.startPosition;
 		node.endPosition = lastNode.node.endPosition;
 		node.startIndex = firstNode.node.startIndex;

@@ -115,10 +115,20 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectNextCommand('inner', 'rhs'), selectInnerRhs),
 	addSelectors(newSelectNextCommand('outer', 'lhs'), selectLhs),
 	addSelectors(newSelectNextCommand('inner', 'lhs'), selectInnerLhs),
-	addSelectors(newSelectNextCommand('outer', 'variable'), selectVariable),
+	addSelectors(
+		withMatchFunc(newSelectNextCommand('outer', 'variable'), (matches) =>
+			filterDuplicates(matches, ['variable'])
+		),
+		selectVariable
+	),
 	addSelectors(newSelectNextCommand('outer', 'string'), selectString),
 	addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString),
-	addSelectors(newSelectNextCommand('outer', 'class'), selectClass),
+	addSelectors(
+		withMatchFunc(newSelectNextCommand('outer', 'class'), (matches) =>
+			filterDuplicates(matches, ['class'])
+		),
+		selectClass
+	),
 	addSelectors(newSelectNextCommand('inner', 'class'), selectInnerClass),
 	addSelectors(newSelectNextCommand('outer', 'array'), selectOuterArray),
 	addSelectors(newSelectNextCommand('inner', 'array'), selectInnerArray),

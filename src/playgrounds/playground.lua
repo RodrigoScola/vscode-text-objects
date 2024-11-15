@@ -24,6 +24,9 @@ myTable = {
     end
 }
 
+myTable.myTableFunction = function() 
+
+end
 -- Function with parameterlocal 
 function myFunctionWithParams(param1, param2)
     print(param1, param2)
@@ -36,6 +39,7 @@ end
 
 function MyClass(value)
     local self = {}
+    self = {}
     local privateValue = value
 
     function self:getValue()

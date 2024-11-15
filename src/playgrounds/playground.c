@@ -1,232 +1,232 @@
-// Function with no return value and no parameters
-// Function with no return value and no parameters
-// Function with no return value and no parameters
-// Function with no return value and no parameters
-void functionName()
-{
-    // function body
-}
+// // Function with no return value and no parameters
+// // Function with no return value and no parameters
+// // Function with no return value and no parameters
+// // Function with no return value and no parameters
+// void functionName()
+// {
+//     // function body
+// }
 
-// Function declaration (prototype)
-void functionName(int param1, float param2);
+// // Function declaration (prototype)
+// void functionName(int param1, float param2);
 
-// Function pointer
-void (*functionPointer)(int, float);
+// // Function pointer
+// void (*functionPointer)(int, float);
 
-// Inline function
-inline int functionName(int param1, float param2)
-{
-    // function body
-    return param1;
-}
+// // Inline function
+// inline int functionName(int param1, float param2)
+// {
+//     // function body
+//     return param1;
+// }
 
-functionName();
+// functionName();
 
-// Calling a function with parameters
-functionName(param1, param2);
+// // Calling a function with parameters
+// functionName(param1, param2);
 
-// Calling a function and using its return value
-int result = functionName(param1, param2);
+// // Calling a function and using its return value
+// int result = functionName(param1, param2);
 
-// Calling a function through a function pointer
-functionPointer(param1, param2);
+// // Calling a function through a function pointer
+// functionPointer(param1, param2);
 
-// Calling a function within another function
-void anotherFunction()
-{
-    functionName(param1, param2);
-}
+// // Calling a function within another function
+// void anotherFunction()
+// {
+//     functionName(param1, param2);
+// }
 
-int arr2[5] = {1, 2, 3, 4, 5};
+// int arr2[5] = {1, 2, 3, 4, 5};
 
-// Define a struct
-struct Point
-{
-    int x;
-    int y;
-};
+// // Define a struct
+// struct Point
+// {
+//     int x;
+//     int y;
+// };
 
-// Create a struct variable
-struct Point p1;
+// // Create a struct variable
+// struct Point p1;
 
-typedef struct
-{
-    int x;
-    int y;
-} Point2;
+// typedef struct
+// {
+//     int x;
+//     int y;
+// } Point2;
 
-const result = condition ? valueIfTrue : valueIfFalse;
+// const result = condition ? valueIfTrue : valueIfFalse;
 
-// Simple if statement
-if (condition)
-{
-    // code to execute if condition is true
-}
-else
-{
-    result += 1;
-}
+// // Simple if statement
+// if (condition)
+// {
+//     // code to execute if condition is true
+// }
+// else
+// {
+//     result += 1;
+// }
 
-if (condition)
-    result += 1;
-else
-    result -= 1;
+// if (condition)
+//     result += 1;
+// else
+//     result -= 1;
 
-// Standard for loop
-for (int i = 0; i < 10; i++)
-{
-    // code to execute
-}
+// // Standard for loop
+// for (int i = 0; i < 10; i++)
+// {
+//     // code to execute
+// }
 
-// For loop with multiple variables
+// // For loop with multiple variables
 
-// For loop with no initialization
-// Standard for loop
-for (int i = 0; i < 10; i++)
-{
-    // code to execute
-}
+// // For loop with no initialization
+// // Standard for loop
+// for (int i = 0; i < 10; i++)
+// {
+//     // code to execute
+// }
 
-// here
-//  For loop with multiple variables
-for (int i = 0, j = 10; i < j; i++, j--)
-{
-    // code to execute
-}
+// // here
+// //  For loop with multiple variables
+// for (int i = 0, j = 10; i < j; i++, j--)
+// {
+//     // code to execute
+// }
 
-// For loop with no initialization
-for (int i = 0; i < 10; i++)
-{
-    // code to execute
-}
+// // For loop with no initialization
+// for (int i = 0; i < 10; i++)
+// {
+//     // code to execute
+// }
 
-// For loop with no condition (infinite loop)
-for (int i = 0;; i++)
-{
-    // code to execute
-    if (i >= 10)
-        break; // exit condition
-}
+// // For loop with no condition (infinite loop)
+// for (int i = 0;; i++)
+// {
+//     // code to execute
+//     if (i >= 10)
+//         break; // exit condition
+// }
 
-// For loop with no increment
-for (int i = 0; i < 10;)
-{
-    // code to execute
-    i++; // manual increment
-}
+// // For loop with no increment
+// for (int i = 0; i < 10;)
+// {
+//     // code to execute
+//     i++; // manual increment
+// }
 
-// For loop with all parts omitted (infinite loop)
-for (;;)
-{
-    // code to execute
-    break; // exit condition
-}
+// // For loop with all parts omitted (infinite loop)
+// for (;;)
+// {
+//     // code to execute
+//     break; // exit condition
+// }
 
-// Nested for loop
-for (int i = 0; i < 5; i++)
-{
-    for (int j = 0; j < 5; j++)
-    {
-        // code to execute
-    }
-}
+// // Nested for loop
+// for (int i = 0; i < 5; i++)
+// {
+//     for (int j = 0; j < 5; j++)
+//     {
+//         // code to execute
+//     }
+// }
 
-// For loop with array
-int arr[5] = {1, 2, 3, 4, 5};
-for (int i = 0; i < 5; i++)
-{
-    // code to execute with arr[i]
-}
-for (; i < 10; i++)
-{
-    // code to execute
-    while (;;)
-    {
-    }
-}
+// // For loop with array
+// int arr[5] = {1, 2, 3, 4, 5};
+// for (int i = 0; i < 5; i++)
+// {
+//     // code to execute with arr[i]
+// }
+// for (; i < 10; i++)
+// {
+//     // code to execute
+//     while (;;)
+//     {
+//     }
+// }
 
-// For loop with no condition (infinite loop)
-for (int i = 0;; i++)
-{
-    // code to execute
-    if (i >= 10)
-        break; // exit condition
-}
+// // For loop with no condition (infinite loop)
+// for (int i = 0;; i++)
+// {
+//     // code to execute
+//     if (i >= 10)
+//         break; // exit condition
+// }
 
-// For loop with no increment
-for (int i = 0; i < 10;)
-{
-    // code to execute
-    i++; // manual increment
-}
+// // For loop with no increment
+// for (int i = 0; i < 10;)
+// {
+//     // code to execute
+//     i++; // manual increment
+// }
 
-// For loop with all parts omitted (infinite loop)
-for (;;)
-{
-    // code to execute
-    break; // exit condition
-}
+// // For loop with all parts omitted (infinite loop)
+// for (;;)
+// {
+//     // code to execute
+//     break; // exit condition
+// }
 
-// Nested for loop
-for (int i = 0; i < 5; i++)
-{
-    for (int j = 0; j < 5; j++)
-    {
-        // code to execute
-    }
-}
+// // Nested for loop
+// for (int i = 0; i < 5; i++)
+// {
+//     for (int j = 0; j < 5; j++)
+//     {
+//         // code to execute
+//     }
+// }
 
-// For loop with array
-int arr[5] = {1, 2, 3, 4, 5};
-for (int i = 0; i < 5; i++)
-{
-    // code to execute with arr[i]
-}
+// // For loop with array
+// int arr[5] = {1, 2, 3, 4, 5};
+// for (int i = 0; i < 5; i++)
+// {
+//     // code to execute with arr[i]
+// }
 
-// Standard while loop
-int i = 0;
-while (i < 10)
-{
-    // code to execute
-    i++;
-}
+// // Standard while loop
+// int i = 0;
+// while (i < 10)
+// {
+//     // code to execute
+//     i++;
+// }
 
-// Infinite while loop
-while (1)
-{
-    // code to execute
-    break; // exit condition
-}
+// // Infinite while loop
+// while (1)
+// {
+//     // code to execute
+//     break; // exit condition
+// }
 
-// while loop with complex condition
-int a = 0, b = 10;
-while (a < b && b > 0)
-{
-    // code to execute
-    a++;
-    b--;
-}
+// // while loop with complex condition
+// int a = 0, b = 10;
+// while (a < b && b > 0)
+// {
+//     // code to execute
+//     a++;
+//     b--;
+// }
 
-// Nested while loops
-int x = 0;
-while (x < 5)
-{
-    int y = 0;
-    while (y < 5)
-    {
-        // code to execute
-        y++;
-    }
-    x++;
-}
+// // Nested while loops
+// int x = 0;
+// while (x < 5)
+// {
+//     int y = 0;
+//     while (y < 5)
+//     {
+//         // code to execute
+//         y++;
+//     }
+//     x++;
+// }
 
-// do-while loop (executes at least once)
-int j = 0;
-do
-{
-    // code to execute
-    j++;
-} while (j < 10);
+// // do-while loop (executes at least once)
+// int j = 0;
+// do
+// {
+//     // code to execute
+//     j++;
+// } while (j < 10);
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -235,10 +235,12 @@ do
 // String as a character array
 char str1[] = "Hello, World!";
 
-// String as a pointer to a constant string
+str1 = "other hello";
+
+// // String as a pointer to a constant string
 const char *str2 = "Hello, World!";
 
-// Dynamic string allocation using malloc
+// // Dynamic string allocation using malloc
 char *str3 = (char *)malloc(50 * sizeof(char));
 strcpy(str3, "Hello, World!");
 

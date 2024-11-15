@@ -36,7 +36,7 @@ function javascript(): QuerySelector {
 		language: 'javascript',
 		selector: [
 			` ( class_declaration ) @class `,
-			` (export_statement declaration: ( class_declaration ) ) @export `,
+			` (export_statement declaration: ( class_declaration ) @class ) @export `,
 		].join('\n'),
 	};
 }

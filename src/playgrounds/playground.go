@@ -45,6 +45,7 @@ type b struct {
 }
 
 func (f *b) Call(a int) string {
+	e = 4
 
 	g := []int{1, 2, 3}
 	_ = g

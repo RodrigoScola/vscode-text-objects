@@ -79,8 +79,6 @@ export class QueryCommand {
 
 		assert(parser, `could not init parser for ${context.language}`);
 
-		console.log(context.language);
-
 		const tree = parser.parser.parse(context.text);
 
 		const selector = this.selectors[context.language];

@@ -45,6 +45,8 @@ extern "C" {
 // Immutable variable
 let x = 5;
 
+x = 6;
+
 // Mutable variable
 let mut y = 10;
 
