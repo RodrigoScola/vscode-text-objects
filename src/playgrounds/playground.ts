@@ -11,6 +11,14 @@ export function a(b: number, c: string) {
 
 export const d = function () {};
 
+let g = {
+	db: 3,
+};
+
+g = {
+	db: 5,
+};
+
 function b() {
 	console.log('');
 }

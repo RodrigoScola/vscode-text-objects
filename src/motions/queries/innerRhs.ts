@@ -49,7 +49,10 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [` (variable_declarator value:(_ (_) @rhs)) `].join('\n'),
+		selector: [
+			` (variable_declarator value:(_ (_) @rhs)) `,
+			` (assignment_expression right:(_ (_)@rhs )) `,
+		].join('\n'),
 	};
 }
 

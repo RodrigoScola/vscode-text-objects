@@ -48,7 +48,7 @@ export function filterDuplicates(matches: QueryMatch[], selectors: string[]): Qu
 	return Array.from(matchSelector.values());
 }
 
-export const pointPool = new NodePool<JoinedPoint>(function () {
+export const pointPool = new NodePool<JoinedPoint>(function (): JoinedPoint {
 	return {
 		endIndex: 0,
 		endPosition: { column: 0, row: 0 },
@@ -57,7 +57,7 @@ export const pointPool = new NodePool<JoinedPoint>(function () {
 	};
 });
 
-export function groupNodes(matches: parser.QueryMatch[]) {
+export function groupNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 	const nodes: JoinedPoint[] = [];
 
 	for (const match of matches) {
