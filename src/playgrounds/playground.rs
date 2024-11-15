@@ -206,6 +206,15 @@ loop {
     if some_condition {
         break;
     }
+    else if some_condition {
+        s9.push_str("there");
+        break
+    }
+    else {
+        s9.push_str("there");
+        break;
+    }
+
 }
 
 // While loop

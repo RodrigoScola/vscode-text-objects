@@ -70,6 +70,8 @@ Language Support in development:
 -    rhs is not for assignign, but reassigning
 -    finish the languages support
 
+-    see if the todos are valid still
+
 ### Misc
 
 -    remove the console logs

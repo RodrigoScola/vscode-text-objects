@@ -63,11 +63,18 @@ while count < 5:
     if count == 3:
         print("the count is 4")
         print("the count is 4")
+    elif count == 4:
+        print("the count is 4")
+    else: 
+        print("the count is 4")
     count += 1
+
 
     
     
 my_dict = {'a': 1, 'b': 2, 'c': 3}
+
+result = "x is less than 5" if x < 5 else "x is 5 or greater"
 
 my_dict.a= 3
 for key, value in my_dict.items():

@@ -122,9 +122,12 @@ function javascript(): QuerySelector {
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
+		// todo: do the else if on lua, is saying error right now
 		selector: [
 			'(if_statement consequence: (_) @conditional )',
 			'(if_statement consequence: (_) @conditional (comment) @comment )',
+			'(if_statement alternative: (else_clause (_) @conditional (comment) @comment ))',
+			'(if_statement alternative: (else_clause (_) @conditional  ))',
 		].join('\n'),
 	};
 }
@@ -133,7 +136,14 @@ function python(): QuerySelector {
 	return {
 		language: 'python',
 		//todo: this cannot be the only way to define a function
-		selector: [` (if_statement consequence: (_) @conditional)  `].join('\n'),
+		selector: [
+			` (if_statement consequence: (_) @conditional)  `,
+			` (elif_clause consequence:(block (_)+ @conditional)) `,
+			` (else_clause body:(block (_)+ @conditional)) `,
+			//python does not have aternary because they dont have nodes saying it is
+			// if you want to add, feel free
+			,
+		].join('\n'),
 	};
 }
 function rust(): QuerySelector {
@@ -143,7 +153,7 @@ function rust(): QuerySelector {
 			`(if_expression consequence: (block (_)+ @conditional )) `,
 			`(match_expression body: (match_block (_)+ @conditional )) `,
 			`(let_declaration value: (if_expression consequence: (block (_)+ @conditional))) `,
-			//todo do the else ones
+			` (else_clause (block (_)+ @conditional )) `,
 		].join('\n'),
 	};
 }

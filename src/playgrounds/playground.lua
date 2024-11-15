@@ -44,12 +44,18 @@ function MyClass(value)
 
     return self
 end
-condition = true
 
-if condition then
-    inte =2
-    inte++
-    -- code to execute if condition is true
+local condition = true
+
+
+
+local inte = 3
+
+if inte == 1 then
+    print("hello")
+
+elseif inte == 2 then
+    print("bye")
 end
 
 while condition do
