@@ -74,7 +74,11 @@ while count < 5:
     
 my_dict = {'a': 1, 'b': 2, 'c': 3}
 
-result = "x is less than 5" if x < 5 else "x is 5 or greater"
+result = "x is less than 5" if my_dict['c'] < 5 else "x is 5 or greater"
+x = 4
+
+result =  { "x is less than 5" } if x < 5 else { "x is 5 or greater" };
+
 
 my_dict.a= 3
 for key, value in my_dict.items():

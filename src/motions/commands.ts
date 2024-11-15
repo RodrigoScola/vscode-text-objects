@@ -103,7 +103,8 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectNextCommand('outer', 'conditional'), selectConditional),
 	addSelectors(
 		withMatchFunc(newSelectNextCommand('inner', 'conditional'), function (matches, ctx) {
-			if (!ctx.language.includes('java')) {
+			//including java && javascript
+			if (!ctx.language.includes('java') && !ctx.language.includes('python')) {
 				return groupElements(matches);
 			}
 			return matches;

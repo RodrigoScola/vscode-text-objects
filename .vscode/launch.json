@@ -9,7 +9,7 @@
 				"--extensionDevelopmentPath=${workspaceFolder}",
 				"${workspaceFolder}/src/playgrounds/playground.rs"
 			],
-			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+			"outFiles": ["${workspaceFolder}/dist/**/*.py"],
 			"preLaunchTask": "${defaultBuildTask}"
 		}
 	]

@@ -140,9 +140,10 @@ function python(): QuerySelector {
 			` (if_statement consequence: (_) @conditional)  `,
 			` (elif_clause consequence:(block (_)+ @conditional)) `,
 			` (else_clause body:(block (_)+ @conditional)) `,
-			//python does not have aternary because they dont have nodes saying it is
-			// if you want to add, feel free
-			,
+
+			` (conditional_expression (_)+ @conditional ) `,
+			//ternaries, kinda crazy
+			` (conditional_expression (_) (comparison_operator (_) ) (_)+ @conditional) `,
 		].join('\n'),
 	};
 }

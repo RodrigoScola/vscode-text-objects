@@ -65,7 +65,7 @@ function python(): QuerySelector {
 	return {
 		language: 'python',
 		//todo: this cannot be the only way to define a function
-		selector: [` (if_statement)  @conditional `].join('\n'),
+		selector: [` (if_statement)  @conditional `, ` (conditional_expression   ) @conditional`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
