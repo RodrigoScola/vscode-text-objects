@@ -80,12 +80,12 @@ if (condition) {
     // code to be executed if condition is true
 }
 
-if (condition) System.out.println("hello world")
+if (condition) System.out.println("hello world");
+else if (condition) System.out.println("hello world");
+else System.out.println("hello world");
 
 switch (variable) {
     case value1:
-        // code to be executed if variable equals value1
-        break;
     case value2:
         // code to be executed if variable equals value2
         break;

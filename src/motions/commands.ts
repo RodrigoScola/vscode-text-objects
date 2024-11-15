@@ -102,7 +102,12 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
 	addSelectors(newSelectNextCommand('outer', 'conditional'), selectConditional),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('inner', 'conditional'), groupElements),
+		withMatchFunc(newSelectNextCommand('inner', 'conditional'), function (matches, ctx) {
+			if (!ctx.language.includes('java')) {
+				return groupElements(matches);
+			}
+			return matches;
+		}),
 		selectInnerConditional
 	),
 	addSelectors(newSelectNextCommand('outer', 'rhs'), selectRhs),

@@ -47,7 +47,11 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [` ( (if_statement) @if.statement) `].join('\n'),
+		selector: [
+			`(if_statement) @if.statement `,
+			`(switch_statement ) @conditional`,
+			`(ternary_expression) @conditional`,
+		].join('\n'),
 	};
 }
 function lua(): QuerySelector {

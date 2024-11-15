@@ -76,19 +76,47 @@ function java(): QuerySelector {
 	return {
 		language: 'java',
 		selector: [
-			`( (if_statement consequence: (_) @conditional))
-			
-			`,
-			// `(if_statement consequence: (block (_)+ @conditional )) `,
-			`(switch_expression body: (switch_block (_)+ @conditional )) `,
-			` (ternary_expression consequence: (_) @conditional )`,
+			` (if_statement consequence:(block (_)+ @conditional )) `,
+			` (if_statement consequence:(expression_statement (_)+ @conditional)) `,
+			` (if_statement alternative:(expression_statement (_)+ @conditional)) `,
+			` (if_statement alternative:(block (_)+ @conditional )) `,
+			` (ternary_expression consequence:(_) @conditional) `,
+			` (ternary_expression alternative:(_) @conditional) `,
+
+			/**
+			 * maybe todo? there is a bug where
+			 * case value1:
+			 * case value2:
+			 * rest of the code
+			 *
+			 * can select the line of value1 if you are on the top
+			 *
+			 * and if you are on the bottom it selects
+			 *
+			 * value2:
+			 * rest of the code
+			 */
+			`
+  (switch_block_statement_group
+ (switch_label)*
+ (_)+ @conditional
+ (break_statement)? @conditional) `,
 		].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [` (if_statement consequence: (statement_block (_)+ @inner_statement)) `].join('\n'),
+		selector: [
+			` (if_statement consequence: (statement_block (_)+ @inner_statement)) `,
+			` (else_clause (statement_block (_)+ @conditional)) `,
+			` (if_statement consequence: (expression_statement (_)+ @inner_statement)) `,
+			`  (else_clause (expression_statement (_)+ @inner_statement)) `,
+			` (ternary_expression consequence:(_) @conditional ) `,
+			` (ternary_expression alternative:(_) @conditional ) `,
+			` (switch_case (comment)* @conditional )`,
+			` (switch_case (comment)* @conditional body:(_)* @conditional ) `,
+		].join('\n'),
 	};
 }
 function lua(): QuerySelector {
