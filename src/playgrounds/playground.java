@@ -123,8 +123,10 @@ t       Hello,
  */
 public class Example {
     // Single-line comment inside a method
-    public void method() {
+    public int method() {
         /* Multi-line comment inside a method */
+        return 4;
+
     }
 }
 
@@ -144,6 +146,10 @@ while (i < 5) {
     i++;
 }
 
+Example ex = new Example();
+
+int e = ex.method();
+
 int i = 0;
 do {
     System.out.println(i);
@@ -156,8 +162,9 @@ import java.util.*;
 import java.util.Arrays;
 
 int[] arr = {1, 2, 3, 4, 5};
-Arrays.stream(arr)
-.forEach(System.out::println);
+
+
+Arrays.stream(arr) .forEach(System.out::println);
 
 
 MyClass obj = new MyClass() {
@@ -171,3 +178,36 @@ class MyClassOter implements Serializable {
 }
 
 
+public class Main {
+    public static int func(IntSupplier fn) {
+        return fn.get();
+    }
+
+    public static void main(String[] args) {
+        // Using a lambda expression
+        IntSupplier lambda = () -> 42;
+
+        int d = func(lambda);
+
+
+        System.out.println("Result from lambda: " + func(lambda)); // Output: Result from lambda: 42
+
+
+        // Using a method reference
+        IntSupplier methodRef = Main::exampleFunction;
+        // System.out.println("Result from method reference: " + func(methodRef)); // Output: Result from method reference: 100
+
+        // Using an anonymous class
+        IntSupplier anonymousClass = new IntSupplier() {
+            @Override
+            public int get() {
+                return 84;
+            }
+        };
+        // System.out.println("Result from anonymous class: " + func(anonymousClass)); // Output: Result from anonymous class: 84
+    }
+
+    public static int exampleFunction() {
+        return 100;
+    }
+}

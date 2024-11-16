@@ -86,6 +86,7 @@ export class QueryCommand {
 		assert(selector, this.name + ' is an invalid selector for ' + context.language);
 		console.log('getting');
 
+		console.log(selector.selector);
 		const query = parser.language.query(selector.selector);
 
 		assert(query, 'invalid query came out');
@@ -94,14 +95,10 @@ export class QueryCommand {
 
 		const originalLen = matches.length;
 
-		console.log(originalLen, 'orignal');
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
 			matches = this.onMatch(matches, context);
 		}
-
-		console.log('current', matches.length);
-		console.log('current', originalLen);
 
 		const nodes = groupNodes(matches);
 

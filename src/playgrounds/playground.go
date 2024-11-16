@@ -21,13 +21,30 @@ var f int = 3
 
 const fl int = 3
 
+type St struct {
+	A int
+}
+
 func main() {
+	c := St{
+		A: 4,
+	}
 
 	b, err := func() (int, error) {
 		return 3, nil
+	}()
+	fmt.Errorf("err: %v", err)
 
-	}
+	fd := retA(5)
 
+	fn := retFunc(func() any {
+		return 3
+	})
+
+	_ = b
+	_ = fn
+	_ = fd
+	_ = c
 }
 func callOther() string {
 	fmt.Printf("hellot")
@@ -48,6 +65,7 @@ func (f *b) Call(a int) string {
 	e = 4
 
 	g := []int{1, 2, 3}
+	g = []int{1, 2, 3}
 	_ = g
 
 	if a == 3 {
@@ -84,6 +102,10 @@ func (f *b) Call(a int) string {
 	asdf := retA(4)
 	_ = asdf
 	return ""
+}
+
+func retFunc(f func() any) func() any {
+	return f
 }
 
 func retA(b int) int {

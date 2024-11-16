@@ -5,6 +5,7 @@
 // Function with no return value and no parameters
 int add(int a, int b)
 {
+    int c = a + b;
     return a + b;
 }
 
@@ -17,6 +18,10 @@ inline int multiply(int a, int b)
 // 3. Lambda function (C++11)
 auto divide = [](int a, int b)
 {
+    a = b;
+
+    int c = a + b;
+
     return a / b;
 };
 
@@ -211,21 +216,32 @@ public:
 };
 
 // 2. Define a class with private members and public methods
-class MyClass
+class MyClassAwesome
 {
 private:
     int x;
 
 public:
-    MyClass(int xVal) : x(xVal) {}
+    MyClassAwesome(int xVal) : x(xVal) {}
     int getX() { return x; }
 };
+
+MyClassAwesome *aosidjf = new MyClassAwesome(4);
+
+int other = aosidjf->getX();
 
 // 3. Define a struct (default public members)
 struct MyStruct
 {
     int x;
     double y;
+};
+
+func(fn : () = > number){
+    return fn()}
+
+MyStruct a = MyStruct{
+
 };
 
 // 4. Define a class with default constructor and destructor
@@ -653,6 +669,10 @@ struct MyStruct
     void myMethod() {}
 };
 
+MyStruct gf = MyStruct{
+    myVar : 3
+};
+
 class MyClass
 {
 public:
@@ -709,3 +729,33 @@ else if (condition)
     doSomething();
 else
     doSomething();
+
+// Define the function that takes a std::function<int()> and calls it
+int func(std::function<int()> fn)
+{
+    return fn();
+}
+
+// Example function to be passed as an argument
+int exampleFunction()
+{
+    return 42;
+}
+
+int main()
+{
+    // Call func with exampleFunction
+    int result = func(exampleFunction);
+    std::cout << "Result: " << result << std::endl; // Output: Result: 42
+
+    MyClassAwesome *b = new MyClassAwesome(0);
+
+    int c = b->getX();
+
+    // Call func with a lambda function
+    int lambdaResult = func([]()
+                            { return 100; });
+    std::cout << "Lambda Result: " << lambdaResult << std::endl; // Output: Lambda Result: 100
+
+    return 0;
+}

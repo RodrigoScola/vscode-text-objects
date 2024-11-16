@@ -13,7 +13,13 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [` (init_declarator value:(_ (_)@rhs ))`].join('\n'),
+		selector: [
+			// lambda_expression
+			`(init_declarator value:(_ body:(_ (_)+ @rhs ))) `,
+			`(init_declarator value:(_ value: (_(_)@rhs ))) `,
+			`(init_declarator value:(_ arguments:(argument_list (lambda_expression body:(_ (_) @rhs ))))) `,
+			`(init_declarator value:(_  arguments:(_ (_) @rhs))) `,
+		].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
@@ -29,9 +35,9 @@ function go(): QuerySelector {
 	return {
 		language: 'go',
 		selector: [
-			` (var_declaration (var_spec name:(identifier) @variable  ))  `,
-			` (const_declaration (const_spec name:(identifier) @variable   ))  `,
-			` (short_var_declaration right :(expression_list (_) @variable )) `,
+			` (expression_list (_ body:(_ (_) @rhs ))) `,
+			` (expression_list (_ function:(_ body:(_ (_)+ @rhs )))) `,
+			` (expression_list (_ arguments:(_ (_) @rhs))) `,
 		].join('\n'),
 	};
 }
@@ -39,10 +45,9 @@ function java(): QuerySelector {
 	return {
 		language: 'java',
 		selector: [
-			` (assignment_expression  right:(_ (_) @rhs)) `,
-			` (local_variable_declaration
- declarator:(variable_declarator
- value:(_ (_) @rhs ))) `,
+			` (_ declarator:(_ value:(object_creation_expression (_ (_) @rhs )))) `,
+			` (_ value:(array_initializer (_)@rhs)) `,
+			` (_ declarator:(_ value:(_ arguments:(_ (_) @rhs)))) `,
 		].join('\n'),
 	};
 }

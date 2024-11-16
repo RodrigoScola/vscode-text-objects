@@ -11,7 +11,7 @@ function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
 		selector: [
-			` ((init_declarator value:(_) @variable ) `,
+			` (init_declarator value:(_) @variable ) `,
 			` (field_declaration default_value:(_) @variable)`,
 			` (assignment_expression right:(_) @rhs) `,
 		].join('\n'),
