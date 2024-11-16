@@ -77,6 +77,7 @@ function typescript(): QuerySelector {
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
+		selector: [
 			` (export_statement (type_alias_declaration)) @type   `,
 			` (type_alias_declaration) @type   `,
 			` (export_statement (interface_declaration)) @type `,
