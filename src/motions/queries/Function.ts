@@ -69,24 +69,13 @@ function javascript(): QuerySelector {
 		language: 'javascript',
 		selector: [
 			`(method_definition) @function`,
-			` (arguments (function_expression)  @function ) `,
-			` (arrow_function ) @anonymous_function`,
-			` (export_statement declaration:(function_declaration) @function ) @export
-						            `,
-			` (function_declaration) @function `,
-			` (lexical_declaration (variable_declarator name : (identifier)  value: (arrow_function) @function.body)) @function
-									                `,
-			` (export_statement (lexical_declaration (variable_declarator value: (arrow_function) ))) @function `,
-			,
-			`
-			  (lexical_declaration (variable_declarator value:(function_expression)))  @function
-
-			            `,
-			`
- (call_expression
- arguments:(arguments
-  (arrow_function) @function ))
-            `,
+			`(arguments (function_expression)  @function ) `,
+			`(arrow_function ) @function `,
+			`(export_statement declaration:(function_declaration) @function ) @export `,
+			`(function_declaration) @function `,
+			`(_ (_   value: (arrow_function) )) @function `,
+			`(export_statement (_ (_ value: (arrow_function) @function )) ) @export `,
+			`(_ arguments:(_ (arrow_function) @function )) `,
 		].join('\n'),
 	};
 }

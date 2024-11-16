@@ -129,6 +129,7 @@ export const selectCommands: QueryCommand[] = [
 		),
 		selectClass
 	),
+
 	addSelectors(newSelectNextCommand('inner', 'class'), selectInnerClass),
 	addSelectors(newSelectNextCommand('outer', 'array'), selectOuterArray),
 	addSelectors(newSelectNextCommand('inner', 'array'), selectInnerArray),

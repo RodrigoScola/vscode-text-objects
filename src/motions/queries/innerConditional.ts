@@ -4,6 +4,7 @@ function C(): QuerySelector {
 	return {
 		language: 'c',
 		selector: [
+			` (case_statement value:(_) (expression_statement (_)+ @conditional) (break_statement)* @conditional ) `,
 			` (conditional_expression consequence:(_)+ @conditional) `,
 			` (conditional_expression alternative:(_)+ @conditional ) `,
 
@@ -25,6 +26,7 @@ function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
 		selector: [
+			` (case_statement value:(_) (expression_statement (_) @conditional) (break_statement) @conditional) `,
 			` (conditional_expression consequence:(_)+ @conditional) `,
 			` (conditional_expression alternative:(_)+ @conditional ) `,
 			` (if_statement consequence:(compound_statement

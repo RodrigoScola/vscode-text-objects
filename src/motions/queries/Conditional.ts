@@ -3,7 +3,11 @@ import { QuerySelector } from '../commands';
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(if_statement) @conditional`, ` (conditional_expression) @conditional`].join('\n'),
+		selector: [
+			` (switch_statement) @conditional `,
+			` (conditional_expression  )@conditional `,
+			` (if_statement) @conditional `,
+		].join('\n'),
 	};
 }
 
@@ -22,25 +26,26 @@ function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
 		selector: [
+			` (conditional_expression  ) @conditional`,
 			` (if_statement) @conditional `,
-			` (switch_statement ) @conditional `,
-			`(conditional_expression) @conditional`,
+			` (switch_statement) @conditional `,
 		].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (if_statement) @conditional `].join('\n'),
+		selector: [` (if_statement  ) @conditional `, `(expression_switch_statement) @conditional`].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
 		selector: [
-			`(if_statement) @conditional`,
-			`(switch_expression) @conditional`,
-			` (assignment_expression right:(ternary_expression)) @conditional `,
+			` (if_statement) @conditional `,
+			` (ternary_expression  ) @conditional`,
+			` (ternary_expression ) @conditional`,
+			` (switch_block_statement_group) @conditional `,
 		].join('\n'),
 	};
 }
@@ -56,7 +61,7 @@ function python(): QuerySelector {
 	return {
 		language: 'python',
 		//todo: this cannot be the only way to define a function
-		selector: [` (if_statement)  @conditional `, ` (conditional_expression   ) @conditional`].join('\n'),
+		selector: [` (if_statement) @conditional  `, ` (conditional_expression) @conditional `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
@@ -64,17 +69,17 @@ function rust(): QuerySelector {
 		language: 'rust',
 		//todo: come on mannnn
 		selector: [
-			`(if_expression) @conditional`,
-			`(match_expression) @conditional`,
-			`(let_declaration value: (if_expression)) @conditional`,
+			`(if_expression) @conditional `,
+			`(match_expression body: (match_block) @conditional) `,
+			`(let_declaration value: (if_expression) @conditional) `,
 		].join('\n'),
 	};
 }
 
 const jsSelector = [
-	`(if_statement) @if.statement `,
-	`(switch_statement ) @conditional`,
-	`(ternary_expression) @conditional`,
+	` (if_statement) @conditional `,
+	` (ternary_expression) @conditional `,
+	` (switch_case) @conditional `,
 ];
 function typescript(): QuerySelector {
 	return {

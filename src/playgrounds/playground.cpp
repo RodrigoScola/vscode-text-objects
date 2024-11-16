@@ -61,6 +61,9 @@ public:
 // 8. Const member function
 class Number
 {
+private:
+    int otherValue;
+
 public:
     int value;
     int getValue() const
@@ -76,6 +79,7 @@ class Operation
 {
 public:
     virtual int operate(int a, int b) = 0;
+    virtual int operate2(int a, int b) = 0;
 };
 
 // 10. Function with default arguments
@@ -756,6 +760,31 @@ int main()
     int lambdaResult = func([]()
                             { return 100; });
     std::cout << "Lambda Result: " << lambdaResult << std::endl; // Output: Lambda Result: 100
+
+    return 0;
+}
+
+#include <iostream>
+
+int main()
+{
+    int number = 2;
+
+    switch (number)
+    {
+    case 1:
+        std::cout << "Number is 1" << std::endl;
+        break;
+    case 2:
+        std::cout << "Number is 2" << std::endl;
+        break;
+    case 3:
+        std::cout << "Number is 3" << std::endl;
+        break;
+    default:
+        std::cout << "Number is not 1, 2, or 3" << std::endl;
+        break;
+    }
 
     return 0;
 }

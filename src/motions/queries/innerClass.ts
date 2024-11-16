@@ -10,7 +10,15 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: ['(class_specifier body: ( field_declaration_list (_)+ @class ) )'].join('\n'),
+		selector: [
+			`
+  (class_specifier
+ body:(field_declaration_list
+  (access_specifier)
+ (_)+ @class) )
+			
+			`,
+		].join(`\n`),
 	};
 }
 function csharp(): QuerySelector {

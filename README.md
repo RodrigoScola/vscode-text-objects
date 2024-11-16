@@ -64,8 +64,8 @@ Blocks would be nice catch all.
 -    rhs is not for assignign, but reassigning - DONE
 -    do inner rhs aswell - DONE
 -    finish the languages support - DONE
+-    see if it works on tsx and jsx all the things (mainly conditionals) - DONE
 
--    see if it works on tsx and jsx all the things (mainly conditionals)
 -    revise all selectors (remember to put the inner conditonal in the conditional)
 -    see if the todos are valid still
 
