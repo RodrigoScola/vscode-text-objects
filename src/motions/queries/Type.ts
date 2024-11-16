@@ -76,6 +76,19 @@ function typescript(): QuerySelector {
 		].join('\n'),
 	};
 }
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: [
+			` (export_statement (type_alias_declaration)) @type   `,
+			` (type_alias_declaration) @type   `,
+			` (export_statement (interface_declaration)) @type `,
+			` (interface_declaration) @type `,
+			`(type_annotation (_) @type)`,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -85,4 +98,5 @@ export default {
 	java,
 	rust,
 	typescript,
+	typescriptreact,
 };

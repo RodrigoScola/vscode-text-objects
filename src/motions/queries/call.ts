@@ -76,6 +76,13 @@ function typescript(): QuerySelector {
 	};
 }
 
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
@@ -96,4 +103,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	typescriptreact,
 };

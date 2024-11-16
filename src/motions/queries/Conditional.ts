@@ -44,16 +44,7 @@ function java(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
-	return {
-		language: 'javascript',
-		selector: [
-			`(if_statement) @if.statement `,
-			`(switch_statement ) @conditional`,
-			`(ternary_expression) @conditional`,
-		].join('\n'),
-	};
-}
+
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
@@ -79,11 +70,31 @@ function rust(): QuerySelector {
 		].join('\n'),
 	};
 }
+
+const jsSelector = [
+	`(if_statement) @if.statement `,
+	`(switch_statement ) @conditional`,
+	`(ternary_expression) @conditional`,
+];
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
 		//todo revise the selectors
-		selector: javascript().selector,
+		selector: jsSelector.join('\n'),
+	};
+}
+
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: jsSelector.join('\n'),
+	};
+}
+function javascript(): QuerySelector {
+	return {
+		language: 'javascript',
+		selector: jsSelector.join('\n'),
 	};
 }
 
@@ -98,4 +109,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	typescriptreact,
 };

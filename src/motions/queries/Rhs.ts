@@ -110,6 +110,17 @@ function yaml(): QuerySelector {
 		selector: [` (block_mapping_pair value:(_) @rhs) `].join('\n'),
 	};
 }
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: [
+			`(variable_declarator value: (_) @rhs)`,
+			`(assignment_expression right:(_) @rhs) `,
+			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -125,4 +136,5 @@ export default {
 	rust,
 	typescript,
 	yaml,
+	typescriptreact,
 };

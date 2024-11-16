@@ -104,21 +104,7 @@ function java(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
-	return {
-		language: 'javascript',
-		selector: [
-			` (if_statement consequence: (statement_block (_)+ @inner_statement)) `,
-			` (else_clause (statement_block (_)+ @conditional)) `,
-			` (if_statement consequence: (expression_statement (_)+ @inner_statement)) `,
-			`  (else_clause (expression_statement (_)+ @inner_statement)) `,
-			` (ternary_expression consequence:(_) @conditional ) `,
-			` (ternary_expression alternative:(_) @conditional ) `,
-			` (switch_case (comment)* @conditional )`,
-			` (switch_case (comment)* @conditional body:(_)* @conditional ) `,
-		].join('\n'),
-	};
-}
+
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
@@ -158,9 +144,33 @@ function rust(): QuerySelector {
 		].join('\n'),
 	};
 }
+
+function javascript(): QuerySelector {
+	return {
+		language: 'javascript',
+		selector: [
+			` (if_statement consequence: (statement_block (_)+ @inner_statement)) `,
+			` (else_clause (statement_block (_)+ @conditional)) `,
+			` (if_statement consequence: (expression_statement (_)+ @inner_statement)) `,
+			`  (else_clause (expression_statement (_)+ @inner_statement)) `,
+			` (ternary_expression consequence:(_) @conditional ) `,
+			` (ternary_expression alternative:(_) @conditional ) `,
+			` (switch_case (comment)* @conditional )`,
+			` (switch_case (comment)* @conditional body:(_)* @conditional ) `,
+		].join('\n'),
+	};
+}
+
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
 		//todo revise the selectors
 		selector: javascript().selector,
 	};
@@ -177,4 +187,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	typescriptreact,
 };

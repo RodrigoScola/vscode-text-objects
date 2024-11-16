@@ -24,7 +24,7 @@ export const Languages = {
 	},
 
 	typescriptreact: {
-		module: 'typescript',
+		module: 'tsx',
 	},
 	go: {
 		module: 'go',

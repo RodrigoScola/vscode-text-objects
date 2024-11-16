@@ -172,6 +172,13 @@ value:(block_node (_ (_) @rhs )))
 		].join('\n'),
 	};
 }
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
 
 export default {
 	C,
@@ -187,4 +194,5 @@ export default {
 	rust,
 	typescript,
 	yaml,
+	typescriptreact,
 };

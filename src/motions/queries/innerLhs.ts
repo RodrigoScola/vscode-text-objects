@@ -96,10 +96,6 @@ function typescript(): QuerySelector {
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,
-			//todo: go to a class with the public and check if node is good name
-			// `( public_field_definition
-			// value: (_) @rhs
-			// )`,
 		].join('\n'),
 	};
 }
@@ -110,7 +106,17 @@ function yaml(): QuerySelector {
 		selector: [`(block_mapping_pair key : (flow_node (_) @lhs ))`].join('\n'),
 	};
 }
-
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: [
+			`(variable_declarator value: (_) @rhs)`,
+			`( assignment_expression (_) @rhs) `,
+			` (type_alias_declaration value: (_) @type   ) `,
+		].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -125,4 +131,5 @@ export default {
 	rust,
 	typescript,
 	yaml,
+	typescriptreact,
 };

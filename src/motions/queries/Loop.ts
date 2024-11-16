@@ -82,7 +82,13 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
-
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
 export default {
 	C,
 	cpp,
@@ -94,4 +100,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	typescriptreact,
 };

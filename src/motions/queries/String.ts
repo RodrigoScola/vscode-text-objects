@@ -97,6 +97,12 @@ function yaml(): QuerySelector {
 		].join('\n'),
 	};
 }
+function typescriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		selector: javascript().selector,
+	};
+}
 
 export default {
 	C,
@@ -112,4 +118,5 @@ export default {
 	rust,
 	typescript,
 	yaml,
+	typescriptreact,
 };

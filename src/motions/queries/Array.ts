@@ -85,7 +85,12 @@ function selectToml(): QuerySelector {
 function selectTypescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
+		selector: selectJavascript().selector,
+	};
+}
+function selectTypescriptReact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
 		selector: selectJavascript().selector,
 	};
 }
@@ -111,6 +116,7 @@ export const select = {
 	python: selectPython,
 	rust: selectRust,
 	typescript: selectTypescript,
+	typescriptreact: selectTypescriptReact,
 };
 
 export const goTo = select;

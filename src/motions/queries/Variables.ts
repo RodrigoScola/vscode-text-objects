@@ -107,6 +107,14 @@ function yaml(): QuerySelector {
 		selector: [` (block_mapping_pair) @variable `].join('\n'),
 	};
 }
+function typescriptreact(): QuerySelector {
+	const tsSelector = javascript().selector + '\n' + `(type_alias_declaration) @type`;
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: tsSelector,
+	};
+}
 export default {
 	C,
 	cpp,
@@ -121,4 +129,5 @@ export default {
 	rust,
 	typescript,
 	yaml,
+	typescriptreact,
 };

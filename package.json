@@ -1143,6 +1143,8 @@
 	"devDependencies": {
 		"@types/mocha": "^10.0.7",
 		"@types/node": "20.x",
+		"@types/react": "^18.3.12",
+		"@types/react-dom": "^18.3.1",
 		"@types/vscode": "^1.93.0",
 		"@typescript-eslint/eslint-plugin": "^8.3.0",
 		"@typescript-eslint/parser": "^8.3.0",
@@ -1156,6 +1158,7 @@
 		"typescript": "^5.5.4"
 	},
 	"dependencies": {
+		"react": "^18.3.1",
 		"web-tree-sitter": "^0.23.0"
 	}
 }
