@@ -2,5 +2,9 @@
 	"outerarray": ["one", "two"],
 	"innerarray": ["one", "two"],
 	"outerstr": "string",
-	"obj": {}
+	"obj": {
+		"outerarray": ["one", "two"],
+		"innerarray": ["one", "two"],
+		"outerstr": "string"
+	}
 }

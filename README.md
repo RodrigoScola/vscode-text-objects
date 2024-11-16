@@ -77,6 +77,7 @@ Language Support in development:
 
 -    remove the console logs
 -    Make an icon, revamp the name?
+-    do a nice landing page
 -    add the on language events
 -    make sure keybinds and vim are okay
 -    LAUNCH (add tags and releases)

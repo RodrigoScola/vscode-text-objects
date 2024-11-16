@@ -55,8 +55,10 @@ function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
 		selector: [
-			` (variable_declarator value:(_ (_) @rhs)) `,
+			` (variable_declarator value:(object (_) @rhs))`,
 			` (assignment_expression right:(_ (_)@rhs )) `,
+			` (variable_declarator value:(_ body:(_ (_)+ @rhs ))) `,
+			` (variable_declarator value:(_ arguments:(_ (_) @rhs))) `,
 		].join('\n'),
 	};
 }
@@ -72,14 +74,10 @@ function lua(): QuerySelector {
 	return {
 		language: 'lua',
 		selector: [
-			` (local_variable_declaration
-  (expression_list value:(_ (_) @rhs ) ))
-        `,
-			`
-        (variable_assignment
- (variable_list)
-  (expression_list value:(_ (_) @rhs )  ))
-        `,
+			` (variable_assignment (variable_list) (expression_list value:(_ (_) @rhs )  )) `,
+			` (local_variable_declaration (expression_list value:(_ (_) @rhs ) )) `,
+			// there is the call one gets the first item, idk late :)
+			` (local_variable_declaration (_ value:(_ arguments:(_ (_) @rhs )))) `,
 		].join('\n'),
 	};
 }
@@ -87,7 +85,6 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [` (assignment right:(_ (_)@rhs)) `].join('\n'),
 	};
 }

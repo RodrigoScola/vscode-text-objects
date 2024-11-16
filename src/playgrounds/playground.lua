@@ -92,9 +92,18 @@ end
 
 local x = 10
 
-yy = 20
+local yy = 20
 
-local t = {}
+local key = function ()
+    print('content')
+end
+
+local t = {
+
+    b  = function () 
+        print("hello worlld")
+    end
+}
 
 local function add(a, b)
     return a + b
