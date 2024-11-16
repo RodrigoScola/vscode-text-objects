@@ -117,6 +117,17 @@ function typescriptreact(): QuerySelector {
 		].join('\n'),
 	};
 }
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		//todo revise the selectors
+		selector: [
+			`(variable_declarator value: (_) @rhs)`,
+			`( assignment_expression (_) @rhs) `,
+			` (type_alias_declaration value: (_) @type   ) `,
+		].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -132,4 +143,5 @@ export default {
 	typescript,
 	yaml,
 	typescriptreact,
+	javascriptreact,
 };

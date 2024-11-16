@@ -121,6 +121,17 @@ function typescriptreact(): QuerySelector {
 		].join('\n'),
 	};
 }
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		//todo revise the selectors
+		selector: [
+			`(variable_declarator value: (_) @rhs)`,
+			`(assignment_expression right:(_) @rhs) `,
+			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -137,4 +148,5 @@ export default {
 	typescript,
 	yaml,
 	typescriptreact,
+	javascriptreact,
 };

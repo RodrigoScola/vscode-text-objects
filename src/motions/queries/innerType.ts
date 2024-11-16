@@ -64,6 +64,12 @@ function typescriptreact(): QuerySelector {
 		selector: [].join('\n'),
 	};
 }
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		selector: [].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -74,4 +80,5 @@ export default {
 	rust,
 	typescript,
 	typescriptreact,
+	javascriptreact,
 };

@@ -91,6 +91,13 @@ function typescriptreact(): QuerySelector {
 		selector: jsSelector.join('\n'),
 	};
 }
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		//todo revise the selectors
+		selector: jsSelector.join('\n'),
+	};
+}
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
@@ -110,4 +117,5 @@ export default {
 	rust,
 	typescript,
 	typescriptreact,
+	javascriptreact,
 };

@@ -115,6 +115,13 @@ function typescriptreact(): QuerySelector {
 		selector: tsSelector,
 	};
 }
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
 export default {
 	C,
 	cpp,
@@ -130,4 +137,5 @@ export default {
 	typescript,
 	yaml,
 	typescriptreact,
+	javascriptreact,
 };

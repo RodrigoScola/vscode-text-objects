@@ -82,6 +82,13 @@ function typescriptreact(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
@@ -102,4 +109,5 @@ export default {
 	typescript,
 	yaml,
 	typescriptreact,
+	javascriptreact,
 };

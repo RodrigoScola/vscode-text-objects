@@ -129,9 +129,17 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
+
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
 		//todo revise the selectors
 		selector: javascript().selector,
 	};
@@ -149,4 +157,5 @@ export default {
 	rust,
 	typescript,
 	typescriptreact,
+	javascriptreact,
 };

@@ -95,6 +95,13 @@ function selectTypescriptReact(): QuerySelector {
 	};
 }
 
+function selectjavascriptReact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		selector: selectJavascript().selector,
+	};
+}
+
 function selectYaml(): QuerySelector {
 	return {
 		language: 'yaml',
@@ -117,6 +124,7 @@ export const select = {
 	rust: selectRust,
 	typescript: selectTypescript,
 	typescriptreact: selectTypescriptReact,
+	javascriptreact: selectjavascriptReact,
 };
 
 export const goTo = select;

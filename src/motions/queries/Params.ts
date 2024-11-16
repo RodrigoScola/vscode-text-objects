@@ -73,7 +73,13 @@ function typescriptreact(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
-
+function javascriptreact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		//todo revise the selectors
+		selector: javascript().selector,
+	};
+}
 export const select: Record<string, () => QuerySelector> = {
 	C,
 	cpp,
@@ -86,6 +92,7 @@ export const select: Record<string, () => QuerySelector> = {
 	rust,
 	typescript,
 	typescriptreact,
+	javascriptreact,
 };
 
 function selectC(): QuerySelector {
@@ -160,6 +167,12 @@ function selectTypescriptReact(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
+function selectjavascriptReact(): QuerySelector {
+	return {
+		language: 'javascriptreact',
+		selector: javascript().selector,
+	};
+}
 
 export const goTo: Record<string, () => QuerySelector> = {
 	C: selectC,
@@ -173,4 +186,5 @@ export const goTo: Record<string, () => QuerySelector> = {
 	rust: selectRust,
 	typescript: selectTypescript,
 	typescriptreact: selectTypescriptReact,
+	javascriptreact: selectjavascriptReact,
 };
