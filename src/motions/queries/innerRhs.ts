@@ -73,11 +73,12 @@ function json(): QuerySelector {
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
+		// maybe do generic?
+		// call doesnt work when just replacing things with just _
 		selector: [
-			` (variable_assignment (variable_list) (expression_list value:(_ (_) @rhs )  )) `,
-			` (local_variable_declaration (expression_list value:(_ (_) @rhs ) )) `,
-			// there is the call one gets the first item, idk late :)
-			` (local_variable_declaration (_ value:(_ arguments:(_ (_) @rhs )))) `,
+			` (local_variable_declaration (expression_list value:(call arguments:(_ (_) @rhs )))) `,
+			` (local_variable_declaration (expression_list value:(table (field_list (_) @rhs )))) `,
+			` (local_variable_declaration (expression_list value:(function_definition body:(block (_)+ @rhs )))) `,
 		].join('\n'),
 	};
 }
@@ -85,7 +86,15 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [` (assignment right:(_ (_)@rhs)) `].join('\n'),
+		selector: [
+			` (assignment right:(lambda body:(binary_operator (_) @rhs))) `,
+			` (assignment right:(list (_) @rhs )) `,
+			` (assignment right:(call arguments:(argument_list (lambda body:(_) @rhs )))) `,
+			` (assignment right:(call arguments:(argument_list (_) @rhs ))) `,
+			` (assignment right:(lambda body:(_) @rhs)) `,
+			` (assignment right:(dictionary (_) @rhs )) `,
+			` (assignment right:(list_comprehension (_) @rhs)) `,
+		].join('\n'),
 	};
 }
 function rust(): QuerySelector {
@@ -93,10 +102,44 @@ function rust(): QuerySelector {
 		language: 'rust',
 		//todo: come on mannnn
 		selector: [
-			` (let_declaration value: (_ (_) @rhs)) `,
-			` (static_item value:(_(_) @rhs) )`,
-			` (let_declaration   value: (_(_) @rhs) )`,
-			` (const_item value:(_(_) @lhs) )`,
+			//clojure
+			` (let_declaration value:(closure_expression body:(_) @rhs)) `,
+			` (static_item value:(closure_expression body:(_) @rhs)) `,
+			` (const_item value:(closure_expression body:(_) @rhs)) `,
+
+			//tuples
+			` (let_declaration value:(tuple_expression (_) @rhs)) `,
+			` (static_item value:(tuple_expression (_) @rhs)) `,
+			` (const_item value:(tuple_expression (_) @rhs)) `,
+
+			//arrays
+			` (let_declaration value:(array_expression (_) @rhs)) `,
+			` (static_item value:(array_expression (_) @rhs)) `,
+			` (const_item value:(array_expression (_) @rhs)) `,
+
+			//match
+			` (let_declaration value:(match_expression body:(match_block (_) @rhs ))) `,
+			` (static_item value:(match_expression body:(match_block (_) @rhs ))) `,
+			` (const_item value:(match_expression body:(match_block (_) @rhs ))) `,
+
+			//struct
+			` (let_declaration value:(struct_expression body:( field_initializer_list (_) @rhs))) `,
+			` (static_item value:(struct_expression body:( field_initializer_list (_) @rhs))) `,
+			` (const_item value:(struct_expression body:( field_initializer_list (_) @rhs))) `,
+
+			//variants?
+			` (let_declaration value:(call_expression arguments:(arguments (_) @rhs ))) `,
+			` (static_item value:(call_expression arguments:(arguments (_) @rhs ))) `,
+			` (const_item value:(call_expression arguments:(arguments (_) @rhs ))) `,
+
+			//macro
+			` (let_declaration value:(macro_invocation (_ (_) @rhs ))) `,
+			` (const_item value:(macro_invocation (_ (_) @rhs ))) `,
+			` (static_item value:(macro_invocation (_ (_) @rhs ))) `,
+
+			` (let_declaration value:(if_expression consequence:(block (_) @rhs ) alternative:(else_clause (_ (_) @rhs )))) `,
+			` (static_item value:(if_expression consequence:(block (_) @rhs ) alternative:(else_clause (_ (_) @rhs )))) `,
+			` (const_item value:(if_expression consequence:(block (_) @rhs ) alternative:(else_clause (_ (_) @rhs )))) `,
 		].join('\n'),
 	};
 }

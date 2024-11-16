@@ -113,3 +113,10 @@ local result = add(5, 7)
 print(result)  -- Output: 12
 
 local array = {1, 2, 3, 4, 5}
+array = {1, 2, 3, 4, 5}
+local array2 = {
+    thing1 = 'other'
+}
+array2 = {
+    thing1 = 'other'
+}

@@ -74,6 +74,10 @@ while count < 5:
     
 my_dict = {'a': 1, 'b': 2, 'c': 3}
 
+
+
+
+
 result = "x is less than 5" if my_dict['c'] < 5 else "x is 5 or greater"
 x = 4
 
@@ -92,3 +96,25 @@ arrr  = [1,2,3,4]
 d = {
     "name": "hogh"
 }
+
+def func(fn):
+    return fn()
+
+# Example function to be passed as an argument
+def example_function():
+    return 42
+
+# Using a lambda function
+lambda_function = lambda: 100
+
+# Using the func function with example_function
+result = func(example_function)
+print("Result from example_function:", result)  # Output: Result from example_function: 42
+
+# Using the func function with a lambda function
+lambda_result = func(lambda_function)
+print("Result from lambda_function:", lambda_result)  # Output: Result from lambda_function: 100
+
+# Using the func function with an anonymous lambda function directly
+anonymous_lambda_result = func(lambda: 84)
+print("Result from anonymous lambda:", anonymous_lambda_result)  # Output: Result from anonymous lambda: 84
