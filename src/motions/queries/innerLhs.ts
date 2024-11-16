@@ -103,6 +103,13 @@ function typescript(): QuerySelector {
 		].join('\n'),
 	};
 }
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		//todo revise the selectors
+		selector: [`(block_mapping_pair key : (flow_node (_) @lhs ))`].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -117,4 +124,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };

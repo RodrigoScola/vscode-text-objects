@@ -107,6 +107,14 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		selector: [
+			` (block_mapping_pair value:(block_node (block_mapping (block_mapping_pair key:(_) value:(flow_node (_)))  )@object )) `,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -121,4 +129,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };

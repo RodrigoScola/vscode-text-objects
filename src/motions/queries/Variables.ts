@@ -100,6 +100,13 @@ function typescript(): QuerySelector {
 	};
 }
 
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		//todo revise the selectors
+		selector: [` (block_mapping_pair) @variable `].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -113,4 +120,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };

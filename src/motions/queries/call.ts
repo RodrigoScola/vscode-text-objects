@@ -76,10 +76,18 @@ function typescript(): QuerySelector {
 	};
 }
 
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		selector: [` (alias) @call `].join('\n'),
+	};
+}
+
 export default {
 	C,
 	cpp,
 	csharp,
+	yaml,
 	go,
 	java,
 	javascript,

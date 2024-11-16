@@ -85,6 +85,18 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		selector: [
+			`(single_quote_scalar) @string`,
+			`(double_quote_scalar) @string`,
+			`
+			 (block_mapping_pair value:(block_node (block_scalar) @string))
+			`,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -99,4 +111,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };

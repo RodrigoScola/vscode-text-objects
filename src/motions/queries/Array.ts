@@ -90,12 +90,20 @@ function selectTypescript(): QuerySelector {
 	};
 }
 
+function selectYaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		selector: [`  (block_sequence) @array  `].join('\n'),
+	};
+}
+
 export const select = {
 	C: selectC,
 	cpp: selectCPP,
 	csharp: selectCSharp,
 	go: selectGo,
 	java: selectJava,
+	yaml: selectYaml,
 	javascript: selectJavascript,
 	json: selectJson,
 	toml: selectToml,
@@ -105,17 +113,4 @@ export const select = {
 	typescript: selectTypescript,
 };
 
-export const goTo = {
-	C: selectC,
-	cpp: selectCPP,
-	csharp: selectCSharp,
-	go: selectGo,
-	java: selectJava,
-	javascript: selectJavascript,
-	json: selectJson,
-	toml: selectToml,
-	lua: selectLua,
-	python: selectPython,
-	rust: selectRust,
-	typescript: selectTypescript,
-};
+export const goTo = select;

@@ -103,6 +103,13 @@ function typescript(): QuerySelector {
 		].join('\n'),
 	};
 }
+function yaml(): QuerySelector {
+	return {
+		language: 'typescript',
+		//todo revise the selectors
+		selector: [` (block_mapping_pair value:(_) @rhs) `].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -117,4 +124,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };

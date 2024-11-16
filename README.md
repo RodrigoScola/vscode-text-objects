@@ -27,9 +27,7 @@ Blocks:
 
 Blocks would be nice catch all.
 
-## Language Support
-
-Language Support in development:
+## Supported Languages
 
 -    Javascript and JSX
 -    Typescript and TSX
@@ -43,9 +41,6 @@ Language Support in development:
 -    java
 -    toml
 -    c#
-
-### Planned Languages
-
 -    yaml
 
 ## Roadmap
@@ -68,8 +63,9 @@ Language Support in development:
 -    do the else on if statements - DONE
 -    rhs is not for assignign, but reassigning - DONE
 -    do inner rhs aswell - DONE
+-    finish the languages support - DONE
 
--    finish the languages support
+-    see if it works on tsx and jsx all the things (mainly conditionals)
 -    revise all selectors (remember to put the inner conditonal in the conditional)
 -    see if the todos are valid still
 

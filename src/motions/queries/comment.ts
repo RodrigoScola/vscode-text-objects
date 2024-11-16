@@ -81,6 +81,13 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		//todo revise the selectors
+		selector: [`(comment)+ @comment`].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -95,4 +102,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };

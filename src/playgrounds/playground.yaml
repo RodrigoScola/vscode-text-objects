@@ -43,10 +43,11 @@ projects:
        status: 'In Progress'
 
 # Variables (using anchors and aliases)
-defaults: &defaults
+defaults: &dede
      country: 'USA'
      language: 'English'
 
+# Variables (using anchors and aliases)
 user1:
      <<: *defaults
      name: 'Alice'
@@ -55,6 +56,8 @@ user2:
      <<: *defaults
      name: 'Bob'
      language: 'Spanish'
+
+b: "dou"
 
 # Complex keys
 !!str 'complex key': 'value'

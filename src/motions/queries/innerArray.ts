@@ -89,7 +89,13 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
-
+function yaml(): QuerySelector {
+	return {
+		language: 'yaml',
+		//todo revise the selectors
+		selector: [` (block_sequence (_) @array ) `].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -103,4 +109,5 @@ export default {
 	python,
 	rust,
 	typescript,
+	yaml,
 };
