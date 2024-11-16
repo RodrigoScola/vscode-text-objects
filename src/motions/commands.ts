@@ -1,10 +1,10 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { NODES } from '../constants';
-import { editor } from '../extension';
+import { Editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
-import { LanguageParser, SupportedLanguages } from '../parsing/parser';
-import { closestPos, formatSelection, groupElements, nextPosition, previousPosition } from './position';
+import { LanguageParser, Parsing, SupportedLanguages } from '../parsing/parser';
+import { closestPos, groupElements, nextPosition, previousPosition } from './position';
 import { select as selectOuterArray } from './queries/Array';
 import selectCall from './queries/call';
 import selectClass from './queries/class';
@@ -32,13 +32,14 @@ import selectRhs from './queries/Rhs';
 import selectString from './queries/String';
 import selectType from './queries/Type';
 import selectVariable from './queries/Variables';
-
 import { CommandNames, CommandScope, OnMatchFunc, QueryCommand } from './QueryCommand';
 
 export type QueryContext = {
-	cursor: vscode.Position;
-	text: string;
-	language: SupportedLanguages;
+	editor: Editor;
+	parsing: {
+		parser: Parsing | undefined;
+	};
+	command: QueryCommand | null;
 };
 
 export interface QuerySelector {
@@ -53,6 +54,7 @@ export function addSelectors(command: QueryCommand, funcs: Record<string, () => 
 
 	return command;
 }
+
 function newSelectNextCommand(scope: CommandScope, name: CommandNames) {
 	return new QueryCommand({
 		name,
@@ -60,6 +62,10 @@ function newSelectNextCommand(scope: CommandScope, name: CommandNames) {
 		direction: 'next',
 		action: 'select',
 		pos: closestPos,
+		onFinish: (ctx, range) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+		},
 	});
 }
 function newSelectPreviousCommand(scope: CommandScope, name: CommandNames) {
@@ -69,6 +75,11 @@ function newSelectPreviousCommand(scope: CommandScope, name: CommandNames) {
 		direction: 'previous',
 		action: 'select',
 		pos: previousPosition,
+		onFinish: (ctx, range) => {
+			assert(ctx.editor.selectRange, 'select range is undefined');
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+		},
 	});
 }
 
@@ -79,10 +90,24 @@ function newGoToPreviousCommand(scope: CommandScope, name: CommandNames): QueryC
 		action: 'goTo',
 		direction: 'previous',
 		pos: previousPosition,
+		onFinish: (ctx, range) => {
+			assert(ctx.editor.goTo, 'go to is undefined');
+			ctx.editor.goTo(ctx, range);
+		},
 	});
 }
 function newGoToNextCommand(scope: CommandScope, name: CommandNames): QueryCommand {
-	return new QueryCommand({ scope: scope, name: name, action: 'goTo', direction: 'next', pos: nextPosition });
+	return new QueryCommand({
+		scope: scope,
+		name: name,
+		action: 'goTo',
+		direction: 'next',
+		pos: nextPosition,
+		onFinish: (ctx, range) => {
+			assert(ctx.editor.goTo, 'go to is undefined');
+			ctx.editor.goTo(ctx, range);
+		},
+	});
 }
 
 function withMatchFunc(command: QueryCommand, func: OnMatchFunc) {
@@ -90,9 +115,34 @@ function withMatchFunc(command: QueryCommand, func: OnMatchFunc) {
 	return command;
 }
 
-export const selectCommands: QueryCommand[] = [
+const innerStringCommand = addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString);
+
+innerStringCommand.onFinish = function (context: QueryContext, range: vscode.Range | undefined) {
+	if (!range) {
+		return;
+	}
+	const start = range.start;
+	const end = range.end;
+	const line = context.editor.getRange(start.line, start.character, end.line, end.character);
+
+	if (line.match(/['"`]/)) {
+		range = new vscode.Range(
+			new vscode.Position(range.start.line, range.start.character + 1),
+			new vscode.Position(range.end.line, range.end.character - 1)
+		);
+	}
+
+	assert(context.editor, 'editor is undefined');
+	assert(
+		typeof context.editor.selectRange !== 'function',
+		'range selection is not a function, received:' + typeof context.editor.selectRange
+	);
+	context.editor.selectRange(context, range);
+};
+
+export const commands: QueryCommand[] = [
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'function'), (matches) =>
+		withMatchFunc(newSelectNextCommand('outer', 'function'), (_, matches) =>
 			filterDuplicates(matches, [NODES.FUNCTION])
 		),
 		selectOuterFunction
@@ -102,10 +152,11 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
 	addSelectors(newSelectNextCommand('outer', 'conditional'), selectConditional),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('inner', 'conditional'), function (matches, ctx) {
+		withMatchFunc(newSelectNextCommand('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
 			//including java && javascript
-			if (!ctx.language.includes('java') && !ctx.language.includes('python')) {
-				return groupElements(matches);
+			if (!language.includes('java') && !language.includes('python')) {
+				return groupElements(ctx, matches);
 			}
 			return matches;
 		}),
@@ -116,20 +167,19 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectNextCommand('outer', 'lhs'), selectLhs),
 	addSelectors(newSelectNextCommand('inner', 'lhs'), selectInnerLhs),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'variable'), (matches) =>
+		withMatchFunc(newSelectNextCommand('outer', 'variable'), (_, matches) =>
 			filterDuplicates(matches, ['variable'])
 		),
 		selectVariable
 	),
 	addSelectors(newSelectNextCommand('outer', 'string'), selectString),
-	addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString),
+	innerStringCommand,
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'class'), (matches) =>
+		withMatchFunc(newSelectNextCommand('outer', 'class'), (_, matches) =>
 			filterDuplicates(matches, ['class'])
 		),
 		selectClass
 	),
-
 	addSelectors(newSelectNextCommand('inner', 'class'), selectInnerClass),
 	addSelectors(newSelectNextCommand('outer', 'array'), selectOuterArray),
 	addSelectors(newSelectNextCommand('inner', 'array'), selectInnerArray),
@@ -148,7 +198,7 @@ export const selectCommands: QueryCommand[] = [
 	//previous command
 
 	addSelectors(
-		withMatchFunc(newSelectPreviousCommand('outer', 'function'), (matches) =>
+		withMatchFunc(newSelectPreviousCommand('outer', 'function'), (_, matches) =>
 			filterDuplicates(matches, [NODES.FUNCTION])
 		),
 		selectOuterFunction
@@ -183,11 +233,9 @@ export const selectCommands: QueryCommand[] = [
 	addSelectors(newSelectPreviousCommand('inner', 'type'), selectInnerType),
 	addSelectors(newSelectPreviousCommand('outer', 'comment'), selectComment),
 	addSelectors(newSelectPreviousCommand('inner', 'comment'), selectInnerComment),
-];
 
-export const goToCommands: QueryCommand[] = [
 	addSelectors(
-		withMatchFunc(newGoToNextCommand('outer', 'function'), (matches) =>
+		withMatchFunc(newGoToNextCommand('outer', 'function'), (_, matches) =>
 			filterDuplicates(matches, [NODES.FUNCTION])
 		),
 		selectOuterFunction
@@ -225,7 +273,7 @@ export const goToCommands: QueryCommand[] = [
 	//previous command
 
 	addSelectors(
-		withMatchFunc(newGoToPreviousCommand('outer', 'function'), (matches) =>
+		withMatchFunc(newGoToPreviousCommand('outer', 'function'), (_, matches) =>
 			filterDuplicates(matches, [NODES.FUNCTION])
 		),
 		selectOuterFunction
@@ -262,83 +310,50 @@ export const goToCommands: QueryCommand[] = [
 	addSelectors(newGoToPreviousCommand('inner', 'comment'), selectInnerComment),
 ];
 
-function goTo(position: { start: vscode.Position; end: vscode.Position }) {
-	const ceditor = editor.getEditor();
-	ceditor.selection = new vscode.Selection(position.start, position.start);
-	ceditor.revealRange(new vscode.Range(position.start, position.start));
-}
-
-export function makeName(str: string) {
+function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
-export function initCommands() {
-	//todo change this to the commands just be an array lol
-	for (const command of goToCommands) {
-		InitCommand(makeName(command.commandName()), (ctx) => command.select(ctx), goTo);
-	}
-	for (const command of selectCommands) {
-		InitCommand(
-			makeName(command.commandName()),
-			(context) => command.select(context),
-			function (position) {
-				formatSelection(command, position.start, position.end, editor.getEditor());
+
+let context: QueryContext;
+
+export function getContext(): QueryContext {
+	return context;
+}
+
+export function init() {
+	console.log('initting function');
+	console.log(commands);
+	for (const command of commands) {
+		const name = makeName(command.commandName());
+		console.log('initting', name);
+		vscode.commands.registerCommand(name, async () => {
+			const currentEditor = vscode.window.activeTextEditor;
+			if (!currentEditor) {
+				return;
 			}
-		);
+
+			const ctx = getDefaultContext();
+			context = ctx;
+			ctx.editor.setEditor(currentEditor);
+
+			const language = ctx.editor.language();
+			const parser = await LanguageParser.get(language);
+			assert(parser, `could not find parser for ${language}`);
+
+			ctx.parsing.parser = parser;
+			ctx.command = command;
+
+			await ctx.command.exec(ctx);
+		});
 	}
 }
 
-function InitCommand(
-	name: string,
-	execFunc: (context: QueryContext) => Promise<
-		| {
-				start: vscode.Position;
-				end: vscode.Position;
-		  }
-		| undefined
-	>,
-
-	afterEnd: (position: { start: vscode.Position; end: vscode.Position }) => unknown
-) {
-	return vscode.commands.registerCommand(name, async () => {
-		const currentEditor = vscode.window.activeTextEditor;
-		if (!currentEditor) {
-			return;
-		}
-		editor.setEditor(currentEditor);
-		const context = await getContext(currentEditor);
-		const position = await execFunc(context);
-
-		if (!position) {
-			return;
-		}
-		assert(position.start.isBeforeOrEqual(position.end), 'start is before end');
-
-		afterEnd(position);
-	});
-}
-
-async function getContext(currentEditor: vscode.TextEditor): Promise<QueryContext> {
-	const langName = currentEditor.document.languageId;
-	const parser = await LanguageParser.get(currentEditor.document.languageId);
-	assert(parser, `could not find parser for ${langName}`);
+function getDefaultContext(): QueryContext {
 	return {
-		text: currentEditor.document.getText(),
-		cursor: currentEditor.selection.active,
-		language: langName as SupportedLanguages,
+		editor: new Editor(),
+		command: null,
+		parsing: {
+			parser: undefined,
+		},
 	};
-}
-
-export class CommandHistory {
-	private static commands: QueryCommand[] = [];
-	static last() {
-		return CommandHistory.commands.at(-1);
-	}
-
-	static get(ind: number) {
-		return CommandHistory.commands.at(ind);
-	}
-	static add(command: QueryCommand) {
-		assert(command, 'this should never happen');
-		CommandHistory.commands.push(command);
-	}
 }

@@ -63,14 +63,12 @@ value:(table (field_list)) @array)`,
 function selectPython(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [' (list) @array'].join('\n'),
 	};
 }
 function selectRust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [`(array_expression ) @array`].join('\n'),
 	};
 }

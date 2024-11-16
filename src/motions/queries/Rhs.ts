@@ -74,7 +74,6 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [` (assignment right:(_) @rhs)`].join('\n'),
 	};
 }

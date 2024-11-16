@@ -64,14 +64,12 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [`(assignment left:(_ attribute: (_)@lhs))`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [
 			` (let_declaration pattern:(tuple_pattern (_) @lhs)) `,
 			` (static_item name:(_) @lhs )`,
@@ -91,7 +89,6 @@ function toml(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
@@ -102,14 +99,12 @@ function typescript(): QuerySelector {
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		//todo revise the selectors
 		selector: [`(block_mapping_pair key : (flow_node (_) @lhs ))`].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
@@ -120,7 +115,6 @@ function typescriptreact(): QuerySelector {
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		//todo revise the selectors
 		selector: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,

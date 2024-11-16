@@ -16,7 +16,6 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		//todo: finish this
 		selector: [`(variable_declaration) @variable`].join('\n'),
 	};
 }
@@ -44,9 +43,6 @@ function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
 		selector: [
-			//todo: go to a class with the public and check if node is good name
-			//`( public_field_definition) @lexical_declaration`,
-
 			` (export_statement (lexical_declaration (variable_declarator) @variable)) @lexical_declaration `,
 			` (lexical_declaration (variable_declarator ) @variable ) @lexical_declaration `,
 		].join('\n'),
@@ -70,14 +66,12 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [` (expression_statement) @variable `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [`(let_declaration) @variable`, `(const_item) @variable`, `(static_item) @variable`].join(
 			'\n'
 		),
@@ -95,7 +89,6 @@ function typescript(): QuerySelector {
 	const tsSelector = javascript().selector + '\n' + `(type_alias_declaration) @type`;
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: tsSelector,
 	};
 }
@@ -103,7 +96,6 @@ function typescript(): QuerySelector {
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		//todo revise the selectors
 		selector: [` (block_mapping_pair) @variable `].join('\n'),
 	};
 }
@@ -111,14 +103,12 @@ function typescriptreact(): QuerySelector {
 	const tsSelector = javascript().selector + '\n' + `(type_alias_declaration) @type`;
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: tsSelector,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }

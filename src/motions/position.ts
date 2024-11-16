@@ -1,7 +1,7 @@
 import assert from 'assert';
-import { Position, Range, Selection, TextEditor } from 'vscode';
+import { Position, Range } from 'vscode';
 import Parser, { QueryMatch } from 'web-tree-sitter';
-import { QueryCommand } from './QueryCommand';
+import { QueryContext } from './commands';
 
 export function nextPosition(nodes: Range[], index: Position): Range | undefined {
 	let closestRange: Range | undefined;
@@ -122,30 +122,9 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 	return closestRange;
 }
 
-const greedyChars = [';', ','];
-export function formatSelection(command: QueryCommand, startPos: Position, endPos: Position, editor: TextEditor) {
-	const endLine = editor.document.getText(new Range(startPos, endPos));
-
-	//TODO: Important to remember to change this
-
-	if (command.commandName().includes('inner.string') && endLine.match(/['"`]/)) {
-		startPos = new Position(startPos.line, startPos.character + 1);
-		endPos = new Position(endPos.line, endPos.character - 1);
-	}
-
-	if (greedyChars.includes(endLine.at(-1)!)) {
-		endPos = new Position(endPos.line, endPos.character + 1);
-	}
-
-	editor.selection = new Selection(startPos, endPos);
-	editor.revealRange(new Range(startPos, endPos));
-
-	return editor;
-}
-
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
-export function groupElements(matches: QueryMatch[]): QueryMatch[] {
+export function groupElements(_: QueryContext, matches: QueryMatch[]): QueryMatch[] {
 	const captureParents = new Map<number, QueryMatch>();
 
 	for (const match of matches) {

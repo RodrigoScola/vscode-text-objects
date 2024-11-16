@@ -59,14 +59,12 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [` (string_content) @string `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
 	};
 }
@@ -81,7 +79,6 @@ function toml(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
@@ -89,7 +86,6 @@ function typescript(): QuerySelector {
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		//todo revise the selectors
 		selector: [
 			`(single_quote_scalar) @string`,
 			` (block_mapping_pair value:(block_node (block_scalar) @string)) `,
@@ -100,14 +96,12 @@ function yaml(): QuerySelector {
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }

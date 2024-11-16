@@ -62,7 +62,6 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [` (for_statement) @loop `, `(while_statement) @loop`, `(list_comprehension) @loop`].join(
 			'\n'
 		),
@@ -71,28 +70,24 @@ function python(): QuerySelector {
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [`(loop_expression) @loop`, `(while_expression) @loop`, `(for_expression) @loop`].join('\n'),
 	};
 }
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }

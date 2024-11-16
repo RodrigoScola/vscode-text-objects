@@ -65,14 +65,12 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [` (assignment left: (_) @lhs) `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [
 			` (let_declaration pattern:(_) @lhs)`,
 			` (static_item name:(_) @lhs type:(_)+ @lhs)`,
@@ -91,12 +89,10 @@ function toml(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,
-			//todo: go to a class with the public and check if node is good name
 			// `( public_field_definition
 			// value: (_) @rhs
 			// )`,
@@ -107,19 +103,16 @@ function typescript(): QuerySelector {
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		//todo revise the selectors
 		selector: [` (block_mapping_pair key:(_) @lhs value:(flow_node (_))) `].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,
-			//todo: go to a class with the public and check if node is good name
 			// `( public_field_definition
 			// value: (_) @rhs
 			// )`,
@@ -129,12 +122,10 @@ function typescriptreact(): QuerySelector {
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		//todo revise the selectors
 		selector: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,
-			//todo: go to a class with the public and check if node is good name
 			// `( public_field_definition
 			// value: (_) @rhs
 			// )`,

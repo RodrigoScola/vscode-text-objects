@@ -63,14 +63,12 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [`(list (_) @array )`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		//todo: come on mannnn
 		selector: [`(array_expression (_) @array ) `].join('\n'),
 	};
 }
@@ -85,28 +83,24 @@ function toml(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		//todo revise the selectors
 		selector: [` (block_sequence (_) @array ) `].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }

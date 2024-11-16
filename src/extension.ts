@@ -2,20 +2,69 @@ import assert from 'assert';
 import { ObjectEncodingOptions } from 'fs';
 import * as vscode from 'vscode';
 import { Config } from './config';
-import { initCommands } from './motions/commands';
+import { init, QueryContext } from './motions/commands';
 import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file
 
-class Editor {
+export class Editor {
 	private editor: vscode.TextEditor | undefined;
-	getEditor() {
+
+	constructor() {
+		// cursor: new vscode.Position(0, 0),
+		// language: 'tree-sitter',
+		// text: '',
+	}
+
+	cursor(): vscode.Position {
+		assert(this.editor, 'editor is undefined');
+		return this.editor.selection.active;
+	}
+
+	getText() {
+		assert(this.editor, 'editor is not defined');
+		return this.editor.document.getText();
+	}
+	getRange(startLine: number, startChar: number, endLine: number, endChar: number) {
+		assert(this.editor, 'editor is not defined');
+		return this.editor.document.getText(
+			new vscode.Range(new vscode.Position(startLine, startChar), new vscode.Position(endLine, endChar))
+		);
+	}
+	language(): string {
+		assert(this.editor, 'editor is not defined');
+		return this.editor.document.languageId;
+	}
+
+	getEditor(): vscode.TextEditor {
 		assert(this.editor, 'editor has not been setup yet');
 		return this.editor;
 	}
 	setEditor(editor: vscode.TextEditor) {
 		assert(editor, 'invalid editor');
 		this.editor = editor;
+	}
+
+	goTo(_: QueryContext, pos: vscode.Range | undefined) {
+		assert(this.editor, 'editor is not defined');
+		if (!pos) {
+			return;
+		}
+
+		this.editor.selection = new vscode.Selection(pos.start, pos.start);
+		this.editor.revealRange(new vscode.Range(pos.start, pos.start));
+	}
+	selectRange(_: QueryContext, range: vscode.Range | undefined): void {
+		assert(this.editor, 'editor is not defined');
+		if (!range) {
+			return;
+		}
+
+		const start = range.start;
+		const end = range.end;
+
+		this.editor.selection = new vscode.Selection(start, end);
+		this.editor.revealRange(range);
 	}
 }
 const bugFileOptions: ObjectEncodingOptions = {
@@ -28,7 +77,6 @@ export function getConfig(): Config {
 	assert(config, 'configuration has not setup yet');
 	return config;
 }
-export const editor = new Editor();
 
 // This method is called when your extension is activated
 export async function activate() {
@@ -43,7 +91,7 @@ export async function activate() {
 	// 	}
 	// );
 
-	initCommands();
+	await init();
 }
 
 export function deactivate() {}

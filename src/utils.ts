@@ -1,15 +1,16 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { editor } from './extension';
+import { getContext } from './motions/commands';
 
 export function visualize(start: vscode.Range): void {
+	const ctx = getContext();
 	assert(start, 'start needs to be defined');
 
-	const ceditor = editor.getEditor();
+	const ceditor = ctx.editor;
 	assert(ceditor, 'editor is not present');
 
-	ceditor.revealRange(start);
-	ceditor.selection = new vscode.Selection(start.start, start.end); // Move cursor to that position
+	ceditor.getEditor().revealRange(start);
+	ceditor.getEditor().selection = new vscode.Selection(start.start, start.end); // Move cursor to that position
 }
 
 export class NodePool<T> {

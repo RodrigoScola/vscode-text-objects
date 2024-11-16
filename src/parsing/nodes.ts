@@ -2,6 +2,7 @@ import * as parser from 'web-tree-sitter';
 import { JoinedPoint } from '../motions/position';
 
 import assert from 'assert';
+import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { NodePool } from '../utils';
 
@@ -57,7 +58,7 @@ export const pointPool = new NodePool<JoinedPoint>(function (): JoinedPoint {
 	};
 });
 
-export function groupNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
+export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 	const nodes: JoinedPoint[] = [];
 
 	for (const match of matches) {
@@ -66,7 +67,6 @@ export function groupNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 		const lastNode = match.captures.at(-1);
 
 		if (!firstNode || !lastNode) {
-			console.log('no first node or last');
 			continue;
 		}
 
@@ -79,9 +79,25 @@ export function groupNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 		node.endPosition = lastNode.node.endPosition;
 		node.startIndex = firstNode.node.startIndex;
 		node.endIndex = firstNode.node.endIndex;
-		console.log('adding node', node);
 		nodes.push(node);
 	}
 
 	return nodes;
+}
+
+export function toRange(nodes: JoinedPoint[]) {
+	return new Array(nodes.length)
+		.fill(undefined)
+		.map((_, index) => {
+			const node = nodes[index];
+			assert(
+				node.startPosition.column >= 0,
+				'cannot be less than 0, received: ' + node.startPosition.column
+			);
+			return new Range(
+				new Position(node.startPosition.row, node.startPosition.column),
+				new Position(node.endPosition.row, node.endPosition.column)
+			);
+		})
+		.sort((a, b) => (a.start.isAfter(b.start) ? 1 : -1));
 }

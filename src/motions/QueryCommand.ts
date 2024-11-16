@@ -1,9 +1,9 @@
 import assert from 'assert';
 import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
-import { groupNodes, pointPool } from '../parsing/nodes';
+import { pointPool, toNodes, toRange } from '../parsing/nodes';
 import { LanguageParser, SupportedLanguages } from '../parsing/parser';
-import { QueryContext, QuerySelector } from './commands';
+import { QueryContext as Context, QuerySelector } from './commands';
 
 export type CommandNames =
 	| 'function'
@@ -31,15 +31,19 @@ type CommandProps = {
 	direction: CommandDirection;
 	action: CommandAction;
 	onMatch?: OnMatchFunc;
+	onFinish: OnFinish;
 	pos: GetPositionFunc;
 };
 
-export type OnMatchFunc = (matches: QueryMatch[], context: QueryContext) => QueryMatch[];
+export type OnMatchFunc = (ctx: Context, matches: QueryMatch[]) => QueryMatch[];
 export type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
+
+export type OnFinish = (Ctx: Context, range: Range | undefined) => unknown;
 
 export class QueryCommand {
 	readonly name: CommandNames;
 	private getPosition: GetPositionFunc | undefined;
+	onFinish: OnFinish;
 
 	readonly scope: CommandScope;
 	selectors: Partial<Record<SupportedLanguages, QuerySelector>>;
@@ -56,6 +60,7 @@ export class QueryCommand {
 		this.selectors = {};
 		this.onMatch = props.onMatch;
 		this.getPosition = props.pos;
+		this.onFinish = props.onFinish;
 	}
 
 	addSelector(selector: QuerySelector) {
@@ -68,69 +73,48 @@ export class QueryCommand {
 		return `${this.action}.${this.direction}.${this.scope}.${this.name}`;
 	}
 
-	async select(context: QueryContext) {
-		console.log('ass');
+	async exec(ctx: Context) {
 		assert(this, 'this is undefined');
 		assert(
 			typeof this.getPosition === 'function',
 			'this.getPosition is not a function, received:' + typeof this.getPosition
 		);
-		const parser = await LanguageParser.get(context.language);
 
-		assert(parser, `could not init parser for ${context.language}`);
+		const language = ctx.editor.language();
+		ctx.parsing.parser = await LanguageParser.get(language);
+		const parser = ctx.parsing.parser;
 
-		const tree = parser.parser.parse(context.text);
+		assert(parser, `could not init parser for ${language}`);
 
-		const selector = this.selectors[context.language];
+		const tree = parser.parser.parse(ctx.editor.getText());
 
-		assert(selector, this.name + ' is an invalid selector for ' + context.language);
-		console.log('getting');
+		const selector = this.selectors[language as SupportedLanguages];
+		assert(selector, `${this.name} is an invalid selector for ${language}`);
 
-		console.log(selector.selector);
 		const query = parser.language.query(selector.selector);
-
 		assert(query, 'invalid query came out');
 
 		let matches = query.matches(tree.rootNode);
 
-		const originalLen = matches.length;
-
 		if (this.onMatch) {
 			assert(typeof this.onMatch === 'function', 'match function is function');
-			matches = this.onMatch(matches, context);
+			matches = this.onMatch(ctx, matches);
 		}
 
-		const nodes = groupNodes(matches);
+		const nodes = toNodes(matches);
 
-		const ranges = new Array(nodes.length)
-			.fill(undefined)
-			.map((_, index) => {
-				const node = nodes[index];
-				assert(
-					node.startPosition.column >= 0,
-					'cannot be less than 0, received: ' + node.startPosition.column
-				);
-				return new Range(
-					new Position(node.startPosition.row, node.startPosition.column),
-					new Position(node.endPosition.row, node.endPosition.column)
-				);
-			})
-			.sort((a, b) => (a.start.isAfter(b.start) ? 1 : -1));
-
-		// for (const rang of ranges) {
-		// 	visualize(rang);
-		// }
+		const ranges = toRange(nodes);
 
 		while (nodes.length > 0) {
 			pointPool.retrieve(nodes.pop()!);
 		}
 
-		const position = this.getPosition(ranges, context.cursor);
+		const position = this.getPosition(ranges, ctx.editor.cursor());
 
 		if (position) {
 			assert(position.start.isBeforeOrEqual(position.end), 'start needs to be first');
 		}
 
-		return position;
+		this.onFinish(ctx, position);
 	}
 }

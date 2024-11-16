@@ -65,6 +65,7 @@ Blocks would be nice catch all.
 -    do inner rhs aswell - DONE
 -    finish the languages support - DONE
 -    see if it works on tsx and jsx all the things (mainly conditionals) - DONE
+-    add the on language events - DONE
 
 -    revise all selectors (remember to put the inner conditonal in the conditional)
 -    see if the todos are valid still
@@ -74,7 +75,6 @@ Blocks would be nice catch all.
 -    remove the console logs
 -    Make an icon, revamp the name?
 -    do a nice landing page
--    add the on language events
 -    make sure keybinds and vim are okay
 -    LAUNCH (add tags and releases)
 

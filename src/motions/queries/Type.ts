@@ -16,7 +16,6 @@ function C(): QuerySelector {
 }
 
 function cpp(): QuerySelector {
-	//todo: add the types
 	return {
 		language: 'cpp',
 		selector: [].join('\n'),
@@ -66,7 +65,6 @@ function rust(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: [
 			` (export_statement (type_alias_declaration)) @type   `,
 			` (type_alias_declaration) @type   `,
@@ -79,8 +77,6 @@ function typescript(): QuerySelector {
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
-		selector: [
 			` (export_statement (type_alias_declaration)) @type   `,
 			` (type_alias_declaration) @type   `,
 			` (export_statement (interface_declaration)) @type `,

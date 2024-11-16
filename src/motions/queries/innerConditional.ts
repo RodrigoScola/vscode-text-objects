@@ -68,7 +68,6 @@ function go(): QuerySelector {
 			`(if_statement consequence: (block (_)* @conditional) )`,
 			`(if_statement alternative: (block (_)* @conditional))`,
 
-			//todo: this grabs the condition aswell
 			`(expression_switch_statement (expression_case  (_) @conditional ))`,
 		].join('\n'),
 	};
@@ -110,7 +109,6 @@ function java(): QuerySelector {
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		// todo: do the else if on lua, is saying error right now
 		selector: [
 			'(if_statement consequence: (_) @conditional )',
 			'(if_statement consequence: (_) @conditional (comment) @comment )',
@@ -123,7 +121,6 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		//todo: this cannot be the only way to define a function
 		selector: [
 			` (if_statement consequence: (_) @conditional)  `,
 			` (elif_clause consequence:(block (_)+ @conditional)) `,
@@ -166,21 +163,18 @@ function javascript(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		//todo revise the selectors
 		selector: javascript().selector,
 	};
 }
