@@ -1,30 +1,20 @@
+import assert from 'assert';
 import { WorkspaceConfiguration } from 'vscode';
-
-interface Inspection {
-	defaultLanguageValue?: unknown;
-	defaultValue?: unknown;
-	globalLanguageValue?: unknown;
-	globalValue?: unknown;
-	key: string;
-	languageIds?: string[] | undefined;
-	workspaceFolderLanguageValue?: unknown;
-	workspaceFolderValue?: unknown;
-	workspaceLanguageValue?: unknown;
-	workspaceValue?: unknown;
-}
 
 export class Config {
 	private config: WorkspaceConfiguration;
 	constructor(configuration: WorkspaceConfiguration) {
 		this.config = configuration;
+
+		console.log('config', this.config);
 	}
-	private value(configKey: Inspection) {
-		if (configKey.workspaceValue) {
-			return configKey.workspaceValue;
-		} else if (configKey.globalValue) {
-			return configKey.globalValue;
-		}
-		return configKey.defaultValue;
+
+	experimentalNode(): boolean {
+		assert(this.config, ' config has not been setup');
+
+		const value = this.config.get('experimentalNodeQuery');
+
+		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
+		return Boolean(value);
 	}
 }
-

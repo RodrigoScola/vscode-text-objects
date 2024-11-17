@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { ObjectEncodingOptions } from 'fs';
 import * as vscode from 'vscode';
 import { Config } from './config';
 import { init, QueryContext } from './motions/commands';
@@ -67,13 +66,14 @@ export class Editor {
 		this.editor.revealRange(range);
 	}
 }
-const bugFileOptions: ObjectEncodingOptions = {
-	encoding: 'utf-8',
-};
-
 let config: Config;
 
 export function getConfig(): Config {
+	//good one asserts!
+	if (!config) {
+		config = new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
+	}
+
 	assert(config, 'configuration has not setup yet');
 	return config;
 }
@@ -81,8 +81,6 @@ export function getConfig(): Config {
 // This method is called when your extension is activated
 export async function activate() {
 	LanguageParser.init();
-
-	config = new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
 
 	// const terminalDataListener = vscode.window.onDidChangeTerminalState(
 	// 	(e) => {

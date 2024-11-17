@@ -19,6 +19,7 @@ export type CommandNames =
 	| 'class'
 	| 'array'
 	| 'object'
+	| 'node'
 	| 'string';
 
 export type CommandScope = 'inner' | 'outer';
@@ -82,8 +83,8 @@ export class QueryCommand {
 
 		const language = ctx.editor.language();
 		ctx.parsing.parser = await LanguageParser.get(language);
-		const parser = ctx.parsing.parser;
 
+		const parser = ctx.parsing.parser;
 		assert(parser, `could not init parser for ${language}`);
 
 		const tree = parser.parser.parse(ctx.editor.getText());
@@ -109,12 +110,12 @@ export class QueryCommand {
 			pointPool.retrieve(nodes.pop()!);
 		}
 
-		const position = this.getPosition(ranges, ctx.editor.cursor());
+		const pos = this.getPosition(ranges, ctx.editor.cursor());
 
-		if (position) {
-			assert(position.start.isBeforeOrEqual(position.end), 'start needs to be first');
+		if (pos) {
+			assert(pos.start.isBeforeOrEqual(pos.end), 'start needs to be first');
 		}
 
-		this.onFinish(ctx, position);
+		this.onFinish(ctx, pos);
 	}
 }

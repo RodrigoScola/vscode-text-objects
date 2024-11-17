@@ -50,7 +50,16 @@
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
-		"configuration": {},
+		"configuration": {
+			"title": "Vscode Text Objects",
+			"properties": {
+				"vscode-textobjects.experimentalNodeQuery": {
+					"type": "boolean",
+					"default": true,
+					"description": "activates an experimental node type"
+				}
+			}
+		},
 		"keybindings": [
 			{
 				"command": "vscode-textobjects.select.next.outer.parameters",
@@ -702,6 +711,38 @@
 			}
 		],
 		"commands": [
+			{
+				"command": "vscode-textobjects.goTo.next.outer.node",
+				"title": "Go to next outer node"
+			},
+			{
+				"command": "vscode-textobjects.goTo.previous.outer.node",
+				"title": "Go to previous outer node"
+			},
+			{
+				"command": "vscode-textobjects.goTo.next.inner.node",
+				"title": "Go to next inner node content"
+			},
+			{
+				"command": "vscode-textobjects.goTo.previous.inner.node",
+				"title": "Go to previous inner node content"
+			},
+			{
+				"command": "vscode-textobjects.select.next.outer.node",
+				"title": "Select next outer node"
+			},
+			{
+				"command": "vscode-textobjects.select.previous.outer.node",
+				"title": "Select previous outer node"
+			},
+			{
+				"command": "vscode-textobjects.select.next.inner.node",
+				"title": "Select next inner node content"
+			},
+			{
+				"command": "vscode-textobjects.select.previous.inner.node",
+				"title": "Select previous inner node content"
+			},
 			{
 				"command": "vscode-textobjects.goTo.next.outer.call",
 				"title": "Go to next outer call"

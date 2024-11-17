@@ -16,18 +16,18 @@ export function removeNamed(matches: QueryMatch[], selectors: string[]): QueryMa
 	return matches;
 }
 
-/** this is kinda dirty (in a good way)...  i dont know if i like it or not yet... */
-function checkName(selectors: string[]): (cap: parser.QueryCapture) => boolean {
-	return function (capture: parser.QueryCapture) {
-		return selectors.includes(capture.name);
+function getFunction(selector: string) {
+	return (capture: parser.QueryCapture): boolean => {
+		return capture.name === selector;
 	};
 }
 
-// Function to filter the largest matches
-export function filterDuplicates(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
-	const fn = checkName(selectors);
-
+export function filterDuplicates(matches: QueryMatch[], selector: string): QueryMatch[] {
 	const matchSelector = new Map<string, QueryMatch>();
+
+	// idk is a lot of work but idk i dont like the feeling of having random closures like that...
+	//maybe i need to get in peace with myself
+	const fn = getFunction(selector);
 
 	for (const match of matches) {
 		if (!match.captures.some(fn)) {
@@ -39,7 +39,7 @@ export function filterDuplicates(matches: QueryMatch[], selectors: string[]): Qu
 		}
 
 		for (const capture of match.captures) {
-			if (selectors.includes(capture.name) && !matchSelector.has(capture.node.text)) {
+			if (selector.includes(capture.name) && !matchSelector.has(capture.node.text)) {
 				matchSelector.set(capture.node.text, match);
 				break;
 			}
@@ -85,19 +85,21 @@ export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 	return nodes;
 }
 
-export function toRange(nodes: JoinedPoint[]) {
-	return new Array(nodes.length)
-		.fill(undefined)
-		.map((_, index) => {
-			const node = nodes[index];
-			assert(
-				node.startPosition.column >= 0,
-				'cannot be less than 0, received: ' + node.startPosition.column
-			);
-			return new Range(
-				new Position(node.startPosition.row, node.startPosition.column),
-				new Position(node.endPosition.row, node.endPosition.column)
-			);
-		})
-		.sort((a, b) => (a.start.isAfter(b.start) ? 1 : -1));
+export function toRange(nodes: JoinedPoint[]): Range[] {
+	const arr: Range[] = new Array(nodes.length).fill(undefined);
+
+	for (let i = 0; i < arr.length; i++) {
+		const node = nodes[i];
+		assert(node.startPosition.column >= 0, 'cannot be less than 0, received: ' + node.startPosition.column);
+
+		arr[i] = new Range(
+			new Position(node.startPosition.row, node.startPosition.column),
+			new Position(node.endPosition.row, node.endPosition.column)
+		);
+	}
+
+	//idk also doing another function outside seems too much now
+	return arr.sort(function (a, b) {
+		return a.start.isAfter(b.start) ? 1 : -1;
+	});
 }

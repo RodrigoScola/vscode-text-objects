@@ -1,7 +1,7 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { NODES } from '../constants';
-import { Editor } from '../extension';
+import { Editor, getConfig } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, Parsing, SupportedLanguages } from '../parsing/parser';
 import { closestPos, groupElements, nextPosition, previousPosition } from './position';
@@ -19,6 +19,7 @@ import selectInnerConditional from './queries/innerConditional';
 import selectInnerFunction from './queries/innerFunction';
 import selectInnerLhs from './queries/innerLhs';
 import selectInnerLoop from './queries/innerLoop';
+import selectInnerNode from './queries/innerNode';
 import selectInnerObject from './queries/innerObject';
 import selectInnerParams from './queries/innerParams';
 import selectInnerRhs from './queries/innerRhs';
@@ -26,6 +27,7 @@ import selectInnerString from './queries/innerString';
 import selectInnerType from './queries/innerType';
 import selectLhs from './queries/Lhs';
 import selectLoop from './queries/Loop';
+import selectNode from './queries/Node';
 import selectOuterObject from './queries/Object';
 import { select as selectParams } from './queries/Params';
 import selectRhs from './queries/Rhs';
@@ -140,11 +142,13 @@ innerStringCommand.onFinish = function (context: QueryContext, range: vscode.Ran
 	context.editor.selectRange(context, range);
 };
 
+const config = getConfig();
+
 export const commands: QueryCommand[] = [
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, [NODES.FUNCTION])
-		),
+		withMatchFunc(newSelectNextCommand('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, NODES.FUNCTION);
+		}),
 		selectOuterFunction
 	),
 	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'function'), groupElements), selectInnerFunction),
@@ -168,7 +172,7 @@ export const commands: QueryCommand[] = [
 	addSelectors(newSelectNextCommand('inner', 'lhs'), selectInnerLhs),
 	addSelectors(
 		withMatchFunc(newSelectNextCommand('outer', 'variable'), (_, matches) =>
-			filterDuplicates(matches, ['variable'])
+			filterDuplicates(matches, 'variable')
 		),
 		selectVariable
 	),
@@ -176,7 +180,7 @@ export const commands: QueryCommand[] = [
 	innerStringCommand,
 	addSelectors(
 		withMatchFunc(newSelectNextCommand('outer', 'class'), (_, matches) =>
-			filterDuplicates(matches, ['class'])
+			filterDuplicates(matches, 'class')
 		),
 		selectClass
 	),
@@ -199,7 +203,7 @@ export const commands: QueryCommand[] = [
 
 	addSelectors(
 		withMatchFunc(newSelectPreviousCommand('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, [NODES.FUNCTION])
+			filterDuplicates(matches, NODES.FUNCTION)
 		),
 		selectOuterFunction
 	),
@@ -236,7 +240,7 @@ export const commands: QueryCommand[] = [
 
 	addSelectors(
 		withMatchFunc(newGoToNextCommand('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, [NODES.FUNCTION])
+			filterDuplicates(matches, NODES.FUNCTION)
 		),
 		selectOuterFunction
 	),
@@ -274,7 +278,7 @@ export const commands: QueryCommand[] = [
 
 	addSelectors(
 		withMatchFunc(newGoToPreviousCommand('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, [NODES.FUNCTION])
+			filterDuplicates(matches, NODES.FUNCTION)
 		),
 		selectOuterFunction
 	),
@@ -309,6 +313,22 @@ export const commands: QueryCommand[] = [
 	addSelectors(newGoToPreviousCommand('outer', 'comment'), selectComment),
 	addSelectors(newGoToPreviousCommand('inner', 'comment'), selectInnerComment),
 ];
+
+if (config.experimentalNode()) {
+	commands.push(
+		addSelectors(newSelectNextCommand('outer', 'node'), selectNode),
+		addSelectors(newSelectNextCommand('inner', 'node'), selectInnerNode),
+
+		addSelectors(newSelectPreviousCommand('outer', 'node'), selectNode),
+		addSelectors(newSelectPreviousCommand('inner', 'node'), selectInnerNode),
+
+		addSelectors(newGoToNextCommand('outer', 'node'), selectNode),
+		addSelectors(newGoToNextCommand('inner', 'node'), selectInnerNode),
+
+		addSelectors(newGoToPreviousCommand('outer', 'node'), selectNode),
+		addSelectors(newGoToPreviousCommand('inner', 'node'), selectInnerNode)
+	);
+}
 
 function makeName(str: string) {
 	return `vscode-textobjects.${str}`;

@@ -46,6 +46,7 @@ func main() {
 	_ = fd
 	_ = c
 }
+
 func callOther() string {
 	fmt.Printf("hellot")
 	fmt.Printf("hellot")

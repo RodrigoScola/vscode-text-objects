@@ -74,6 +74,8 @@ revision of nodes
 
 -    revise all selectors (remember to put the inner conditonal in the conditional)
 
+-    organize into good js
+
 ### Misc
 
 -    remove the console logs

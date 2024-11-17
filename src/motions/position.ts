@@ -111,9 +111,20 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 			continue;
 		}
 
+		// visualize(range);
+
+		console.log('after', closestRange.start.isAfter(range.start));
+		console.log('end', closestRange.end.isAfter(range.start));
+		console.log(
+			'rangecontains',
+			range.contains(index) || (range.isSingleLine ? range.start.line === index.line : false)
+		);
+		console.log('closestrangecontains', closestRange.contains(range));
+
 		if (
 			(closestRange.start.isAfter(range.start) && closestRange.end.isAfter(range.start)) ||
-			(range.contains(index) && closestRange.contains(range))
+			((range.isSingleLine ? range.start.line === index.line : range.contains(index)) &&
+				closestRange.contains(range))
 		) {
 			closestRange = range;
 		}

@@ -3,59 +3,59 @@ import { QuerySelector } from '../commands';
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: ['(call_expression) @call'].join('\n'),
+		selector: [`(struct_specifier) @class`].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [` (call_expression) @call `].join('\n'),
+		selector: ['(class_specifier) @class'].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (invocation_expression) @call`].join('\n'),
+		selector: [`(class_declaration) @class`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (call_expression) @call`].join('\n'),
+		selector: ['(type_declaration (type_spec type: (struct_type) )) @struct '].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [` (method_invocation ) @call  `].join('\n'),
+		selector: [` (block (_)* @node) `, `(expression_statement)* @node`].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [`(call_expression   ) @call  `].join('\n'),
-	};
-}
-
-function lua(): QuerySelector {
-	return {
-		language: 'lua',
-
-		selector: ['(call arguments: (argument_list) @call)'].join('\n'),
+		selector: [
+			` ( class_declaration ) @class `,
+			` (export_statement declaration: ( class_declaration ) @class ) @export `,
+		].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: ['(call) @call'].join('\n'),
+		selector: [' (class_definition) @class '].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [`(call_expression) @call`].join('\n'),
+		selector: [
+			`(struct_item) @class`,
+			`(impl_item) @class`,
+			`(trait_item) @class`,
+			`(enum_item) @class`,
+		].join('\n'),
 	};
 }
 
@@ -72,14 +72,12 @@ function typescript(): QuerySelector {
 		selector: javascript().selector,
 	};
 }
-
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
 		selector: javascript().selector,
 	};
 }
-
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
@@ -89,23 +87,12 @@ function javascriptreact(): QuerySelector {
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [` (alias) @call `].join('\n'),
+		selector: [
+			` (block_mapping_pair key:(flow_node (plain_scalar)) value:(block_node (anchor)+ @class (_)+ @class   )) `,
+		].join('\n'),
 	};
 }
 
 export default {
-	C,
-	cpp,
-	csharp,
-	yaml,
-	go,
 	java,
-	javascript,
-	toml,
-	lua,
-	python,
-	rust,
-	typescript,
-	typescriptreact,
-	javascriptreact,
 };
