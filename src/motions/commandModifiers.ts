@@ -1,6 +1,6 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { CommandNames, CommandScope, QueryCommand } from './commands';
+import { QueryCommand } from './commands';
 import { closestPos, nextPosition, previousPosition } from './position';
 
 export function withInnerStringModifier(command: QueryCommand): QueryCommand {

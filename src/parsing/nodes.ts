@@ -1,5 +1,4 @@
 import * as parser from 'web-tree-sitter';
-import { JoinedPoint } from '../motions/position';
 
 import assert from 'assert';
 import { Position, Range } from 'vscode';

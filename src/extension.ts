@@ -1,6 +1,6 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { init, QueryContext } from './motions/commands';
+import { init } from './motions/commands';
 import { LanguageParser } from './parsing/parser';
 
 // Initialize the parser with the correct path to the WebAssembly file

@@ -1,10 +1,12 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { getContext } from './motions/commands';
+import { getContext } from './context/context';
 
 export function visualize(start: vscode.Range): void {
-	const ctx = getContext();
 	assert(start, 'start needs to be defined');
+
+	const ctx = getContext();
+	assert(ctx, 'context is not defined');
 
 	const ceditor = ctx.editor;
 	assert(ceditor, 'editor is not present');

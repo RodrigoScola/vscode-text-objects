@@ -1,7 +1,6 @@
 import assert from 'assert';
 import { Position, Range } from 'vscode';
-import Parser, { QueryMatch } from 'web-tree-sitter';
-import { QueryContext } from './commands';
+import { QueryMatch } from 'web-tree-sitter';
 
 export function nextPosition(nodes: Range[], index: Position): Range | undefined {
 	let closestRange: Range | undefined;
