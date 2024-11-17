@@ -5,35 +5,15 @@ import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 import { NodePool } from '../utils';
 
-export function removeNamed(matches: QueryMatch[], selectors: string[]): QueryMatch[] {
-	for (const match of matches) {
-		match.captures = match.captures.filter((capture) => {
-			return !selectors.includes(capture.name);
-		});
-	}
-
-	return matches;
-}
-
-function getFunction(selector: string) {
-	return (capture: parser.QueryCapture): boolean => {
-		return capture.name === selector;
-	};
-}
-
 const matchSelector = new Map<string, QueryMatch>();
 export function filterDuplicates(matches: QueryMatch[], selector: string): QueryMatch[] {
 	matchSelector.clear();
-
-	// idk is a lot of work but idk i dont like the feeling of having random closures like that...
-	//maybe i need to get in peace with myself
-	const fn = getFunction(selector);
 
 	for (const match of matches) {
 		if (match.captures.length === 0) {
 			continue;
 		}
-		if (!match.captures.some(fn)) {
+		if (!match.captures.some((capture) => capture.name === selector)) {
 			const first = match.captures[0];
 			console.log(match.captures);
 			assert(first, 'first node came undefined?');
@@ -85,24 +65,32 @@ export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 			continue;
 		}
 		match.captures.sort((a, b) => a.node.startIndex - b.node.startIndex);
-		const firstNode = match.captures.at(0);
-		const lastNode = match.captures.at(-1);
+		const first = match.captures.at(0)?.node;
+		const last = match.captures.at(-1)?.node;
 
-		console.log(firstNode, lastNode);
-		assert(firstNode && lastNode, 'undefined first and last nodes');
-		assert(firstNode.node.startIndex <= lastNode.node.startIndex, 'last needs to be after than first');
+		assert(first && last, 'undefined first and last nodes');
+		assert(first.startIndex <= last.startIndex, 'last needs to be after than first');
 
 		let node = pointPool.get();
 		assert(node, 'point node came undefined?');
 
 		const top = before(
-			before(firstNode.node.startPosition, firstNode.node.endPosition),
-			before(lastNode.node.startPosition, lastNode.node.endPosition)
+			before(first.startPosition, first.endPosition),
+			before(last.startPosition, last.endPosition)
 		);
 
 		const bottom = after(
-			after(firstNode.node.startPosition, firstNode.node.endPosition),
-			after(lastNode.node.startPosition, lastNode.node.endPosition)
+			after(first.startPosition, first.endPosition),
+			after(last.startPosition, last.endPosition)
+		);
+
+		assert(top.row >= bottom.row, 'top needs to come first on line');
+		if (top.row === bottom.row) {
+			assert(top.column <= bottom.column, 'top needs to come before bottom on character');
+		}
+		assert(
+			top.column >= 0 && top.row >= 0 && bottom.column >= 0 && bottom.row >= 0,
+			'invalid node positions'
 		);
 
 		node.start = top;
