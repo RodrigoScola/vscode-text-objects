@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -8,19 +8,19 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [` (declaration   declarator:(init_declarator (_) @lhs) ) `].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [` (variable_declaration  (variable_declarator (_) @lhs)) `].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -30,7 +30,7 @@ function go(): QuerySelector {
 		].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [
@@ -39,34 +39,34 @@ function java(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [` (variable_declarator name:(_) @lhs) `].join('\n'),
 	};
 }
 
-function json(): QuerySelector {
+function json(): Selector {
 	return {
 		language: 'json',
 		query: [`(pair key :(_) @key)`].join('\n'),
 	};
 }
 
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		query: [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [` (assignment left: (_) @lhs) `].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [
@@ -77,14 +77,14 @@ function rust(): QuerySelector {
 		].join('\n'),
 	};
 }
-function toml(): QuerySelector {
+function toml(): Selector {
 	return {
 		language: 'toml',
 		query: [`(pair (bare_key) @lhs) `].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: [
@@ -98,13 +98,13 @@ function typescript(): QuerySelector {
 	};
 }
 
-function yaml(): QuerySelector {
+function yaml(): Selector {
 	return {
 		language: 'yaml',
 		query: [` (block_mapping_pair key:(_) @lhs value:(flow_node (_))) `].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: [
@@ -117,7 +117,7 @@ function typescriptreact(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: [

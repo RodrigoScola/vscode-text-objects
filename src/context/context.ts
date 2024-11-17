@@ -1,18 +1,22 @@
 import assert from 'assert';
 import { Editor } from '../extension';
 
-let context: QueryContext;
+let context: Context;
 
-export function getContext(): QueryContext {
+export function getContext(): Context {
 	assert(context, ' context is not defined');
 	return context;
 }
 
-export function updateContext(ctx: QueryContext) {
+export function updateContext(ctx: Context) {
 	context = ctx;
 }
+export function updateCommand(cmd: Command) {
+	context.command = cmd;
+	context.command.currentSelector = undefined;
+}
 
-export function getDefaultContext(): QueryContext {
+export function getDefaultContext(): Context {
 	return {
 		editor: new Editor(),
 		command: null,

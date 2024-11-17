@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -13,19 +13,19 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [` (variable_declaration type: (_) @type) `, `(parameter type: (_) @type)`].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -38,7 +38,7 @@ function go(): QuerySelector {
 		].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [
@@ -53,14 +53,14 @@ function java(): QuerySelector {
 	};
 }
 
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [`(type_identifier) @type`, `(primitive_type) @type`, `(struct_item) @class`].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: [
@@ -72,7 +72,7 @@ function typescript(): QuerySelector {
 		].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: [

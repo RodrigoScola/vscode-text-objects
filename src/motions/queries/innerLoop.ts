@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -9,7 +9,7 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [
@@ -18,7 +18,7 @@ function cpp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [
@@ -29,13 +29,13 @@ function csharp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [`(for_statement body: (block (_) @loop)*) `].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [
@@ -46,7 +46,7 @@ function java(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
@@ -62,7 +62,7 @@ function javascript(): QuerySelector {
 		].join('\n'),
 	};
 }
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		query: [
@@ -74,31 +74,31 @@ function lua(): QuerySelector {
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [` (for_statement body: (block (_)+ @loop)) `].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [` (for_statement body: (block (_)+ @loop)) `].join('\n'),
 	};
 }
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: javascript().query,
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: javascript().query,
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: javascript().query,

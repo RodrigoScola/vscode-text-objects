@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -8,7 +8,7 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [
@@ -20,7 +20,7 @@ function cpp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [` (equals_value_clause (_ (_)@rhs)   )`, ` (assignment_expression right:(_ (_) @rhs)   )`].join(
@@ -28,7 +28,7 @@ function csharp(): QuerySelector {
 		),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -38,7 +38,7 @@ function go(): QuerySelector {
 		].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [
@@ -48,7 +48,7 @@ function java(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
@@ -60,14 +60,14 @@ function javascript(): QuerySelector {
 	};
 }
 
-function json(): QuerySelector {
+function json(): Selector {
 	return {
 		language: 'json',
 		query: ['(pair value : (_ (_) @rhs))'].join('\n'),
 	};
 }
 
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		// maybe do generic?
@@ -80,7 +80,7 @@ function lua(): QuerySelector {
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [
@@ -94,7 +94,7 @@ function python(): QuerySelector {
 		].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [
@@ -140,20 +140,20 @@ function rust(): QuerySelector {
 	};
 }
 
-function toml(): QuerySelector {
+function toml(): Selector {
 	return {
 		language: 'toml',
 		query: [`(pair (bare_key) (_ (_) @rhs) )`].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: javascript().query,
 	};
 }
-function yaml(): QuerySelector {
+function yaml(): Selector {
 	return {
 		language: 'yaml',
 		query: [
@@ -166,13 +166,13 @@ value:(block_node (_ (_) @rhs )))
 		].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: javascript().query,
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: javascript().query,

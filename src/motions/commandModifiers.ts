@@ -7,7 +7,7 @@ const strRegex = /['"`]/;
 export function withInnerStringModifier(command: Command): Command {
 	const next = command.end;
 
-	command.end = function (context: QueryContext, range: vscode.Range | undefined) {
+	command.end = function (context: Context, range: vscode.Range | undefined) {
 		if (!range) {
 			return;
 		}
@@ -46,7 +46,7 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 		currentSelector: undefined,
 		action: 'select',
 		pos: closestPos,
-		end: (ctx: QueryContext, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 		},
@@ -93,7 +93,7 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 		action: 'goTo',
 		direction: 'next',
 		pos: nextPosition,
-		end: (ctx: QueryContext, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor.goTo, 'go to is undefined');
 			ctx.editor.goTo(ctx, range);
 		},

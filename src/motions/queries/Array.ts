@@ -1,23 +1,23 @@
-function selectC(): QuerySelector {
+function selectC(): Selector {
 	return {
 		language: 'c',
 		query: [`(initializer_list) @array`].join('\n'),
 	};
 }
 
-function selectCPP(): QuerySelector {
+function selectCPP(): Selector {
 	return {
 		language: 'cpp',
 		query: ['(initializer_list ) @array'].join('\n'),
 	};
 }
-function selectCSharp(): QuerySelector {
+function selectCSharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [` (initializer_expression) @array `].join('\n'),
 	};
 }
-function selectGo(): QuerySelector {
+function selectGo(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -28,80 +28,80 @@ function selectGo(): QuerySelector {
 		].join('\n'),
 	};
 }
-function selectJava(): QuerySelector {
+function selectJava(): Selector {
 	return {
 		language: 'java',
 		query: ['(array_initializer) @array'].join('\n'),
 	};
 }
 
-function selectJson(): QuerySelector {
+function selectJson(): Selector {
 	return {
 		language: 'json',
 		query: ['(array) @array'].join('\n'),
 	};
 }
 
-function selectJsonC(): QuerySelector {
+function selectJsonC(): Selector {
 	return {
 		language: 'jsonc',
 		query: selectJson().query,
 	};
 }
-function selectLua(): QuerySelector {
+function selectLua(): Selector {
 	return {
 		language: 'lua',
 		query: [`(field_list) @array`, ,].join('\n'),
 	};
 }
 
-function selectPython(): QuerySelector {
+function selectPython(): Selector {
 	return {
 		language: 'python',
 		query: [' (list) @array', `(list_comprehension) @array`].join('\n'),
 	};
 }
-function selectRust(): QuerySelector {
+function selectRust(): Selector {
 	return {
 		language: 'rust',
 		query: [`(array_expression ) @array`].join('\n'),
 	};
 }
 
-function selectToml(): QuerySelector {
+function selectToml(): Selector {
 	return {
 		language: 'toml',
 		query: ['(array) @array'].join('\n'),
 	};
 }
 
-function selectJavascript(): QuerySelector {
+function selectJavascript(): Selector {
 	return {
 		language: 'javascript',
 		query: ['(array) @array'].join('\n'),
 	};
 }
-function selectTypescript(): QuerySelector {
+function selectTypescript(): Selector {
 	return {
 		language: 'typescript',
 		query: ['(array) @array'].join('\n'),
 	};
 }
-function selectTypescriptReact(): QuerySelector {
+function selectTypescriptReact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: ['(array) @array'].join('\n'),
 	};
 }
 
-function selectjavascriptReact(): QuerySelector {
+function selectjavascriptReact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: ['(array) @array'].join('\n'),
 	};
 }
 
-function selectYaml(): QuerySelector {
+function selectYaml(): Selector {
 	return {
 		language: 'yaml',
 		query: [`  (block_sequence) @array  `].join('\n'),

@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -8,14 +8,14 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	//todo: add the types
 	return {
 		language: 'cpp',
 		query: [`(primitive_type) @type`].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [
@@ -24,7 +24,7 @@ function csharp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -35,34 +35,34 @@ function go(): QuerySelector {
 		].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [`(interface_declaration body:(interface_body (_) @type))`].join('\n'),
 	};
 }
 
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: ['(struct_item body: (field_declaration_list (_) @types ))'].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		//todo addtypes
 		query: [].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: [].join('\n'),
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: [].join('\n'),

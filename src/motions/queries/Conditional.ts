@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -9,7 +9,7 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [
@@ -20,7 +20,7 @@ function cpp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [
@@ -30,13 +30,13 @@ function csharp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [` (if_statement  ) @conditional `, `(expression_switch_statement) @conditional`].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [
@@ -48,20 +48,20 @@ function java(): QuerySelector {
 	};
 }
 
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		query: ['(if_statement) @conditional'].join('\n'),
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [` (if_statement) @conditional  `, ` (conditional_expression) @conditional `].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [
@@ -77,26 +77,26 @@ const jsSelector = [
 	` (ternary_expression) @conditional `,
 	` (switch_case) @conditional `,
 ];
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: jsSelector.join('\n'),
 	};
 }
 
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: jsSelector.join('\n'),
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: jsSelector.join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: jsSelector.join('\n'),

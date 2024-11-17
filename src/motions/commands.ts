@@ -43,10 +43,10 @@ import selectString from './queries/String';
 import selectType from './queries/Type';
 import selectVariable from './queries/Variables';
 
-import { getDefaultContext, updateContext } from '../context/context';
+import { getDefaultContext, updateCommand, updateContext } from '../context/context';
 import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
 
-function addSelector(command: Command, selector: QuerySelector) {
+function addSelector(command: Command, selector: Selector) {
 	command.selectors[selector.language] = selector;
 }
 
@@ -56,7 +56,7 @@ function getCommandName(command: Command): string {
 
 //make a better name
 
-function validateSelector(ctx: QueryContext, selector: QuerySelector | undefined): asserts selector {
+function validateSelector(ctx: Context, selector: Selector | undefined): asserts selector {
 	const command = ctx.command;
 	assert(command, 'invalid command?');
 	assert(selector, 'invalid selector?');
@@ -64,12 +64,12 @@ function validateSelector(ctx: QueryContext, selector: QuerySelector | undefined
 	assert(selector, `${command.name} is an invalid selector for ${ctx.editor.language()}`);
 }
 
-async function executeCommand(ctx: QueryContext) {
+async function executeCommand(ctx: Context) {
 	const command = ctx.command;
 	assert(command, 'COMMAND IS NOT DEFINED?');
 	assert(
-		typeof command.pos === 'function',
-		'this.getPosition is not a function, received:' + typeof command.pos
+		typeof command.currentSelector === 'undefined',
+		'cannot have an existing selector at the beginning of another command'
 	);
 
 	const language = ctx.editor.language();
@@ -85,8 +85,7 @@ async function executeCommand(ctx: QueryContext) {
 	command.currentSelector = selector;
 
 	const query = parser.language.query(selector.query);
-
-	assert(query, 'invalid query came out');
+	assert(query, 'invalid query came out???');
 
 	let matches = query.matches(tree.rootNode);
 
@@ -110,7 +109,7 @@ async function executeCommand(ctx: QueryContext) {
 	command.end(ctx, pos);
 }
 
-export function addSelectors(command: Command, funcs: Record<string, () => QuerySelector>) {
+export function addSelectors(command: Command, funcs: Record<string, () => Selector>): Command {
 	for (const func of Object.values(funcs)) {
 		addSelector(command, func());
 	}
@@ -350,7 +349,7 @@ export function init() {
 			assert(parser, `could not find parser for ${language}`);
 
 			ctx.parsing.parser = parser;
-			ctx.command = command;
+			updateCommand(command);
 
 			await executeCommand(ctx);
 		});

@@ -43,7 +43,7 @@ export class Editor {
 		this.editor = editor;
 	}
 
-	goTo(_: QueryContext, pos: vscode.Range | undefined) {
+	goTo(_: Context, pos: vscode.Range | undefined) {
 		assert(this.editor, 'editor is not defined');
 		if (!pos) {
 			return;
@@ -52,7 +52,7 @@ export class Editor {
 		this.editor.selection = new vscode.Selection(pos.start, pos.start);
 		this.editor.revealRange(new vscode.Range(pos.start, pos.start));
 	}
-	selectRange(_: QueryContext, range: vscode.Range | undefined): void {
+	selectRange(_: Context, range: vscode.Range | undefined): void {
 		assert(this.editor, 'editor is not defined');
 		if (!range) {
 			return;

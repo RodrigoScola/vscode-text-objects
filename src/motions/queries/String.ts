@@ -1,17 +1,17 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: ['(string_literal) @string', '(char_literal) @string'].join('\n'),
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [`(string_literal) @string`, `(raw_string_literal) @string`].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [
@@ -21,66 +21,66 @@ function csharp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [`(raw_string_literal) @string`, `(interpreted_string_literal) @string`].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [`(string_literal) @string`, `(character_literal) @string`].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [`( string ) @string`, `( template_string ) @string`].join('\n'),
 	};
 }
 
-function json(): QuerySelector {
+function json(): Selector {
 	return {
 		language: 'json',
 		query: [`(string) @string`].join('\n'),
 	};
 }
 
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		query: ['(string) @string'].join('\n'),
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [` (string) @string `].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [`(string_literal) @string`, `(char_literal) @string`].join('\n'),
 	};
 }
 
-function toml(): QuerySelector {
+function toml(): Selector {
 	return {
 		language: 'toml',
 		query: [`(string) @string`].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: javascript().query,
 	};
 }
-function yaml(): QuerySelector {
+function yaml(): Selector {
 	return {
 		language: 'yaml',
 		query: [
@@ -92,13 +92,13 @@ function yaml(): QuerySelector {
 		].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: javascript().query,
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: javascript().query,

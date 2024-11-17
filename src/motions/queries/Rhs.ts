@@ -1,11 +1,11 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [`(assignment_expression right:(_) @lhs)`, `(init_declarator value: (_) @rhs ) `].join('\n'),
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [
@@ -15,13 +15,13 @@ function cpp(): QuerySelector {
 		].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [` (equals_value_clause (_) @rhs )`, ` (assignment_expression right:(_) @rhs )`].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -32,7 +32,7 @@ function go(): QuerySelector {
 		].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [
@@ -41,7 +41,7 @@ function java(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
@@ -52,14 +52,14 @@ function javascript(): QuerySelector {
 	};
 }
 
-function json(): QuerySelector {
+function json(): Selector {
 	return {
 		language: 'json',
 		query: [`(pair value: (_) @rhs)`].join('\n'),
 	};
 }
 
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		query: [
@@ -69,27 +69,27 @@ function lua(): QuerySelector {
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [` (assignment right:(_) @rhs)`].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [` (let_declaration value:(_) @rhs) `, ` (assignment_expression right:(_) @rhs) `].join('\n'),
 	};
 }
 
-function toml(): QuerySelector {
+function toml(): Selector {
 	return {
 		language: 'toml',
 		query: [`(pair (bare_key) (_) @rhs)`].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		//todo revise the selectors
@@ -100,14 +100,14 @@ function typescript(): QuerySelector {
 		].join('\n'),
 	};
 }
-function yaml(): QuerySelector {
+function yaml(): Selector {
 	return {
 		language: 'typescript',
 		//todo revise the selectors
 		query: [` (block_mapping_pair value:(_) @rhs) `].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		//todo revise the selectors
@@ -118,7 +118,7 @@ function typescriptreact(): QuerySelector {
 		].join('\n'),
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		//todo revise the selectors

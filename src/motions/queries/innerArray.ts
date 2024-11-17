@@ -1,4 +1,4 @@
-function C(): QuerySelector {
+function C(): Selector {
 	return {
 		language: 'c',
 		query: [
@@ -9,19 +9,19 @@ function C(): QuerySelector {
 	};
 }
 
-function cpp(): QuerySelector {
+function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: ['(initializer_list (_) @array ) '].join('\n'),
 	};
 }
-function csharp(): QuerySelector {
+function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [` (initializer_expression (_) @array )  `].join('\n'),
 	};
 }
-function go(): QuerySelector {
+function go(): Selector {
 	return {
 		language: 'go',
 		query: [
@@ -31,72 +31,72 @@ function go(): QuerySelector {
 		].join('\n'),
 	};
 }
-function java(): QuerySelector {
+function java(): Selector {
 	return {
 		language: 'java',
 		query: [`(array_initializer (_) @array )`].join('\n'),
 	};
 }
-function javascript(): QuerySelector {
+function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: ['(array (_) @array) '].join('\n'),
 	};
 }
 
-function json(): QuerySelector {
+function json(): Selector {
 	return {
 		language: 'json',
 		query: javascript().query,
 	};
 }
 
-function lua(): QuerySelector {
+function lua(): Selector {
 	return {
 		language: 'lua',
 		query: [` (expression_list value:(table (field_list (_) @array )) )`].join('\n'),
 	};
 }
 
-function python(): QuerySelector {
+function python(): Selector {
 	return {
 		language: 'python',
 		query: [`(list (_) @array )`].join('\n'),
 	};
 }
-function rust(): QuerySelector {
+function rust(): Selector {
 	return {
 		language: 'rust',
 		query: [`(array_expression (_) @array ) `].join('\n'),
 	};
 }
 
-function toml(): QuerySelector {
+function toml(): Selector {
 	return {
 		language: 'toml',
 		query: ['(array (_) @array ) '].join('\n'),
 	};
 }
 
-function typescript(): QuerySelector {
+function typescript(): Selector {
 	return {
 		language: 'typescript',
 		query: javascript().query,
 	};
 }
-function yaml(): QuerySelector {
+function yaml(): Selector {
 	return {
 		language: 'yaml',
 		query: [` (block_sequence (_) @array ) `].join('\n'),
 	};
 }
-function typescriptreact(): QuerySelector {
+function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
 		query: javascript().query,
 	};
 }
-function javascriptreact(): QuerySelector {
+function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
 		query: javascript().query,

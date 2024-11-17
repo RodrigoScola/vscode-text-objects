@@ -28,7 +28,7 @@ declare global {
 	export type CommandDirection = 'next' | 'previous';
 	export type CommandAction = 'select' | 'goTo';
 
-	export type QueryContext = {
+	export type Context = {
 		editor: Editor;
 		parsing: {
 			parser: Parsing | undefined;
@@ -43,8 +43,8 @@ declare global {
 	};
 
 	export type Command = {
-		selectors: Partial<Record<SupportedLanguages, QuerySelector>>;
-		currentSelector: QuerySelector | undefined;
+		selectors: Partial<Record<SupportedLanguages, Selector>>;
+		currentSelector: Selector | undefined;
 		name: CommandNames;
 		scope: CommandScope;
 		direction: CommandDirection;
@@ -54,15 +54,15 @@ declare global {
 		pos: GetPositionFunc;
 	};
 
-	export interface QuerySelector {
+	export interface Selector {
 		language: SupportedLanguages;
 		query: string;
 	}
 
-	export type OnMatchFunc = (ctx: QueryContext, matches: QueryMatch[]) => QueryMatch[];
+	export type OnMatchFunc = (ctx: Context, matches: QueryMatch[]) => QueryMatch[];
 	export type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
 
-	export type OnFinish = (Ctx: QueryContext, range: Range | undefined) => unknown;
+	export type OnFinish = (Ctx: Context, range: Range | undefined) => unknown;
 
 	export type JoinedPoint = {
 		start: Parser.Point;
