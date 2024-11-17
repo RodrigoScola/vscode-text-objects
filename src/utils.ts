@@ -28,8 +28,15 @@ export class NodePool<T> {
 		}
 		return node;
 	}
-	retrieve(point: T) {
-		this.nodes.push(point);
+	retrieve(point: T | T[]) {
+		if (!Array.isArray(point)) {
+			this.nodes.push(point);
+			return;
+		}
+
+		while (point.length > 0) {
+			this.retrieve(point.pop()!);
+		}
 	}
 }
 

@@ -33,6 +33,11 @@ func main() {
 	b, err := func() (int, error) {
 		return 3, nil
 	}()
+
+	f := func() {
+
+	}
+	_ = f
 	fmt.Errorf("err: %v", err)
 
 	fd := retA(5)
@@ -98,6 +103,7 @@ func (f *b) Call(a int) string {
 	case 5:
 		fmt.Println("he")
 		break
+
 	}
 
 	asdf := retA(4)

@@ -3,40 +3,62 @@ import { QuerySelector } from '../commands';
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(struct_specifier) @class`].join('\n'),
+		selector: [`(_ (compound_statement  ) ) @node  `].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: ['(class_specifier) @class'].join('\n'),
+		selector: [
+			// `(_ (_ (compound_statement (expression_statement)? @expression ) @inner ) @node )  `,
+			`(_ (_ (expression_statement) @expression ) @inner  ) @node `,
+		].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [`(class_declaration) @class`].join('\n'),
+		selector: [`(_ (block ) ) @node`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: ['(type_declaration (type_spec type: (struct_type) )) @struct '].join('\n'),
+		selector: [
+			` (_ (_ (_ (block) @inner ))) @outer `,
+			`(_ (_ (_ (_ (block) @inner ))) @outer ) @outest `,
+
+			// `(_ (block ) ) @node`,
+		].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [` (block (_)* @node) `, `(expression_statement)* @node`].join('\n'),
+		selector: [
+			`(_ (block (expression_statement) @inner ) @node (catch_clause)* @else) @outer`,
+			`(_ (block (_)? @expression ) @inner  ) @node`,
+			`(_ (_ (expression_statement) @expression ) @inner ) `,
+			`(class_declaration) @node`,
+			`(_ body: (_) )  @node`,
+
+			` (class_declaration) @node `,
+		].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
 		selector: [
-			` ( class_declaration ) @class `,
-			` (export_statement declaration: ( class_declaration ) @class ) @export `,
+			//weirdly the (_) @other  needs to have 2 queries, one with asterisk
+			// and another without
+			`(_ (statement_block) @inner (_)* @other ) @node`,
+			`(_ (statement_block) @inner (_) @other ) @node`,
+			`(export_statement (_ (_ (_ (statement_block) @inner ) @node ))) @export `,
+			`(export_statement (_ (statement_block) @inner ) @node ) @export `,
+			`(export_statement) @export`,
+			`(class_declaration) @node`,
 		].join('\n'),
 	};
 }
@@ -44,7 +66,7 @@ function javascript(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [' (class_definition) @class '].join('\n'),
+		selector: [`(_ (block)) @node `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
@@ -94,5 +116,11 @@ function yaml(): QuerySelector {
 }
 
 export default {
+	C,
+	cpp,
 	java,
+	csharp,
+	go,
+	javascript,
+	python,
 };

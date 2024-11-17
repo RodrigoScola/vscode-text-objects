@@ -40,10 +40,8 @@ export function previousPos(nodes: Range[], index: Position): Range | undefined 
 }
 
 export type JoinedPoint = {
-	startPosition: Parser.Point;
-	endPosition: Parser.Point;
-	startIndex: number;
-	endIndex: number;
+	start: Parser.Point;
+	end: Parser.Point;
 };
 
 //fix this one
@@ -89,6 +87,18 @@ export function previousPosition(nodes: Range[], index: Position): Range | undef
 
 	return closestRange;
 }
+function line(range: Range, pos: Position): boolean {
+	let truth = false;
+	if (range.isSingleLine) {
+		truth = range.start.line === pos.line;
+	} else {
+		truth = range.contains(pos);
+	}
+	// if (!range.isSingleLine) {
+	// 	truth = range.start.line === pos.line || range.contains(pos);
+	// }
+	return truth;
+}
 
 export function closestPos(nodes: Range[], index: Position): Range | undefined {
 	if (nodes.length === 0) {
@@ -113,18 +123,20 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 
 		// visualize(range);
 
-		console.log('after', closestRange.start.isAfter(range.start));
-		console.log('end', closestRange.end.isAfter(range.start));
-		console.log(
-			'rangecontains',
-			range.contains(index) || (range.isSingleLine ? range.start.line === index.line : false)
-		);
-		console.log('closestrangecontains', closestRange.contains(range));
+		// console.log('after', closestRange.start.isAfter(range.start));
+		// console.log('end', closestRange.end.isAfter(range.start));
+		// console.log(
+		// 	'rangecontains',
+		// 	range.contains(index) || (range.isSingleLine ? range.start.line === index.line : false)
+		// );
+		// console.log('closestrangecontains', closestRange.contains(range));
+
+		// const sameLine = range.start.line === index.line;
+		const sameLine = line(range, index);
 
 		if (
 			(closestRange.start.isAfter(range.start) && closestRange.end.isAfter(range.start)) ||
-			((range.isSingleLine ? range.start.line === index.line : range.contains(index)) &&
-				closestRange.contains(range))
+			(sameLine && closestRange.contains(range))
 		) {
 			closestRange = range;
 		}

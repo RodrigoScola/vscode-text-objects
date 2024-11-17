@@ -1,7 +1,8 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
+import { getConfig } from '../config';
 import { NODES } from '../constants';
-import { Editor, getConfig } from '../extension';
+import { Editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser, Parsing, SupportedLanguages } from '../parsing/parser';
 import { closestPos, groupElements, nextPosition, previousPosition } from './position';
@@ -34,7 +35,123 @@ import selectRhs from './queries/Rhs';
 import selectString from './queries/String';
 import selectType from './queries/Type';
 import selectVariable from './queries/Variables';
-import { CommandNames, CommandScope, OnMatchFunc, QueryCommand } from './QueryCommand';
+
+import { Position, Range } from 'vscode';
+import { QueryMatch } from 'web-tree-sitter';
+import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
+
+export type CommandNames =
+	| 'function'
+	| 'comment'
+	| 'type'
+	| 'call'
+	| 'parameters'
+	| 'loop'
+	| 'conditional'
+	| 'variable'
+	| 'rhs'
+	| 'lhs'
+	| 'class'
+	| 'array'
+	| 'object'
+	| 'node'
+	| 'string';
+
+export type CommandScope = 'inner' | 'outer';
+export type CommandDirection = 'next' | 'previous';
+export type CommandAction = 'select' | 'goTo';
+
+type CommandProps = {
+	name: CommandNames;
+	scope: CommandScope;
+	direction: CommandDirection;
+	action: CommandAction;
+	onMatch?: OnMatchFunc;
+	onFinish: OnFinish;
+	pos: GetPositionFunc;
+};
+
+export type OnMatchFunc = (ctx: QueryContext, matches: QueryMatch[]) => QueryMatch[];
+export type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
+
+export type OnFinish = (Ctx: QueryContext, range: Range | undefined) => unknown;
+
+export class QueryCommand {
+	readonly name: CommandNames;
+	private getPosition: GetPositionFunc | undefined;
+	onFinish: OnFinish;
+
+	readonly scope: CommandScope;
+	selectors: Partial<Record<SupportedLanguages, QuerySelector>>;
+
+	readonly direction: CommandDirection;
+	readonly action: CommandAction;
+	onMatch: OnMatchFunc | undefined;
+
+	constructor(props: CommandProps) {
+		this.name = props.name;
+		this.scope = props.scope;
+		this.direction = props.direction;
+		this.action = props.action;
+		this.selectors = {};
+		this.onMatch = props.onMatch;
+		this.getPosition = props.pos;
+		this.onFinish = props.onFinish;
+	}
+
+	addSelector(selector: QuerySelector) {
+		this.selectors[selector.language] = selector;
+		return this;
+	}
+
+	//make a better name
+	commandName() {
+		return `${this.action}.${this.direction}.${this.scope}.${this.name}`;
+	}
+
+	async exec(ctx: QueryContext) {
+		assert(this, 'this is undefined');
+		assert(
+			typeof this.getPosition === 'function',
+			'this.getPosition is not a function, received:' + typeof this.getPosition
+		);
+
+		const language = ctx.editor.language();
+		ctx.parsing.parser = await LanguageParser.get(language);
+
+		const parser = ctx.parsing.parser;
+		assert(parser, `could not init parser for ${language}`);
+
+		const tree = parser.parser.parse(ctx.editor.getText());
+
+		const selector = this.selectors[language as SupportedLanguages];
+		assert(selector, `${this.name} is an invalid selector for ${language}`);
+
+		const query = parser.language.query(selector.selector);
+		assert(query, 'invalid query came out');
+
+		let matches = query.matches(tree.rootNode);
+
+		if (this.onMatch) {
+			assert(typeof this.onMatch === 'function', 'match function is function');
+			matches = this.onMatch(ctx, matches);
+		}
+
+		const points = toPoint(matches);
+
+		const ranges = toRange(points);
+
+		pointPool.retrieve(points);
+
+		const pos = this.getPosition(ranges, ctx.editor.cursor());
+
+		if (pos) {
+			assert(pos.start.isBeforeOrEqual(pos.end), 'start needs to be first');
+		}
+
+		this.onFinish(ctx, pos);
+	}
+}
 
 export type QueryContext = {
 	editor: Editor;
@@ -117,12 +234,11 @@ function withMatchFunc(command: QueryCommand, func: OnMatchFunc) {
 	return command;
 }
 
-const innerStringCommand = addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString);
-
-innerStringCommand.onFinish = function (context: QueryContext, range: vscode.Range | undefined) {
+function innerStringFinish(_: QueryContext, range: vscode.Range | undefined) {
 	if (!range) {
 		return;
 	}
+
 	const start = range.start;
 	const end = range.end;
 	const line = context.editor.getRange(start.line, start.character, end.line, end.character);
@@ -140,9 +256,20 @@ innerStringCommand.onFinish = function (context: QueryContext, range: vscode.Ran
 		'range selection is not a function, received:' + typeof context.editor.selectRange
 	);
 	context.editor.selectRange(context, range);
-};
+}
 
-const config = getConfig();
+const selectPreviousInnerStringCommand = addSelectors(
+	newSelectPreviousCommand('inner', 'string'),
+	selectInnerString
+);
+const selectNextInnerStringCommand = addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString);
+const goToInnerStringCommand = addSelectors(newGoToNextCommand('inner', 'string'), selectInnerString);
+const goToPreviousInnerString = addSelectors(newGoToPreviousCommand('inner', 'string'), selectInnerString);
+
+goToPreviousInnerString.onFinish = innerStringFinish;
+selectPreviousInnerStringCommand.onFinish = innerStringFinish;
+goToInnerStringCommand.onFinish = innerStringFinish;
+selectNextInnerStringCommand.onFinish = innerStringFinish;
 
 export const commands: QueryCommand[] = [
 	addSelectors(
@@ -158,8 +285,13 @@ export const commands: QueryCommand[] = [
 	addSelectors(
 		withMatchFunc(newSelectNextCommand('inner', 'conditional'), function (ctx, matches) {
 			const language = ctx.editor.language();
-			//including java && javascript
-			if (!language.includes('java') && !language.includes('python')) {
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
 				return groupElements(ctx, matches);
 			}
 			return matches;
@@ -177,7 +309,7 @@ export const commands: QueryCommand[] = [
 		selectVariable
 	),
 	addSelectors(newSelectNextCommand('outer', 'string'), selectString),
-	innerStringCommand,
+	selectNextInnerStringCommand,
 	addSelectors(
 		withMatchFunc(newSelectNextCommand('outer', 'class'), (_, matches) =>
 			filterDuplicates(matches, 'class')
@@ -222,7 +354,7 @@ export const commands: QueryCommand[] = [
 	addSelectors(newSelectPreviousCommand('inner', 'lhs'), selectInnerLhs),
 	addSelectors(newSelectPreviousCommand('outer', 'variable'), selectVariable),
 	addSelectors(newSelectPreviousCommand('outer', 'string'), selectString),
-	addSelectors(newSelectPreviousCommand('inner', 'string'), selectInnerString),
+	selectPreviousInnerStringCommand,
 	addSelectors(newSelectPreviousCommand('outer', 'class'), selectClass),
 	addSelectors(newSelectPreviousCommand('inner', 'class'), selectInnerClass),
 	addSelectors(newSelectPreviousCommand('outer', 'array'), selectOuterArray),
@@ -258,7 +390,6 @@ export const commands: QueryCommand[] = [
 	addSelectors(newGoToNextCommand('inner', 'lhs'), selectInnerLhs),
 	addSelectors(newGoToNextCommand('outer', 'variable'), selectVariable),
 	addSelectors(newGoToNextCommand('outer', 'string'), selectString),
-	addSelectors(newGoToNextCommand('inner', 'string'), selectInnerString),
 	addSelectors(newGoToNextCommand('outer', 'class'), selectClass),
 	addSelectors(newGoToNextCommand('inner', 'class'), selectInnerClass),
 	addSelectors(newGoToNextCommand('outer', 'array'), selectOuterArray),
@@ -297,7 +428,7 @@ export const commands: QueryCommand[] = [
 	addSelectors(newGoToPreviousCommand('inner', 'lhs'), selectInnerLhs),
 	addSelectors(newGoToPreviousCommand('outer', 'variable'), selectVariable),
 	addSelectors(newGoToPreviousCommand('outer', 'string'), selectString),
-	addSelectors(newGoToPreviousCommand('inner', 'string'), selectInnerString),
+	goToPreviousInnerString,
 	addSelectors(newGoToPreviousCommand('outer', 'class'), selectClass),
 	addSelectors(newGoToPreviousCommand('inner', 'class'), selectInnerClass),
 	addSelectors(newGoToPreviousCommand('outer', 'array'), selectOuterArray),
@@ -314,9 +445,31 @@ export const commands: QueryCommand[] = [
 	addSelectors(newGoToPreviousCommand('inner', 'comment'), selectInnerComment),
 ];
 
-if (config.experimentalNode()) {
+if (getConfig().experimentalNode()) {
 	commands.push(
-		addSelectors(newSelectNextCommand('outer', 'node'), selectNode),
+		addSelectors(
+			withMatchFunc(newSelectNextCommand('outer', 'node'), function (ctx, matches) {
+				const lang = ctx.editor.language();
+				//javascript , typescript, javascriptreact, typescriptreact
+				if (lang.includes('script')) {
+					return filterDuplicates(
+						filterDuplicates(filterDuplicates(matches, NODES.NODE), 'inner'),
+						NODES.EXPORT
+					);
+				}
+				//java
+				else if (lang.includes('java')) {
+					return filterDuplicates(matches, 'inner');
+				} else if (lang.includes('cpp')) {
+					return filterDuplicates(filterDuplicates(matches, 'expression'), 'inner');
+				} else if (lang === 'go') {
+					return filterDuplicates(filterDuplicates(matches, 'inner'), 'outer');
+				}
+
+				return matches;
+			}),
+			selectNode
+		),
 		addSelectors(newSelectNextCommand('inner', 'node'), selectInnerNode),
 
 		addSelectors(newSelectPreviousCommand('outer', 'node'), selectNode),
@@ -355,6 +508,8 @@ export function init() {
 			ctx.editor.setEditor(currentEditor);
 
 			const language = ctx.editor.language();
+			assert(language.length > 0, 'language came empty');
+
 			const parser = await LanguageParser.get(language);
 			assert(parser, `could not find parser for ${language}`);
 

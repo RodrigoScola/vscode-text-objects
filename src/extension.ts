@@ -1,6 +1,5 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { Config } from './config';
 import { init, QueryContext } from './motions/commands';
 import { LanguageParser } from './parsing/parser';
 
@@ -65,17 +64,6 @@ export class Editor {
 		this.editor.selection = new vscode.Selection(start, end);
 		this.editor.revealRange(range);
 	}
-}
-let config: Config;
-
-export function getConfig(): Config {
-	//good one asserts!
-	if (!config) {
-		config = new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
-	}
-
-	assert(config, 'configuration has not setup yet');
-	return config;
 }
 
 // This method is called when your extension is activated

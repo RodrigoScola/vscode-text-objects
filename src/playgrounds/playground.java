@@ -36,53 +36,18 @@
 // import java.io.IOException;
 // import java.util.Optional;
 
-public class MyClass {
-    // 1. Regular method
-    public void regularMethod() {
-        System.out.println("This is a regular method.");
-    }
 
 
-    public static void main(String[] args) throws IOException {
-        MyClass obj = new MyClass();
 
-        // Calling different methods
-        obj.regularMethod();
-        staticMethod();
-        obj.methodWithParams(10, "example");
-        System.out.println("Return value: " + obj.methodWithReturnType());
-        obj.methodWithVarArgs(1, 2, 3, 4);
-        
-        try {
-            obj.methodWithThrows();
-            obj.methodWithThrows();
-            obj.methodWithThrows();
-            obj.methodWithThrows();
-
-        } catch (IOException e) {
-            System.out.println("Caught exception: " + e.getMessage());
-        }
-        
-        obj.privateMethod();
-        obj.protectedMethod();
-        obj.finalMethod();
-        nobj.synchronizedMethod();
-        System.out.println("Generic method: " + obj.genericMethod("Generic String"));
-        System.out.println("Optional method: " + obj.optionalMethod().orElse("No value"));
-        obj.overloadedMethod(5);
-        obj.overloadedMethod("Overload");
-        obj.anonymousClassMethod();
-        obj.lambdaMethod();
-        obj.methodReference();
-    }
-}
+// if (othercondition)  System.out.println();
 
 
-if (condition)  System.out.println();
 
-// if (condition) System.out.println("hello world");
-// else if (condition) System.out.println("hello world");
-// else System.out.println("hello world");
+// if (condition){ System.out.println("hello world"); }
+
+// else if (condition) {System.out.println("hello world");}
+// else {System.out.println("hello world");}
+
 
 // switch (variable) {
 //     case value1:
@@ -208,6 +173,40 @@ if (condition)  System.out.println();
 //     }
 
 //     public static int exampleFunction() {
+// try {
+// } catch(err Exception)  {
+// }
+
 //         return 100;
 //     }
 // }
+
+public class Count {
+    public boolean has(int[] haystack, int needle, int count) { 
+        if (count >= haystack.length ){ 
+            return false;
+        } else if (haystack[count] === needle) {
+            return true
+        } else {
+            return has(haystack, needle, count++);
+        }
+    }
+
+    public int count(int[] haystack, int needle, int count ) {
+        if (!has(haystack, needle, count) || count >= haystack.length) {
+            return 0;
+        }
+        int c= 0;
+        if (array[count] == needle) {
+            c++;
+        }
+        c += count(haystack, needle, count);
+        return c;
+    }
+
+}
+public static void main (String[] args) { 
+    int[] haystack = {2,3,5,6,9,7,8,8,9};
+    Count co = new Count();
+    System.out.println(co.count(haystack,5,0));
+}
