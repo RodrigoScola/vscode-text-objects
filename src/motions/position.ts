@@ -39,11 +39,6 @@ export function previousPos(nodes: Range[], index: Position): Range | undefined 
 	return closestRange;
 }
 
-export type JoinedPoint = {
-	start: Parser.Point;
-	end: Parser.Point;
-};
-
 //fix this one
 export function previousPosition(nodes: Range[], index: Position): Range | undefined {
 	if (nodes.length === 0) {

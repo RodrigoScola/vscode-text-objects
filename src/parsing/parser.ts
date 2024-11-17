@@ -2,12 +2,6 @@ import assert from 'assert';
 import path from 'path';
 import { Language, default as Parser, default as parser } from 'web-tree-sitter';
 
-export type Parsing = {
-	module: string;
-	language: Language;
-	parser: Parser;
-};
-
 export const Languages = {
 	'tree-sitter': {
 		module: 'tree-sitter',
@@ -68,8 +62,6 @@ export const Languages = {
 		module: 'toml',
 	},
 };
-
-export type SupportedLanguages = keyof typeof Languages;
 
 export class LanguageParser {
 	private static initedLanguages: Partial<Record<keyof typeof Languages, Parsing>> = {};

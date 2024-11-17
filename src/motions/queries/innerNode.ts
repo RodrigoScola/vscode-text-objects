@@ -1,5 +1,3 @@
-import { QuerySelector } from '../commands';
-
 function java(): QuerySelector {
 	return {
 		language: 'java',

@@ -1,5 +1,3 @@
-import { QuerySelector } from '../commands';
-
 function selectC(): QuerySelector {
 	return {
 		language: 'c',

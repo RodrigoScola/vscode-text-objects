@@ -2,10 +2,16 @@ import assert from 'assert';
 import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { NODES } from '../constants';
-import { Editor } from '../extension';
 import { filterDuplicates } from '../parsing/nodes';
-import { LanguageParser, Parsing, SupportedLanguages } from '../parsing/parser';
-import { closestPos, groupElements, nextPosition, previousPosition } from './position';
+import { LanguageParser } from '../parsing/parser';
+import {
+	createGoToNext,
+	createGoToPrevious,
+	createSelectNext,
+	createSelectPrevious,
+	withInnerStringModifier,
+} from './commandModifiers';
+import { groupElements } from './position';
 import { select as selectOuterArray } from './queries/Array';
 import selectCall from './queries/call';
 import selectClass from './queries/class';
@@ -36,45 +42,8 @@ import selectString from './queries/String';
 import selectType from './queries/Type';
 import selectVariable from './queries/Variables';
 
-import { Position, Range } from 'vscode';
-import { QueryMatch } from 'web-tree-sitter';
+import { getDefaultContext, updateContext } from '../context/context';
 import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
-
-export type CommandNames =
-	| 'function'
-	| 'comment'
-	| 'type'
-	| 'call'
-	| 'parameters'
-	| 'loop'
-	| 'conditional'
-	| 'variable'
-	| 'rhs'
-	| 'lhs'
-	| 'class'
-	| 'array'
-	| 'object'
-	| 'node'
-	| 'string';
-
-export type CommandScope = 'inner' | 'outer';
-export type CommandDirection = 'next' | 'previous';
-export type CommandAction = 'select' | 'goTo';
-
-type CommandProps = {
-	name: CommandNames;
-	scope: CommandScope;
-	direction: CommandDirection;
-	action: CommandAction;
-	onMatch?: OnMatchFunc;
-	onFinish: OnFinish;
-	pos: GetPositionFunc;
-};
-
-export type OnMatchFunc = (ctx: QueryContext, matches: QueryMatch[]) => QueryMatch[];
-export type GetPositionFunc = (points: Range[], index: Position) => Range | undefined;
-
-export type OnFinish = (Ctx: QueryContext, range: Range | undefined) => unknown;
 
 export class QueryCommand {
 	readonly name: CommandNames;
@@ -153,19 +122,6 @@ export class QueryCommand {
 	}
 }
 
-export type QueryContext = {
-	editor: Editor;
-	parsing: {
-		parser: Parsing | undefined;
-	};
-	command: QueryCommand | null;
-};
-
-export interface QuerySelector {
-	language: SupportedLanguages;
-	selector: string;
-}
-
 export function addSelectors(command: QueryCommand, funcs: Record<string, () => QuerySelector>) {
 	for (const func of Object.values(funcs)) {
 		command.addSelector(func());
@@ -174,116 +130,24 @@ export function addSelectors(command: QueryCommand, funcs: Record<string, () => 
 	return command;
 }
 
-function newSelectNextCommand(scope: CommandScope, name: CommandNames) {
-	return new QueryCommand({
-		name,
-		scope,
-		direction: 'next',
-		action: 'select',
-		pos: closestPos,
-		onFinish: (ctx, range) => {
-			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
-			ctx.editor.selectRange(ctx, range);
-		},
-	});
-}
-function newSelectPreviousCommand(scope: CommandScope, name: CommandNames) {
-	return new QueryCommand({
-		name,
-		scope,
-		direction: 'previous',
-		action: 'select',
-		pos: previousPosition,
-		onFinish: (ctx, range) => {
-			assert(ctx.editor.selectRange, 'select range is undefined');
-			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
-			ctx.editor.selectRange(ctx, range);
-		},
-	});
-}
-
-function newGoToPreviousCommand(scope: CommandScope, name: CommandNames): QueryCommand {
-	return new QueryCommand({
-		scope: scope,
-		name: name,
-		action: 'goTo',
-		direction: 'previous',
-		pos: previousPosition,
-		onFinish: (ctx, range) => {
-			assert(ctx.editor.goTo, 'go to is undefined');
-			ctx.editor.goTo(ctx, range);
-		},
-	});
-}
-function newGoToNextCommand(scope: CommandScope, name: CommandNames): QueryCommand {
-	return new QueryCommand({
-		scope: scope,
-		name: name,
-		action: 'goTo',
-		direction: 'next',
-		pos: nextPosition,
-		onFinish: (ctx, range) => {
-			assert(ctx.editor.goTo, 'go to is undefined');
-			ctx.editor.goTo(ctx, range);
-		},
-	});
-}
-
 function withMatchFunc(command: QueryCommand, func: OnMatchFunc) {
 	command.onMatch = func;
 	return command;
 }
 
-function innerStringFinish(_: QueryContext, range: vscode.Range | undefined) {
-	if (!range) {
-		return;
-	}
-
-	const start = range.start;
-	const end = range.end;
-	const line = context.editor.getRange(start.line, start.character, end.line, end.character);
-
-	if (line.match(/['"`]/)) {
-		range = new vscode.Range(
-			new vscode.Position(range.start.line, range.start.character + 1),
-			new vscode.Position(range.end.line, range.end.character - 1)
-		);
-	}
-
-	assert(context.editor, 'editor is undefined');
-	assert(
-		typeof context.editor.selectRange !== 'function',
-		'range selection is not a function, received:' + typeof context.editor.selectRange
-	);
-	context.editor.selectRange(context, range);
-}
-
-const selectPreviousInnerStringCommand = addSelectors(
-	newSelectPreviousCommand('inner', 'string'),
-	selectInnerString
-);
-const selectNextInnerStringCommand = addSelectors(newSelectNextCommand('inner', 'string'), selectInnerString);
-const goToInnerStringCommand = addSelectors(newGoToNextCommand('inner', 'string'), selectInnerString);
-const goToPreviousInnerString = addSelectors(newGoToPreviousCommand('inner', 'string'), selectInnerString);
-
-goToPreviousInnerString.onFinish = innerStringFinish;
-selectPreviousInnerStringCommand.onFinish = innerStringFinish;
-goToInnerStringCommand.onFinish = innerStringFinish;
-selectNextInnerStringCommand.onFinish = innerStringFinish;
-
 export const commands: QueryCommand[] = [
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'function'), function (_, matches) {
+		withMatchFunc(createSelectNext('outer', 'function'), function (_, matches) {
 			return filterDuplicates(matches, NODES.FUNCTION);
 		}),
 		selectOuterFunction
 	),
-	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'function'), groupElements), selectInnerFunction),
-	addSelectors(newSelectNextCommand('outer', 'loop'), selectLoop),
-	addSelectors(withMatchFunc(newSelectNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
-	addSelectors(newSelectNextCommand('outer', 'conditional'), selectConditional),
+	addSelectors(withMatchFunc(createSelectNext('inner', 'function'), groupElements), selectInnerFunction),
+	addSelectors(createSelectNext('outer', 'loop'), selectLoop),
+	addSelectors(withMatchFunc(createSelectNext('inner', 'loop'), groupElements), selectInnerLoop),
+	addSelectors(createSelectNext('outer', 'conditional'), selectConditional),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('inner', 'conditional'), function (ctx, matches) {
+		withMatchFunc(createSelectNext('inner', 'conditional'), function (ctx, matches) {
 			const language = ctx.editor.language();
 			if (
 				//java && javascript
@@ -298,157 +162,151 @@ export const commands: QueryCommand[] = [
 		}),
 		selectInnerConditional
 	),
-	addSelectors(newSelectNextCommand('outer', 'rhs'), selectRhs),
-	addSelectors(newSelectNextCommand('inner', 'rhs'), selectInnerRhs),
-	addSelectors(newSelectNextCommand('outer', 'lhs'), selectLhs),
-	addSelectors(newSelectNextCommand('inner', 'lhs'), selectInnerLhs),
+	addSelectors(createSelectNext('outer', 'rhs'), selectRhs),
+	addSelectors(createSelectNext('inner', 'rhs'), selectInnerRhs),
+	addSelectors(createSelectNext('outer', 'lhs'), selectLhs),
+	addSelectors(createSelectNext('inner', 'lhs'), selectInnerLhs),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'variable'), (_, matches) =>
+		withMatchFunc(createSelectNext('outer', 'variable'), (_, matches) =>
 			filterDuplicates(matches, 'variable')
 		),
 		selectVariable
 	),
-	addSelectors(newSelectNextCommand('outer', 'string'), selectString),
-	selectNextInnerStringCommand,
+	addSelectors(createSelectNext('outer', 'string'), selectString),
+	addSelectors(withInnerStringModifier(createSelectNext('inner', 'string')), selectInnerString),
 	addSelectors(
-		withMatchFunc(newSelectNextCommand('outer', 'class'), (_, matches) =>
-			filterDuplicates(matches, 'class')
-		),
+		withMatchFunc(createSelectNext('outer', 'class'), (_, matches) => filterDuplicates(matches, 'class')),
 		selectClass
 	),
-	addSelectors(newSelectNextCommand('inner', 'class'), selectInnerClass),
-	addSelectors(newSelectNextCommand('outer', 'array'), selectOuterArray),
-	addSelectors(newSelectNextCommand('inner', 'array'), selectInnerArray),
-	addSelectors(newSelectNextCommand('outer', 'object'), selectOuterObject),
-	addSelectors(newSelectNextCommand('inner', 'object'), selectInnerObject),
+	addSelectors(createSelectNext('inner', 'class'), selectInnerClass),
+	addSelectors(createSelectNext('outer', 'array'), selectOuterArray),
+	addSelectors(createSelectNext('inner', 'array'), selectInnerArray),
+	addSelectors(createSelectNext('outer', 'object'), selectOuterObject),
+	addSelectors(createSelectNext('inner', 'object'), selectInnerObject),
 
-	addSelectors(withMatchFunc(newSelectNextCommand('outer', 'parameters'), groupElements), selectParams),
-	addSelectors(newSelectNextCommand('inner', 'parameters'), selectInnerParams),
-	addSelectors(newSelectNextCommand('outer', 'call'), selectCall),
-	addSelectors(newSelectNextCommand('inner', 'call'), selectInnercall),
-	addSelectors(newSelectNextCommand('outer', 'type'), selectType),
-	addSelectors(newSelectNextCommand('inner', 'type'), selectInnerType),
-	addSelectors(newSelectNextCommand('outer', 'comment'), selectComment),
-	addSelectors(newSelectNextCommand('inner', 'comment'), selectInnerComment),
-
-	//previous command
-
-	addSelectors(
-		withMatchFunc(newSelectPreviousCommand('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, NODES.FUNCTION)
-		),
-		selectOuterFunction
-	),
-
-	addSelectors(
-		withMatchFunc(newSelectPreviousCommand('inner', 'function'), groupElements),
-		selectInnerFunction
-	),
-	addSelectors(newSelectPreviousCommand('outer', 'loop'), selectLoop),
-	addSelectors(newSelectPreviousCommand('inner', 'loop'), selectInnerLoop),
-	addSelectors(newSelectPreviousCommand('outer', 'conditional'), selectConditional),
-	addSelectors(newSelectPreviousCommand('inner', 'conditional'), selectInnerConditional),
-	addSelectors(newSelectPreviousCommand('outer', 'rhs'), selectRhs),
-	addSelectors(newSelectPreviousCommand('inner', 'rhs'), selectInnerRhs),
-	addSelectors(newSelectPreviousCommand('outer', 'lhs'), selectLhs),
-	addSelectors(newSelectPreviousCommand('inner', 'lhs'), selectInnerLhs),
-	addSelectors(newSelectPreviousCommand('outer', 'variable'), selectVariable),
-	addSelectors(newSelectPreviousCommand('outer', 'string'), selectString),
-	selectPreviousInnerStringCommand,
-	addSelectors(newSelectPreviousCommand('outer', 'class'), selectClass),
-	addSelectors(newSelectPreviousCommand('inner', 'class'), selectInnerClass),
-	addSelectors(newSelectPreviousCommand('outer', 'array'), selectOuterArray),
-	addSelectors(newSelectPreviousCommand('inner', 'array'), selectInnerArray),
-	addSelectors(newSelectPreviousCommand('outer', 'object'), selectOuterObject),
-	addSelectors(newSelectPreviousCommand('inner', 'object'), selectInnerObject),
-	addSelectors(newSelectPreviousCommand('inner', 'parameters'), selectInnerParams),
-	addSelectors(withMatchFunc(newSelectPreviousCommand('outer', 'parameters'), groupElements), selectParams),
-	addSelectors(withMatchFunc(newSelectPreviousCommand('outer', 'call'), groupElements), selectCall),
-	addSelectors(newSelectPreviousCommand('inner', 'call'), selectInnercall),
-	addSelectors(newSelectPreviousCommand('outer', 'type'), selectType),
-	addSelectors(newSelectPreviousCommand('inner', 'type'), selectInnerType),
-	addSelectors(newSelectPreviousCommand('outer', 'comment'), selectComment),
-	addSelectors(newSelectPreviousCommand('inner', 'comment'), selectInnerComment),
-
-	addSelectors(
-		withMatchFunc(newGoToNextCommand('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, NODES.FUNCTION)
-		),
-		selectOuterFunction
-	),
-	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'function'), groupElements), selectInnerFunction),
-	addSelectors(newGoToNextCommand('outer', 'loop'), selectLoop),
-	addSelectors(withMatchFunc(newGoToNextCommand('inner', 'loop'), groupElements), selectInnerLoop),
-	addSelectors(newGoToNextCommand('outer', 'conditional'), selectConditional),
-	addSelectors(
-		withMatchFunc(newGoToNextCommand('inner', 'conditional'), groupElements),
-		selectInnerConditional
-	),
-	addSelectors(newGoToNextCommand('outer', 'rhs'), selectRhs),
-	addSelectors(newGoToNextCommand('inner', 'rhs'), selectInnerRhs),
-	addSelectors(newGoToNextCommand('outer', 'lhs'), selectLhs),
-	addSelectors(newGoToNextCommand('inner', 'lhs'), selectInnerLhs),
-	addSelectors(newGoToNextCommand('outer', 'variable'), selectVariable),
-	addSelectors(newGoToNextCommand('outer', 'string'), selectString),
-	addSelectors(newGoToNextCommand('outer', 'class'), selectClass),
-	addSelectors(newGoToNextCommand('inner', 'class'), selectInnerClass),
-	addSelectors(newGoToNextCommand('outer', 'array'), selectOuterArray),
-	addSelectors(newGoToNextCommand('inner', 'array'), selectInnerArray),
-	addSelectors(newGoToNextCommand('outer', 'object'), selectOuterObject),
-	addSelectors(newGoToNextCommand('inner', 'object'), selectInnerObject),
-	addSelectors(newGoToNextCommand('outer', 'parameters'), selectParams),
-	addSelectors(newGoToNextCommand('inner', 'parameters'), selectInnerParams),
-	addSelectors(newGoToNextCommand('outer', 'call'), selectCall),
-	addSelectors(newGoToNextCommand('inner', 'call'), selectInnercall),
-	addSelectors(newGoToNextCommand('outer', 'type'), selectType),
-	addSelectors(newGoToNextCommand('inner', 'type'), selectInnerType),
-	addSelectors(newGoToNextCommand('outer', 'comment'), selectComment),
-	addSelectors(newGoToNextCommand('inner', 'comment'), selectInnerComment),
+	addSelectors(withMatchFunc(createSelectNext('outer', 'parameters'), groupElements), selectParams),
+	addSelectors(createSelectNext('inner', 'parameters'), selectInnerParams),
+	addSelectors(createSelectNext('outer', 'call'), selectCall),
+	addSelectors(createSelectNext('inner', 'call'), selectInnercall),
+	addSelectors(createSelectNext('outer', 'type'), selectType),
+	addSelectors(createSelectNext('inner', 'type'), selectInnerType),
+	addSelectors(createSelectNext('outer', 'comment'), selectComment),
+	addSelectors(createSelectNext('inner', 'comment'), selectInnerComment),
 
 	//previous command
 
 	addSelectors(
-		withMatchFunc(newGoToPreviousCommand('outer', 'function'), (_, matches) =>
+		withMatchFunc(createSelectPrevious('outer', 'function'), (_, matches) =>
 			filterDuplicates(matches, NODES.FUNCTION)
 		),
 		selectOuterFunction
 	),
 
-	addSelectors(withMatchFunc(newGoToPreviousCommand('inner', 'function'), groupElements), selectInnerFunction),
-	addSelectors(newGoToPreviousCommand('outer', 'loop'), selectLoop),
-	addSelectors(newGoToPreviousCommand('inner', 'loop'), selectInnerLoop),
-	addSelectors(newGoToPreviousCommand('outer', 'conditional'), selectConditional),
+	addSelectors(withMatchFunc(createSelectPrevious('inner', 'function'), groupElements), selectInnerFunction),
+	addSelectors(createSelectPrevious('outer', 'loop'), selectLoop),
+	addSelectors(createSelectPrevious('inner', 'loop'), selectInnerLoop),
+	addSelectors(createSelectPrevious('outer', 'conditional'), selectConditional),
+	addSelectors(createSelectPrevious('inner', 'conditional'), selectInnerConditional),
+	addSelectors(createSelectPrevious('outer', 'rhs'), selectRhs),
+	addSelectors(createSelectPrevious('inner', 'rhs'), selectInnerRhs),
+	addSelectors(createSelectPrevious('outer', 'lhs'), selectLhs),
+	addSelectors(createSelectPrevious('inner', 'lhs'), selectInnerLhs),
+	addSelectors(createSelectPrevious('outer', 'variable'), selectVariable),
+	addSelectors(createSelectPrevious('outer', 'string'), selectString),
+	addSelectors(withInnerStringModifier(createSelectPrevious('inner', 'string')), selectInnerString),
+	addSelectors(createSelectPrevious('outer', 'class'), selectClass),
+	addSelectors(createSelectPrevious('inner', 'class'), selectInnerClass),
+	addSelectors(createSelectPrevious('outer', 'array'), selectOuterArray),
+	addSelectors(createSelectPrevious('inner', 'array'), selectInnerArray),
+	addSelectors(createSelectPrevious('outer', 'object'), selectOuterObject),
+	addSelectors(createSelectPrevious('inner', 'object'), selectInnerObject),
+	addSelectors(createSelectPrevious('inner', 'parameters'), selectInnerParams),
+	addSelectors(withMatchFunc(createSelectPrevious('outer', 'parameters'), groupElements), selectParams),
+	addSelectors(withMatchFunc(createSelectPrevious('outer', 'call'), groupElements), selectCall),
+	addSelectors(createSelectPrevious('inner', 'call'), selectInnercall),
+	addSelectors(createSelectPrevious('outer', 'type'), selectType),
+	addSelectors(createSelectPrevious('inner', 'type'), selectInnerType),
+	addSelectors(createSelectPrevious('outer', 'comment'), selectComment),
+	addSelectors(createSelectPrevious('inner', 'comment'), selectInnerComment),
+
 	addSelectors(
-		withMatchFunc(newGoToPreviousCommand('inner', 'conditional'), groupElements),
+		withMatchFunc(createGoToNext('outer', 'function'), (_, matches) =>
+			filterDuplicates(matches, NODES.FUNCTION)
+		),
+		selectOuterFunction
+	),
+	// go to
+	addSelectors(withMatchFunc(createGoToNext('inner', 'function'), groupElements), selectInnerFunction),
+	addSelectors(createGoToNext('outer', 'loop'), selectLoop),
+	addSelectors(withMatchFunc(createGoToNext('inner', 'loop'), groupElements), selectInnerLoop),
+	addSelectors(createGoToNext('outer', 'conditional'), selectConditional),
+	addSelectors(withMatchFunc(createGoToNext('inner', 'conditional'), groupElements), selectInnerConditional),
+	addSelectors(createGoToNext('outer', 'rhs'), selectRhs),
+	addSelectors(createGoToNext('inner', 'rhs'), selectInnerRhs),
+	addSelectors(createGoToNext('outer', 'lhs'), selectLhs),
+	addSelectors(createGoToNext('inner', 'lhs'), selectInnerLhs),
+	addSelectors(createGoToNext('outer', 'variable'), selectVariable),
+	addSelectors(createGoToNext('outer', 'string'), selectString),
+	addSelectors(withInnerStringModifier(createGoToNext('inner', 'string')), selectInnerString),
+	addSelectors(createGoToNext('outer', 'class'), selectClass),
+	addSelectors(createGoToNext('inner', 'class'), selectInnerClass),
+	addSelectors(createGoToNext('outer', 'array'), selectOuterArray),
+	addSelectors(createGoToNext('inner', 'array'), selectInnerArray),
+	addSelectors(createGoToNext('outer', 'object'), selectOuterObject),
+	addSelectors(createGoToNext('inner', 'object'), selectInnerObject),
+	addSelectors(createGoToNext('outer', 'parameters'), selectParams),
+	addSelectors(createGoToNext('inner', 'parameters'), selectInnerParams),
+	addSelectors(createGoToNext('outer', 'call'), selectCall),
+	addSelectors(createGoToNext('inner', 'call'), selectInnercall),
+	addSelectors(createGoToNext('outer', 'type'), selectType),
+	addSelectors(createGoToNext('inner', 'type'), selectInnerType),
+	addSelectors(createGoToNext('outer', 'comment'), selectComment),
+	addSelectors(createGoToNext('inner', 'comment'), selectInnerComment),
+
+	//previous command
+
+	addSelectors(
+		withMatchFunc(createGoToPrevious('outer', 'function'), (_, matches) =>
+			filterDuplicates(matches, NODES.FUNCTION)
+		),
+		selectOuterFunction
+	),
+
+	addSelectors(withMatchFunc(createGoToPrevious('inner', 'function'), groupElements), selectInnerFunction),
+	addSelectors(createGoToPrevious('outer', 'loop'), selectLoop),
+	addSelectors(createGoToPrevious('inner', 'loop'), selectInnerLoop),
+	addSelectors(createGoToPrevious('outer', 'conditional'), selectConditional),
+	addSelectors(
+		withMatchFunc(createGoToPrevious('inner', 'conditional'), groupElements),
 		selectInnerConditional
 	),
-	addSelectors(newGoToPreviousCommand('outer', 'rhs'), selectRhs),
-	addSelectors(newGoToPreviousCommand('inner', 'rhs'), selectInnerRhs),
-	addSelectors(newGoToPreviousCommand('outer', 'lhs'), selectLhs),
-	addSelectors(newGoToPreviousCommand('inner', 'lhs'), selectInnerLhs),
-	addSelectors(newGoToPreviousCommand('outer', 'variable'), selectVariable),
-	addSelectors(newGoToPreviousCommand('outer', 'string'), selectString),
-	goToPreviousInnerString,
-	addSelectors(newGoToPreviousCommand('outer', 'class'), selectClass),
-	addSelectors(newGoToPreviousCommand('inner', 'class'), selectInnerClass),
-	addSelectors(newGoToPreviousCommand('outer', 'array'), selectOuterArray),
-	addSelectors(newGoToPreviousCommand('inner', 'array'), selectInnerArray),
-	addSelectors(newGoToPreviousCommand('outer', 'object'), selectOuterObject),
-	addSelectors(newGoToPreviousCommand('inner', 'object'), selectInnerObject),
-	addSelectors(newGoToPreviousCommand('inner', 'parameters'), selectInnerParams),
-	addSelectors(withMatchFunc(newGoToPreviousCommand('outer', 'parameters'), groupElements), selectParams),
-	addSelectors(withMatchFunc(newGoToPreviousCommand('outer', 'call'), groupElements), selectCall),
-	addSelectors(newGoToPreviousCommand('inner', 'call'), selectInnercall),
-	addSelectors(newGoToPreviousCommand('outer', 'type'), selectType),
-	addSelectors(newGoToPreviousCommand('inner', 'type'), selectInnerType),
-	addSelectors(newGoToPreviousCommand('outer', 'comment'), selectComment),
-	addSelectors(newGoToPreviousCommand('inner', 'comment'), selectInnerComment),
+	addSelectors(createGoToPrevious('outer', 'rhs'), selectRhs),
+	addSelectors(createGoToPrevious('inner', 'rhs'), selectInnerRhs),
+	addSelectors(createGoToPrevious('outer', 'lhs'), selectLhs),
+	addSelectors(createGoToPrevious('inner', 'lhs'), selectInnerLhs),
+	addSelectors(createGoToPrevious('outer', 'variable'), selectVariable),
+	addSelectors(createGoToPrevious('outer', 'string'), selectString),
+	addSelectors(withInnerStringModifier(createGoToPrevious('inner', 'string')), selectInnerString),
+	addSelectors(createGoToPrevious('outer', 'class'), selectClass),
+	addSelectors(createGoToPrevious('inner', 'class'), selectInnerClass),
+	addSelectors(createGoToPrevious('outer', 'array'), selectOuterArray),
+	addSelectors(createGoToPrevious('inner', 'array'), selectInnerArray),
+	addSelectors(createGoToPrevious('outer', 'object'), selectOuterObject),
+	addSelectors(createGoToPrevious('inner', 'object'), selectInnerObject),
+	addSelectors(createGoToPrevious('inner', 'parameters'), selectInnerParams),
+	addSelectors(withMatchFunc(createGoToPrevious('outer', 'parameters'), groupElements), selectParams),
+	addSelectors(withMatchFunc(createGoToPrevious('outer', 'call'), groupElements), selectCall),
+	addSelectors(createGoToPrevious('inner', 'call'), selectInnercall),
+	addSelectors(createGoToPrevious('outer', 'type'), selectType),
+	addSelectors(createGoToPrevious('inner', 'type'), selectInnerType),
+	addSelectors(createGoToPrevious('outer', 'comment'), selectComment),
+	addSelectors(createGoToPrevious('inner', 'comment'), selectInnerComment),
 ];
 
 if (getConfig().experimentalNode()) {
 	commands.push(
 		addSelectors(
-			withMatchFunc(newSelectNextCommand('outer', 'node'), function (ctx, matches) {
+			withMatchFunc(createSelectNext('outer', 'node'), function (ctx, matches) {
 				const lang = ctx.editor.language();
 				//javascript , typescript, javascriptreact, typescriptreact
 				if (lang.includes('script')) {
@@ -470,27 +328,21 @@ if (getConfig().experimentalNode()) {
 			}),
 			selectNode
 		),
-		addSelectors(newSelectNextCommand('inner', 'node'), selectInnerNode),
+		addSelectors(createSelectNext('inner', 'node'), selectInnerNode),
 
-		addSelectors(newSelectPreviousCommand('outer', 'node'), selectNode),
-		addSelectors(newSelectPreviousCommand('inner', 'node'), selectInnerNode),
+		addSelectors(createSelectPrevious('outer', 'node'), selectNode),
+		addSelectors(createSelectPrevious('inner', 'node'), selectInnerNode),
 
-		addSelectors(newGoToNextCommand('outer', 'node'), selectNode),
-		addSelectors(newGoToNextCommand('inner', 'node'), selectInnerNode),
+		addSelectors(createGoToNext('outer', 'node'), selectNode),
+		addSelectors(createGoToNext('inner', 'node'), selectInnerNode),
 
-		addSelectors(newGoToPreviousCommand('outer', 'node'), selectNode),
-		addSelectors(newGoToPreviousCommand('inner', 'node'), selectInnerNode)
+		addSelectors(createGoToPrevious('outer', 'node'), selectNode),
+		addSelectors(createGoToPrevious('inner', 'node'), selectInnerNode)
 	);
 }
 
 function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
-}
-
-let context: QueryContext;
-
-export function getContext(): QueryContext {
-	return context;
 }
 
 export function init() {
@@ -504,7 +356,8 @@ export function init() {
 			}
 
 			const ctx = getDefaultContext();
-			context = ctx;
+			updateContext(ctx);
+
 			ctx.editor.setEditor(currentEditor);
 
 			const language = ctx.editor.language();
@@ -519,14 +372,4 @@ export function init() {
 			await ctx.command.exec(ctx);
 		});
 	}
-}
-
-function getDefaultContext(): QueryContext {
-	return {
-		editor: new Editor(),
-		command: null,
-		parsing: {
-			parser: undefined,
-		},
-	};
 }
