@@ -406,4 +406,43 @@ fn main() {
     // Slicing arrays
     let slice = &arr[1..3]; // Creates a slice containing elements at index 1 and 2
     println!("Slice: {:?}", slice);
+
+    fn main() {
+    // Define the struct
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    // Create a vector of structs
+    let vec = vec![
+        Point { x: 1, y: 2 },
+        Point { x: 3, y: 4 },
+        Point { x: 5, y: 6 },
+    ];
+
+
+    fn main() {
+    // Define the struct
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    // Use the macro to create an array of structs
+    let arr = create_array_of_points!(
+        Point { x: 1, y: 2 },
+        Point { x: 3, y: 4 },
+        Point { x: 5, y: 6 }
+    );
+
+    // Print the array of structs
+    for point in &arr {
+        println!("Point {{ x: {}, y: {} }}", point.x, point.y);
+    }
 }
+
+    // Print the vector of
+}
+
+

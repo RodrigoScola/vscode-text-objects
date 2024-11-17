@@ -321,8 +321,6 @@ export function getContext(): QueryContext {
 }
 
 export function init() {
-	console.log('initting function');
-	console.log(commands);
 	for (const command of commands) {
 		const name = makeName(command.commandName());
 		console.log('initting', name);

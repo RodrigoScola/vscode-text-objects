@@ -3,7 +3,7 @@ import { QuerySelector } from '../commands';
 function selectC(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(init_declarator declarator:(array_declarator) value:(_) @array)`].join('\n'),
+		selector: [`(initializer_list) @array`].join('\n'),
 	};
 }
 
@@ -26,7 +26,7 @@ function selectGo(): QuerySelector {
 			` (composite_literal type: (array_type)) @array`,
 			` (composite_literal type: (slice_type)) @array`,
 			` (var_declaration (var_spec type : (array_type))) @array `,
-			` (var_declaration (var_spec type : (slice_type))) @slice `,
+			` (var_declaration (var_spec type : (slice_type))) @array `,
 		].join('\n'),
 	};
 }
@@ -36,34 +36,31 @@ function selectJava(): QuerySelector {
 		selector: ['(array_initializer) @array'].join('\n'),
 	};
 }
-function selectJavascript(): QuerySelector {
-	return {
-		language: 'javascript',
-		selector: ['(array) @array'].join('\n'),
-	};
-}
 
 function selectJson(): QuerySelector {
 	return {
 		language: 'json',
-		selector: selectJavascript().selector,
+		selector: ['(array) @array'].join('\n'),
 	};
 }
 
+function selectJsonC(): QuerySelector {
+	return {
+		language: 'jsonc',
+		selector: selectJson().selector,
+	};
+}
 function selectLua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [
-			` (expression_list
-value:(table (field_list)) @array)`,
-		].join('\n'),
+		selector: [`(field_list) @array`, ,].join('\n'),
 	};
 }
 
 function selectPython(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [' (list) @array'].join('\n'),
+		selector: [' (list) @array', `(list_comprehension) @array`].join('\n'),
 	};
 }
 function selectRust(): QuerySelector {
@@ -80,23 +77,29 @@ function selectToml(): QuerySelector {
 	};
 }
 
+function selectJavascript(): QuerySelector {
+	return {
+		language: 'javascript',
+		selector: ['(array) @array'].join('\n'),
+	};
+}
 function selectTypescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: selectJavascript().selector,
+		selector: ['(array) @array'].join('\n'),
 	};
 }
 function selectTypescriptReact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: selectJavascript().selector,
+		selector: ['(array) @array'].join('\n'),
 	};
 }
 
 function selectjavascriptReact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: selectJavascript().selector,
+		selector: ['(array) @array'].join('\n'),
 	};
 }
 
@@ -116,6 +119,7 @@ export const select = {
 	yaml: selectYaml,
 	javascript: selectJavascript,
 	json: selectJson,
+	jsonc: selectJsonC,
 	toml: selectToml,
 	lua: selectLua,
 	python: selectPython,

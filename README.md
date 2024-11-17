@@ -66,9 +66,13 @@ Blocks would be nice catch all.
 -    finish the languages support - DONE
 -    see if it works on tsx and jsx all the things (mainly conditionals) - DONE
 -    add the on language events - DONE
+-    see if the todos are valid still - DONE
+
+revision of nodes
+
+-    outer array - done
 
 -    revise all selectors (remember to put the inner conditonal in the conditional)
--    see if the todos are valid still
 
 ### Misc
 

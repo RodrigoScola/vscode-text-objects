@@ -118,3 +118,4 @@ print("Result from lambda_function:", lambda_result)  # Output: Result from lamb
 # Using the func function with an anonymous lambda function directly
 anonymous_lambda_result = func(lambda: 84)
 print("Result from anonymous lambda:", anonymous_lambda_result)  # Output: Result from anonymous lambda: 84
+
