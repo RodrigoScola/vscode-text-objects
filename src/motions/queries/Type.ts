@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			`(declaration (type_qualifier) @types type: (primitive_type) @types ) `,
 			`(declaration  type: (union_specifier) @types ) `,
 			`(declaration (storage_class_specifier) @types type: (primitive_type) @types ) `,
@@ -16,19 +16,19 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [].join('\n'),
+		query: [].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (variable_declaration type: (_) @type) `, `(parameter type: (_) @type)`].join('\n'),
+		query: [` (variable_declaration type: (_) @type) `, `(parameter type: (_) @type)`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			`(parameter_list (parameter_declaration)) @types`,
 			`(type_declaration) @types`,
 			`(pointer_type) @types `,
@@ -41,7 +41,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			` (interface_declaration) @types `,
 			` (method_declaration type:(void_type) @types) `,
 			`(type_identifier) @types`,
@@ -56,14 +56,14 @@ function java(): QuerySelector {
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [`(type_identifier) @type`, `(primitive_type) @type`, `(struct_item) @class`].join('\n'),
+		query: [`(type_identifier) @type`, `(primitive_type) @type`, `(struct_item) @class`].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: [
+		query: [
 			` (export_statement (type_alias_declaration)) @type   `,
 			` (type_alias_declaration) @type   `,
 			` (export_statement (interface_declaration)) @type `,
@@ -75,7 +75,7 @@ function typescript(): QuerySelector {
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: [
+		query: [
 			` (export_statement (type_alias_declaration)) @type   `,
 			` (type_alias_declaration) @type   `,
 			` (export_statement (interface_declaration)) @type `,

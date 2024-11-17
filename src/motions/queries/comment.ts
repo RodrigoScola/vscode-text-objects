@@ -1,97 +1,97 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(comment)* @comment`].join('\n'),
+		query: [`(comment)* @comment`].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: ['(comment)+ @comment'].join('\n'),
+		query: ['(comment)+ @comment'].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [`(comment)+ @comment`].join('\n'),
+		query: [`(comment)+ @comment`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: ['(comment)+ @comment'].join('\n'),
+		query: ['(comment)+ @comment'].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [`(line_comment)+ @comment`, `(block_comment)+ @comment`].join('\n'),
+		query: [`(line_comment)+ @comment`, `(block_comment)+ @comment`].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: ['(comment)+ @comment'].join('\n'),
+		query: ['(comment)+ @comment'].join('\n'),
 	};
 }
 
 function json(): QuerySelector {
 	return {
 		language: 'json',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: ['(comment)+ @comment'].join('\n'),
+		query: ['(comment)+ @comment'].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [` (comment)+ @comment `].join('\n'),
+		query: [` (comment)+ @comment `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [` (line_comment)+ @comment `, ` (block_comment)+ @comment `].join('\n'),
+		query: [` (line_comment)+ @comment `, ` (block_comment)+ @comment `].join('\n'),
 	};
 }
 
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: ['(comment)+ @comment'].join('\n'),
+		query: ['(comment)+ @comment'].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [`(comment)+ @comment`].join('\n'),
+		query: [`(comment)+ @comment`].join('\n'),
 	};
 }
 

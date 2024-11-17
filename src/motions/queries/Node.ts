@@ -1,14 +1,14 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(_ (compound_statement  ) ) @node  `].join('\n'),
+		query: [`(_ (compound_statement  ) ) @node  `].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			// `(_ (_ (compound_statement (expression_statement)? @expression ) @inner ) @node )  `,
 			`(_ (_ (expression_statement) @expression ) @inner  ) @node `,
 		].join('\n'),
@@ -17,13 +17,13 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [`(_ (block ) ) @node`].join('\n'),
+		query: [`(_ (block ) ) @node`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			` (_ (_ (_ (block) @inner ))) @outer `,
 			`(_ (_ (_ (_ (block) @inner ))) @outer ) @outest `,
 
@@ -34,7 +34,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			`(_ (block (expression_statement) @inner ) @node (catch_clause)* @else) @outer`,
 			`(_ (block (_)? @expression ) @inner  ) @node`,
 			`(_ (_ (expression_statement) @expression ) @inner ) `,
@@ -48,7 +48,7 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [
+		query: [
 			//weirdly the (_) @other  needs to have 2 queries, one with asterisk
 			// and another without
 			`(_ (statement_block) @inner (_)* @other ) @node`,
@@ -64,50 +64,47 @@ function javascript(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [`(_ (block)) @node `].join('\n'),
+		query: [`(_ (block)) @node `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
-			`(struct_item) @class`,
-			`(impl_item) @class`,
-			`(trait_item) @class`,
-			`(enum_item) @class`,
-		].join('\n'),
+		query: [`(struct_item) @class`, `(impl_item) @class`, `(trait_item) @class`, `(enum_item) @class`].join(
+			'\n'
+		),
 	};
 }
 
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: [`(pair (bare_key) (_) @rhs)`].join('\n'),
+		query: [`(pair (bare_key) (_) @rhs)`].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [
+		query: [
 			` (block_mapping_pair key:(flow_node (plain_scalar)) value:(block_node (anchor)+ @class (_)+ @class   )) `,
 		].join('\n'),
 	};

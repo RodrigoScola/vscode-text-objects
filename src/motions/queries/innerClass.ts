@@ -1,14 +1,14 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(struct_specifier body: (field_declaration_list (_)+ @class ))`].join('\n'),
+		query: [`(struct_specifier body: (field_declaration_list (_)+ @class ))`].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			`
   (class_specifier
  body:(field_declaration_list
@@ -22,38 +22,38 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (class_declaration body: (declaration_list (_)+ @body)) `].join('\n'),
+		query: [` (class_declaration body: (declaration_list (_)+ @body)) `].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (struct_type (field_declaration_list (_)+ @struct) ) `].join('\n'),
+		query: [` (struct_type (field_declaration_list (_)+ @struct) ) `].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: ['(class_declaration body: (class_body (_) @class))'].join('\n'),
+		query: ['(class_declaration body: (class_body (_) @class))'].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [`    (class_body (_)* @class.body) `].join('\n'),
+		query: [`    (class_body (_)* @class.body) `].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [' (class_definition body: (_) @class )'].join('\n'),
+		query: [' (class_definition body: (_) @class )'].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
+		query: [
 			`(struct_item body: (field_declaration_list (_)+ @class )) `,
 			`(impl_item body: (declaration_list (_)+ @class )) `,
 			`(trait_item body: (declaration_list (_)+ @class)) `,
@@ -65,13 +65,13 @@ function rust(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [
+		query: [
 			` (block_mapping_pair key:(flow_node (plain_scalar)) value:(block_node (anchor) (_)+ @class   )) `,
 		].join('\n'),
 	};
@@ -79,13 +79,13 @@ function yaml(): QuerySelector {
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 export default {

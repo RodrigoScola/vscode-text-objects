@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			`(struct_specifier body: (field_declaration_list (_)+ @types ))`,
 			`(union_specifier body:(field_declaration_list (_)+ @object) )`,
 		].join('\n'),
@@ -12,13 +12,13 @@ function cpp(): QuerySelector {
 	//todo: add the types
 	return {
 		language: 'cpp',
-		selector: [`(primitive_type) @type`].join('\n'),
+		query: [`(primitive_type) @type`].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
+		query: [
 			// ` (variable_declaration type: (_) @type) `,
 			`(type_argumented_list) @type`,
 		].join('\n'),
@@ -27,7 +27,7 @@ function csharp(): QuerySelector {
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			`(pointer_type (_) @types ) `,
 			`(interface_type (_) @types)`,
 			`(struct_type (field_declaration_list (_)+ @types))`,
@@ -38,14 +38,14 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [`(interface_declaration body:(interface_body (_) @type))`].join('\n'),
+		query: [`(interface_declaration body:(interface_body (_) @type))`].join('\n'),
 	};
 }
 
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: ['(struct_item body: (field_declaration_list (_) @types ))'].join('\n'),
+		query: ['(struct_item body: (field_declaration_list (_) @types ))'].join('\n'),
 	};
 }
 
@@ -53,19 +53,19 @@ function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
 		//todo addtypes
-		selector: [].join('\n'),
+		query: [].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: [].join('\n'),
+		query: [].join('\n'),
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: [].join('\n'),
+		query: [].join('\n'),
 	};
 }
 

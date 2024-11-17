@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			` (switch_statement) @conditional `,
 			` (conditional_expression  )@conditional `,
 			` (if_statement) @conditional `,
@@ -12,7 +12,7 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			`(if_statement) @conditional`,
 
 			` (switch_statement ) @conditional `,
@@ -23,7 +23,7 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
+		query: [
 			` (conditional_expression  ) @conditional`,
 			` (if_statement) @conditional `,
 			` (switch_statement) @conditional `,
@@ -33,13 +33,13 @@ function csharp(): QuerySelector {
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (if_statement  ) @conditional `, `(expression_switch_statement) @conditional`].join('\n'),
+		query: [` (if_statement  ) @conditional `, `(expression_switch_statement) @conditional`].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			` (if_statement) @conditional `,
 			` (ternary_expression  ) @conditional`,
 			` (ternary_expression ) @conditional`,
@@ -51,20 +51,20 @@ function java(): QuerySelector {
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: ['(if_statement) @conditional'].join('\n'),
+		query: ['(if_statement) @conditional'].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [` (if_statement) @conditional  `, ` (conditional_expression) @conditional `].join('\n'),
+		query: [` (if_statement) @conditional  `, ` (conditional_expression) @conditional `].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
+		query: [
 			`(if_expression) @conditional `,
 			`(match_expression body: (match_block) @conditional) `,
 			`(let_declaration value: (if_expression) @conditional) `,
@@ -80,26 +80,26 @@ const jsSelector = [
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: jsSelector.join('\n'),
+		query: jsSelector.join('\n'),
 	};
 }
 
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: jsSelector.join('\n'),
+		query: jsSelector.join('\n'),
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: jsSelector.join('\n'),
+		query: jsSelector.join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: jsSelector.join('\n'),
+		query: jsSelector.join('\n'),
 	};
 }
 

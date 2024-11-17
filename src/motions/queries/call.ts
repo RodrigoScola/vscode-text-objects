@@ -1,38 +1,38 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: ['(call_expression) @call'].join('\n'),
+		query: ['(call_expression) @call'].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [` (call_expression) @call `].join('\n'),
+		query: [` (call_expression) @call `].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (invocation_expression) @call`].join('\n'),
+		query: [` (invocation_expression) @call`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (call_expression) @call`].join('\n'),
+		query: [` (call_expression) @call`].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [` (method_invocation ) @call  `].join('\n'),
+		query: [` (method_invocation ) @call  `].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [`(call_expression   ) @call  `].join('\n'),
+		query: [`(call_expression   ) @call  `].join('\n'),
 	};
 }
 
@@ -40,54 +40,54 @@ function lua(): QuerySelector {
 	return {
 		language: 'lua',
 
-		selector: ['(call arguments: (argument_list) @call)'].join('\n'),
+		query: ['(call arguments: (argument_list) @call)'].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: ['(call) @call'].join('\n'),
+		query: ['(call) @call'].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [`(call_expression) @call`].join('\n'),
+		query: [`(call_expression) @call`].join('\n'),
 	};
 }
 
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: [`(pair (bare_key) (_) @rhs)`].join('\n'),
+		query: [`(pair (bare_key) (_) @rhs)`].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [` (alias) @call `].join('\n'),
+		query: [` (alias) @call `].join('\n'),
 	};
 }
 

@@ -1,14 +1,14 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(function_definition body: (compound_statement (_)+ @function)) `].join('\n'),
+		query: [`(function_definition body: (compound_statement (_)+ @function)) `].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			` (function_definition body: (
 		(compound_statement (_)+ @function))) `,
 			`
@@ -22,7 +22,7 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
+		query: [
 			` (method_declaration body:(block (_)+ @function )) `,
 			` (local_function_statement body:(block (_)+ @function )) `,
 			` (lambda_expression body:(_)+ @function )`,
@@ -32,7 +32,7 @@ function csharp(): QuerySelector {
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			` (function_declaration body:(block (_) @function )) `,
 			` (method_declaration body:(block (_) @function )) `,
 		].join('\n'),
@@ -41,7 +41,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			` (method_declaration body:(block (_)+ @function)) `,
 			` (variable_declarator value:(lambda_expression body:(block (_)+ @function)))`,
 		].join('\n'),
@@ -50,7 +50,7 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [
+		query: [
 			` ((function_declaration
             body: (statement_block
             (_)* @function_body)))`,
@@ -63,7 +63,7 @@ function javascript(): QuerySelector {
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [
+		query: [
 			` (function_definition_statement body: (block (_)+ @function )) `,
 			` (local_function_definition_statement body: (block (_)+ @function ))  `,
 			` (local_variable_declaration
@@ -78,31 +78,31 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: ['( right: (lambda) @function) '].join('\n'),
+		query: ['( right: (lambda) @function) '].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [].join('\n'),
+		query: [].join('\n'),
 	};
 }
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 export default {

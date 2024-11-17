@@ -1,14 +1,14 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: ['(call_expression arguments: (argument_list (_) @call )) '].join('\n'),
+		query: ['(call_expression arguments: (argument_list (_) @call )) '].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			`
         (call_expression
         arguments: (
@@ -20,72 +20,70 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (invocation_expression arguments:(argument_list (_) @call)) `].join('\n'),
+		query: [` (invocation_expression arguments:(argument_list (_) @call)) `].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (call_expression arguments:(argument_list (_) @call )) `].join('\n'),
+		query: [` (call_expression arguments:(argument_list (_) @call )) `].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [` (expression_statement (method_invocation arguments:(argument_list (_) @call))) `].join(
-			'\n'
-		),
+		query: [` (expression_statement (method_invocation arguments:(argument_list (_) @call))) `].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
+		query: [`(call_expression arguments: (arguments (_) @call) )  `].join('\n'),
 	};
 }
 
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: ['(call arguments: (argument_list (_)@call )) '].join('\n'),
+		query: ['(call arguments: (argument_list (_)@call )) '].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: ['(call arguments: (argument_list (_) @call)  )'].join('\n'),
+		query: ['(call arguments: (argument_list (_) @call)  )'].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [`(call_expression arguments: (arguments ) @call)`].join('\n'),
+		query: [`(call_expression arguments: (arguments ) @call)`].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [` (alias (_) @call)  `].join('\n'),
+		query: [` (alias (_) @call)  `].join('\n'),
 	};
 }
 

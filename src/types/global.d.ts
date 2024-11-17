@@ -1,7 +1,6 @@
 import { Position, Range } from 'vscode';
 import Parser, { Language, QueryMatch } from 'web-tree-sitter';
 import { Editor } from '../extension';
-import { QueryCommand } from '../motions/commands';
 import { Languages } from '../parsing/parser';
 
 export {};
@@ -29,22 +28,12 @@ declare global {
 	export type CommandDirection = 'next' | 'previous';
 	export type CommandAction = 'select' | 'goTo';
 
-	type CommandProps = {
-		name: CommandNames;
-		scope: CommandScope;
-		direction: CommandDirection;
-		action: CommandAction;
-		onMatch?: OnMatchFunc;
-		onFinish: OnFinish;
-		pos: GetPositionFunc;
-	};
-
 	export type QueryContext = {
 		editor: Editor;
 		parsing: {
 			parser: Parsing | undefined;
 		};
-		command: QueryCommand | null;
+		command: Command | null;
 	};
 
 	export type Parsing = {
@@ -53,9 +42,21 @@ declare global {
 		parser: Parser;
 	};
 
+	export type Command = {
+		selectors: Partial<Record<SupportedLanguages, QuerySelector>>;
+		currentSelector: QuerySelector | undefined;
+		name: CommandNames;
+		scope: CommandScope;
+		direction: CommandDirection;
+		action: CommandAction;
+		onMatch?: OnMatchFunc;
+		end: OnFinish;
+		pos: GetPositionFunc;
+	};
+
 	export interface QuerySelector {
 		language: SupportedLanguages;
-		selector: string;
+		query: string;
 	}
 
 	export type OnMatchFunc = (ctx: QueryContext, matches: QueryMatch[]) => QueryMatch[];

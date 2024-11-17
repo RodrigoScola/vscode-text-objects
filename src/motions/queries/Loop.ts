@@ -1,20 +1,20 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(for_statement) @loops`, `(while_statement) @loops`, `(do_statement) @loops`].join('\n'),
+		query: [`(for_statement) @loops`, `(while_statement) @loops`, `(do_statement) @loops`].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [` (for_range_loop) @loop `, ` (for_statement) @loop `].join('\n'),
+		query: [` (for_range_loop) @loop `, ` (for_statement) @loop `].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
+		query: [
 			`(for_statement body: (block (_)+ @loop)) `,
 			`(for_each_statement (block (_)+ @loop)) `,
 			`(while_statement (block (_)+ @loop)) `,
@@ -25,13 +25,13 @@ function csharp(): QuerySelector {
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [` (for_statement) @loop `].join('\n'),
+		query: [` (for_statement) @loop `].join('\n'),
 	};
 }
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			` (for_statement body:(block (_) @loop)) `,
 			` (enhanced_for_statement body:(block (_) @loop)) `,
 			` (while_statement body:(block (_) @loop)) `,
@@ -42,13 +42,13 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [` (for_statement) @loop (for_in_statement) @loop `].join('\n'),
+		query: [` (for_statement) @loop (for_in_statement) @loop `].join('\n'),
 	};
 }
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [
+		query: [
 			`(while_statement) @loop`,
 			`(repeat_statement) @loop`,
 			`(for_numeric_statement) @loop`,
@@ -60,33 +60,31 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [` (for_statement) @loop `, `(while_statement) @loop`, `(list_comprehension) @loop`].join(
-			'\n'
-		),
+		query: [` (for_statement) @loop `, `(while_statement) @loop`, `(list_comprehension) @loop`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [`(loop_expression) @loop`, `(while_expression) @loop`, `(for_expression) @loop`].join('\n'),
+		query: [`(loop_expression) @loop`, `(while_expression) @loop`, `(for_expression) @loop`].join('\n'),
 	};
 }
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 export default {

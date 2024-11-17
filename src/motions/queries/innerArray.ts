@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			`(init_declarator
                         declarator:(array_declarator)
                         value:(initializer_list (_) @array ) )`,
@@ -12,19 +12,19 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: ['(initializer_list (_) @array ) '].join('\n'),
+		query: ['(initializer_list (_) @array ) '].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (initializer_expression (_) @array )  `].join('\n'),
+		query: [` (initializer_expression (_) @array )  `].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			` (composite_literal type: (array_type) body: (literal_value (_) @array)) `,
 			` (composite_literal type: (slice_type) body: (literal_value (_) @array)) `,
 			` (var_declaration (var_spec type : (array_type))) @array `,
@@ -34,72 +34,72 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [`(array_initializer (_) @array )`].join('\n'),
+		query: [`(array_initializer (_) @array )`].join('\n'),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: ['(array (_) @array) '].join('\n'),
+		query: ['(array (_) @array) '].join('\n'),
 	};
 }
 
 function json(): QuerySelector {
 	return {
 		language: 'json',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [` (expression_list value:(table (field_list (_) @array )) )`].join('\n'),
+		query: [` (expression_list value:(table (field_list (_) @array )) )`].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [`(list (_) @array )`].join('\n'),
+		query: [`(list (_) @array )`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [`(array_expression (_) @array ) `].join('\n'),
+		query: [`(array_expression (_) @array ) `].join('\n'),
 	};
 }
 
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: ['(array (_) @array ) '].join('\n'),
+		query: ['(array (_) @array ) '].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [` (block_sequence (_) @array ) `].join('\n'),
+		query: [` (block_sequence (_) @array ) `].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 export default {

@@ -1,14 +1,14 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [`(assignment_expression right:(_) @lhs)`, `(init_declarator value: (_) @rhs ) `].join('\n'),
+		query: [`(assignment_expression right:(_) @lhs)`, `(init_declarator value: (_) @rhs ) `].join('\n'),
 	};
 }
 
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			` (init_declarator value:(_) @variable ) `,
 			` (field_declaration default_value:(_) @variable)`,
 			` (assignment_expression right:(_) @rhs) `,
@@ -18,13 +18,13 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (equals_value_clause (_) @rhs )`, ` (assignment_expression right:(_) @rhs )`].join('\n'),
+		query: [` (equals_value_clause (_) @rhs )`, ` (assignment_expression right:(_) @rhs )`].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			`(short_var_declaration right: (_) @rhs)`,
 			`(assignment_statement right:(_)+ @rhs)`,
 			`(var_spec value:(expression_list (_) @rhs ))`,
@@ -35,7 +35,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			`(assignment_expression left:(identifier) right:(_) @rhs) `,
 			`(variable_declarator value:(_) @rhs) `,
 		].join('\n'),
@@ -44,7 +44,7 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			`(field_definition  value:(_) @rhs) `,
@@ -55,14 +55,14 @@ function javascript(): QuerySelector {
 function json(): QuerySelector {
 	return {
 		language: 'json',
-		selector: [`(pair value: (_) @rhs)`].join('\n'),
+		query: [`(pair value: (_) @rhs)`].join('\n'),
 	};
 }
 
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [
+		query: [
 			` (local_variable_declaration (expression_list value:(_) @rhs)) `,
 			` (variable_assignment (expression_list value:(_) @rhs )) `,
 		].join('\n'),
@@ -72,20 +72,20 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [` (assignment right:(_) @rhs)`].join('\n'),
+		query: [` (assignment right:(_) @rhs)`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [` (let_declaration value:(_) @rhs) `, ` (assignment_expression right:(_) @rhs) `].join('\n'),
+		query: [` (let_declaration value:(_) @rhs) `, ` (assignment_expression right:(_) @rhs) `].join('\n'),
 	};
 }
 
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: [`(pair (bare_key) (_) @rhs)`].join('\n'),
+		query: [`(pair (bare_key) (_) @rhs)`].join('\n'),
 	};
 }
 
@@ -93,7 +93,7 @@ function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
 		//todo revise the selectors
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
@@ -104,14 +104,14 @@ function yaml(): QuerySelector {
 	return {
 		language: 'typescript',
 		//todo revise the selectors
-		selector: [` (block_mapping_pair value:(_) @rhs) `].join('\n'),
+		query: [` (block_mapping_pair value:(_) @rhs) `].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
 		//todo revise the selectors
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
@@ -122,7 +122,7 @@ function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
 		//todo revise the selectors
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,

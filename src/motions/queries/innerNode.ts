@@ -1,7 +1,7 @@
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [` (block (_) @node) `, `(expression_statement) @node`].join('\n'),
+		query: [` (block (_) @node) `, `(expression_statement) @node`].join('\n'),
 	};
 }
 

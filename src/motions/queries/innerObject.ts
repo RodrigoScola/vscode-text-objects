@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			`(struct_specifier body: (field_declaration_list (_) @object) ) `,
 			`(enum_specifier body: (enumerator_list (_) @object )) `,
 			`
@@ -15,7 +15,7 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			`(class_specifier) @object`,
 			`(struct_specifier) @object`,
 			`(declaration
@@ -30,7 +30,7 @@ type:(struct_specifier)
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
+		query: [
 			`(class_declaration body:(declaration_list (_)@object)) `,
 			`(enum_declaration body:(enum_member_declaration_list (_)@object))  `,
 			`(struct_declaration body:(declaration_list (_) @object))  `,
@@ -43,7 +43,7 @@ function csharp(): QuerySelector {
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			`(type_declaration (type_spec type: (struct_type))) @struct`,
 			` (expression_list (composite_literal (_) ) ) @struct`,
 		].join('\n'),
@@ -52,7 +52,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			'(class_declaration body: (class_body (_) @class) ) ',
 			` (local_variable_declaration
  declarator:(variable_declarator
@@ -63,34 +63,34 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: ['(object (_) @object ) '].join('\n'),
+		query: ['(object (_) @object ) '].join('\n'),
 	};
 }
 
 function json(): QuerySelector {
 	return {
 		language: 'json',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [`(table (field_list (_) @object )) `].join('\n'),
+		query: [`(table (field_list (_) @object )) `].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: ['(dictionary (_) @object) '].join('\n'),
+		query: ['(dictionary (_) @object) '].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
+		query: [
 			`(struct_item body: (field_declaration_list (_) @object)) `,
 			`(struct_expression body: (field_initializer_list (_) @object)) `,
 			`(enum_item body: (enum_variant_list (_) @object)) `,
@@ -101,32 +101,32 @@ function rust(): QuerySelector {
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: ['(table (_) @object ) ', `(inline_table (_) @object) `].join('\n'),
+		query: ['(table (_) @object ) ', `(inline_table (_) @object) `].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [
+		query: [
 			` (block_mapping_pair value:(block_node (block_mapping (block_mapping_pair key:(_) value:(flow_node (_))) @object ))) `,
 		].join('\n'),
 	};

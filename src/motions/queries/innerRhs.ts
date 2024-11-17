@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			`( field_expression field:(field_identifier) @rhs ) `,
 			` (init_declarator value:(initializer_list (_) @rhs))`,
 		].join('\n'),
@@ -11,7 +11,7 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			// lambda_expression
 			`(init_declarator value:(_ body:(_ (_)+ @rhs ))) `,
 			`(init_declarator value:(_ value: (_(_)@rhs ))) `,
@@ -23,16 +23,15 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
-			` (equals_value_clause (_ (_)@rhs)   )`,
-			` (assignment_expression right:(_ (_) @rhs)   )`,
-		].join('\n'),
+		query: [` (equals_value_clause (_ (_)@rhs)   )`, ` (assignment_expression right:(_ (_) @rhs)   )`].join(
+			'\n'
+		),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			` (expression_list (_ body:(_ (_) @rhs ))) `,
 			` (expression_list (_ function:(_ body:(_ (_)+ @rhs )))) `,
 			` (expression_list (_ arguments:(_ (_) @rhs))) `,
@@ -42,7 +41,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			` (_ declarator:(_ value:(object_creation_expression (_ (_) @rhs )))) `,
 			` (_ value:(array_initializer (_)@rhs)) `,
 			` (_ declarator:(_ value:(_ arguments:(_ (_) @rhs)))) `,
@@ -52,7 +51,7 @@ function java(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [
+		query: [
 			` (variable_declarator value:(object (_) @rhs))`,
 			` (assignment_expression right:(_ (_)@rhs )) `,
 			` (variable_declarator value:(_ body:(_ (_)+ @rhs ))) `,
@@ -64,7 +63,7 @@ function javascript(): QuerySelector {
 function json(): QuerySelector {
 	return {
 		language: 'json',
-		selector: ['(pair value : (_ (_) @rhs))'].join('\n'),
+		query: ['(pair value : (_ (_) @rhs))'].join('\n'),
 	};
 }
 
@@ -73,7 +72,7 @@ function lua(): QuerySelector {
 		language: 'lua',
 		// maybe do generic?
 		// call doesnt work when just replacing things with just _
-		selector: [
+		query: [
 			` (local_variable_declaration (expression_list value:(call arguments:(_ (_) @rhs )))) `,
 			` (local_variable_declaration (expression_list value:(table (field_list (_) @rhs )))) `,
 			` (local_variable_declaration (expression_list value:(function_definition body:(block (_)+ @rhs )))) `,
@@ -84,7 +83,7 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [
+		query: [
 			` (assignment right:(lambda body:(binary_operator (_) @rhs))) `,
 			` (assignment right:(list (_) @rhs )) `,
 			` (assignment right:(call arguments:(argument_list (lambda body:(_) @rhs )))) `,
@@ -98,7 +97,7 @@ function python(): QuerySelector {
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
+		query: [
 			//clojure
 			` (let_declaration value:(closure_expression body:(_) @rhs)) `,
 			` (static_item value:(closure_expression body:(_) @rhs)) `,
@@ -144,20 +143,20 @@ function rust(): QuerySelector {
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: [`(pair (bare_key) (_ (_) @rhs) )`].join('\n'),
+		query: [`(pair (bare_key) (_ (_) @rhs) )`].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [
+		query: [
 			`
  (block_mapping_pair
 key:(flow_node
@@ -170,13 +169,13 @@ value:(block_node (_ (_) @rhs )))
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 

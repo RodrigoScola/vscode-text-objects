@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			` (field_expression field:(field_identifier) @lhs ) `,
 			` (init_declarator declarator:(identifier) @lhs)`,
 		].join('\n'),
@@ -11,19 +11,19 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [` (declaration   declarator:(init_declarator (_ (_) @lhs) )) `].join('\n'),
+		query: [` (declaration   declarator:(init_declarator (_ (_) @lhs) )) `].join('\n'),
 	};
 }
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [` (variable_declaration  (variable_declarator (_ (_) @lhs) )) `].join('\n'),
+		query: [` (variable_declaration  (variable_declarator (_ (_) @lhs) )) `].join('\n'),
 	};
 }
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			` (var_declaration (var_spec value:(expression_list (_) @variable )    ))  `,
 			` (const_declaration (const_spec value:(expression_list (_) @variable )    ))  `,
 			` (short_var_declaration left:(expression_list (_) @variable )) `,
@@ -33,42 +33,42 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
-			`(local_variable_declaration declarator:(variable_declarator name:(identifier) @lhs)) `,
-		].join('\n'),
+		query: [`(local_variable_declaration declarator:(variable_declarator name:(identifier) @lhs)) `].join(
+			'\n'
+		),
 	};
 }
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [` (variable_declarator name:(_ (_) @lhs) ) `].join('\n'),
+		query: [` (variable_declarator name:(_ (_) @lhs) ) `].join('\n'),
 	};
 }
 
 function json(): QuerySelector {
 	return {
 		language: 'json',
-		selector: [`(pair key : (string (_) @key))`].join('\n'),
+		query: [`(pair key : (string (_) @key))`].join('\n'),
 	};
 }
 
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
+		query: [` (variable_list (variable name:(identifier) @val)) `].join('\n'),
 	};
 }
 
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [`(assignment left:(_ attribute: (_)@lhs))`].join('\n'),
+		query: [`(assignment left:(_ attribute: (_)@lhs))`].join('\n'),
 	};
 }
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
+		query: [
 			` (let_declaration pattern:(tuple_pattern (_) @lhs)) `,
 			` (static_item name:(_) @lhs )`,
 			` (let_declaration   pattern:(identifier) @lhs )`,
@@ -80,14 +80,14 @@ function rust(): QuerySelector {
 function toml(): QuerySelector {
 	return {
 		language: 'toml',
-		selector: [`(pair (bare_key) @lhs) `].join('\n'),
+		query: [`(pair (bare_key) @lhs) `].join('\n'),
 	};
 }
 
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,
@@ -97,13 +97,13 @@ function typescript(): QuerySelector {
 function yaml(): QuerySelector {
 	return {
 		language: 'yaml',
-		selector: [`(block_mapping_pair key : (flow_node (_) @lhs ))`].join('\n'),
+		query: [`(block_mapping_pair key : (flow_node (_) @lhs ))`].join('\n'),
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,
@@ -113,7 +113,7 @@ function typescriptreact(): QuerySelector {
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: [
+		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
 			` (type_alias_declaration value: (_) @type   ) `,

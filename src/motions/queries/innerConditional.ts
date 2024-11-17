@@ -1,7 +1,7 @@
 function C(): QuerySelector {
 	return {
 		language: 'c',
-		selector: [
+		query: [
 			` (case_statement value:(_) (expression_statement (_)+ @conditional) (break_statement)* @conditional ) `,
 			` (conditional_expression consequence:(_)+ @conditional) `,
 			` (conditional_expression alternative:(_)+ @conditional ) `,
@@ -23,7 +23,7 @@ function C(): QuerySelector {
 function cpp(): QuerySelector {
 	return {
 		language: 'cpp',
-		selector: [
+		query: [
 			` (case_statement value:(_) (expression_statement (_) @conditional) (break_statement) @conditional) `,
 			` (conditional_expression consequence:(_)+ @conditional) `,
 			` (conditional_expression alternative:(_)+ @conditional ) `,
@@ -38,7 +38,7 @@ function cpp(): QuerySelector {
 function csharp(): QuerySelector {
 	return {
 		language: 'csharp',
-		selector: [
+		query: [
 			` (conditional_expression consequence:(_)+ @conditional) `,
 			` (conditional_expression alternative:(_)+ @conditional ) `,
 
@@ -56,7 +56,7 @@ function csharp(): QuerySelector {
 function go(): QuerySelector {
 	return {
 		language: 'go',
-		selector: [
+		query: [
 			`
 (if_statement 
     consequence: (block (_) @consequence) 
@@ -74,7 +74,7 @@ function go(): QuerySelector {
 function java(): QuerySelector {
 	return {
 		language: 'java',
-		selector: [
+		query: [
 			` (if_statement consequence:(block (_)+ @conditional )) `,
 			` (if_statement consequence:(expression_statement (_)+ @conditional)) `,
 			` (if_statement alternative:(expression_statement (_)+ @conditional)) `,
@@ -107,7 +107,7 @@ function java(): QuerySelector {
 function lua(): QuerySelector {
 	return {
 		language: 'lua',
-		selector: [
+		query: [
 			'(if_statement consequence: (_) @conditional )',
 			'(if_statement consequence: (_) @conditional (comment) @comment )',
 			'(if_statement alternative: (else_clause (_) @conditional (comment) @comment ))',
@@ -119,7 +119,7 @@ function lua(): QuerySelector {
 function python(): QuerySelector {
 	return {
 		language: 'python',
-		selector: [
+		query: [
 			` (if_statement consequence: (_) @conditional)  `,
 			` (elif_clause consequence:(block (_)+ @conditional)) `,
 			` (else_clause body:(block (_)+ @conditional)) `,
@@ -133,7 +133,7 @@ function python(): QuerySelector {
 function rust(): QuerySelector {
 	return {
 		language: 'rust',
-		selector: [
+		query: [
 			`(if_expression consequence: (block (_)+ @conditional )) `,
 			`(match_expression body: (match_block (_)+ @conditional )) `,
 			`(let_declaration value: (if_expression consequence: (block (_)+ @conditional))) `,
@@ -145,7 +145,7 @@ function rust(): QuerySelector {
 function javascript(): QuerySelector {
 	return {
 		language: 'javascript',
-		selector: [
+		query: [
 			` (if_statement consequence: (statement_block (_)+ @inner_statement)) `,
 			` (else_clause (statement_block (_)+ @conditional)) `,
 			` (if_statement consequence: (expression_statement (_)+ @inner_statement)) `,
@@ -161,19 +161,19 @@ function javascript(): QuerySelector {
 function typescript(): QuerySelector {
 	return {
 		language: 'typescript',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function typescriptreact(): QuerySelector {
 	return {
 		language: 'typescriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 function javascriptreact(): QuerySelector {
 	return {
 		language: 'javascriptreact',
-		selector: javascript().selector,
+		query: javascript().query,
 	};
 }
 

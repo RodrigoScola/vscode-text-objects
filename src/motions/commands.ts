@@ -10,6 +10,7 @@ import {
 	createSelectNext,
 	createSelectPrevious,
 	withInnerStringModifier,
+	withMatchFunc,
 } from './commandModifiers';
 import { groupElements } from './position';
 import { select as selectOuterArray } from './queries/Array';
@@ -45,97 +46,79 @@ import selectVariable from './queries/Variables';
 import { getDefaultContext, updateContext } from '../context/context';
 import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
 
-export class QueryCommand {
-	readonly name: CommandNames;
-	private getPosition: GetPositionFunc | undefined;
-	onFinish: OnFinish;
-
-	readonly scope: CommandScope;
-	selectors: Partial<Record<SupportedLanguages, QuerySelector>>;
-
-	readonly direction: CommandDirection;
-	readonly action: CommandAction;
-	onMatch: OnMatchFunc | undefined;
-
-	constructor(props: CommandProps) {
-		this.name = props.name;
-		this.scope = props.scope;
-		this.direction = props.direction;
-		this.action = props.action;
-		this.selectors = {};
-		this.onMatch = props.onMatch;
-		this.getPosition = props.pos;
-		this.onFinish = props.onFinish;
-	}
-
-	addSelector(selector: QuerySelector) {
-		this.selectors[selector.language] = selector;
-		return this;
-	}
-
-	//make a better name
-	commandName() {
-		return `${this.action}.${this.direction}.${this.scope}.${this.name}`;
-	}
-
-	async exec(ctx: QueryContext) {
-		assert(this, 'this is undefined');
-		assert(
-			typeof this.getPosition === 'function',
-			'this.getPosition is not a function, received:' + typeof this.getPosition
-		);
-
-		const language = ctx.editor.language();
-		ctx.parsing.parser = await LanguageParser.get(language);
-
-		const parser = ctx.parsing.parser;
-		assert(parser, `could not init parser for ${language}`);
-
-		const tree = parser.parser.parse(ctx.editor.getText());
-
-		const selector = this.selectors[language as SupportedLanguages];
-		assert(selector, `${this.name} is an invalid selector for ${language}`);
-
-		const query = parser.language.query(selector.selector);
-		assert(query, 'invalid query came out');
-
-		let matches = query.matches(tree.rootNode);
-
-		if (this.onMatch) {
-			assert(typeof this.onMatch === 'function', 'match function is function');
-			matches = this.onMatch(ctx, matches);
-		}
-
-		const points = toPoint(matches);
-
-		const ranges = toRange(points);
-
-		pointPool.retrieve(points);
-
-		const pos = this.getPosition(ranges, ctx.editor.cursor());
-
-		if (pos) {
-			assert(pos.start.isBeforeOrEqual(pos.end), 'start needs to be first');
-		}
-
-		this.onFinish(ctx, pos);
-	}
+function addSelector(command: Command, selector: QuerySelector) {
+	command.selectors[selector.language] = selector;
 }
 
-export function addSelectors(command: QueryCommand, funcs: Record<string, () => QuerySelector>) {
+function getCommandName(command: Command): string {
+	return `${command.action}.${command.direction}.${command.scope}.${command.name}`;
+}
+
+//make a better name
+
+function validateSelector(ctx: QueryContext, selector: QuerySelector | undefined): asserts selector {
+	const command = ctx.command;
+	assert(command, 'invalid command?');
+	assert(selector, 'invalid selector?');
+	assert(selector.language === ctx.editor.language(), 'they are different languages');
+	assert(selector, `${command.name} is an invalid selector for ${ctx.editor.language()}`);
+}
+
+async function executeCommand(ctx: QueryContext) {
+	const command = ctx.command;
+	assert(command, 'COMMAND IS NOT DEFINED?');
+	assert(
+		typeof command.pos === 'function',
+		'this.getPosition is not a function, received:' + typeof command.pos
+	);
+
+	const language = ctx.editor.language();
+	ctx.parsing.parser = await LanguageParser.get(language);
+
+	const parser = ctx.parsing.parser;
+	assert(parser, `could not init parser for ${language}`);
+
+	const tree = parser.parser.parse(ctx.editor.getText());
+
+	const selector = command.selectors[language as SupportedLanguages];
+	validateSelector(ctx, selector);
+	command.currentSelector = selector;
+
+	const query = parser.language.query(selector.query);
+
+	assert(query, 'invalid query came out');
+
+	let matches = query.matches(tree.rootNode);
+
+	if (command.onMatch) {
+		assert(typeof command.onMatch === 'function', 'match function is function');
+		matches = command.onMatch(ctx, matches);
+	}
+
+	const points = toPoint(matches);
+
+	const ranges = toRange(points);
+
+	pointPool.retrieve(points);
+
+	const pos = command.pos(ranges, ctx.editor.cursor());
+
+	if (pos) {
+		assert(pos.start.isBeforeOrEqual(pos.end), 'start needs to be first');
+	}
+
+	command.end(ctx, pos);
+}
+
+export function addSelectors(command: Command, funcs: Record<string, () => QuerySelector>) {
 	for (const func of Object.values(funcs)) {
-		command.addSelector(func());
+		addSelector(command, func());
 	}
 
 	return command;
 }
 
-function withMatchFunc(command: QueryCommand, func: OnMatchFunc) {
-	command.onMatch = func;
-	return command;
-}
-
-export const commands: QueryCommand[] = [
+export const commands: Command[] = [
 	addSelectors(
 		withMatchFunc(createSelectNext('outer', 'function'), function (_, matches) {
 			return filterDuplicates(matches, NODES.FUNCTION);
@@ -347,7 +330,7 @@ function makeName(str: string) {
 
 export function init() {
 	for (const command of commands) {
-		const name = makeName(command.commandName());
+		const name = makeName(getCommandName(command));
 		console.log('initting', name);
 		vscode.commands.registerCommand(name, async () => {
 			const currentEditor = vscode.window.activeTextEditor;
@@ -369,7 +352,7 @@ export function init() {
 			ctx.parsing.parser = parser;
 			ctx.command = command;
 
-			await ctx.command.exec(ctx);
+			await executeCommand(ctx);
 		});
 	}
 }
