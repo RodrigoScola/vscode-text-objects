@@ -84,7 +84,7 @@ export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 			after(last.startPosition, last.endPosition)
 		);
 
-		assert(top.row >= bottom.row, 'top needs to come first on line');
+		assert(top.row <= bottom.row, 'top needs to come first on line:' + top.row + ' ' + bottom.row);
 		if (top.row === bottom.row) {
 			assert(top.column <= bottom.column, 'top needs to come before bottom on character');
 		}

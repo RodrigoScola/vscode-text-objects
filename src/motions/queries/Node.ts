@@ -118,4 +118,7 @@ export default {
 	go,
 	javascript,
 	python,
+	javascriptreact,
+	typescript,
+	typescriptreact,
 };
