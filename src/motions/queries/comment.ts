@@ -36,9 +36,9 @@ function javascript(): Selector {
 	};
 }
 
-function json(): Selector {
+function jsonc(): Selector {
 	return {
-		language: 'json',
+		language: 'jsonc',
 		query: javascript().query,
 	};
 }
@@ -102,7 +102,7 @@ export default {
 	go,
 	java,
 	javascript,
-	json,
+	json: jsonc,
 	toml,
 	lua,
 	python,

@@ -8,11 +8,11 @@ export function visualize(start: vscode.Range): void {
 	const ctx = getContext();
 	assert(ctx, 'context is not defined');
 
-	const ceditor = ctx.editor;
-	assert(ceditor, 'editor is not present');
+	const editor = ctx.editor.getEditor();
+	assert(editor, 'editor is not present');
 
-	ceditor.getEditor().revealRange(start);
-	ceditor.getEditor().selection = new vscode.Selection(start.start, start.end); // Move cursor to that position
+	editor.revealRange(start);
+	editor.selection = new vscode.Selection(start.start, start.end); // Move cursor to that position
 }
 
 export class NodePool<T> {
@@ -20,7 +20,7 @@ export class NodePool<T> {
 	private nodes: T[];
 	private createFunc: () => T;
 	constructor(createFunc: () => T) {
-		this.nodes = [];
+		this.nodes = new Array();
 		this.size = 0;
 		this.createFunc = createFunc;
 	}

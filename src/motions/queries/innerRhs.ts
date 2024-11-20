@@ -59,7 +59,12 @@ function javascript(): Selector {
 		].join('\n'),
 	};
 }
-
+function jsonc(): Selector {
+	return {
+		language: 'jsonc',
+		query: ['(pair value : (_ (_) @rhs))'].join('\n'),
+	};
+}
 function json(): Selector {
 	return {
 		language: 'json',
@@ -188,6 +193,7 @@ export default {
 	javascript,
 	json,
 	toml,
+	jsonc,
 	lua,
 	python,
 	rust,

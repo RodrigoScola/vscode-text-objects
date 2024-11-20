@@ -45,7 +45,12 @@ function javascript(): Selector {
 		query: [` (variable_declarator name:(_) @lhs) `].join('\n'),
 	};
 }
-
+function jsonc(): Selector {
+	return {
+		language: 'jsonc',
+		query: [`(pair key :(_) @key)`].join('\n'),
+	};
+}
 function json(): Selector {
 	return {
 		language: 'json',
@@ -138,6 +143,7 @@ export default {
 	java,
 	javascript,
 	json,
+	jsonc,
 	toml,
 	lua,
 	python,

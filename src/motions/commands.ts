@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { filterDuplicates } from '../parsing/nodes';
 import { LanguageParser } from '../parsing/parser';
+import { groupMatches } from '../parsing/position';
 import {
 	createGoToNext,
 	createGoToPrevious,
@@ -10,8 +11,7 @@ import {
 	createSelectPrevious,
 	withInnerStringModifier,
 	withMatchFunc,
-} from './commandModifiers';
-import { groupElements } from './position';
+} from './modifiers';
 import { select as selectOuterArray } from './queries/Array';
 import Call from './queries/call';
 import Class from './queries/class';
@@ -138,9 +138,9 @@ export const commands: Command[] = [
 		}),
 		Function
 	),
-	addSelectors(withMatchFunc(createSelectNext('inner', 'function'), groupElements), InnerFunction),
+	addSelectors(withMatchFunc(createSelectNext('inner', 'function'), groupMatches), InnerFunction),
 	addSelectors(createSelectNext('outer', 'loop'), Loop),
-	addSelectors(withMatchFunc(createSelectNext('inner', 'loop'), groupElements), InnerLoop),
+	addSelectors(withMatchFunc(createSelectNext('inner', 'loop'), groupMatches), InnerLoop),
 	addSelectors(createSelectNext('outer', 'conditional'), Conditional),
 	addSelectors(
 		withMatchFunc(createSelectNext('inner', 'conditional'), function (ctx, matches) {
@@ -152,7 +152,7 @@ export const commands: Command[] = [
 				!language.includes('script') &&
 				!language.includes('python')
 			) {
-				return groupElements(ctx, matches);
+				return groupMatches(ctx, matches);
 			}
 			return matches;
 		}),
@@ -180,7 +180,7 @@ export const commands: Command[] = [
 	addSelectors(createSelectNext('outer', 'object'), OuterObject),
 	addSelectors(createSelectNext('inner', 'object'), InnerObject),
 
-	addSelectors(withMatchFunc(createSelectNext('outer', 'parameters'), groupElements), Params),
+	addSelectors(withMatchFunc(createSelectNext('outer', 'parameters'), groupMatches), Params),
 	addSelectors(createSelectNext('inner', 'parameters'), InnerParams),
 	addSelectors(createSelectNext('outer', 'call'), Call),
 	addSelectors(createSelectNext('inner', 'call'), InnerCall),
@@ -198,7 +198,7 @@ export const commands: Command[] = [
 		Function
 	),
 
-	addSelectors(withMatchFunc(createSelectPrevious('inner', 'function'), groupElements), InnerFunction),
+	addSelectors(withMatchFunc(createSelectPrevious('inner', 'function'), groupMatches), InnerFunction),
 	addSelectors(createSelectPrevious('outer', 'loop'), Loop),
 	addSelectors(createSelectPrevious('inner', 'loop'), InnerLoop),
 	addSelectors(createSelectPrevious('outer', 'conditional'), Conditional),
@@ -217,8 +217,8 @@ export const commands: Command[] = [
 	addSelectors(createSelectPrevious('outer', 'object'), OuterObject),
 	addSelectors(createSelectPrevious('inner', 'object'), InnerObject),
 	addSelectors(createSelectPrevious('inner', 'parameters'), InnerParams),
-	addSelectors(withMatchFunc(createSelectPrevious('outer', 'parameters'), groupElements), Params),
-	addSelectors(withMatchFunc(createSelectPrevious('outer', 'call'), groupElements), Call),
+	addSelectors(withMatchFunc(createSelectPrevious('outer', 'parameters'), groupMatches), Params),
+	addSelectors(withMatchFunc(createSelectPrevious('outer', 'call'), groupMatches), Call),
 	addSelectors(createSelectPrevious('inner', 'call'), InnerCall),
 	addSelectors(createSelectPrevious('outer', 'type'), Type),
 	addSelectors(createSelectPrevious('inner', 'type'), InnerType),
@@ -232,11 +232,11 @@ export const commands: Command[] = [
 		Function
 	),
 	// go to
-	addSelectors(withMatchFunc(createGoToNext('inner', 'function'), groupElements), InnerFunction),
+	addSelectors(withMatchFunc(createGoToNext('inner', 'function'), groupMatches), InnerFunction),
 	addSelectors(createGoToNext('outer', 'loop'), Loop),
-	addSelectors(withMatchFunc(createGoToNext('inner', 'loop'), groupElements), InnerLoop),
+	addSelectors(withMatchFunc(createGoToNext('inner', 'loop'), groupMatches), InnerLoop),
 	addSelectors(createGoToNext('outer', 'conditional'), Conditional),
-	addSelectors(withMatchFunc(createGoToNext('inner', 'conditional'), groupElements), InnerConditional),
+	addSelectors(withMatchFunc(createGoToNext('inner', 'conditional'), groupMatches), InnerConditional),
 	addSelectors(createGoToNext('outer', 'rhs'), Rhs),
 	addSelectors(createGoToNext('inner', 'rhs'), InnerRhs),
 	addSelectors(createGoToNext('outer', 'lhs'), Lhs),
@@ -260,19 +260,17 @@ export const commands: Command[] = [
 	addSelectors(createGoToNext('inner', 'comment'), InnerComment),
 
 	//previous command
-
 	addSelectors(
 		withMatchFunc(createGoToPrevious('outer', 'function'), (_, matches) =>
 			filterDuplicates(matches, 'function')
 		),
 		Function
 	),
-
-	addSelectors(withMatchFunc(createGoToPrevious('inner', 'function'), groupElements), InnerFunction),
+	addSelectors(withMatchFunc(createGoToPrevious('inner', 'function'), groupMatches), InnerFunction),
 	addSelectors(createGoToPrevious('outer', 'loop'), Loop),
 	addSelectors(createGoToPrevious('inner', 'loop'), InnerLoop),
 	addSelectors(createGoToPrevious('outer', 'conditional'), Conditional),
-	addSelectors(withMatchFunc(createGoToPrevious('inner', 'conditional'), groupElements), InnerConditional),
+	addSelectors(withMatchFunc(createGoToPrevious('inner', 'conditional'), groupMatches), InnerConditional),
 	addSelectors(createGoToPrevious('outer', 'rhs'), Rhs),
 	addSelectors(createGoToPrevious('inner', 'rhs'), InnerRhs),
 	addSelectors(createGoToPrevious('outer', 'lhs'), Lhs),
@@ -287,8 +285,8 @@ export const commands: Command[] = [
 	addSelectors(createGoToPrevious('outer', 'object'), OuterObject),
 	addSelectors(createGoToPrevious('inner', 'object'), InnerObject),
 	addSelectors(createGoToPrevious('inner', 'parameters'), InnerParams),
-	addSelectors(withMatchFunc(createGoToPrevious('outer', 'parameters'), groupElements), Params),
-	addSelectors(withMatchFunc(createGoToPrevious('outer', 'call'), groupElements), Call),
+	addSelectors(withMatchFunc(createGoToPrevious('outer', 'parameters'), groupMatches), Params),
+	addSelectors(withMatchFunc(createGoToPrevious('outer', 'call'), groupMatches), Call),
 	addSelectors(createGoToPrevious('inner', 'call'), InnerCall),
 	addSelectors(createGoToPrevious('outer', 'type'), Type),
 	addSelectors(createGoToPrevious('inner', 'type'), InnerType),
@@ -330,13 +328,9 @@ if (getConfig().experimentalNode()) {
 	);
 }
 
-function makeName(str: string) {
-	return `vscode-textobjects.${str}`;
-}
-
 export function init() {
 	for (const command of commands) {
-		const name = makeName(getCommandName(command));
+		const name = `vscode-textobjects.${getCommandName(command)}`;
 		console.log('initting', name);
 		vscode.commands.registerCommand(name, async () => {
 			const currentEditor = vscode.window.activeTextEditor;

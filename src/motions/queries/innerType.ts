@@ -53,19 +53,25 @@ function typescript(): Selector {
 	return {
 		language: 'typescript',
 		//todo addtypes
-		query: [].join('\n'),
+		query: [
+			`(interface_declaration body:(_ (_)* @type )) `,
+			`(type_alias_declaration value:(object_type (_)* @type )) `,
+			`(enum_declaration body:(enum_body (_)* @type ))) `,
+			`
+			(type_alias_declaration
+ type_parameters:(type_parameters
+  (type_parameter
+
+
+			
+			`,
+		].join('\n'),
 	};
 }
 function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
-		query: [].join('\n'),
-	};
-}
-function javascriptreact(): Selector {
-	return {
-		language: 'javascriptreact',
-		query: [].join('\n'),
+		query: typescript().query,
 	};
 }
 
@@ -78,5 +84,4 @@ export default {
 	rust,
 	typescript,
 	typescriptreact,
-	javascriptreact,
 };

@@ -141,7 +141,7 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 
 // there is a better way, could make a state class with all the current state of the extension
 // just trying to prove the idea for now
-export function groupElements(_: Context, matches: QueryMatch[]): QueryMatch[] {
+export function groupMatches(_: Context, matches: QueryMatch[]): QueryMatch[] {
 	const captureParents = new Map<number, QueryMatch>();
 
 	for (const match of matches) {

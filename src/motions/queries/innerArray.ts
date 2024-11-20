@@ -50,6 +50,12 @@ function json(): Selector {
 		query: javascript().query,
 	};
 }
+function jsonc(): Selector {
+	return {
+		language: 'json',
+		query: javascript().query,
+	};
+}
 
 function lua(): Selector {
 	return {
@@ -110,6 +116,7 @@ export default {
 	java,
 	javascript,
 	json,
+	jsonc,
 	toml,
 	lua,
 	python,

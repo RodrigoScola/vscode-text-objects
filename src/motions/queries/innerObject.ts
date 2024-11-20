@@ -66,7 +66,12 @@ function javascript(): Selector {
 		query: ['(object (_) @object ) '].join('\n'),
 	};
 }
-
+function jsonc(): Selector {
+	return {
+		language: 'jsonc',
+		query: javascript().query,
+	};
+}
 function json(): Selector {
 	return {
 		language: 'json',
@@ -140,6 +145,7 @@ export default {
 	java,
 	javascript,
 	json,
+	jsonc,
 	toml,
 	lua,
 	python,

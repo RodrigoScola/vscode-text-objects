@@ -1,0 +1,10 @@
+{
+	"outerarray": ["one", "two"],
+	"innerarray": ["one", "two"],
+	"outerstr": "string",
+	"obj": {
+		"outerarray": ["one", "two"],
+		"innerarray": ["one", "two"],
+		"outerstr": "string"
+	}
+}

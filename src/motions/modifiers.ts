@@ -1,6 +1,6 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { closestPos, nextPosition, previousPosition } from './position';
+import { closestPos, nextPosition, previousPosition } from '../parsing/position';
 
 const strRegex = /['"`]/;
 

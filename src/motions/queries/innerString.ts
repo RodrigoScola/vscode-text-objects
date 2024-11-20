@@ -39,7 +39,12 @@ function javascript(): Selector {
 		query: [`(string (_)* @string) `, `(template_string (_)* @string) `].join('\n'),
 	};
 }
-
+function jsonc(): Selector {
+	return {
+		language: 'jsonc',
+		query: [`(string_content) @string`].join('\n'),
+	};
+}
 function json(): Selector {
 	return {
 		language: 'json',
@@ -112,6 +117,7 @@ export default {
 	javascript,
 	json,
 	toml,
+	jsonc,
 	lua,
 	python,
 	rust,

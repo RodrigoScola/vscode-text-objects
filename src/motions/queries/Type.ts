@@ -16,7 +16,14 @@ function C(): Selector {
 function cpp(): Selector {
 	return {
 		language: 'cpp',
-		query: [].join('\n'),
+		query: [
+			`(declaration (type_qualifier) @types type: (primitive_type) @types ) `,
+			`(declaration  type: (union_specifier) @types ) `,
+			`(declaration (storage_class_specifier) @types type: (primitive_type) @types ) `,
+			`(primitive_type) @types`,
+			`(struct_specifier) @types`,
+			`(union_specifier  ) @type`,
+		].join('\n'),
 	};
 }
 function csharp(): Selector {

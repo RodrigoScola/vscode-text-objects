@@ -51,6 +51,12 @@ function json(): Selector {
 		query: [`(pair key : (string (_) @key))`].join('\n'),
 	};
 }
+function jsonc(): Selector {
+	return {
+		language: 'jsonc',
+		query: [`(pair key : (string (_) @key))`].join('\n'),
+	};
+}
 
 function lua(): Selector {
 	return {
@@ -128,6 +134,7 @@ export default {
 	java,
 	javascript,
 	json,
+	jsonc,
 	toml,
 	lua,
 	python,

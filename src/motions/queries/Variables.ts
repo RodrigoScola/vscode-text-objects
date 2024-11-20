@@ -41,6 +41,7 @@ function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
+			`  (field_definition) @variable`,
 			` (export_statement (lexical_declaration (variable_declarator) @variable) @declaration ) @export   `,
 			` (lexical_declaration (variable_declarator ) @variable ) @declaration `,
 		].join('\n'),
@@ -82,7 +83,13 @@ function toml(): Selector {
 }
 
 function typescript(): Selector {
-	const tsSelector = javascript().query + '\n' + `(type_alias_declaration) @type`;
+	const tsSelector = [
+		` (export_statement (lexical_declaration (variable_declarator) @variable) @declaration ) @export   `,
+		` (lexical_declaration (variable_declarator ) @variable ) @declaration `,
+		`(assignment_expression) @variable `,
+		`(type_alias_declaration) @type`,
+		` (public_field_definition ) @variable  `,
+	].join('\n');
 	return {
 		language: 'typescript',
 		query: tsSelector,
