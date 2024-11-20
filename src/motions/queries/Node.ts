@@ -139,12 +139,12 @@ function javascript(): Selector {
 
 function python(): Selector {
 	const query = [
-		` (expression_statement) @node`,
-		` (if_statement) @node  `,
-		` (conditional_expression) @node `,
-		` (function_definition) @node `,
-		' (class_definition) @node ',
-		` (for_statement) @node `,
+		`(expression_statement) @node`,
+		`(if_statement) @node  `,
+		`(conditional_expression) @node `,
+		`(function_definition) @node `,
+		'(class_definition) @node ',
+		`(for_statement) @node `,
 		`(while_statement) @node`,
 		`(list_comprehension) @node`,
 	];
@@ -182,7 +182,7 @@ function rust(): Selector {
 }
 
 function toml(): Selector {
-	const query = ['(pair) @node'];
+	const query = ['(pair)*  @node'];
 
 	return {
 		language: 'toml',

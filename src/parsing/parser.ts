@@ -64,9 +64,11 @@ export const Languages = {
 };
 
 export class LanguageParser {
+	private static hasStarted: boolean = false;
 	private static initedLanguages: Partial<Record<keyof typeof Languages, Parsing>> = {};
 	static init() {
 		const wasmPath = LanguageParser.path('tree-sitter');
+		LanguageParser.hasStarted = true;
 
 		return parser.init({
 			locateFile: () => wasmPath,
@@ -81,13 +83,19 @@ export class LanguageParser {
 		}
 
 		let lang: Language | undefined;
-		await LanguageParser.init();
+		assert(LanguageParser.hasStarted === true, 'the default language parser has not started');
+
 		try {
 			const parseName = Languages[langname as keyof typeof Languages];
 
 			assert(parseName, 'could not find parser for ' + langname);
 			const p = this.path(parseName.module);
-			lang = await parser.Language.load(p);
+			if (!(langname in LanguageParser.initedLanguages)) {
+				lang = await parser.Language.load(p);
+			} else {
+				//@ts-ignore
+				lang = LanguageParser.initedLanguages[langname];
+			}
 		} catch (err) {
 			// could send an notification alert
 			console.error('could not set language', err);

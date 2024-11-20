@@ -15,7 +15,6 @@ export function filterDuplicates(matches: QueryMatch[], selector: string): Query
 		}
 		if (!match.captures.some((capture) => capture.name === selector)) {
 			const first = match.captures[0];
-			console.log(match.captures);
 			assert(first, 'first node came undefined?');
 
 			matchSelector.set(first.node.text, match);

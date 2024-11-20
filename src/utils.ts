@@ -34,17 +34,15 @@ export class NodePool<T> {
 		this.size--;
 		return node;
 	}
-	retrieve(point: T | T[]) {
-		if (!Array.isArray(point)) {
-			this.nodes.push(point);
-			this.size++;
-			return;
-		}
-
+	retrieveAll(point: T[]) {
 		while (point.length > 0) {
-			this.nodes.push(point.pop()!);
+			this.nodes[this.size] = point.pop()!;
 			this.size++;
 		}
+	}
+	retrieve(point: T) {
+		this.nodes[this.size] = point;
+		this.size++;
 	}
 }
 

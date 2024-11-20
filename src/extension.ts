@@ -68,39 +68,7 @@ export class Editor {
 
 // This method is called when your extension is activated
 export async function activate() {
-	LanguageParser.init();
-
-	// const terminalDataListener = vscode.window.onDidChangeTerminalState(
-	// 	(e) => {
-	// 		const currentOutput = terminalOutputs.get(e.terminal.name) || '';
-	// 		terminalOutputs.set(e.terminal.name, currentOutput + e.data);
-	// 	}
-	// );
-
-	await init();
+	await Promise.all([LanguageParser.init(), init()]);
 }
 
 export function deactivate() {}
-
-// function getExtension(language: string) {
-// 	switch (language.trim()) {
-// 		case 'javascript': {
-// 			return '.js';
-// 		}
-// 		case 'typescript': {
-// 			return '.ts';
-// 		}
-// 		case 'javascriptreact': {
-// 			return '.jsx';
-// 		}
-// 		case 'typescriptreact': {
-// 			return '.tsx';
-// 		}
-// 		case 'python': {
-// 			return '.py';
-// 		}
-// 		default: {
-// 			return language;
-// 		}
-// 	}
-// }

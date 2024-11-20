@@ -51,11 +51,9 @@ function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
-			` ((function_declaration
-            body: (statement_block
-            (_)* @function_body)))`,
-			` (function_expression body: (statement_block (_)* @function.body)) `,
-			` (arrow_function body: (statement_block (_)* @function_body)) `,
+			`((function_declaration body: (statement_block (_)* @function_body)))`,
+			`(function_expression body: (statement_block (_)* @function.body)) `,
+			`(arrow_function body: (statement_block (_)* @function_body)) `,
 			`(method_definition body: (statement_block (_)* @function.body)) `,
 		].join('\n'),
 	};
@@ -64,12 +62,10 @@ function lua(): Selector {
 	return {
 		language: 'lua',
 		query: [
-			` (function_definition_statement body: (block (_)+ @function )) `,
-			` (local_function_definition_statement body: (block (_)+ @function ))  `,
-			` (local_variable_declaration
-		  (expression_list value:(function_definition body: (block (_)+ @function )))) `,
-			`(variable_assignment
-		  (expression_list value:(function_definition body: (block (_)+ @function ))))  `,
+			`(function_definition_statement body: (block (_)+ @function )) `,
+			`(local_function_definition_statement body: (block (_)+ @function ))  `,
+			`(local_variable_declaration (expression_list value:(function_definition body: (block (_)+ @function )))) `,
+			`(variable_assignment (expression_list value:(function_definition body: (block (_)+ @function ))))  `,
 			`(field value:(function_definition body: (block (_)+ @function))) `,
 		].join('\n'),
 	};
@@ -84,7 +80,11 @@ function python(): Selector {
 function rust(): Selector {
 	return {
 		language: 'rust',
-		query: [].join('\n'),
+		query: [
+			`(_ (closure_expression body:(_ (_)* @function ))) `,
+			`(function_item body: (_)* @function  )  `,
+			`(function_signature_item  ) @function  `,
+		].join('\n'),
 	};
 }
 function typescript(): Selector {

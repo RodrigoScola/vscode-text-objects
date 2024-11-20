@@ -64,7 +64,8 @@ function assertSelector(ctx: Context, selector: Selector | undefined): asserts s
 	assert(selector, `${command.name} is an invalid selector for ${ctx.editor.language()}`);
 }
 
-async function executeCommand(ctx: Context) {
+function executeCommand(ctx: Context) {
+	assert(ctx.parsing.parser, 'parser is not defined?');
 	const command = ctx.command;
 	// console.group('inside');
 	console.time('mysetup');
@@ -75,7 +76,6 @@ async function executeCommand(ctx: Context) {
 	);
 
 	const language = ctx.editor.language();
-	ctx.parsing.parser = await LanguageParser.get(language);
 
 	const parser = ctx.parsing.parser;
 	assert(parser, `could not init parser for ${language}`);
@@ -111,7 +111,7 @@ async function executeCommand(ctx: Context) {
 	console.timeEnd('range');
 	console.time('final');
 
-	pointPool.retrieve(points);
+	pointPool.retrieveAll(points);
 
 	const pos = command.pos(ranges, ctx.editor.cursor());
 
@@ -355,8 +355,7 @@ export function init() {
 			console.time('perf');
 
 			console.time('setup');
-			const ctx = getDefaultContext();
-			updateContext(ctx);
+			const ctx = updateContext(getDefaultContext());
 
 			ctx.editor.setEditor(currentEditor);
 
@@ -371,7 +370,7 @@ export function init() {
 			updateCommand(command);
 
 			console.time('command');
-			await executeCommand(ctx);
+			executeCommand(ctx);
 			console.timeEnd('command');
 
 			console.timeEnd('perf');

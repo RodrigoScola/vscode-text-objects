@@ -1,15 +1,18 @@
 function C(): Selector {
 	const query = [
-		`(for_statement (compound_statement (_)* @node ) ) `,
-		`(while_statement (compound_statement (_)* @node  )) `,
-		`(do_statement (compound_statement (_)* @node) ) `,
-		`(struct_specifier (field_declaration_list (_)* @node )) `,
-		// `(function_definition (_)* @node ) `,
-		// `(declaration declarator: (function_declarator (_)* @node )) `,
-		// `(switch_statement (_)* @node ) `,
-		// `(conditional_expression (_)* @node  )`,
-		// `(if_statement (_)* @node) `,
-		// `(declaration declarator: (init_declarator (_)* @node)) `,
+		'(call_expression arguments: (argument_list (_) @node  )) ',
+		`(for_statement body: (compound_statement (_)+ @node)) `,
+		`(while_statement body: (compound_statement (_)+ @node)) `,
+		`(do_statement body: (compound_statement (_)+ @node )) `,
+		`(function_definition body: (compound_statement (_)+ @node )) `,
+		`(case_statement value:(_) (expression_statement (_)+ @node) (break_statement)* @node ) `,
+		`(conditional_expression consequence:(_)+ @node) `,
+		`(conditional_expression alternative:(_)+ @node) `,
+		`(if_statement consequence:(compound_statement (_)+ @node )) `,
+		`(else_clause (compound_statement (_)+ @node))`,
+		`(else_clause (expression_statement (_)+ @node))`,
+		`(if_statement consequence:(expression_statement (_)+ @node)) `,
+		,
 	];
 
 	return {
@@ -20,18 +23,17 @@ function C(): Selector {
 
 function cpp(): Selector {
 	const query = [
-		`(for_range_loop ) @node `,
-		`(for_statement) @node `,
-		'(class_specifier) @node',
-		`(function_definition) @node `,
-		`(template_declaration (function_definition)) @node`,
-		`(declaration (init_declarator value: (lambda_expression declarator: (abstract_function_declarator)) )) @node `,
-		`(lambda_expression declarator: (abstract_function_declarator)) @node `,
-		`(if_statement) @node`,
-		`(switch_statement ) @node `,
-		`(conditional_expression) @node`,
-		`(declaration) @node `,
-		`(field_declaration) @node `,
+		`(case_statement value:(_) (expression_statement (_) @node ) (break_statement) @node) `,
+		`(conditional_expression consequence:(_)+ @node) `,
+		`(conditional_expression alternative:(_)+ @node) `,
+		`(if_statement consequence:(compound_statement (_)+ @node)) `,
+		`(else_clause (compound_statement (_)+ @node ))`,
+		`(if_statement consequence:(expression_statement (_)+ @node )) `,
+		`(function_definition body: ( (compound_statement (_)+ @node))) `,
+		`(lambda_expression declarator: (abstract_function_declarator) body: (compound_statement (_)+ @node)) `,
+		`(for_range_loop body: (compound_statement (_)+ @node) ) `,
+		`(for_statement body: (compound_statement (_)+ @node)) `,
+		`(call_expression arguments: ( argument_list (_)+ @node)) `,
 	];
 
 	return {
@@ -39,20 +41,23 @@ function cpp(): Selector {
 		query: query.join('\n'),
 	};
 }
+
 function csharp(): Selector {
 	const query = [
+		`(conditional_expression consequence:(_)+ @node) `,
+		`(conditional_expression alternative:(_)+ @node ) `,
+		`(if_statement consequence:(block (_)+ @node)) `,
+		`(switch_statement body: (switch_body (_) @node)) `,
+		`(if_statement alternative: (block (_)+ @node))`,
+		`(if_statement consequence:(expression_statement (_)+ @node )) `,
+		`(method_declaration body:(block (_)+ @node )) `,
+		`(local_function_statement body:(block (_)+ @node )) `,
+		`(lambda_expression body:(_)+ @node )`,
 		`(for_statement body: (block (_)+ @node)) `,
 		`(for_each_statement (block (_)+ @node)) `,
 		`(while_statement (block (_)+ @node)) `,
 		`(do_statement (block (_)+ @node))`,
-		`(class_declaration) @node`,
-		`(local_function_statement) @node`,
-		`(method_declaration) @node`,
-		`(lambda_expression)  @node `,
-		`(conditional_expression  ) @node`,
-		`(if_statement) @node `,
-		`(switch_statement) @node `,
-		`(variable_declaration) @node`,
+		`(invocation_expression arguments:(argument_list (_) @node)) `,
 	];
 
 	return {
@@ -60,8 +65,13 @@ function csharp(): Selector {
 		query: query.join('\n'),
 	};
 }
+
 function go(): Selector {
 	const query = [
+		`(call_expression arguments:(argument_list (_) @call )) `,
+		`(for_statement body: (block (_) @loop)*) `,
+		`(function_declaration body:(block (_) @function )) `,
+		`(method_declaration body:(block (_) @function )) `,
 		`(for_statement) @node`,
 		'(type_declaration (type_spec type: (struct_type) )) @node ',
 		`(go_statement (_ (_ (func_literal)))) @node `,
@@ -84,19 +94,20 @@ function go(): Selector {
 }
 function java(): Selector {
 	const query = [
+		`(expression_statement (method_invocation arguments:(argument_list (_) @node))) `,
 		`(for_statement body:(block (_) @node)) `,
 		`(enhanced_for_statement body:(block (_) @node)) `,
 		`(while_statement body:(block (_) @node)) `,
 		`(do_statement body:(block (_) @node)) `,
-		'(class_declaration) @node',
-		`(method_declaration) @node`,
-		`(local_variable_declaration declarator:(variable_declarator value:(lambda_expression))) @node`,
-		`(local_variable_declaration) @node `,
-		`(expression_statement (assignment_expression)) @node`,
-		`(if_statement) @node `,
-		`(ternary_expression  ) @node`,
-		`(ternary_expression ) @node`,
-		`(switch_block_statement_group) @node `,
+		`(method_declaration body:(block (_)+ @node)) `,
+		`(variable_declarator value:(lambda_expression body:(block (_)+ @node)))`,
+		`(if_statement consequence:(block (_)+ @node)) `,
+		`(if_statement consequence:(expression_statement (_)+ @node)) `,
+		`(if_statement alternative:(expression_statement (_)+ @node)) `,
+		`(if_statement alternative:(block (_)+ @node )) `,
+		`(ternary_expression consequence:(_) @node) `,
+		`(ternary_expression alternative:(_) @node) `,
+		`(switch_block_statement_group (switch_label)* (_)+ @node (break_statement)? @node ) `,
 	].join('\n');
 
 	return {
@@ -107,20 +118,26 @@ function java(): Selector {
 
 function javascript(): Selector {
 	const selector = [
+		`(call_expression arguments: (arguments (_) @node) )  `,
+		`(for_statement body: (statement_block (_)* @node)) (for_in_statement body: (statement_block (_)* @node)) `,
+		`((function_declaration body: (statement_block (_)* @node)))`,
+		`(function_expression body: (statement_block (_)* @node)) `,
+		`(arrow_function body: (statement_block (_)* @node)) `,
+		`(method_definition body: (statement_block (_)* @node)) `,
 		// selects functions
 		`(method_definition) @node`,
-		`(export_statement (_ (_ (function_expression) @function ))) @export `,
-		`(_ (_ (function_expression) @function )) @declaration `,
-		`(method_definition) @function`,
-		`(arguments (function_expression)  @function ) @arguments `,
-		`(arrow_function ) @function `,
-		`(export_statement (function_declaration) @function ) @export `,
-		`(function_declaration) @function `,
-		`(_ (_    (arrow_function) @function  )) @export `,
-		`(export_statement (_ (_ value: (arrow_function) @function )) ) @export `,
+		`(export_statement (_ (_ (function_expression) @node ))) @export `,
+		`(_ (_ (function_expression) @node )) @declaration `,
+		`(method_definition) @node`,
+		`(arguments (function_expression)  @node ) @arguments `,
+		`(arrow_function ) @node `,
+		`(export_statement (function_declaration) @node ) @export `,
+		`(function_declaration) @node `,
+		`(_ (_    (arrow_function) @node  )) @export `,
+		`(export_statement (_ (_ value: (arrow_function) @node )) ) @export `,
 		//--
 
-		`(_ arguments:(_ (arrow_function) @function )) `,
+		`(_ arguments:(_ (arrow_function) @node)) `,
 		`(for_statement) @node (for_in_statement) @node `,
 		`( class_declaration ) @node`,
 		`(export_statement declaration: ( class_declaration ) @node ) @export `,
@@ -129,6 +146,7 @@ function javascript(): Selector {
 		`(export_statement (lexical_declaration) @node ) @export   `,
 		`(lexical_declaration   ) @node`,
 		`(try_statement) @node `,
+		,
 	].join('\n');
 
 	return {
@@ -139,14 +157,14 @@ function javascript(): Selector {
 
 function python(): Selector {
 	const query = [
-		` (expression_statement) @node`,
-		` (if_statement) @node  `,
-		` (conditional_expression) @node `,
-		` (function_definition) @node `,
-		' (class_definition) @node ',
-		` (for_statement) @node `,
-		`(while_statement) @node`,
-		`(list_comprehension) @node`,
+		'(call arguments: (argument_list (_) @node)  )',
+		`(for_statement body: (block (_)+ @node)) `,
+		'( right: (lambda) @node) ',
+		`(if_statement consequence: (_) @node)  `,
+		`(elif_clause consequence:(block (_)+ @node)) `,
+		`(else_clause body:(block (_)+ @node)) `,
+		`(conditional_expression (_)+ @node ) `,
+		`(conditional_expression (_) (comparison_operator (_) ) (_)+ @node) `,
 	];
 
 	return {
@@ -156,23 +174,14 @@ function python(): Selector {
 }
 
 function rust(): Selector {
+	//forgot inner function
 	const query = [
-		`(struct_item) @node`,
-		`(impl_item) @node`,
-		`(trait_item) @node`,
-		`(enum_item) @node`,
-		`(loop_expression) @node`,
-		`(while_expression) @node`,
-		`(for_expression) @node`,
-		`(let_declaration pattern: (identifier) (_) ) @node`,
-		`(function_item ) @node`,
-		`(function_signature_item) @node`,
-		`(if_expression) @node `,
-		`(match_expression body: (match_block) @node) `,
-		`(let_declaration value: (if_expression) @node) `,
-		`(let_declaration) @node`,
-		`(const_item) @node`,
-		`(static_item) @node`,
+		`(call_expression arguments: (arguments ) @node)`,
+		`(for_statement body: (block (_)+ @node)) `,
+		`(if_expression consequence: (block (_)+ @node )) `,
+		`(match_expression body: (match_block (_)+ @node )) `,
+		`(let_declaration value: (if_expression consequence: (block (_)+ @node))) `,
+		`(else_clause (block (_)+ @node )) `,
 	];
 
 	return {
@@ -208,8 +217,9 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+
 function yaml(): Selector {
-	const query = [` (block_mapping_pair) @node`];
+	const query = [` (alias (_) @node)  `, ` (block_mapping_pair) @node`];
 
 	return {
 		language: 'yaml',
@@ -230,4 +240,5 @@ export default {
 	javascriptreact,
 	typescript,
 	typescriptreact,
+	yaml,
 };

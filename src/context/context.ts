@@ -8,8 +8,9 @@ export function getContext(): Context {
 	return context;
 }
 
-export function updateContext(ctx: Context) {
+export function updateContext(ctx: Context): Context {
 	context = ctx;
+	return context;
 }
 export function updateCommand(cmd: Command) {
 	context.command = cmd;
