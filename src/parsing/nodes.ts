@@ -6,7 +6,7 @@ import { QueryMatch } from 'web-tree-sitter';
 import { NodePool } from '../utils';
 
 const matchSelector = new Map<string, QueryMatch>();
-export function filterDuplicates(matches: QueryMatch[], selector: string): QueryMatch[] {
+export function filterDuplicates(matches: QueryMatch[], selector: string | string[]): QueryMatch[] {
 	matchSelector.clear();
 
 	for (const match of matches) {

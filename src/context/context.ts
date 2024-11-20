@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { Editor } from '../extension';
+import { Editor } from '../editor/editor';
 
 let context: Context;
 

@@ -1,6 +1,6 @@
 import { Position, Range } from 'vscode';
 import Parser, { Language, QueryMatch } from 'web-tree-sitter';
-import { Editor } from '../extension';
+import { Editor } from '../editor/editor';
 import { Languages } from '../parsing/parser';
 
 export {};

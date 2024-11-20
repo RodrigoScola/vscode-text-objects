@@ -68,12 +68,6 @@ Blocks would be nice catch all.
 -    add the on language events - DONE
 -    see if the todos are valid still - DONE
 
-revision of nodes
-
--    outer array - done
-
--    revise all selectors (remember to put the inner conditonal in the conditional)
-
 -    organize into good js
 
 ### Misc

@@ -42,7 +42,6 @@ import Str from './queries/String';
 import Type from './queries/Type';
 import Variable from './queries/Variables';
 
-import { NODES } from '../constants';
 import { getDefaultContext, updateCommand, updateContext } from '../context/context';
 import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
 
@@ -135,7 +134,7 @@ export function addSelectors(command: Command, funcs: Record<string, () => Selec
 export const commands: Command[] = [
 	addSelectors(
 		withMatchFunc(createSelectNext('outer', 'function'), function (_, matches) {
-			return filterDuplicates(matches, NODES.FUNCTION);
+			return filterDuplicates(matches, 'function');
 		}),
 		Function
 	),
@@ -165,7 +164,7 @@ export const commands: Command[] = [
 	addSelectors(createSelectNext('inner', 'lhs'), InnerLhs),
 	addSelectors(
 		withMatchFunc(createSelectNext('outer', 'variable'), (_, matches) =>
-			filterDuplicates(filterDuplicates(matches, 'variable'), 'declaration')
+			filterDuplicates(matches, ['declaration', 'variable'])
 		),
 		Variable
 	),
@@ -194,7 +193,7 @@ export const commands: Command[] = [
 
 	addSelectors(
 		withMatchFunc(createSelectPrevious('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, NODES.FUNCTION)
+			filterDuplicates(matches, 'function')
 		),
 		Function
 	),
@@ -228,7 +227,7 @@ export const commands: Command[] = [
 
 	addSelectors(
 		withMatchFunc(createGoToNext('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, NODES.FUNCTION)
+			filterDuplicates(matches, 'function')
 		),
 		Function
 	),
@@ -264,7 +263,7 @@ export const commands: Command[] = [
 
 	addSelectors(
 		withMatchFunc(createGoToPrevious('outer', 'function'), (_, matches) =>
-			filterDuplicates(matches, NODES.FUNCTION)
+			filterDuplicates(matches, 'function')
 		),
 		Function
 	),
@@ -304,22 +303,15 @@ if (getConfig().experimentalNode()) {
 				const lang = ctx.editor.language();
 				//javascript , typescript, javascriptreact, typescriptreact
 				if (lang.includes('script')) {
-					return filterDuplicates(
-						filterDuplicates(filterDuplicates(matches, NODES.NODE), 'export'),
-						NODES.EXPORT
-					);
+					return filterDuplicates(matches, ['node', 'export']);
 				}
 				//java
 				else if (lang.includes('java')) {
 					return filterDuplicates(matches, 'inner');
 				} else if (lang.includes('cpp')) {
-					return filterDuplicates(filterDuplicates(matches, 'expression'), 'inner');
+					return filterDuplicates(matches, ['expression', 'inner']);
 				} else if (lang === 'go') {
-					//`(_ (_ (_ (_ (_ (_ (block) @inner ) @out ) @outer ) @outing ) @outest) @bro ) @lastone `,
-					return filterDuplicates(
-						filterDuplicates(filterDuplicates(matches, 'inner'), 'outer'),
-						'node'
-					);
+					return filterDuplicates(matches, ['inner', 'outer', 'node']);
 				}
 				return matches;
 			}),
