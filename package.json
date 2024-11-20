@@ -55,7 +55,7 @@
 			"properties": {
 				"vscode-textobjects.experimentalNodeQuery": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "activates an experimental node type"
 				}
 			}

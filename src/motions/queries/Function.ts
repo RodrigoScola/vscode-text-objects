@@ -66,12 +66,14 @@ function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
+			`(export_statement (_ (_ (function_expression) @function ))) @export `,
+			`(_ (_ (function_expression) @function )) @declaration `,
 			`(method_definition) @function`,
-			`(arguments (function_expression)  @function ) `,
+			`(arguments (function_expression)  @function ) @arguments `,
 			`(arrow_function ) @function `,
-			`(export_statement declaration:(function_declaration) @function ) @export `,
+			`(export_statement (function_declaration) @function ) @export `,
 			`(function_declaration) @function `,
-			`(_ (_   value: (arrow_function) )) @function `,
+			`(_ (_    (arrow_function) @function  )) @export `,
 			`(export_statement (_ (_ value: (arrow_function) @function )) ) @export `,
 			`(_ arguments:(_ (arrow_function) @function )) `,
 		].join('\n'),

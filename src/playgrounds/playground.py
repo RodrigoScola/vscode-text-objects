@@ -34,7 +34,6 @@ def my_generator():
 
 
 async def my_async_function():
-    await asyncio.sleep(1)
     print("Async function completed")
 
 

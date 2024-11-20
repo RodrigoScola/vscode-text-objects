@@ -41,8 +41,8 @@ function javascript(): Selector {
 	return {
 		language: 'javascript',
 		query: [
-			` (export_statement (lexical_declaration (variable_declarator) @variable)) @lexical_declaration `,
-			` (lexical_declaration (variable_declarator ) @variable ) @lexical_declaration `,
+			` (export_statement (lexical_declaration (variable_declarator) @variable) @declaration ) @export   `,
+			` (lexical_declaration (variable_declarator ) @variable ) @declaration `,
 		].join('\n'),
 	};
 }

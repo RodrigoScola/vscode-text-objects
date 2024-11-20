@@ -58,13 +58,15 @@ function after(a: parser.Point, b: parser.Point): parser.Point {
 }
 
 export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
-	const nodes: JoinedPoint[] = [];
+	const nodes: JoinedPoint[] = new Array(matches.length);
+	let len = 0;
 
 	for (const match of matches) {
 		if (match.captures.length === 0) {
 			continue;
 		}
-		match.captures.sort((a, b) => a.node.startIndex - b.node.startIndex);
+
+		// match.captures.sort((a, b) => a.node.startIndex - b.node.startIndex);
 		const first = match.captures.at(0)?.node;
 		const last = match.captures.at(-1)?.node;
 
@@ -96,7 +98,8 @@ export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 		node.start = top;
 		node.end = bottom;
 
-		nodes[nodes.length] = node;
+		nodes[len] = node;
+		len++;
 	}
 
 	assert(nodes.length === matches.length, 'is there a mismatch of things?');

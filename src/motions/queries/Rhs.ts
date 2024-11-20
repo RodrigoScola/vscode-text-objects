@@ -102,7 +102,7 @@ function typescript(): Selector {
 }
 function yaml(): Selector {
 	return {
-		language: 'typescript',
+		language: 'yaml',
 		//todo revise the selectors
 		query: [` (block_mapping_pair value:(_) @rhs) `].join('\n'),
 	};

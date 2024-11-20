@@ -16,28 +16,34 @@ export function visualize(start: vscode.Range): void {
 }
 
 export class NodePool<T> {
+	size: number;
 	private nodes: T[];
 	private createFunc: () => T;
 	constructor(createFunc: () => T) {
 		this.nodes = [];
+		this.size = 0;
 		this.createFunc = createFunc;
 	}
 	get(): T {
 		const node = this.nodes.pop();
 
 		if (!node) {
+			this.size++;
 			return this.createFunc();
 		}
+		this.size--;
 		return node;
 	}
 	retrieve(point: T | T[]) {
 		if (!Array.isArray(point)) {
 			this.nodes.push(point);
+			this.size++;
 			return;
 		}
 
 		while (point.length > 0) {
-			this.retrieve(point.pop()!);
+			this.nodes.push(point.pop()!);
+			this.size++;
 		}
 	}
 }
