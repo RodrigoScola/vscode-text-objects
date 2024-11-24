@@ -22,7 +22,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.1.6",
+	"version": "0.1.8",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -346,8 +346,8 @@
 			{
 				"command": "vscode-textobjects.goTo.previous.inner.array",
 				"when": "editorTextFocus",
-				"key": "ctrl+shift+n ctrl+a",
-				"mac": "cmd+shift+n cmd+a"
+				"key": "ctrl+shift+n ctrl+shift+a",
+				"mac": "cmd+shift+n cmd+shift+a"
 			},
 			{
 				"command": "vscode-textobjects.select.next.outer.class",

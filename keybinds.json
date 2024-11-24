@@ -165,7 +165,7 @@
 		{
 			"command": "vscode-textobjects.goTo.previous.inner.function",
 			"when": "editorTextFocus",
-			"key": "ctrl+shift+n ctrl+f",
+			"key": "ctrl+shift+n ctrl+shift+f",
 			"mac": "cmd+shift+n cmd+f"
 		},
 		{

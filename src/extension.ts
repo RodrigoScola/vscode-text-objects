@@ -8,6 +8,7 @@ import { LanguageParser } from './parsing/parser';
 // This method is called when your extension is activated
 export async function activate() {
 	await Promise.all([LanguageParser.init(), init()]);
+
 }
 
 export function deactivate() {}

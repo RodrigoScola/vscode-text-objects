@@ -1,5 +1,6 @@
 import React from 'react';
 
+const b = 3
 
 
 export const Function = () => {

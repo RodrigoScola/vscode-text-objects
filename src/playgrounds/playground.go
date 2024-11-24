@@ -91,7 +91,7 @@ func (f *b) Call(a int) string {
 
 	fmt.Printf("%d", a)
 	for i := range 10 {
-		fmt.Println(i)
+		fmt.Println(i, i, i)
 		fmt.Println(i)
 		fmt.Println(i)
 	}

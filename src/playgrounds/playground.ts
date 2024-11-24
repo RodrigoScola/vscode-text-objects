@@ -1,5 +1,4 @@
 export function a(b: number, c: string) {
-	this.asdf = () => {};
 	console.log(b);
 	function d() {
 		console.log(b);

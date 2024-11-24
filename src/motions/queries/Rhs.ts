@@ -125,7 +125,7 @@ function javascriptreact(): Selector {
 		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
-			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
+			`(field_definition  value:(_) @rhs) `,
 		].join('\n'),
 	};
 }

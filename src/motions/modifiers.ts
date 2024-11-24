@@ -61,10 +61,10 @@ export function createSelectPrevious(scope: CommandScope, name: CommandNames): C
 		direction: 'previous',
 		action: 'select',
 		pos: previousPosition,
-		end: (ctx, range) => {
+		end: async (ctx, range) => {
 			assert(ctx.editor.selectRange, 'select range is undefined');
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
-			ctx.editor.selectRange(ctx, range);
+			await ctx.editor.selectRange(ctx, range);
 		},
 	};
 }

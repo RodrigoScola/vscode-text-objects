@@ -67,8 +67,9 @@ Blocks would be nice catch all.
 -    see if it works on tsx and jsx all the things (mainly conditionals) - DONE
 -    add the on language events - DONE
 -    see if the todos are valid still - DONE
+-    organize into good js - DONE
 
--    organize into good js
+check all the queries
 
 ### Misc
 

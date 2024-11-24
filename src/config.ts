@@ -6,8 +6,6 @@ export class Config {
 	private config: WorkspaceConfiguration;
 	constructor(configuration: WorkspaceConfiguration) {
 		this.config = configuration;
-
-		console.log('config', this.config);
 	}
 
 	experimentalNode(): boolean {

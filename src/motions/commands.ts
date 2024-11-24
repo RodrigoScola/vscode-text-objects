@@ -67,7 +67,6 @@ function executeCommand(ctx: Context) {
 	assert(ctx.parsing.parser, 'parser is not defined?');
 	const command = ctx.command;
 	// console.group('inside');
-	console.time('mysetup');
 	assert(command, 'COMMAND IS NOT DEFINED?');
 	assert(
 		typeof command.currentSelector === 'undefined',
@@ -85,30 +84,19 @@ function executeCommand(ctx: Context) {
 	assertSelector(ctx, selector);
 	command.currentSelector = selector;
 
-	console.timeEnd('mysetup');
-	console.time('parsing');
-
 	const query = parser.language.query(selector.query);
 	assert(query, 'invalid query came out???');
 
-	console.timeEnd('parsing');
 	let matches = query.matches(tree.rootNode);
 
-	console.time('match');
 	if (command.onMatch) {
 		assert(typeof command.onMatch === 'function', 'match function is function');
 		matches = command.onMatch(ctx, matches);
 	}
-	console.timeEnd('match');
 
-	console.time('point');
 	const points = toPoint(matches);
-	console.timeEnd('point');
 
-	console.time('range');
 	const ranges = toRange(points);
-	console.timeEnd('range');
-	console.time('final');
 
 	pointPool.retrieveAll(points);
 
@@ -119,8 +107,6 @@ function executeCommand(ctx: Context) {
 	}
 
 	command.end(ctx, pos);
-	console.timeEnd('final');
-	// console.groupCollapsed('inside');
 }
 
 export function addSelectors(command: Command, funcs: Record<string, () => Selector>): Command {
@@ -331,16 +317,12 @@ if (getConfig().experimentalNode()) {
 export function init() {
 	for (const command of commands) {
 		const name = `vscode-textobjects.${getCommandName(command)}`;
-		console.log('initting', name);
 		vscode.commands.registerCommand(name, async () => {
 			const currentEditor = vscode.window.activeTextEditor;
 			if (!currentEditor) {
 				return;
 			}
 
-			console.time('perf');
-
-			console.time('setup');
 			const ctx = updateContext(getDefaultContext());
 
 			ctx.editor.setEditor(currentEditor);
@@ -351,15 +333,10 @@ export function init() {
 			const parser = await LanguageParser.get(language);
 			assert(parser, `could not find parser for ${language}`);
 
-			console.timeEnd('setup');
 			ctx.parsing.parser = parser;
 			updateCommand(command);
 
-			console.time('command');
 			executeCommand(ctx);
-			console.timeEnd('command');
-
-			console.timeEnd('perf');
 		});
 	}
 }

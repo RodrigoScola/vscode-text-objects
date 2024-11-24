@@ -20,62 +20,18 @@ export function nextPosition(nodes: Range[], index: Position): Range | undefined
 	return closestRange;
 }
 
-export function previousPos(nodes: Range[], index: Position): Range | undefined {
+export function previousPosition(nodes: Range[], index: Position): Range | undefined {
 	let closestRange: Range | undefined;
 
-	for (let i = nodes.length; i >= 0; i--) {
+	for (let i = 0; i < nodes.length; i++) {
 		const range = nodes[i];
 
 		if (index.isBeforeOrEqual(range.start)) {
 			continue;
 		}
 
-		if (!closestRange || closestRange.start.isBefore(range.start)) {
+		if (!closestRange || closestRange.end.isBefore(range.start)) {
 			closestRange = range;
-		}
-	}
-
-	return closestRange;
-}
-
-//fix this one
-export function previousPosition(nodes: Range[], index: Position): Range | undefined {
-	if (nodes.length === 0) {
-		return undefined;
-	}
-
-	let closestRange: Range | undefined;
-
-	for (let i = nodes.length - 1; i >= 0; i--) {
-		let isInside = false;
-		const range = nodes[i];
-		const next = nodes[i - 1];
-
-		if (
-			(range.start.line === index.line || range.end.line === index.line) &&
-			(!next || next.start.line !== index.line || next.end.line !== index.line)
-		) {
-			continue;
-		}
-
-		let startDelta = range.start.isAfter(index);
-		let endDelta = range.end.isAfter(index);
-
-		if (startDelta && endDelta) {
-			continue;
-		}
-		if (!closestRange) {
-			closestRange = range;
-			continue;
-		}
-
-		if (range.contains(index)) {
-			isInside = true;
-		}
-
-		if (isInside && closestRange.start.isBefore(range.start)) {
-			closestRange = range;
-			continue;
 		}
 	}
 
@@ -88,9 +44,7 @@ function line(range: Range, pos: Position): boolean {
 	} else {
 		truth = range.contains(pos);
 	}
-	// if (!range.isSingleLine) {
-	// 	truth = range.start.line === pos.line || range.contains(pos);
-	// }
+
 	return truth;
 }
 
@@ -115,17 +69,6 @@ export function closestPos(nodes: Range[], index: Position): Range | undefined {
 			continue;
 		}
 
-		// visualize(range);
-
-		// console.log('after', closestRange.start.isAfter(range.start));
-		// console.log('end', closestRange.end.isAfter(range.start));
-		// console.log(
-		// 	'rangecontains',
-		// 	range.contains(index) || (range.isSingleLine ? range.start.line === index.line : false)
-		// );
-		// console.log('closestrangecontains', closestRange.contains(range));
-
-		// const sameLine = range.start.line === index.line;
 		const sameLine = line(range, index);
 
 		if (

@@ -38,14 +38,22 @@ export class Editor {
 		this.editor = editor;
 	}
 
-	goTo(_: Context, pos: vscode.Range | undefined) {
+	goTo(_: Context, pos: vscode.Range | undefined): void {
 		assert(this.editor, 'editor is not defined');
 		if (!pos) {
 			return;
 		}
 
 		this.editor.selection = new vscode.Selection(pos.start, pos.start);
-		this.editor.revealRange(new vscode.Range(pos.start, pos.start));
+		const that = this;
+		// there HAS to be a way
+		setTimeout(function () {
+			assert(that.editor, 'editor is now undefined???');
+			that.editor!.revealRange(
+				new vscode.Range(pos.start, pos.start),
+				vscode.TextEditorRevealType.InCenterIfOutsideViewport
+			);
+		}, 2);
 	}
 	selectRange(_: Context, range: vscode.Range | undefined): void {
 		assert(this.editor, 'editor is not defined');
@@ -57,6 +65,13 @@ export class Editor {
 		const end = range.end;
 
 		this.editor.selection = new vscode.Selection(start, end);
-		this.editor.revealRange(range);
+
+		const ref = this;
+
+		// there HAS to be a way
+		setTimeout(function () {
+			assert(ref.editor, 'editor is now undefined???');
+			ref.editor.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+		}, 2);
 	}
 }

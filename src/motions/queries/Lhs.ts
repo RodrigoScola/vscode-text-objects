@@ -11,7 +11,12 @@ function C(): Selector {
 function cpp(): Selector {
 	return {
 		language: 'cpp',
-		query: [` (declaration   declarator:(init_declarator (_) @lhs) ) `].join('\n'),
+		query: [
+			`
+  (declaration type:(_) @lhs declarator:(_ declarator:(_) @lhs)) 
+	`,
+			` (assignment_expression left:(_) @lhs) `,
+		].join('\n'),
 	};
 }
 function csharp(): Selector {
