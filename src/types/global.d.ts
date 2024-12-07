@@ -26,7 +26,7 @@ declare global {
 
 	export type CommandScope = 'inner' | 'outer';
 	export type CommandDirection = 'next' | 'previous';
-	export type CommandAction = 'select' | 'goTo';
+	export type CommandAction = 'select' | 'goTo' | 'delete' | 'yank' | 'change';
 
 	export type Context = {
 		editor: Editor;

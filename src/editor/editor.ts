@@ -74,4 +74,7 @@ export class Editor {
 			ref.editor.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
 		}, 2);
 	}
+	exec(command: string, ...rest: any[]) {
+		return vscode.commands.executeCommand(command, rest);
+	}
 }

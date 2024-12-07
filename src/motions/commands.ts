@@ -1,4 +1,6 @@
 import assert from 'assert';
+import fs from 'fs';
+import path from 'path';
 import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { filterDuplicates } from '../parsing/nodes';
@@ -7,10 +9,16 @@ import { groupMatches } from '../parsing/position';
 import {
 	createGoToNext,
 	createGoToPrevious,
+	createChangeNext,
+	createChangePrevious,
+	createDeletePrevious,
 	createSelectNext,
-	createSelectPrevious,
+	createDeleteNext,
+	createYankNext,
+	createYankPrevious,
 	withInnerStringModifier,
 	withMatchFunc,
+	createSelectPrevious,
 } from './modifiers';
 import { select as selectOuterArray } from './queries/Array';
 import Call from './queries/call';
@@ -49,7 +57,7 @@ function addSelector(command: Command, selector: Selector) {
 	command.selectors[selector.language] = selector;
 }
 
-function getCommandName(command: Command): string {
+export function getCommandName(command: Command): string {
 	return `${command.action}.${command.direction}.${command.scope}.${command.name}`;
 }
 
@@ -278,6 +286,358 @@ export const commands: Command[] = [
 	addSelectors(createGoToPrevious('inner', 'type'), InnerType),
 	addSelectors(createGoToPrevious('outer', 'comment'), Comment),
 	addSelectors(createGoToPrevious('inner', 'comment'), InnerComment),
+
+	//delete selectors
+
+	addSelectors(
+		withMatchFunc(createDeleteNext('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, 'function');
+		}),
+		Function
+	),
+	addSelectors(withMatchFunc(createDeleteNext('inner', 'function'), groupMatches), InnerFunction),
+	addSelectors(createDeleteNext('outer', 'loop'), Loop),
+	addSelectors(withMatchFunc(createDeleteNext('inner', 'loop'), groupMatches), InnerLoop),
+	addSelectors(createDeleteNext('outer', 'conditional'), Conditional),
+	addSelectors(
+		withMatchFunc(createDeleteNext('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
+				return groupMatches(ctx, matches);
+			}
+			return matches;
+		}),
+		InnerConditional
+	),
+	addSelectors(createDeleteNext('outer', 'rhs'), Rhs),
+	addSelectors(createDeleteNext('inner', 'rhs'), InnerRhs),
+	addSelectors(createDeleteNext('outer', 'lhs'), Lhs),
+	addSelectors(createDeleteNext('inner', 'lhs'), InnerLhs),
+	addSelectors(
+		withMatchFunc(createDeleteNext('outer', 'variable'), (_, matches) =>
+			filterDuplicates(matches, ['declaration', 'variable'])
+		),
+		Variable
+	),
+	addSelectors(createDeleteNext('outer', 'string'), Str),
+	addSelectors(withInnerStringModifier(createDeleteNext('inner', 'string')), InnerStr),
+	addSelectors(
+		withMatchFunc(createDeleteNext('outer', 'class'), (_, matches) => filterDuplicates(matches, 'class')),
+		Class
+	),
+	addSelectors(createDeleteNext('inner', 'class'), InnerClass),
+	addSelectors(createDeleteNext('outer', 'array'), selectOuterArray),
+	addSelectors(createDeleteNext('inner', 'array'), InnerArray),
+	addSelectors(createDeleteNext('outer', 'object'), OuterObject),
+	addSelectors(createDeleteNext('inner', 'object'), InnerObject),
+
+	addSelectors(withMatchFunc(createDeleteNext('outer', 'parameters'), groupMatches), Params),
+	addSelectors(createDeleteNext('inner', 'parameters'), InnerParams),
+	addSelectors(createDeleteNext('outer', 'call'), Call),
+	addSelectors(createDeleteNext('inner', 'call'), InnerCall),
+	addSelectors(createDeleteNext('outer', 'type'), Type),
+	addSelectors(createDeleteNext('inner', 'type'), InnerType),
+	addSelectors(createDeleteNext('outer', 'comment'), Comment),
+	addSelectors(createDeleteNext('inner', 'comment'), InnerComment),
+
+	addSelectors(
+		withMatchFunc(createDeletePrevious('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, 'function');
+		}),
+		Function
+	),
+	addSelectors(withMatchFunc(createDeletePrevious('inner', 'function'), groupMatches), InnerFunction),
+	addSelectors(createDeletePrevious('outer', 'loop'), Loop),
+	addSelectors(withMatchFunc(createDeletePrevious('inner', 'loop'), groupMatches), InnerLoop),
+	addSelectors(createDeletePrevious('outer', 'conditional'), Conditional),
+	addSelectors(
+		withMatchFunc(createDeletePrevious('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
+				return groupMatches(ctx, matches);
+			}
+			return matches;
+		}),
+		InnerConditional
+	),
+	addSelectors(createDeletePrevious('outer', 'rhs'), Rhs),
+	addSelectors(createDeletePrevious('inner', 'rhs'), InnerRhs),
+	addSelectors(createDeletePrevious('outer', 'lhs'), Lhs),
+	addSelectors(createDeletePrevious('inner', 'lhs'), InnerLhs),
+	addSelectors(
+		withMatchFunc(createDeletePrevious('outer', 'variable'), (_, matches) =>
+			filterDuplicates(matches, ['declaration', 'variable'])
+		),
+		Variable
+	),
+	addSelectors(createDeletePrevious('outer', 'string'), Str),
+	addSelectors(withInnerStringModifier(createDeletePrevious('inner', 'string')), InnerStr),
+	addSelectors(
+		withMatchFunc(createDeletePrevious('outer', 'class'), (_, matches) =>
+			filterDuplicates(matches, 'class')
+		),
+		Class
+	),
+	addSelectors(createDeletePrevious('inner', 'class'), InnerClass),
+	addSelectors(createDeletePrevious('outer', 'array'), selectOuterArray),
+	addSelectors(createDeletePrevious('inner', 'array'), InnerArray),
+	addSelectors(createDeletePrevious('outer', 'object'), OuterObject),
+	addSelectors(createDeletePrevious('inner', 'object'), InnerObject),
+
+	addSelectors(withMatchFunc(createDeletePrevious('outer', 'parameters'), groupMatches), Params),
+	addSelectors(createDeletePrevious('inner', 'parameters'), InnerParams),
+	addSelectors(createDeletePrevious('outer', 'call'), Call),
+	addSelectors(createDeletePrevious('inner', 'call'), InnerCall),
+	addSelectors(createDeletePrevious('outer', 'type'), Type),
+	addSelectors(createDeletePrevious('inner', 'type'), InnerType),
+	addSelectors(createDeletePrevious('outer', 'comment'), Comment),
+	addSelectors(createDeletePrevious('inner', 'comment'), InnerComment),
+
+	//yank selectors
+
+	addSelectors(
+		withMatchFunc(createYankNext('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, 'function');
+		}),
+		Function
+	),
+	addSelectors(withMatchFunc(createYankNext('inner', 'function'), groupMatches), InnerFunction),
+	addSelectors(createYankNext('outer', 'loop'), Loop),
+	addSelectors(withMatchFunc(createYankNext('inner', 'loop'), groupMatches), InnerLoop),
+	addSelectors(createYankNext('outer', 'conditional'), Conditional),
+	addSelectors(
+		withMatchFunc(createYankNext('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
+				return groupMatches(ctx, matches);
+			}
+			return matches;
+		}),
+		InnerConditional
+	),
+	addSelectors(createYankNext('outer', 'rhs'), Rhs),
+	addSelectors(createYankNext('inner', 'rhs'), InnerRhs),
+	addSelectors(createYankNext('outer', 'lhs'), Lhs),
+	addSelectors(createYankNext('inner', 'lhs'), InnerLhs),
+	addSelectors(
+		withMatchFunc(createYankNext('outer', 'variable'), (_, matches) =>
+			filterDuplicates(matches, ['declaration', 'variable'])
+		),
+		Variable
+	),
+	addSelectors(createYankNext('outer', 'string'), Str),
+	addSelectors(withInnerStringModifier(createYankNext('inner', 'string')), InnerStr),
+	addSelectors(
+		withMatchFunc(createYankNext('outer', 'class'), (_, matches) => filterDuplicates(matches, 'class')),
+		Class
+	),
+	addSelectors(createYankNext('inner', 'class'), InnerClass),
+	addSelectors(createYankNext('outer', 'array'), selectOuterArray),
+	addSelectors(createYankNext('inner', 'array'), InnerArray),
+	addSelectors(createYankNext('outer', 'object'), OuterObject),
+	addSelectors(createYankNext('inner', 'object'), InnerObject),
+
+	addSelectors(withMatchFunc(createYankNext('outer', 'parameters'), groupMatches), Params),
+	addSelectors(createYankNext('inner', 'parameters'), InnerParams),
+	addSelectors(createYankNext('outer', 'call'), Call),
+	addSelectors(createYankNext('inner', 'call'), InnerCall),
+	addSelectors(createYankNext('outer', 'type'), Type),
+	addSelectors(createYankNext('inner', 'type'), InnerType),
+	addSelectors(createYankNext('outer', 'comment'), Comment),
+	addSelectors(createYankNext('inner', 'comment'), InnerComment),
+
+	addSelectors(
+		withMatchFunc(createYankPrevious('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, 'function');
+		}),
+		Function
+	),
+	addSelectors(withMatchFunc(createYankPrevious('inner', 'function'), groupMatches), InnerFunction),
+	addSelectors(createYankPrevious('outer', 'loop'), Loop),
+	addSelectors(withMatchFunc(createYankPrevious('inner', 'loop'), groupMatches), InnerLoop),
+	addSelectors(createYankPrevious('outer', 'conditional'), Conditional),
+	addSelectors(
+		withMatchFunc(createYankPrevious('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
+				return groupMatches(ctx, matches);
+			}
+			return matches;
+		}),
+		InnerConditional
+	),
+	addSelectors(createYankPrevious('outer', 'rhs'), Rhs),
+	addSelectors(createYankPrevious('inner', 'rhs'), InnerRhs),
+	addSelectors(createYankPrevious('outer', 'lhs'), Lhs),
+	addSelectors(createYankPrevious('inner', 'lhs'), InnerLhs),
+	addSelectors(
+		withMatchFunc(createYankPrevious('outer', 'variable'), (_, matches) =>
+			filterDuplicates(matches, ['declaration', 'variable'])
+		),
+		Variable
+	),
+	addSelectors(createYankPrevious('outer', 'string'), Str),
+	addSelectors(withInnerStringModifier(createYankPrevious('inner', 'string')), InnerStr),
+	addSelectors(
+		withMatchFunc(createYankPrevious('outer', 'class'), (_, matches) => filterDuplicates(matches, 'class')),
+		Class
+	),
+	addSelectors(createYankPrevious('inner', 'class'), InnerClass),
+	addSelectors(createYankPrevious('outer', 'array'), selectOuterArray),
+	addSelectors(createYankPrevious('inner', 'array'), InnerArray),
+	addSelectors(createYankPrevious('outer', 'object'), OuterObject),
+	addSelectors(createYankPrevious('inner', 'object'), InnerObject),
+
+	addSelectors(withMatchFunc(createYankPrevious('outer', 'parameters'), groupMatches), Params),
+	addSelectors(createYankPrevious('inner', 'parameters'), InnerParams),
+	addSelectors(createYankPrevious('outer', 'call'), Call),
+	addSelectors(createYankPrevious('inner', 'call'), InnerCall),
+	addSelectors(createYankPrevious('outer', 'type'), Type),
+	addSelectors(createYankPrevious('inner', 'type'), InnerType),
+	addSelectors(createYankPrevious('outer', 'comment'), Comment),
+	addSelectors(createYankPrevious('inner', 'comment'), InnerComment),
+
+	//change selectors
+
+	addSelectors(
+		withMatchFunc(createChangeNext('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, 'function');
+		}),
+		Function
+	),
+	addSelectors(withMatchFunc(createChangeNext('inner', 'function'), groupMatches), InnerFunction),
+	addSelectors(createChangeNext('outer', 'loop'), Loop),
+	addSelectors(withMatchFunc(createChangeNext('inner', 'loop'), groupMatches), InnerLoop),
+	addSelectors(createChangeNext('outer', 'conditional'), Conditional),
+	addSelectors(
+		withMatchFunc(createChangeNext('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
+				return groupMatches(ctx, matches);
+			}
+			return matches;
+		}),
+		InnerConditional
+	),
+	addSelectors(createChangeNext('outer', 'rhs'), Rhs),
+	addSelectors(createChangeNext('inner', 'rhs'), InnerRhs),
+	addSelectors(createChangeNext('outer', 'lhs'), Lhs),
+	addSelectors(createChangeNext('inner', 'lhs'), InnerLhs),
+	addSelectors(
+		withMatchFunc(createChangeNext('outer', 'variable'), (_, matches) =>
+			filterDuplicates(matches, ['declaration', 'variable'])
+		),
+		Variable
+	),
+	addSelectors(createChangeNext('outer', 'string'), Str),
+	addSelectors(withInnerStringModifier(createChangeNext('inner', 'string')), InnerStr),
+	addSelectors(
+		withMatchFunc(createChangeNext('outer', 'class'), (_, matches) => filterDuplicates(matches, 'class')),
+		Class
+	),
+	addSelectors(createChangeNext('inner', 'class'), InnerClass),
+	addSelectors(createChangeNext('outer', 'array'), selectOuterArray),
+	addSelectors(createChangeNext('inner', 'array'), InnerArray),
+	addSelectors(createChangeNext('outer', 'object'), OuterObject),
+	addSelectors(createChangeNext('inner', 'object'), InnerObject),
+
+	addSelectors(withMatchFunc(createChangeNext('outer', 'parameters'), groupMatches), Params),
+	addSelectors(createChangeNext('inner', 'parameters'), InnerParams),
+	addSelectors(createChangeNext('outer', 'call'), Call),
+	addSelectors(createChangeNext('inner', 'call'), InnerCall),
+	addSelectors(createChangeNext('outer', 'type'), Type),
+	addSelectors(createChangeNext('inner', 'type'), InnerType),
+	addSelectors(createChangeNext('outer', 'comment'), Comment),
+	addSelectors(createChangeNext('inner', 'comment'), InnerComment),
+
+	addSelectors(
+		withMatchFunc(createChangePrevious('outer', 'function'), function (_, matches) {
+			return filterDuplicates(matches, 'function');
+		}),
+		Function
+	),
+	addSelectors(withMatchFunc(createChangePrevious('inner', 'function'), groupMatches), InnerFunction),
+	addSelectors(createChangePrevious('outer', 'loop'), Loop),
+	addSelectors(withMatchFunc(createChangePrevious('inner', 'loop'), groupMatches), InnerLoop),
+	addSelectors(createChangePrevious('outer', 'conditional'), Conditional),
+	addSelectors(
+		withMatchFunc(createChangePrevious('inner', 'conditional'), function (ctx, matches) {
+			const language = ctx.editor.language();
+			if (
+				//java && javascript
+				!language.includes('java') &&
+				//javascript, javascriptreact, typescript, typescriptreact
+				!language.includes('script') &&
+				!language.includes('python')
+			) {
+				return groupMatches(ctx, matches);
+			}
+			return matches;
+		}),
+		InnerConditional
+	),
+	addSelectors(createChangePrevious('outer', 'rhs'), Rhs),
+	addSelectors(createChangePrevious('inner', 'rhs'), InnerRhs),
+	addSelectors(createChangePrevious('outer', 'lhs'), Lhs),
+	addSelectors(createChangePrevious('inner', 'lhs'), InnerLhs),
+	addSelectors(
+		withMatchFunc(createChangePrevious('outer', 'variable'), (_, matches) =>
+			filterDuplicates(matches, ['declaration', 'variable'])
+		),
+		Variable
+	),
+	addSelectors(createChangePrevious('outer', 'string'), Str),
+	addSelectors(withInnerStringModifier(createChangePrevious('inner', 'string')), InnerStr),
+	addSelectors(
+		withMatchFunc(createChangePrevious('outer', 'class'), (_, matches) =>
+			filterDuplicates(matches, 'class')
+		),
+		Class
+	),
+	addSelectors(createChangePrevious('inner', 'class'), InnerClass),
+	addSelectors(createChangePrevious('outer', 'array'), selectOuterArray),
+	addSelectors(createChangePrevious('inner', 'array'), InnerArray),
+	addSelectors(createChangePrevious('outer', 'object'), OuterObject),
+	addSelectors(createChangePrevious('inner', 'object'), InnerObject),
+
+	addSelectors(withMatchFunc(createChangePrevious('outer', 'parameters'), groupMatches), Params),
+	addSelectors(createChangePrevious('inner', 'parameters'), InnerParams),
+	addSelectors(createChangePrevious('outer', 'call'), Call),
+	addSelectors(createChangePrevious('inner', 'call'), InnerCall),
+	addSelectors(createChangePrevious('outer', 'type'), Type),
+	addSelectors(createChangePrevious('inner', 'type'), InnerType),
+	addSelectors(createChangePrevious('outer', 'comment'), Comment),
+	addSelectors(createChangePrevious('inner', 'comment'), InnerComment),
 ];
 
 if (getConfig().experimentalNode()) {

@@ -11,3 +11,7 @@ bugs
 
 .vscode-test
 .vscode/settings.json
+
+commands.json
+keybinds.json
+vim_keybinds.json

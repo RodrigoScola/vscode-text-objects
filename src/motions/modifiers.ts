@@ -1,6 +1,7 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { closestPos, nextPosition, previousPosition } from '../parsing/position';
+import { getConfig } from '../config';
 
 const strRegex = /['"`]/;
 
@@ -96,6 +97,153 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor.goTo, 'go to is undefined');
 			ctx.editor.goTo(ctx, range);
+		},
+	};
+}
+
+export function createDeleteNext(scope: CommandScope, name: CommandNames): Command {
+	return {
+		name,
+		scope,
+		direction: 'next',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'delete',
+		pos: closestPos,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+
+			if (getConfig().vimActive()) {
+				ctx.editor.exec('noop').then(() => {
+					ctx.editor.exec('extension.vim_delete');
+				});
+			} else {
+				if (getConfig().copyOnDelete()) {
+					ctx.editor.exec('editor.action.clipboardCutAction');
+				} else {
+					ctx.editor.exec('deleteRight');
+				}
+			}
+		},
+	};
+}
+export function createDeletePrevious(scope: CommandScope, name: CommandNames): Command {
+	return {
+		name,
+		scope,
+		direction: 'previous',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'delete',
+		pos: closestPos,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+
+			if (getConfig().vimActive()) {
+				ctx.editor.exec('noop').then(() => {
+					ctx.editor.exec('extension.vim_delete');
+				});
+			} else {
+				if (getConfig().copyOnDelete()) {
+					ctx.editor.exec('editor.action.clipboardCutAction');
+				} else {
+					ctx.editor.exec('deleteRight');
+				}
+			}
+		},
+	};
+}
+
+export function createYankNext(scope: CommandScope, name: CommandNames): Command {
+	return {
+		name,
+		scope,
+		direction: 'next',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'yank',
+		pos: closestPos,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+			ctx.editor.exec('noop').then(() => {
+				vscode.window.showInformationMessage('The previous message is gone!');
+				vscode.commands.executeCommand('vim.remap', {
+					after: ['y', 'y'],
+				});
+			});
+		},
+	};
+}
+
+export function createYankPrevious(scope: CommandScope, name: CommandNames): Command {
+	return {
+		name,
+		scope,
+		direction: 'previous',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'yank',
+		pos: closestPos,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+			ctx.editor.exec('noop').then(() => {
+				ctx.editor.exec('vim.remap', {
+					args: {
+						after: ['y'],
+					},
+				});
+			});
+		},
+	};
+}
+
+export function createChangeNext(scope: CommandScope, name: CommandNames): Command {
+	return {
+		name,
+		scope,
+		direction: 'next',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'change',
+		pos: closestPos,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+			ctx.editor.exec('noop').then(() => {
+				vscode.window.showInformationMessage('The previous message is gone!');
+
+				if (getConfig().vimActive()) {
+					vscode.commands.executeCommand('vim.remap', {
+						after: ['c'],
+					});
+				}
+			});
+		},
+	};
+}
+
+export function createChangePrevious(scope: CommandScope, name: CommandNames): Command {
+	return {
+		name,
+		scope,
+		direction: 'previous',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'change',
+		pos: closestPos,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
+			ctx.editor.selectRange(ctx, range);
+			ctx.editor.exec('noop').then(() => {
+				vscode.window.showInformationMessage('The previous message is gone!');
+				vscode.commands.executeCommand('vim.remap', {
+					after: ['c'],
+				});
+			});
 		},
 	};
 }

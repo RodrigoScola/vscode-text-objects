@@ -16,6 +16,24 @@ export class Config {
 		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
 		return Boolean(value);
 	}
+
+	vimActive() :boolean {
+		assert(this.config, ' config has not been setup');
+
+		const value = this.config.get('vim_integration');
+
+		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
+		return Boolean(value);
+	}
+
+	copyOnDelete() :boolean {
+		assert(this.config, ' config has not been setup');
+
+		const value = this.config.get('copyOnDelete');
+
+		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
+		return Boolean(value);
+	}
 }
 let config: Config;
 export function getConfig(): Config {
