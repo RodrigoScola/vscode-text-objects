@@ -11,8 +11,6 @@ function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
 
-function foo(str: string, n: number, other: object, fl: string) {}
-
 function saveCommands(commands: Command[]) {
 	const total = [];
 	for (const command of commands) {
@@ -30,8 +28,8 @@ function saveCommands(commands: Command[]) {
 		};
 
 		if (command.action === 'change' || command.action === 'yank') {
-			node.when = ` editorTextFocus && vim.active && ${makeName(
-				'vim_integration'
+			node.when = ` editorTextFocus  && ${makeName(
+				'vimEnabled'
 			)}  && !inDebugRepl && vim.mode != 'Insert'`;
 		} else {
 			node.when = `editorTextFocus`;
@@ -235,9 +233,7 @@ export function saveVimKeybinds(commands: Command[]) {
 			before: key,
 			//just to be sure
 
-			when: ` editorTextFocus && vim.active && ${makeName(
-				'vim_integration'
-			)}  && !inDebugRepl && vim.mode != 'Insert'`,
+			when: ` editorTextFocus  && ${makeName('vimEnabled')}  && !inDebugRepl && vim.mode != 'Insert'`,
 			commands: [`vscode-textobjects.${getCommandName(command)}`],
 		};
 
