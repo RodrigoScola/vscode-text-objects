@@ -136,7 +136,7 @@ export function createDeletePrevious(scope: CommandScope, name: CommandNames): C
 		selectors: {},
 		currentSelector: undefined,
 		action: 'delete',
-		pos: closestPos,
+		pos: previousPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
@@ -185,7 +185,7 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 		selectors: {},
 		currentSelector: undefined,
 		action: 'yank',
-		pos: closestPos,
+		pos: previousPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
@@ -231,7 +231,7 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 		selectors: {},
 		currentSelector: undefined,
 		action: 'change',
-		pos: closestPos,
+		pos: previousPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);

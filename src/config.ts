@@ -20,7 +20,7 @@ export class Config {
 	vimActive(): boolean {
 		assert(this.config, ' config has not been setup');
 
-		const value = this.config.get('vim_integration');
+		const value = this.config.get('vimEnabled');
 
 		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
 		return Boolean(value);

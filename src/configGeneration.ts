@@ -10,6 +10,9 @@ import { getCommandName } from './motions/commands';
 function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
+
+function foo(str: string, n: number, other: object, fl: string) {}
+
 function saveCommands(commands: Command[]) {
 	const total = [];
 	for (const command of commands) {
