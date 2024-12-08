@@ -108,18 +108,24 @@ function getkeyForCommandName(name: CommandNames): string {
 	}
 }
 
-function getKeyForCommandAction(action: CommandAction): string {
-	if (action === 'goTo') {
-		return 'n';
-	} else if (action === 'select') {
+function getKeyForCommandActionAndScope(action: CommandAction, scope: CommandScope): string {
+	if (action === 'goTo' && scope === 'outer') {
+		return 'g';
+	} else if (action === 'goTo' && scope === 'inner') {
+		return 't';
+	} else if (action === 'select' && scope === 'inner') {
 		return 'i';
-	} else if (action === 'delete') {
+	} else if (action === 'select' && scope === 'outer') {
+		return 'n';
+	} else if (action === 'delete' && scope === 'outer') {
 		return 'x';
+	} else if (action === 'delete' && scope === 'inner') {
+		return 'l';
 	}
 	throw new Error('forgot to implement: ' + action);
 }
 
-function saveKeybinds(commands: Command[]) {
+export function saveKeybinds(commands: Command[]) {
 	const total = [];
 
 	for (const command of commands) {
@@ -133,11 +139,11 @@ function saveKeybinds(commands: Command[]) {
 		if (command.direction === 'previous') {
 			winActivation.push('shift');
 			macActivation.push('shift');
-			winActivation.push(getKeyForCommandAction(command.action).toUpperCase());
-			macActivation.push(getKeyForCommandAction(command.action).toUpperCase());
+			winActivation.push(getKeyForCommandActionAndScope(command.action, command.scope).toUpperCase());
+			macActivation.push(getKeyForCommandActionAndScope(command.action, command.scope).toUpperCase());
 		} else {
-			winActivation.push(getKeyForCommandAction(command.action));
-			macActivation.push(getKeyForCommandAction(command.action));
+			winActivation.push(getKeyForCommandActionAndScope(command.action, command.scope));
+			macActivation.push(getKeyForCommandActionAndScope(command.action, command.scope));
 		}
 		let winKey = ['ctrl'];
 		let macKey = ['cmd'];
@@ -145,11 +151,11 @@ function saveKeybinds(commands: Command[]) {
 		if (command.direction === 'previous') {
 			winKey.push('shift');
 			macKey.push('shift');
-			winKey.push(getKeyForCommandAction(command.action).toUpperCase());
-			macKey.push(getKeyForCommandAction(command.action).toUpperCase());
+			winKey.push(getkeyForCommandName(command.name).toUpperCase());
+			macKey.push(getkeyForCommandName(command.name).toUpperCase());
 		} else {
-			winKey.push(getKeyForCommandAction(command.action));
-			macKey.push(getKeyForCommandAction(command.action));
+			winKey.push(getkeyForCommandName(command.name));
+			macKey.push(getkeyForCommandName(command.name));
 		}
 
 		const node = {
@@ -200,20 +206,18 @@ function getGoToKeyForDirection(dir: CommandDirection): string {
 	throw new Error('forgot to implement:' + dir);
 }
 
-function saveVimKeybinds(commands: Command[]) {
+export function saveVimKeybinds(commands: Command[]) {
 	const total = [];
 	for (const command of commands) {
-		let key: string = '';
+		let key: string[] = [];
 		if (command.action === 'goTo') {
-			key = [
-				getGoToKeyForDirection(command.direction),
+			let dirKey = getkeyForCommandName(command.name);
 
-				command.direction === 'next'
-					? getkeyForCommandName(command.name)
-					: getkeyForCommandName(command.name).toUpperCase(),
+			if (command.scope === 'inner') {
+				dirKey = dirKey.toUpperCase();
+			}
 
-				,
-			].join(' ');
+			key = [getGoToKeyForDirection(command.direction), dirKey];
 		} else {
 			key = [
 				getVimKeyForCommandAction(command.action),
@@ -221,18 +225,17 @@ function saveVimKeybinds(commands: Command[]) {
 				command.direction === 'next'
 					? getkeyForCommandName(command.name)
 					: getkeyForCommandName(command.name).toUpperCase(),
-			].join(' ');
+			];
 		}
 
-		const node: Record<string, string> = {
-			key: key,
+		const node: Record<string, any> = {
+			before: key,
 			//just to be sure
 
-			mac: key,
 			when: ` editorTextFocus && vim.active && ${makeName(
 				'vim_integration'
 			)}  && !inDebugRepl && vim.mode != 'Insert'`,
-			command: `vscode-textobjects.${getCommandName(command)}`,
+			commands: [`vscode-textobjects.${getCommandName(command)}`],
 		};
 
 		total.push(node);
@@ -242,6 +245,6 @@ function saveVimKeybinds(commands: Command[]) {
 	fs.writeFileSync(
 		path.join(__dirname, '..', 'vim_keybinds.json'),
 
-		JSON.stringify(total, null, 2)
+		JSON.stringify(total, null, 1)
 	);
 }

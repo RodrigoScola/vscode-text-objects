@@ -19,6 +19,7 @@ function cpp(): Selector {
 		].join('\n'),
 	};
 }
+
 function csharp(): Selector {
 	return {
 		language: 'csharp',
@@ -73,7 +74,7 @@ function javascript(): Selector {
 			`(arrow_function ) @function `,
 			`(export_statement (function_declaration) @function ) @export `,
 			`(function_declaration) @function `,
-			`(_ (_    (arrow_function) @function  )) @export `,
+			`(export_statement (_    (arrow_function) @function  )) @export `,
 			`(export_statement (_ (_ value: (arrow_function) @function )) ) @export `,
 			`(_ arguments:(_ (arrow_function) @function )) `,
 		].join('\n'),

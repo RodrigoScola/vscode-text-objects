@@ -17,7 +17,7 @@ export class Config {
 		return Boolean(value);
 	}
 
-	vimActive() :boolean {
+	vimActive(): boolean {
 		assert(this.config, ' config has not been setup');
 
 		const value = this.config.get('vim_integration');
@@ -26,7 +26,7 @@ export class Config {
 		return Boolean(value);
 	}
 
-	copyOnDelete() :boolean {
+	copyOnDelete(): boolean {
 		assert(this.config, ' config has not been setup');
 
 		const value = this.config.get('copyOnDelete');

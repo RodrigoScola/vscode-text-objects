@@ -169,7 +169,6 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			ctx.editor.exec('noop').then(() => {
-				vscode.window.showInformationMessage('The previous message is gone!');
 				vscode.commands.executeCommand('vim.remap', {
 					after: ['y', 'y'],
 				});
@@ -214,8 +213,6 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			ctx.editor.exec('noop').then(() => {
-				vscode.window.showInformationMessage('The previous message is gone!');
-
 				if (getConfig().vimActive()) {
 					vscode.commands.executeCommand('vim.remap', {
 						after: ['c'],
@@ -239,7 +236,6 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			ctx.editor.exec('noop').then(() => {
-				vscode.window.showInformationMessage('The previous message is gone!');
 				vscode.commands.executeCommand('vim.remap', {
 					after: ['c'],
 				});

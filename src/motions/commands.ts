@@ -1,6 +1,7 @@
 import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
+import { saveKeybinds, saveVimKeybinds } from '../configGeneration';
 import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { filterDuplicates } from '../parsing/nodes';
@@ -675,6 +676,8 @@ if (getConfig().experimentalNode()) {
 }
 
 export function init() {
+	saveKeybinds(commands);
+	saveVimKeybinds(commands);
 	for (const command of commands) {
 		const name = `vscode-textobjects.${getCommandName(command)}`;
 		vscode.commands.registerCommand(name, async () => {
