@@ -170,7 +170,7 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 			ctx.editor.selectRange(ctx, range);
 			ctx.editor.exec('noop').then(() => {
 				vscode.commands.executeCommand('vim.remap', {
-					after: ['y', 'y'],
+					after: ['y'],
 				});
 			});
 		},
@@ -190,10 +190,8 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			ctx.editor.exec('noop').then(() => {
-				ctx.editor.exec('vim.remap', {
-					args: {
-						after: ['y'],
-					},
+				vscode.commands.executeCommand('vim.remap', {
+					after: ['y'],
 				});
 			});
 		},
