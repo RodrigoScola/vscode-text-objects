@@ -115,13 +115,11 @@ function getKeyForCommandActionAndScope(action: CommandAction, scope: CommandSco
 	} else if (action === 'goTo' && scope === 'inner') {
 		return 't';
 	} else if (action === 'select' && scope === 'inner') {
-		return 'i';
-	} else if (action === 'select' && scope === 'outer') {
 		return 'n';
+	} else if (action === 'select' && scope === 'outer') {
+		return 's';
 	} else if (action === 'delete' && scope === 'outer') {
 		return 'x';
-	} else if (action === 'delete' && scope === 'inner') {
-		return 'l';
 	}
 	throw new Error('forgot to implement: ' + action);
 }
