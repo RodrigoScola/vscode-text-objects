@@ -83,6 +83,12 @@ check all the queries
 
 Vscode vim does not allow editing of the yank register. And using vscode's api to send the commands is extremelly slow (over 2 seconds of lag!), so to circumvent that. I recomment putting this on your `settings.json`.
 
+To enable vim integration, dont forget to activate it in the `settings.json`, otherwise you will only have vim and have to use the default motions!
+
+```json
+"vscode-textobjects.vimEnabled": true
+```
+
 ```json
 
 "vim.normalModeKeyBindings": [
@@ -1477,6 +1483,7 @@ Vscode vim does not allow editing of the yank register. And using vscode's api t
 		"commands": ["vscode-textobjects.goTo.previous.inner.node"]
 	}
 ]
+
 
 ```
 
