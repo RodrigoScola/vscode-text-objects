@@ -2,32 +2,27 @@
 
 Vscode text objects are a nicer way to edit code. long are the days of slow block selection. Now you can press a cople keybinds and Done!
 
-## Roadmap
-
-### Reverse select / go to
-
-the idea is for all the commands that we have access to (select next function. go to next if statement) there would be a reverse to that. currently proven objects are functioning.
-
--    functions
-
-### Node Support
+### Nodes Support
 
 The current Fully supported nodes are:
 
 -    Functions
 -    Loops
--    Strings
--    Arrays
 -    Objects
+-    Arrays
+-    Function calls
+-    Classes
 -    Comments
+-    Parameters
+-    If and else statements, switches, ternaries, conditionals in generals
+-    Strings
+-    Types
+-    Nodes
+-    Variables
+-    Right Hand Variable Assignment
+-    Left Hand Variable Assignment
 
-#### Possible nodes support
-
-Blocks:
-
-Blocks would be nice catch all.
-
-## Supported Languages
+## Languages
 
 -    Javascript and JSX
 -    Typescript and TSX
@@ -81,9 +76,51 @@ check all the queries
 
 # VIM Integration
 
-Vscode vim does not allow editing of the yank register. And using vscode's api to send the commands is extremelly slow (over 2 seconds of lag!), so to circumvent that. I recomment putting this on your `settings.json`.
+To enable Vim integration, wich adds the commands to select, delete, copy and change as motions that you can activate using the vim motions syntax!
 
-To enable vim integration, dont forget to activate it in the `settings.json`, otherwise you will only have vim and have to use the default motions!
+Example:
+
+To select a function, just press:
+
+    v a f
+
+To select the inner of a function, just press:
+
+    v i f
+
+to go to a function, just press:
+
+    [ f
+
+to go to the inside of a function, just press:
+
+    [ F
+
+to go to back a function, just press:
+
+    ] f
+
+to go back to the inside of a function, just press:
+
+    ] F
+
+The current keybinds for all the nodes are:
+
+-    f - Functions
+-    l - Loops
+-    o - Objects
+-    a - Arrays
+-    m - Function calls
+-    k - Classes
+-    c - Comments
+-    p - Parameters
+-    i - If and else statements, switches, ternaries, conditionals in generals
+-    s - Strings
+-    t - Types
+-    n - Nodes
+-    v - Variables
+-    r - Right Hand Variable Assignment
+-    h - Left Hand Variable Assignment
 
 ```json
 "vscode-textobjects.vimEnabled": true
