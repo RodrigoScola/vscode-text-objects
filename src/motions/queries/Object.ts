@@ -69,6 +69,13 @@ function json(): Selector {
 	};
 }
 
+function jsonc(): Selector {
+	return {
+		language: 'jsonc',
+		query: javascript().query,
+	};
+}
+
 function lua(): Selector {
 	return {
 		language: 'lua',
@@ -131,6 +138,7 @@ export default {
 	java,
 	javascript,
 	json,
+	jsonc,
 	toml,
 	lua,
 	python,

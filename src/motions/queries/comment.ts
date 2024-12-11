@@ -102,7 +102,7 @@ export default {
 	go,
 	java,
 	javascript,
-	json: jsonc,
+	jsonc,
 	toml,
 	lua,
 	python,

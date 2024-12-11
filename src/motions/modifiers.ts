@@ -2,6 +2,7 @@ import assert from 'assert';
 import * as vscode from 'vscode';
 import { closestPos, nextPosition, previousPosition } from '../parsing/position';
 import { getConfig } from '../config';
+import { start } from 'repl';
 
 const strRegex = /['"`]/;
 
@@ -166,13 +167,32 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 		action: 'yank',
 		pos: closestPos,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
+			if (!range) {
+				return;
+			}
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
-				vscode.commands.executeCommand('vim.remap', {
-					after: ['y'],
+
+			if (getConfig().vimActive()) {
+				ctx.editor.exec('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
+						after: ['y'],
+					});
 				});
-			});
+			} else {
+				const doc = ctx.editor.getRange(
+					range.start.line,
+					range.start.character,
+					range.end.line,
+					range.end.character
+				);
+
+				const ed = ctx.editor.getEditor();
+
+				ed.selection = new vscode.Selection(range.start, range.end);
+				ed.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+				vscode.env.clipboard.writeText(doc);
+			}
 		},
 	};
 }
@@ -189,11 +209,29 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
-				vscode.commands.executeCommand('vim.remap', {
-					after: ['y'],
+			if (!range) {
+				return;
+			}
+			if (getConfig().vimActive()) {
+				ctx.editor.exec('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
+						after: ['y'],
+					});
 				});
-			});
+			} else {
+				const doc = ctx.editor.getRange(
+					range.start.line,
+					range.start.character,
+					range.end.line,
+					range.end.character
+				);
+
+				const ed = ctx.editor.getEditor();
+
+				ed.selection = new vscode.Selection(range.start, range.end);
+				ed.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+				vscode.env.clipboard.writeText(doc);
+			}
 		},
 	};
 }

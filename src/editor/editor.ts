@@ -61,10 +61,7 @@ export class Editor {
 			return;
 		}
 
-		const start = range.start;
-		const end = range.end;
-
-		this.editor.selection = new vscode.Selection(start, end);
+		this.editor.selection = new vscode.Selection(range.start, range.end);
 
 		const ref = this;
 

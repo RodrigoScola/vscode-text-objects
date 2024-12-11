@@ -115,13 +115,15 @@ function getKeyForCommandActionAndScope(action: CommandAction, scope: CommandSco
 	} else if (action === 'goTo' && scope === 'inner') {
 		return 't';
 	} else if (action === 'select' && scope === 'inner') {
-		return 'i';
-	} else if (action === 'select' && scope === 'outer') {
 		return 'n';
+	} else if (action === 'select' && scope === 'outer') {
+		return 's';
 	} else if (action === 'delete' && scope === 'outer') {
-		return 'x';
+		return 'd';
 	} else if (action === 'delete' && scope === 'inner') {
-		return 'l';
+		return 'x';
+	} else if (action === 'yank' && scope === 'outer') {
+		return 'y';
 	}
 	throw new Error('forgot to implement: ' + action);
 }
@@ -130,12 +132,12 @@ export function saveKeybinds(commands: Command[]) {
 	const total = [];
 
 	for (const command of commands) {
-		if (command.action === 'change' || command.action === 'yank') {
+		if (command.action === 'change' || (command.action === 'yank' && command.scope === 'inner')) {
 			//actions that are only with vim integration
 			continue;
 		}
-		let winActivation = ['ctrl'];
-		let macActivation = ['cmd'];
+		let winActivation = ['ctrl+alt'];
+		let macActivation = ['cmd+alt'];
 
 		if (command.direction === 'previous') {
 			winActivation.push('shift');
@@ -146,8 +148,8 @@ export function saveKeybinds(commands: Command[]) {
 			winActivation.push(getKeyForCommandActionAndScope(command.action, command.scope));
 			macActivation.push(getKeyForCommandActionAndScope(command.action, command.scope));
 		}
-		let winKey = ['ctrl'];
-		let macKey = ['cmd'];
+		let winKey = ['ctrl+alt'];
+		let macKey = ['cmd+alt'];
 
 		if (command.direction === 'previous') {
 			winKey.push('shift');
