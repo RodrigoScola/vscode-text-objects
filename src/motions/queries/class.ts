@@ -1,7 +1,12 @@
 function C(): Selector {
 	return {
 		language: 'c',
-		query: [`(struct_specifier) @class`].join('\n'),
+		query: [
+			`(union_specifier name:(_ ) body:(_)  ) @class `,
+			`(enum_specifier name:(type_identifier) body:(_)) @class`,
+			`(type_definition type:(struct_specifier) @class declarator:(type_identifier)) @outer`,
+			`(struct_specifier name:(_)) @class `,
+		].join('\n'),
 	};
 }
 

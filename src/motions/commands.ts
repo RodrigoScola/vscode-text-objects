@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { QueryOptions } from 'web-tree-sitter';
 import fs from 'fs';
 import path from 'path';
 import { saveKeybinds, saveVimKeybinds } from '../configGeneration';
@@ -72,15 +73,36 @@ function assertSelector(ctx: Context, selector: Selector | undefined): asserts s
 	assert(selector, `${command.name} is an invalid selector for ${ctx.editor.language()}`);
 }
 
+function getOptions(ctx: Context): QueryOptions {
+	assert(ctx.command, 'getting command options with an empty command');
+
+	const opts: QueryOptions = {
+		//could revise this but if hitting this is common. could say more about you than about this extension
+		matchLimit: Math.max(300, ctx.editor.getEditor().document.lineCount * 3),
+	};
+
+	const cursor = ctx.editor.cursor();
+	if (ctx.command.action === 'goTo' && ctx.command.direction === 'next') {
+		opts.startPosition = {
+			row: cursor.line,
+			column: cursor.character,
+		};
+	} else if (ctx.command.action === 'goTo' && ctx.command.direction === 'previous') {
+		opts.endPosition = {
+			row: cursor.line,
+			column: cursor.character,
+		};
+	}
+
+	return opts;
+}
+
 function executeCommand(ctx: Context) {
 	assert(ctx.parsing.parser, 'parser is not defined?');
+
 	const command = ctx.command;
 	// console.group('inside');
 	assert(command, 'COMMAND IS NOT DEFINED?');
-	assert(
-		typeof command.currentSelector === 'undefined',
-		'cannot have an existing selector at the beginning of another command'
-	);
 
 	const language = ctx.editor.language();
 
@@ -96,7 +118,7 @@ function executeCommand(ctx: Context) {
 	const query = parser.language.query(selector.query);
 	assert(query, 'invalid query came out???');
 
-	let matches = query.matches(tree.rootNode);
+	let matches = query.matches(tree.rootNode, getOptions(ctx)).filter((c) => c.captures.length > 0);
 
 	if (command.onMatch) {
 		assert(typeof command.onMatch === 'function', 'match function is function');
@@ -104,7 +126,6 @@ function executeCommand(ctx: Context) {
 	}
 
 	const points = toPoint(matches);
-
 	const ranges = toRange(points);
 
 	pointPool.retrieveAll(points);
@@ -165,10 +186,8 @@ export const commands: Command[] = [
 	),
 	addSelectors(createSelectNext('outer', 'string'), Str),
 	addSelectors(withInnerStringModifier(createSelectNext('inner', 'string')), InnerStr),
-	addSelectors(
-		withMatchFunc(createSelectNext('outer', 'class'), (_, matches) => filterDuplicates(matches, 'class')),
-		Class
-	),
+
+	addSelectors(createSelectNext('outer', 'class'), Class),
 	addSelectors(createSelectNext('inner', 'class'), InnerClass),
 	addSelectors(createSelectNext('outer', 'array'), selectOuterArray),
 	addSelectors(createSelectNext('inner', 'array'), InnerArray),

@@ -1,3 +1,4 @@
+import { window } from 'vscode';
 import * as parser from 'web-tree-sitter';
 
 import assert from 'assert';
@@ -93,6 +94,7 @@ export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 			top.column >= 0 && top.row >= 0 && bottom.column >= 0 && bottom.row >= 0,
 			'invalid node positions'
 		);
+		assert(node.start, 'trying to create start gives an errror?');
 
 		node.start = top;
 		node.end = bottom;
@@ -108,10 +110,14 @@ export function toNodes(matches: parser.QueryMatch[]): JoinedPoint[] {
 }
 
 export function toRange(nodes: JoinedPoint[]): Range[] {
+	if (nodes.length === 0) {
+		return [];
+	}
 	const arr: Range[] = new Array(nodes.length).fill(undefined);
 
 	for (let i = 0; i < arr.length; i++) {
 		const node = nodes[i];
+		assert(node, 'trying to make range from undefined node');
 
 		assert(node.start.column >= 0, 'cannot be less than 0, received: ' + node.start.column);
 
