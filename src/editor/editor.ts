@@ -38,19 +38,19 @@ export class Editor {
 		this.editor = editor;
 	}
 
-	goTo(_: Context, pos: vscode.Range | undefined): void {
+	goTo(_: Context, pos: vscode.Position): void {
 		assert(this.editor, 'editor is not defined');
 		if (!pos) {
 			return;
 		}
 
-		this.editor.selection = new vscode.Selection(pos.start, pos.start);
+		this.editor.selection = new vscode.Selection(pos, pos);
 		const that = this;
 		// there HAS to be a way
 		setTimeout(function () {
 			assert(that.editor, 'editor is now undefined???');
 			that.editor!.revealRange(
-				new vscode.Range(pos.start, pos.start),
+				new vscode.Range(pos, pos),
 				vscode.TextEditorRevealType.InCenterIfOutsideViewport
 			);
 		}, 2);

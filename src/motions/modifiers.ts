@@ -82,7 +82,10 @@ export function createGoToPrevious(scope: CommandScope, name: CommandNames): Com
 		pos: previousPosition,
 		end: (ctx, range) => {
 			assert(ctx.editor.goTo, 'go to is undefined');
-			ctx.editor.goTo(ctx, range);
+			if (!range) {
+				return;
+			}
+			ctx.editor.goTo(ctx, range.start);
 		},
 	};
 }
@@ -97,7 +100,10 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 		pos: nextPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor.goTo, 'go to is undefined');
-			ctx.editor.goTo(ctx, range);
+			if (!range) {
+				return;
+			}
+			ctx.editor.goTo(ctx, range.start);
 		},
 	};
 }

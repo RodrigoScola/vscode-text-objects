@@ -118,3 +118,129 @@ print("Result from lambda_function:", lambda_result)  # Output: Result from lamb
 anonymous_lambda_result = func(lambda: 84)
 print("Result from anonymous lambda:", anonymous_lambda_result)  # Output: Result from anonymous lambda: 84
 
+# Complex nested syntax example
+result = (
+    lambda x: (
+        (lambda a, b: a(b))
+        (
+            lambda y: [z for z in y if z % 2 == 0],
+            (
+                lambda q: sorted(
+                    [w**2 for w in q if w > 10],
+                    key=lambda n: -1 * (n % 5)
+                )
+            )(
+                list(range(x))
+            )
+        )
+    )
+)(50)
+
+# A highly nested data structure with mixed types
+data_structure = {
+    "key1": [
+        [1, 2, {"inner_key": [100, 200, 300]}],
+        [4, 5, 6],
+    ],
+    "key2": {
+        "subkey1": [
+            {"id": idx, "value": (lambda x: x**2)(idx)}
+            for idx in range(5)
+        ],
+        "subkey2": tuple(
+            (lambda y: y + (lambda z: z / 2)(y))(i) for i in range(1, 4)
+        ),
+    },
+}
+
+# Obscure generator chained into a dictionary comprehension
+gen_chain = {
+    f"item_{i}": sum(
+        y
+        for y in (x**2 for x in range(i * 2))
+        if y % 3 == 0
+    )
+    for i in range(1, 5)
+}
+
+
+
+def perform_extremely_complex_operations_no_comprehensions(input_data):
+    processed_data = []
+    sorted_input = sorted(set(input_data), key=lambda x: -x)
+    for item in sorted_input:
+        if item % 2 == 1:
+            transformed = []
+            for k, v in enumerate(
+                [
+                    x**2
+                    for x in range(item)
+                    if x % 3 == 0
+                ]
+            ):
+                value = 0
+                for i in range(v):
+                    if i % 2 == 0 and len(str(i)) % 2 == 0:
+                        value += i**2
+                transformed.append({"key": k, "value": value})
+            processed_data.append(
+                {"original": item, "transformed": transformed}
+            )
+
+    final_result = []
+    for data in processed_data:
+        if "transformed" in data:
+            if isinstance(data["transformed"], list):
+                for entry in data["transformed"]:
+                    if entry["value"] % 5 == 0:
+                        extra_value = entry["value"]
+                        if extra_value % 7 != 0:
+                            extra_value *= 2
+                        final_result.append(
+                            {
+                                "key": entry["key"],
+                                "value": entry["value"] ** 0.5,
+                                "original": data["original"],
+                                "extra": extra_value,
+                            }
+                        )
+
+    summary = {}
+    for i in range(len(input_data)):
+        values = []
+        for entry in final_result:
+            if entry["key"] == i:
+                values.append(entry["value"])
+        if isinstance(values, list):
+            if values:
+                summary[str(i)] = values[0] + sum(values[1:])
+            else:
+                summary[str(i)] = -1
+        else:
+            summary[str(i)] = -1
+
+    nested_transformations = []
+    for entry in final_result:
+        extra = entry["extra"]
+        if isinstance(extra, int):
+            range_list = list(range(extra))
+        else:
+            range_list = [1, 2, 3]
+        for v in range_list:
+            if v % 2 == 0:
+                nested_transformations.append(v**2)
+            else:
+                nested_transformations.append(v**3)
+
+    return {
+        "processed_data": processed_data,
+        "final_result": final_result,
+        "summary": summary,
+        "nested_transformations": nested_transformations,
+    }
+
+
+# Example usage
+result = perform_extremely_complex_operations_no_comprehensions([10, 15, 20, 25, 30])
+print(result)
+

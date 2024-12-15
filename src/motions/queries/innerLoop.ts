@@ -77,7 +77,11 @@ function lua(): Selector {
 function python(): Selector {
 	return {
 		language: 'python',
-		query: [` (for_statement body: (block (_)+ @loop)) `].join('\n'),
+		query: [
+			`(list_comprehension body: (_)+ @loop )`,
+			`(for_in_clause right:(_) @loop )`,
+			`(for_statement body: (block (_)+ @loop)) `,
+		].join('\n'),
 	};
 }
 function rust(): Selector {

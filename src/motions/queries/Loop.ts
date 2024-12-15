@@ -60,7 +60,12 @@ function lua(): Selector {
 function python(): Selector {
 	return {
 		language: 'python',
-		query: [` (for_statement) @loop `, `(while_statement) @loop`, `(list_comprehension) @loop`].join('\n'),
+		query: [
+			` (for_in_clause) @loop `,
+			` (for_statement) @loop `,
+			`(while_statement) @loop`,
+			`(list_comprehension) @loop`,
+		].join('\n'),
 	};
 }
 function rust(): Selector {
