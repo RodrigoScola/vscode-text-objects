@@ -11,7 +11,7 @@ function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
 
-function saveCommands(commands: Command[]) {
+export function saveCommands(commands: Command[]) {
 	const total = [];
 	for (const command of commands) {
 		let actionName: string = command.action;
@@ -21,10 +21,13 @@ function saveCommands(commands: Command[]) {
 		} else {
 			actionName = actionName[0].toUpperCase() + actionName.slice(1);
 		}
+		if (command.action === 'yank') {
+			actionName = 'Copy';
+		}
 
 		const node: Record<string, string> = {
 			command: `vscode-textobjects.${getCommandName(command)}`,
-			title: `${actionName} previous inner class content`,
+			title: `${actionName} ${command.direction} ${command.scope} ${command.name}`,
 		};
 
 		if (command.action === 'change' || command.action === 'yank') {
@@ -111,7 +114,7 @@ function getkeyForCommandName(name: CommandNames): string {
 
 function getKeyForCommandActionAndScope(action: CommandAction, scope: CommandScope): string {
 	if (action === 'goTo' && scope === 'outer') {
-		return 'g';
+		return 'f';
 	} else if (action === 'goTo' && scope === 'inner') {
 		return 't';
 	} else if (action === 'select' && scope === 'inner') {

@@ -1,13 +1,13 @@
+def f(param1, two):
+    print("second")
 
 
+def second():
+    print("second")
 
-def f(param1, two): 
-    print('second')
 
-def second(): 
-    print('second')
+add = lambda x, y: x + y
 
-add = lambda x,y : x + y
 
 class MyClass:
     def my_method(self):
@@ -19,11 +19,11 @@ class OtherClass:
     def my_static_method():
         print("This is a static method.")
 
+
 class MyClass2:
     @classmethod
     def my_class_method(cls):
         print("This is a class method.")
-
 
 
 def my_generator():
@@ -32,14 +32,12 @@ def my_generator():
     yield 3
 
 
-
 async def my_async_function():
     print("Async function completed")
 
 
 i = 1
 i = 2
-
 
 
 # htis is a comment
@@ -53,8 +51,7 @@ this is a docstring for python
 str = "3"
 
 
-
-fruits = ['on1','tw2','thr3','fou4']
+fruits = ["on1", "tw2", "thr3", "fou4"]
 
 count = 0
 
@@ -64,74 +61,72 @@ while count < 5:
         print("the count is 4")
     elif count == 4:
         print("the count is 4")
-    else: 
+    else:
         print("the count is 4")
     count += 1
 
 
-    
-    
-my_dict = {'a': 1, 'b': 2, 'c': 3}
+my_dict = {"a": 1, "b": 2, "c": 3}
 
 
-
-
-
-result = "x is less than 5" if my_dict['c'] < 5 else "x is 5 or greater"
+result = "x is less than 5" if my_dict["c"] < 5 else "x is 5 or greater"
 x = 4
 
-result =  { "x is less than 5" } if x < 5 else { "x is 5 or greater" };
+result = {"x is less than 5"} if x < 5 else {"x is 5 or greater"}
 
 
-my_dict.a= 3
+my_dict.a = 3
 for key, value in my_dict.items():
-    print(f'Key: {key}, Value: {value}')
+    print(f"Key: {key}, Value: {value}")
 
-squares = [x ** 2 for x in range(10)]
+squares = [x**2 for x in range(10)]
 
 
-arrr  = [1,2,3,4]
+arrr = [1, 2, 3, 4]
 
-d = {
-    "name": "hogh"
-}
+d = {"name": "hogh"}
+
 
 def func(fn):
     return fn()
 
+
 # Example function to be passed as an argument
 def example_function():
     return 42
+
 
 # Using a lambda function
 lambda_function = lambda: 100
 
 # Using the func function with example_function
 result = func(example_function)
-print("Result from example_function:", result)  # Output: Result from example_function: 42
+print(
+    "Result from example_function:", result
+)  # Output: Result from example_function: 42
 
 # Using the func function with a lambda function
 lambda_result = func(lambda_function)
-print("Result from lambda_function:", lambda_result)  # Output: Result from lambda_function: 100
+print(
+    "Result from lambda_function:", lambda_result
+)  # Output: Result from lambda_function: 100
 
 # Using the func function with an anonymous lambda function directly
 anonymous_lambda_result = func(lambda: 84)
-print("Result from anonymous lambda:", anonymous_lambda_result)  # Output: Result from anonymous lambda: 84
+print(
+    "Result from anonymous lambda:", anonymous_lambda_result
+)  # Output: Result from anonymous lambda: 84
 
 # Complex nested syntax example
 result = (
     lambda x: (
-        (lambda a, b: a(b))
-        (
+        (lambda a, b: a(b))(
             lambda y: [z for z in y if z % 2 == 0],
             (
                 lambda q: sorted(
-                    [w**2 for w in q if w > 10],
-                    key=lambda n: -1 * (n % 5)
+                    [w**2 for w in q if w > 10], key=lambda n: -1 * (n % 5)
                 )
-            )(
-                list(range(x))
-            )
+            )(list(range(x))),
         )
     )
 )(50)
@@ -143,52 +138,26 @@ data_structure = {
         [4, 5, 6],
     ],
     "key2": {
-        "subkey1": [
-            {"id": idx, "value": (lambda x: x**2)(idx)}
-            for idx in range(5)
-        ],
-        "subkey2": tuple(
-            (lambda y: y + (lambda z: z / 2)(y))(i) for i in range(1, 4)
-        ),
+        "subkey1": [{"id": idx, "value": (lambda x: x**2)(idx)} for idx in range(5)],
+        "subkey2": tuple((lambda y: y + (lambda z: z / 2)(y))(i) for i in range(1, 4)),
     },
 }
 
 # Obscure generator chained into a dictionary comprehension
 gen_chain = {
-    f"item_{i}": sum(
-        y
-        for y in (x**2 for x in range(i * 2))
-        if y % 3 == 0
-    )
+    f"item_{i}": sum(y for y in (x**2 for x in range(i * 2)) if y % 3 == 0)
     for i in range(1, 5)
 }
 
 
-
 def perform_extremely_complex_operations_no_comprehensions(input_data):
-    processed_data = []
+    data = []
     sorted_input = sorted(set(input_data), key=lambda x: -x)
     for item in sorted_input:
-        if item % 2 == 1:
-            transformed = []
-            for k, v in enumerate(
-                [
-                    x**2
-                    for x in range(item)
-                    if x % 3 == 0
-                ]
-            ):
-                value = 0
-                for i in range(v):
-                    if i % 2 == 0 and len(str(i)) % 2 == 0:
-                        value += i**2
-                transformed.append({"key": k, "value": value})
-            processed_data.append(
-                {"original": item, "transformed": transformed}
-            )
+        data.append(transform( item))
 
     final_result = []
-    for data in processed_data:
+    for data in data:
         if "transformed" in data:
             if isinstance(data["transformed"], list):
                 for entry in data["transformed"]:
@@ -233,14 +202,21 @@ def perform_extremely_complex_operations_no_comprehensions(input_data):
                 nested_transformations.append(v**3)
 
     return {
-        "processed_data": processed_data,
+        "processed_data": data,
         "final_result": final_result,
         "summary": summary,
         "nested_transformations": nested_transformations,
     }
 
+def transform( item):
+    transformed = []
+    for k, v in enumerate([x**2 for x in range(item) if x % 3 == 0]):
+        value = 0
+        transformed.append({"key": k, "value": value})
 
-# Example usage
-result = perform_extremely_complex_operations_no_comprehensions([10, 15, 20, 25, 30])
-print(result)
+        for i in range(v):
+            if i % 2 == 0 and len(str(i)) % 2 == 0:
+                value += i**2
+    return {"original": item, "transformed": transformed}
 
+    

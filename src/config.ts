@@ -23,7 +23,8 @@ export class Config {
 		const value = this.config.get('vimEnabled');
 
 		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
-		return Boolean(value);
+		const vimExt = vscode.extensions.getExtension('vscodegim.vim');
+		return Boolean(value && vimExt && vimExt.isActive);
 	}
 
 	copyOnDelete(): boolean {

@@ -1527,3 +1527,7 @@ The current keybinds for all the nodes are:
 ## Disclaimer
 
 Although i like this extension, I am uncertain about the development past my needs. Since extension development is not my career (at least not for now). I dont intend to have a lot going on for this extension.
+
+# Update material
+
+-    add an start and end so we can goto start and goto end of a node

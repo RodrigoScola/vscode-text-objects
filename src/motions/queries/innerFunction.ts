@@ -74,7 +74,7 @@ function lua(): Selector {
 function python(): Selector {
 	return {
 		language: 'python',
-		query: ['( right: (lambda) @function) '].join('\n'),
+		query: ['(function_definition body: (_)+ @function)'].join('\n'),
 	};
 }
 function rust(): Selector {

@@ -2,7 +2,7 @@ import assert from 'assert';
 import { QueryOptions } from 'web-tree-sitter';
 import fs from 'fs';
 import path from 'path';
-import { saveKeybinds, saveVimKeybinds } from '../configGeneration';
+import { saveKeybinds, saveVimKeybinds, saveCommands } from '../configGeneration';
 import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { filterDuplicates } from '../parsing/nodes';
@@ -46,7 +46,7 @@ import Lhs from './queries/Lhs';
 import Loop from './queries/Loop';
 import Node from './queries/Node';
 import OuterObject from './queries/Object';
-import { select as Params } from './queries/Params';
+import { select as Params, goTo as GotoParams } from './queries/Params';
 import Rhs from './queries/Rhs';
 import Str from './queries/String';
 import Type from './queries/Type';
@@ -264,7 +264,7 @@ export const commands: Command[] = [
 	addSelectors(createGoToNext('inner', 'array'), InnerArray),
 	addSelectors(createGoToNext('outer', 'object'), OuterObject),
 	addSelectors(createGoToNext('inner', 'object'), InnerObject),
-	addSelectors(createGoToNext('outer', 'parameters'), Params),
+	addSelectors(createGoToNext('outer', 'parameters'), GotoParams),
 	addSelectors(createGoToNext('inner', 'parameters'), InnerParams),
 	addSelectors(createGoToNext('outer', 'call'), Call),
 	addSelectors(createGoToNext('inner', 'call'), InnerCall),
@@ -299,7 +299,7 @@ export const commands: Command[] = [
 	addSelectors(createGoToPrevious('outer', 'object'), OuterObject),
 	addSelectors(createGoToPrevious('inner', 'object'), InnerObject),
 	addSelectors(createGoToPrevious('inner', 'parameters'), InnerParams),
-	addSelectors(withMatchFunc(createGoToPrevious('outer', 'parameters'), groupMatches), Params),
+	addSelectors(withMatchFunc(createGoToPrevious('outer', 'parameters'), groupMatches), GotoParams),
 	addSelectors(withMatchFunc(createGoToPrevious('outer', 'call'), groupMatches), Call),
 	addSelectors(createGoToPrevious('inner', 'call'), InnerCall),
 	addSelectors(createGoToPrevious('outer', 'type'), Type),
@@ -696,6 +696,7 @@ if (getConfig().experimentalNode()) {
 
 export function init() {
 	saveKeybinds(commands);
+	saveCommands(commands);
 	saveVimKeybinds(commands);
 	for (const command of commands) {
 		const name = `vscode-textobjects.${getCommandName(command)}`;

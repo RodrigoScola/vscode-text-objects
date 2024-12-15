@@ -135,6 +135,7 @@ export function createDeleteNext(scope: CommandScope, name: CommandNames): Comma
 		},
 	};
 }
+
 export function createDeletePrevious(scope: CommandScope, name: CommandNames): Command {
 	return {
 		name,
@@ -192,12 +193,16 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 					range.end.line,
 					range.end.character
 				);
-
+				const previousCursor = ctx.editor.cursor();
+				const cursorRange = new vscode.Range(previousCursor, previousCursor);
 				const ed = ctx.editor.getEditor();
 
 				ed.selection = new vscode.Selection(range.start, range.end);
 				ed.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
-				vscode.env.clipboard.writeText(doc);
+				vscode.env.clipboard.writeText(doc).then(() => {
+					ed.selection = new vscode.Selection(cursorRange.start, cursorRange.start);
+					ed.revealRange(cursorRange, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+				});
 			}
 		},
 	};
