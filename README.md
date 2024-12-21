@@ -66,6 +66,22 @@ The current Fully supported nodes are:
 
 check all the queries
 
+-    c
+-    c#
+-    cpp
+-    go
+-    java
+-    javascript
+-    javascriptreact
+-    typescript
+-    typescriptreact
+-    json
+-    lua
+-    python
+-    rust
+-    toml
+-    yaml
+
 ### Misc
 
 -    remove the console logs

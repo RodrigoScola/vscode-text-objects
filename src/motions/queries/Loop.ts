@@ -15,10 +15,10 @@ function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [
-			`(for_statement body: (block (_)+ @loop)) `,
-			`(for_each_statement (block (_)+ @loop)) `,
-			`(while_statement (block (_)+ @loop)) `,
-			`(do_statement (block (_)+ @loop))`,
+			`(for_statement ) @loop `,
+			`(for_each_statement ) @loop `,
+			`(while_statement ) @loop `,
+			`(do_statement ) @loop`,
 		].join('\n'),
 	};
 }
