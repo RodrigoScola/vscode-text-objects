@@ -1534,8 +1534,39 @@ The current keybinds for all the nodes are:
 		"before": ["]", "N"],
 		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
 		"commands": ["vscode-textobjects.goTo.previous.inner.node"]
+	},
+	{
+		"before": ["c", "a", "n"],
+		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
+		"commands": ["vscode-textobjects.change.next.outer.node"]
+	},
+	{
+		"before": ["c", "i", "N"],
+		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
+		"commands": ["vscode-textobjects.change.previous.inner.node"]
+	},
+	{
+		"before": ["d", "a", "n"],
+		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
+		"commands": ["vscode-textobjects.delete.next.outer.node"]
+	},
+	{
+		"before": ["d", "i", "N"],
+		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
+		"commands": ["vscode-textobjects.delete.previous.inner.node"]
+	},
+	{
+		"before": ["y", "a", "n"],
+		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
+		"commands": ["vscode-textobjects.yank.next.outer.node"]
+	},
+	{
+		"before": ["y", "i", "n"],
+		"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'",
+		"commands": ["vscode-textobjects.yank.next.inner.node"]
 	}
 ]
+
 
 
 ```

@@ -2,8 +2,9 @@ function C(): Selector {
 	return {
 		language: 'c',
 		query: [
-			` (assignment_expression left:(_) @lhs) `,
-			` (declaration (storage_class_specifier) @lhs type:(primitive_type) @lhs declarator:(init_declarator declarator:(identifier) @lhs))`,
+			`(assignment_expression left:(_) @lhs) `,
+			`(declaration type:(_) @lhs declarator:(_ declarator:(_) @lhs)) `,
+			`(declaration (_) @lhs type:(_) @lhs declarator:(_ declarator:(_) @lhs))`,
 		].join('\n'),
 	};
 }
@@ -13,8 +14,12 @@ function cpp(): Selector {
 		language: 'cpp',
 		query: [
 			`
-  (declaration type:(_) @lhs declarator:(_ declarator:(_) @lhs)) 
-	`,
+  
+ 
+ (variable_declaration
+type:(predefined_type) @lhs
+  (variable_declarator
+)) @lhs `,
 			` (assignment_expression left:(_) @lhs) `,
 		].join('\n'),
 	};

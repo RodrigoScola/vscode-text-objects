@@ -63,6 +63,8 @@ export const Languages = {
 	},
 };
 
+export const SupportedLanguages = Object.keys(Languages);
+
 export class LanguageParser {
 	private static hasStarted: boolean = false;
 	private static initedLanguages: Partial<Record<keyof typeof Languages, Parsing>> = {};

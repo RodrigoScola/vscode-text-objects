@@ -2,8 +2,9 @@ function C(): Selector {
 	return {
 		language: 'c',
 		query: [
-			` (field_expression field:(field_identifier) @lhs ) `,
-			` (init_declarator declarator:(identifier) @lhs)`,
+			`(field_expression field:(_) @lhs ) `,
+			`(init_declarator declarator:(_) @lhs)`,
+			`(assignment_expression left:(_) @lhs) `,
 		].join('\n'),
 	};
 }
@@ -17,7 +18,10 @@ function cpp(): Selector {
 function csharp(): Selector {
 	return {
 		language: 'csharp',
-		query: [` (variable_declaration  (variable_declarator (_ (_) @lhs) )) `].join('\n'),
+		query: [
+			` (variable_declaration type:(predefined_type) @lhs (variable_declarator)) @lhs `,
+			` (assignment_expression left:(_) @lhs) `,
+		].join('\n'),
 	};
 }
 function go(): Selector {

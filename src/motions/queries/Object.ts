@@ -2,6 +2,7 @@ function C(): Selector {
 	return {
 		language: 'c',
 		query: [
+			` (type_definition type:(struct_specifier) @object ) @outer `,
 			`(struct_specifier) @object `,
 			`(enum_specifier   ) @object `,
 			`(union_specifier ) @object `,

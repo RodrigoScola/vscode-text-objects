@@ -216,6 +216,7 @@ export function saveVimKeybinds(commands: Command[]) {
 	const total = [];
 	for (const command of commands) {
 		let key: string[] = [];
+
 		if (command.action === 'goTo') {
 			let dirKey = getkeyForCommandName(command.name);
 

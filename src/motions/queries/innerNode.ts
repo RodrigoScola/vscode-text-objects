@@ -12,7 +12,6 @@ function C(): Selector {
 		`(else_clause (compound_statement (_)+ @node))`,
 		`(else_clause (expression_statement (_)+ @node))`,
 		`(if_statement consequence:(expression_statement (_)+ @node)) `,
-		,
 	];
 
 	return {

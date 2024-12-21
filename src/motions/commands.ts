@@ -1,15 +1,12 @@
 import assert from 'assert';
-import { QueryOptions } from 'web-tree-sitter';
-import fs from 'fs';
-import path from 'path';
+import { QueryMatch, QueryOptions } from 'web-tree-sitter';
 import { saveKeybinds, saveVimKeybinds, saveCommands } from '../configGeneration';
 import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { filterDuplicates } from '../parsing/nodes';
-import { LanguageParser } from '../parsing/parser';
+import { LanguageParser, SupportedLanguages } from '../parsing/parser';
 import { groupMatches } from '../parsing/position';
 import {
-	createGoToNext,
 	createGoToPrevious,
 	createChangeNext,
 	createChangePrevious,
@@ -21,6 +18,7 @@ import {
 	withInnerStringModifier,
 	withMatchFunc,
 	createSelectPrevious,
+	createGoToNext,
 } from './modifiers';
 import { select as selectOuterArray } from './queries/Array';
 import Call from './queries/call';
@@ -191,7 +189,20 @@ export const commands: Command[] = [
 	addSelectors(createSelectNext('inner', 'class'), InnerClass),
 	addSelectors(createSelectNext('outer', 'array'), selectOuterArray),
 	addSelectors(createSelectNext('inner', 'array'), InnerArray),
-	addSelectors(createSelectNext('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createSelectNext('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createSelectNext('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createSelectNext('outer', 'parameters'), groupMatches), Params),
@@ -228,7 +239,20 @@ export const commands: Command[] = [
 	addSelectors(createSelectPrevious('inner', 'class'), InnerClass),
 	addSelectors(createSelectPrevious('outer', 'array'), selectOuterArray),
 	addSelectors(createSelectPrevious('inner', 'array'), InnerArray),
-	addSelectors(createSelectPrevious('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createSelectPrevious('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createSelectPrevious('inner', 'object'), InnerObject),
 	addSelectors(createSelectPrevious('inner', 'parameters'), InnerParams),
 	addSelectors(withMatchFunc(createSelectPrevious('outer', 'parameters'), groupMatches), Params),
@@ -262,7 +286,20 @@ export const commands: Command[] = [
 	addSelectors(createGoToNext('inner', 'class'), InnerClass),
 	addSelectors(createGoToNext('outer', 'array'), selectOuterArray),
 	addSelectors(createGoToNext('inner', 'array'), InnerArray),
-	addSelectors(createGoToNext('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createGoToNext('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createGoToNext('inner', 'object'), InnerObject),
 	addSelectors(createGoToNext('outer', 'parameters'), GotoParams),
 	addSelectors(createGoToNext('inner', 'parameters'), InnerParams),
@@ -296,7 +333,20 @@ export const commands: Command[] = [
 	addSelectors(createGoToPrevious('inner', 'class'), InnerClass),
 	addSelectors(createGoToPrevious('outer', 'array'), selectOuterArray),
 	addSelectors(createGoToPrevious('inner', 'array'), InnerArray),
-	addSelectors(createGoToPrevious('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createGoToPrevious('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createGoToPrevious('inner', 'object'), InnerObject),
 	addSelectors(createGoToPrevious('inner', 'parameters'), InnerParams),
 	addSelectors(withMatchFunc(createGoToPrevious('outer', 'parameters'), groupMatches), GotoParams),
@@ -354,7 +404,20 @@ export const commands: Command[] = [
 	addSelectors(createDeleteNext('inner', 'class'), InnerClass),
 	addSelectors(createDeleteNext('outer', 'array'), selectOuterArray),
 	addSelectors(createDeleteNext('inner', 'array'), InnerArray),
-	addSelectors(createDeleteNext('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createDeleteNext('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createDeleteNext('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createDeleteNext('outer', 'parameters'), groupMatches), Params),
@@ -413,7 +476,20 @@ export const commands: Command[] = [
 	addSelectors(createDeletePrevious('inner', 'class'), InnerClass),
 	addSelectors(createDeletePrevious('outer', 'array'), selectOuterArray),
 	addSelectors(createDeletePrevious('inner', 'array'), InnerArray),
-	addSelectors(createDeletePrevious('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createDeletePrevious('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createDeletePrevious('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createDeletePrevious('outer', 'parameters'), groupMatches), Params),
@@ -472,7 +548,20 @@ export const commands: Command[] = [
 	addSelectors(createYankNext('inner', 'class'), InnerClass),
 	addSelectors(createYankNext('outer', 'array'), selectOuterArray),
 	addSelectors(createYankNext('inner', 'array'), InnerArray),
-	addSelectors(createYankNext('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createYankNext('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createYankNext('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createYankNext('outer', 'parameters'), groupMatches), Params),
@@ -529,7 +618,20 @@ export const commands: Command[] = [
 	addSelectors(createYankPrevious('inner', 'class'), InnerClass),
 	addSelectors(createYankPrevious('outer', 'array'), selectOuterArray),
 	addSelectors(createYankPrevious('inner', 'array'), InnerArray),
-	addSelectors(createYankPrevious('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createYankPrevious('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createYankPrevious('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createYankPrevious('outer', 'parameters'), groupMatches), Params),
@@ -588,7 +690,20 @@ export const commands: Command[] = [
 	addSelectors(createChangeNext('inner', 'class'), InnerClass),
 	addSelectors(createChangeNext('outer', 'array'), selectOuterArray),
 	addSelectors(createChangeNext('inner', 'array'), InnerArray),
-	addSelectors(createChangeNext('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createChangeNext('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createChangeNext('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createChangeNext('outer', 'parameters'), groupMatches), Params),
@@ -647,7 +762,20 @@ export const commands: Command[] = [
 	addSelectors(createChangePrevious('inner', 'class'), InnerClass),
 	addSelectors(createChangePrevious('outer', 'array'), selectOuterArray),
 	addSelectors(createChangePrevious('inner', 'array'), InnerArray),
-	addSelectors(createChangePrevious('outer', 'object'), OuterObject),
+	addSelectors(
+		withMatchFunc(createChangePrevious('outer', 'object'), function (ctx, matches) {
+			assert(
+				SupportedLanguages.includes(ctx.editor.language()),
+				'trying to select in an unsupported language?'
+			);
+
+			if (ctx.editor.language() === 'c') {
+				return filterDuplicates(matches, 'object');
+			}
+			return matches;
+		}),
+		OuterObject
+	),
 	addSelectors(createChangePrevious('inner', 'object'), InnerObject),
 
 	addSelectors(withMatchFunc(createChangePrevious('outer', 'parameters'), groupMatches), Params),
@@ -660,27 +788,30 @@ export const commands: Command[] = [
 	addSelectors(createChangePrevious('inner', 'comment'), InnerComment),
 ];
 
+//this could be better, i could make a Record<string, names> but rn i just want to see if it works
+function FilterNodeDuplicates(ctx: Context, matches: QueryMatch[]) {
+	const lang = ctx.editor.language();
+
+	//javascript , typescript, javascriptreact, typescriptreact
+	if (lang.includes('script')) {
+		return filterDuplicates(matches, ['node', 'export']);
+	}
+	//java
+	else if (lang.includes('java')) {
+		return filterDuplicates(matches, ['node', 'inner']);
+	} else if (lang.includes('cpp')) {
+		return filterDuplicates(matches, ['node', 'expression', 'inner']);
+	} else if (lang === 'go') {
+		return filterDuplicates(matches, ['inner', 'outer', 'node']);
+	} else if (lang === 'c') {
+		return filterDuplicates(matches, 'node');
+	}
+	return matches;
+}
+
 if (getConfig().experimentalNode()) {
 	commands.push(
-		addSelectors(
-			withMatchFunc(createSelectNext('outer', 'node'), function (ctx, matches) {
-				const lang = ctx.editor.language();
-				//javascript , typescript, javascriptreact, typescriptreact
-				if (lang.includes('script')) {
-					return filterDuplicates(matches, ['node', 'export']);
-				}
-				//java
-				else if (lang.includes('java')) {
-					return filterDuplicates(matches, 'inner');
-				} else if (lang.includes('cpp')) {
-					return filterDuplicates(matches, ['expression', 'inner']);
-				} else if (lang === 'go') {
-					return filterDuplicates(matches, ['inner', 'outer', 'node']);
-				}
-				return matches;
-			}),
-			Node
-		),
+		addSelectors(withMatchFunc(createSelectNext('outer', 'node'), FilterNodeDuplicates), Node),
 		addSelectors(createSelectNext('inner', 'node'), InnerNode),
 
 		addSelectors(createSelectPrevious('outer', 'node'), Node),
@@ -690,7 +821,16 @@ if (getConfig().experimentalNode()) {
 		addSelectors(createGoToNext('inner', 'node'), InnerNode),
 
 		addSelectors(createGoToPrevious('outer', 'node'), Node),
-		addSelectors(createGoToPrevious('inner', 'node'), InnerNode)
+		addSelectors(createGoToPrevious('inner', 'node'), InnerNode),
+
+		addSelectors(withMatchFunc(createChangeNext('outer', 'node'), FilterNodeDuplicates), Node),
+		addSelectors(createChangePrevious('inner', 'node'), InnerNode),
+
+		addSelectors(withMatchFunc(createDeleteNext('outer', 'node'), FilterNodeDuplicates), Node),
+		addSelectors(createDeletePrevious('inner', 'node'), InnerNode),
+
+		addSelectors(withMatchFunc(createYankNext('outer', 'node'), FilterNodeDuplicates), Node),
+		addSelectors(createYankNext('inner', 'node'), InnerNode)
 	);
 }
 
