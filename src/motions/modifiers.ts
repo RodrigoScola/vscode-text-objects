@@ -181,7 +181,7 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 			ctx.editor.selectRange(ctx, range);
 
 			if (getConfig().vimActive()) {
-				ctx.editor.exec('noop').then(() => {
+				vscode.commands.executeCommand('noop').then(() => {
 					vscode.commands.executeCommand('vim.remap', {
 						after: ['y'],
 					});
@@ -224,7 +224,7 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 				return;
 			}
 			if (getConfig().vimActive()) {
-				ctx.editor.exec('noop').then(() => {
+				vscode.commands.executeCommand('noop').then(() => {
 					vscode.commands.executeCommand('vim.remap', {
 						after: ['y'],
 					});
@@ -259,7 +259,7 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
+			vscode.commands.executeCommand('noop').then(() => {
 				if (getConfig().vimActive()) {
 					vscode.commands.executeCommand('vim.remap', {
 						after: ['c'],
@@ -282,7 +282,7 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
+			vscode.commands.executeCommand('noop').then(() => {
 				vscode.commands.executeCommand('vim.remap', {
 					after: ['c'],
 				});

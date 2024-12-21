@@ -22,7 +22,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.1.17",
+	"version": "0.1.18",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
