@@ -835,9 +835,9 @@ if (getConfig().experimentalNode()) {
 }
 
 export function init() {
-	saveKeybinds(commands);
-	saveCommands(commands);
-	saveVimKeybinds(commands);
+	// saveKeybinds(commands);
+	// saveCommands(commands);
+	// saveVimKeybinds(commands);
 	for (const command of commands) {
 		const name = `vscode-textobjects.${getCommandName(command)}`;
 		vscode.commands.registerCommand(name, async () => {
