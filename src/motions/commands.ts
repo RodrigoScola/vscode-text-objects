@@ -834,6 +834,28 @@ if (getConfig().experimentalNode()) {
 	);
 }
 
+export async function setupCommand(command: Command) {
+	const currentEditor = vscode.window.activeTextEditor;
+	if (!currentEditor) {
+		return;
+	}
+
+	const ctx = updateContext(getDefaultContext());
+
+	ctx.editor.setEditor(currentEditor);
+
+	const language = ctx.editor.language();
+	assert(language.length > 0, 'language came empty');
+
+	const parser = await LanguageParser.get(language);
+	assert(parser, `could not find parser for ${language}`);
+
+	ctx.parsing.parser = parser;
+	updateCommand(command);
+
+	executeCommand(ctx);
+}
+
 export function init() {
 	// saveKeybinds(commands);
 	// saveCommands(commands);
@@ -841,25 +863,7 @@ export function init() {
 	for (const command of commands) {
 		const name = `vscode-textobjects.${getCommandName(command)}`;
 		vscode.commands.registerCommand(name, async () => {
-			const currentEditor = vscode.window.activeTextEditor;
-			if (!currentEditor) {
-				return;
-			}
-
-			const ctx = updateContext(getDefaultContext());
-
-			ctx.editor.setEditor(currentEditor);
-
-			const language = ctx.editor.language();
-			assert(language.length > 0, 'language came empty');
-
-			const parser = await LanguageParser.get(language);
-			assert(parser, `could not find parser for ${language}`);
-
-			ctx.parsing.parser = parser;
-			updateCommand(command);
-
-			executeCommand(ctx);
+			setupCommand(command);
 		});
 	}
 }

@@ -6,7 +6,7 @@
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true /* enable all strict type-checking options */,
-		"noEmit": true,
+		// "noEmit": true,
 		"alwaysStrict": true,
 
 		"noImplicitReturns": true,

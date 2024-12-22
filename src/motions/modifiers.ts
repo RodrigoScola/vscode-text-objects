@@ -5,8 +5,6 @@ import { getConfig } from '../config';
 
 const strRegex = /['"`]/;
 
-const exec = vscode.commands.executeCommand;
-
 export function withInnerStringModifier(command: Command): Command {
 	const next = command.end;
 
@@ -123,8 +121,8 @@ export function createDeleteNext(scope: CommandScope, name: CommandNames): Comma
 			ctx.editor.selectRange(ctx, range);
 
 			if (getConfig().vimActive()) {
-				exec('noop').then(() => {
-					exec('extension.vim_delete');
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('extension.vim_delete');
 				});
 			} else {
 				if (getConfig().copyOnDelete()) {
@@ -151,7 +149,7 @@ export function createDeletePrevious(scope: CommandScope, name: CommandNames): C
 			ctx.editor.selectRange(ctx, range);
 
 			if (getConfig().vimActive()) {
-				exec('noop').then(() => {
+				vscode.commands.executeCommand('noop').then(() => {
 					ctx.editor.exec('extension.vim_delete');
 				});
 			} else {
@@ -184,8 +182,8 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 			if (getConfig().vimActive()) {
 				//aparently  if you abstract this logic everything breaks
 				//or it could be that im dumb
-				exec('noop').then(() => {
-					exec('vim.remap', {
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
 						after: ['y'],
 					});
 				});
@@ -227,8 +225,8 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 				return;
 			}
 			if (getConfig().vimActive()) {
-				exec('noop').then(() => {
-					exec('vim.remap', {
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
 						after: ['y'],
 					});
 				});
@@ -263,8 +261,8 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			if (getConfig().vimActive()) {
-				exec('noop').then(() => {
-					exec('vim.remap', {
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
 						after: ['c'],
 					});
 				});
@@ -285,8 +283,8 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			exec('noop').then(() => {
-				exec('vim.remap', {
+			vscode.commands.executeCommand('noop').then(() => {
+				vscode.commands.executeCommand('vim.remap', {
 					after: ['c'],
 				});
 			});
