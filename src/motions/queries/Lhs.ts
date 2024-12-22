@@ -13,13 +13,7 @@ function cpp(): Selector {
 	return {
 		language: 'cpp',
 		query: [
-			`
-  
- 
- (variable_declaration
-type:(predefined_type) @lhs
-  (variable_declarator
-)) @lhs `,
+			` (declaration type:(_)  @lhs declarator:(init_declarator declarator:(_) @lhs) ) `,
 			` (assignment_expression left:(_) @lhs) `,
 		].join('\n'),
 	};
@@ -138,7 +132,6 @@ function javascriptreact(): Selector {
 		query: [
 			`(variable_declarator value: (_) @rhs)`,
 			`( assignment_expression (_) @rhs) `,
-			` (type_alias_declaration value: (_) @type   ) `,
 			// `( public_field_definition
 			// value: (_) @rhs
 			// )`,

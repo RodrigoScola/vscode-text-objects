@@ -123,11 +123,7 @@ function typescriptreact(): Selector {
 function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
-		query: [
-			`(variable_declarator value: (_) @rhs)`,
-			`( assignment_expression (_) @rhs) `,
-			` (type_alias_declaration value: (_) @type   ) `,
-		].join('\n'),
+		query: [`(variable_declarator value: (_) @rhs)`, `( assignment_expression (_) @rhs) `].join('\n'),
 	};
 }
 export default {

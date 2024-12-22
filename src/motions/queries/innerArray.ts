@@ -52,7 +52,7 @@ function json(): Selector {
 }
 function jsonc(): Selector {
 	return {
-		language: 'json',
+		language: 'jsonc',
 		query: javascript().query,
 	};
 }
