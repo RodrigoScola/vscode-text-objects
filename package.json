@@ -2662,6 +2662,7 @@
 		"package": "npm run check-types && npm run lint && node esbuild.js --production",
 		"compile-tests": "tsc -p . --outDir out && cp -r ./parsers ./out/parsers",
 		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest_withoug": "npm run compile-tests",
 		"pretest": "npm run compile-tests && npm run compile && npm run lint",
 		"check-types": "tsc --noEmit",
 		"lint": "eslint src",
