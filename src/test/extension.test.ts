@@ -125,4 +125,28 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
+	test('tests all the cs language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.cs'),
+				language: 'cs',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
 });
