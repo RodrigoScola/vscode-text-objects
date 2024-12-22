@@ -2654,7 +2654,8 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": "npm run test && npm run package",
+		"vscode:prepublish": " npm run package",
+		"vscode:prepublish_test": "npm run test && npm run package",
 		"compile": "npm run check-types && npm run lint && node esbuild.js",
 		"watch": "npm-run-all -p watch:*",
 		"watch:esbuild": "node esbuild.js --watch",

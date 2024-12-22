@@ -53,14 +53,11 @@ suite('Extension Test Suite', () => {
 	});
 
 	test('tests all the c language', async () => {
-		const [doc] = await Promise.all([
-			vscode.workspace.openTextDocument({
-				content: getFile('playground.c'),
-				language: 'c',
-			}),
-			LanguageParser.init(),
-		]);
-		const editor = await vscode.window.showTextDocument(doc);
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.c'),
+			language: 'c',
+		});
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
 
 		for (const command of commands) {
 			if (command.action !== 'select') {
@@ -78,14 +75,11 @@ suite('Extension Test Suite', () => {
 	});
 
 	test('tests all the javascript language', async () => {
-		const [doc] = await Promise.all([
-			vscode.workspace.openTextDocument({
-				content: getFile('playground.js'),
-				language: 'javascript',
-			}),
-			LanguageParser.init(),
-		]);
-		const editor = await vscode.window.showTextDocument(doc);
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.js'),
+			language: 'javascript',
+		});
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
 
 		for (const command of commands) {
 			if (command.action !== 'select' || command.name === 'type') {
@@ -102,10 +96,121 @@ suite('Extension Test Suite', () => {
 		}
 	});
 	test('tests all the cpp language', async () => {
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.cpp'),
+			language: 'cpp',
+		});
+
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+	test('tests all the cs language', async () => {
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.cs'),
+			language: 'cs',
+		});
+
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+	test('tests all the go language', async () => {
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.go'),
+			language: 'go',
+		});
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the java language', async () => {
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.java'),
+			language: 'java',
+		});
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the json language', async () => {
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.json'),
+			language: 'json',
+		});
+
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the jsonc language', async () => {
 		const [doc] = await Promise.all([
 			vscode.workspace.openTextDocument({
-				content: getFile('playground.cpp'),
-				language: 'cpp',
+				content: getFile('playground.jsonc'),
+				language: 'jsonc',
 			}),
 			LanguageParser.init(),
 		]);
@@ -125,11 +230,186 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
-	test('tests all the cs language', async () => {
+
+	test('tests all the jsx language', async () => {
 		const [doc] = await Promise.all([
 			vscode.workspace.openTextDocument({
-				content: getFile('playground.cs'),
-				language: 'cs',
+				content: getFile('playground.jsx'),
+				language: 'jsx',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the lua language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.lua'),
+				language: 'lua',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the python language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.py'),
+				language: 'python',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the rust language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.rs'),
+				language: 'rust',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the toml language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.toml'),
+				language: 'toml',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the tsx language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.tsx'),
+				language: 'typescriptreact',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+
+	test('tests all the ts language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.ts'),
+				language: 'typescript',
+			}),
+			LanguageParser.init(),
+		]);
+		const editor = await vscode.window.showTextDocument(doc);
+
+		for (const command of commands) {
+			if (command.action !== 'select') {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
+	test('tests all the yaml language', async () => {
+		const [doc] = await Promise.all([
+			vscode.workspace.openTextDocument({
+				content: getFile('playground.yaml'),
+				language: 'yaml',
 			}),
 			LanguageParser.init(),
 		]);
