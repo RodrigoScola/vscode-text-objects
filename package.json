@@ -22,7 +22,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.1.23",
+	"version": "0.1.24",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -53,11 +53,6 @@
 		"configuration": {
 			"title": "Vscode Text Objects",
 			"properties": {
-				"vscode-textobjects.experimentalNodeQuery": {
-					"type": "boolean",
-					"default": false,
-					"description": "activates an experimental node type"
-				},
 				"vscode-textobjects.vimEnabled": {
 					"type": "boolean",
 					"default": false,
@@ -2654,8 +2649,8 @@
 		]
 	},
 	"scripts": {
-		"vscode:prepublish": " npm run package",
-		"vscode:prepublish_test": "npm run test && npm run package",
+		"vscode:prepublish_test": " npm run package",
+		"vscode:prepublish": "npm run test && npm run package",
 		"compile": "npm run check-types && npm run lint && node esbuild.js",
 		"compile_test": " node esbuild.js",
 		"watch": "npm-run-all -p watch:*",

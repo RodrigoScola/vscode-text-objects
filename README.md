@@ -1,28 +1,16 @@
+<div align="center">
+
 # Vscode Text Objects
 
-Vscode text objects are a nicer way to edit code. long are the days of slow block selection. Now you can press a cople keybinds and Done!
+With Vscode Text Objects you can select, delete, copy and go to text in a more fluid way than you have ever experienced.
 
-### Nodes Support
+</div>
 
-The current Fully supported nodes are:
+![VSCode Text Objects Demo](./docs/demo.gif)
 
--    Functions
--    Loops
--    Objects
--    Arrays
--    Function calls
--    Classes
--    Comments
--    Parameters
--    If and else statements, switches, ternaries, conditionals in generals
--    Strings
--    Types
--    Nodes
--    Variables
--    Right Hand Variable Assignment
--    Left Hand Variable Assignment
+## Supported Languages
 
-## Languages
+You can use it in a variety of languages such as:
 
 -    Javascript and JSX
 -    Typescript and TSX
@@ -64,35 +52,64 @@ The current Fully supported nodes are:
 -    see if the todos are valid still - DONE
 -    organize into good js - DONE
 
-check all the queries
-
--    c
--    c#
--    cpp
--    go
--    java
--    javascript
--    javascriptreact
--    typescript
--    typescriptreact
--    json
--    lua
--    python
--    rust
--    toml
--    yaml
-
 ### Misc
 
--    remove the console logs
--    Make an icon, revamp the name?
+-    remove the console logs - DONE
+-    make sure keybinds and vim are okay - DONE
+
 -    do a nice landing page
--    make sure keybinds and vim are okay
+-    Make an icon, revamp the name?
 -    LAUNCH (add tags and releases)
 
-# VIM Integration
+### Nodes Support
+
+The current Fully supported nodes are:
+
+-    Functions
+-    Loops
+-    Objects
+-    Arrays
+-    Function calls
+-    Classes
+-    Comments
+-    Parameters
+-    If and else statements, switches, ternaries, conditionals in generals
+-    Strings
+-    Types
+-    Nodes
+-    Variables
+-    Right Hand Variable Assignment
+-    Left Hand Variable Assignment
+
+# Keybinds
+
+The current keybinds for all the nodes are:
+
+-    f - Functions
+-    l - Loops
+-    o - Objects
+-    a - Arrays
+-    m - Function calls
+-    k - Classes
+-    c - Comments
+-    p - Parameters
+-    i - If and else statements, switches, ternaries, conditionals in generals
+-    s - Strings
+-    t - Types
+-    n - Nodes
+-    v - Variables
+-    r - Right Hand Variable Assignment
+-    h - Left Hand Variable Assignment
+
+## VIM Integration
 
 To enable Vim integration, wich adds the commands to select, delete, copy and change as motions that you can activate using the vim motions syntax!
+
+To enable the deletion, copying and changing motions to go to your register instead of your clipboard. Go to your `settings.json` and paste this:
+
+```json
+"vscode-textobjects.vimEnabled": true,
+```
 
 Example:
 
@@ -120,27 +137,7 @@ to go back to the inside of a function, just press:
 
     ] F
 
-The current keybinds for all the nodes are:
-
--    f - Functions
--    l - Loops
--    o - Objects
--    a - Arrays
--    m - Function calls
--    k - Classes
--    c - Comments
--    p - Parameters
--    i - If and else statements, switches, ternaries, conditionals in generals
--    s - Strings
--    t - Types
--    n - Nodes
--    v - Variables
--    r - Right Hand Variable Assignment
--    h - Left Hand Variable Assignment
-
-```json
-"vscode-textobjects.vimEnabled": true
-```
+After That, also add this to your `settings.json` to enable full vim mode.
 
 ```json
 
@@ -1566,6 +1563,7 @@ The current keybinds for all the nodes are:
 		"commands": ["vscode-textobjects.yank.next.inner.node"]
 	}
 ]
+
 
 
 

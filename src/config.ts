@@ -8,15 +8,6 @@ export class Config {
 		this.config = configuration;
 	}
 
-	experimentalNode(): boolean {
-		assert(this.config, ' config has not been setup');
-
-		const value = this.config.get('experimentalNodeQuery');
-
-		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
-		return Boolean(value);
-	}
-
 	vimActive(): boolean {
 		assert(this.config, ' config has not been setup');
 

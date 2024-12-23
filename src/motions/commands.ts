@@ -786,6 +786,27 @@ export const commands: Command[] = [
 	addSelectors(createChangePrevious('inner', 'type'), InnerType),
 	addSelectors(createChangePrevious('outer', 'comment'), Comment),
 	addSelectors(createChangePrevious('inner', 'comment'), InnerComment),
+
+	addSelectors(withMatchFunc(createSelectNext('outer', 'node'), FilterNodeDuplicates), Node),
+	addSelectors(createSelectNext('inner', 'node'), InnerNode),
+
+	addSelectors(createSelectPrevious('outer', 'node'), Node),
+	addSelectors(createSelectPrevious('inner', 'node'), InnerNode),
+
+	addSelectors(createGoToNext('outer', 'node'), Node),
+	addSelectors(createGoToNext('inner', 'node'), InnerNode),
+
+	addSelectors(createGoToPrevious('outer', 'node'), Node),
+	addSelectors(createGoToPrevious('inner', 'node'), InnerNode),
+
+	addSelectors(withMatchFunc(createChangeNext('outer', 'node'), FilterNodeDuplicates), Node),
+	addSelectors(createChangePrevious('inner', 'node'), InnerNode),
+
+	addSelectors(withMatchFunc(createDeleteNext('outer', 'node'), FilterNodeDuplicates), Node),
+	addSelectors(createDeletePrevious('inner', 'node'), InnerNode),
+
+	addSelectors(withMatchFunc(createYankNext('outer', 'node'), FilterNodeDuplicates), Node),
+	addSelectors(createYankNext('inner', 'node'), InnerNode),
 ];
 
 //this could be better, i could make a Record<string, names> but rn i just want to see if it works
@@ -807,31 +828,6 @@ function FilterNodeDuplicates(ctx: Context, matches: QueryMatch[]) {
 		return filterDuplicates(matches, 'node');
 	}
 	return matches;
-}
-
-if (getConfig().experimentalNode()) {
-	commands.push(
-		addSelectors(withMatchFunc(createSelectNext('outer', 'node'), FilterNodeDuplicates), Node),
-		addSelectors(createSelectNext('inner', 'node'), InnerNode),
-
-		addSelectors(createSelectPrevious('outer', 'node'), Node),
-		addSelectors(createSelectPrevious('inner', 'node'), InnerNode),
-
-		addSelectors(createGoToNext('outer', 'node'), Node),
-		addSelectors(createGoToNext('inner', 'node'), InnerNode),
-
-		addSelectors(createGoToPrevious('outer', 'node'), Node),
-		addSelectors(createGoToPrevious('inner', 'node'), InnerNode),
-
-		addSelectors(withMatchFunc(createChangeNext('outer', 'node'), FilterNodeDuplicates), Node),
-		addSelectors(createChangePrevious('inner', 'node'), InnerNode),
-
-		addSelectors(withMatchFunc(createDeleteNext('outer', 'node'), FilterNodeDuplicates), Node),
-		addSelectors(createDeletePrevious('inner', 'node'), InnerNode),
-
-		addSelectors(withMatchFunc(createYankNext('outer', 'node'), FilterNodeDuplicates), Node),
-		addSelectors(createYankNext('inner', 'node'), InnerNode)
-	);
 }
 
 export async function setupCommand(command: Command) {
