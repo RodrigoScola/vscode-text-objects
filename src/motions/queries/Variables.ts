@@ -109,7 +109,7 @@ function yaml(): Selector {
 	};
 }
 function typescriptreact(): Selector {
-	const tsSelector = javascript().query + '\n' + `(type_alias_declaration) @type`;
+	const tsSelector = typescript().query + '\n' + `(type_alias_declaration) @type`;
 	return {
 		language: 'typescriptreact',
 		query: tsSelector,

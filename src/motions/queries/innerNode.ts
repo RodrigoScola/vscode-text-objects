@@ -176,7 +176,7 @@ function rust(): Selector {
 	//forgot inner function
 	const query = [
 		`(call_expression arguments: (arguments ) @node)`,
-		`(for_statement body: (block (_)+ @node)) `,
+		`(for_expression body: (block (_)+ @node)) `,
 		`(if_expression consequence: (block (_)+ @node )) `,
 		`(match_expression body: (match_block (_)+ @node )) `,
 		`(let_declaration value: (if_expression consequence: (block (_)+ @node))) `,

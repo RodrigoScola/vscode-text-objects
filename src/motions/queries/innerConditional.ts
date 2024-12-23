@@ -110,8 +110,7 @@ function lua(): Selector {
 		query: [
 			'(if_statement consequence: (_) @conditional )',
 			'(if_statement consequence: (_) @conditional (comment) @comment )',
-			'(if_statement alternative: (else_clause (_) @conditional (comment) @comment ))',
-			'(if_statement alternative: (else_clause (_) @conditional  ))',
+			'(if_statement alternative: (else_clause (_) @conditional  )  )',
 		].join('\n'),
 	};
 }

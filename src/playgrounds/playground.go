@@ -34,6 +34,8 @@ func main() {
 		return 3, nil
 	}()
 
+	_ = "this is an string to make testing easier"
+
 	f := func() {
 
 	}
@@ -108,7 +110,7 @@ func (f *b) Call(a int) string {
 
 	asdf := retA(4)
 	_ = asdf
-	return ""
+	return "this is a full line to help with testing"
 }
 
 func retFunc(f func() any) func() any {

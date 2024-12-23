@@ -55,6 +55,15 @@ local condition = true
 
 local inte = 3
 
+if inte ==1 then
+    -- hello
+    print("hello there")
+else 
+    print("hello there")
+    -- hello
+end
+
+
 if inte == 1 then
     print("hello")
 

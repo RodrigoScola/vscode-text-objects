@@ -19,8 +19,12 @@ function csharp(): Selector {
 	return {
 		language: 'csharp',
 		query: [
-			// ` (variable_declaration type: (_) @type) `,
-			`(type_argumented_list) @type`,
+			// `(predefined_type) @type`,
+			// `(void_keyword) @type`,
+			// `(type_parameter) @type`,
+			`(array_type (_)* @type)`,
+
+			` (struct_declaration body:(_ (_)* @type)) `,
 		].join('\n'),
 	};
 }
@@ -56,15 +60,8 @@ function typescript(): Selector {
 		query: [
 			`(interface_declaration body:(_ (_)* @type )) `,
 			`(type_alias_declaration value:(object_type (_)* @type )) `,
-			`(enum_declaration body:(enum_body (_)* @type ))) `,
-			`
-			(type_alias_declaration
- type_parameters:(type_parameters
-  (type_parameter
-
-
-			
-			`,
+			`(enum_declaration body:(enum_body (_)* @type )) `,
+			` (required_parameter type:(_) @type ) `,
 		].join('\n'),
 	};
 }

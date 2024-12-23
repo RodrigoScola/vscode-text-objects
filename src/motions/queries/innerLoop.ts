@@ -87,7 +87,7 @@ function python(): Selector {
 function rust(): Selector {
 	return {
 		language: 'rust',
-		query: [` (for_statement body: (block (_)+ @loop)) `].join('\n'),
+		query: [` (for_expression body: (block (_)+ @loop)) `].join('\n'),
 	};
 }
 function typescript(): Selector {

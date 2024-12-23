@@ -2,8 +2,10 @@ import React from 'react';
 
 const b = 3
 
+function c(param: object) {
+}
 
-export const Function = () => {
+export const Function = (other: object) => {
   return (
     <div>
       {

@@ -29,7 +29,15 @@ function cpp(): Selector {
 function csharp(): Selector {
 	return {
 		language: 'csharp',
-		query: [` (variable_declaration type: (_) @type) `, `(parameter type: (_) @type)`].join('\n'),
+		query: [
+			` (variable_declaration type: (_) @type) `,
+			`(parameter type: (_) @type)`,
+			`(predefined_type) @type`,
+			`(void_keyword) @type`,
+			`(type_parameter) @type`,
+			`(array_type ) @type`,
+			`(struct_declaration ) @type `,
+		].join('\n'),
 	};
 }
 function go(): Selector {

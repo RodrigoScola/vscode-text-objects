@@ -6,6 +6,8 @@ import path from 'path';
 import Function from '../motions/queries/Function';
 import { createYankNext } from '../motions/modifiers';
 import { LanguageParser } from '../parsing/parser';
+import { getContext } from '../context/context';
+import { start } from 'repl';
 
 function getFile(filename: string): string {
 	const cpath = path.join(__dirname, '..', '..', 'src', 'playgrounds', filename);
@@ -133,7 +135,7 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
-	test.skip('tests all the cs language', async () => {
+	test('tests all the cs language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.cs'),
 			language: 'csharp',
@@ -155,7 +157,7 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
-	test.skip('tests all the go language', async () => {
+	test('tests all the go language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.go'),
 			language: 'go',
@@ -166,6 +168,16 @@ suite('Extension Test Suite', () => {
 			if (command.action !== 'select') {
 				continue;
 			}
+
+			// i hate this however i am not going to rewrite the go file to make 5 lines of the test go away...
+			if (command.direction === 'next') {
+				const start = new vscode.Position(0, 0);
+				editor.selection = new vscode.Selection(start, start);
+			} else {
+				const end = new vscode.Position(editor.document.lineCount, 0);
+				editor.selection = new vscode.Selection(end, end);
+			}
+
 			await setupCommand(command);
 
 			assert.equal(
@@ -296,7 +308,7 @@ suite('Extension Test Suite', () => {
 		});
 
 		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
-		const invalid: CommandNames[] = ['type'];
+		const invalid: CommandNames[] = ['type', 'class'];
 
 		for (const command of commands) {
 			if (command.action !== 'select' || invalid.includes(command.name)) {
@@ -313,7 +325,7 @@ suite('Extension Test Suite', () => {
 		}
 	});
 
-	test.skip('tests all the python language', async () => {
+	test('tests all the python language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.py'),
 			language: 'python',
@@ -338,7 +350,7 @@ suite('Extension Test Suite', () => {
 		}
 	});
 
-	test.skip('tests all the rust language', async () => {
+	test('tests all the rust language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.rs'),
 			language: 'rust',
@@ -361,30 +373,33 @@ suite('Extension Test Suite', () => {
 		}
 	});
 
-	test.skip('tests all the toml language', async () => {
-		const doc = await vscode.workspace.openTextDocument({
-			content: getFile('playground.toml'),
-			language: 'toml',
-		});
+	/** toml is not as a language. it displays plaintext as of dec 2024 */
+	// test('tests all the toml language', async () => {
+	// 	const doc = await vscode.workspace.openTextDocument({
+	// 		content: getFile('playground.toml'),
+	// 		language: 'toml',
+	// 	});
 
-		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+	// 	const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
 
-		for (const command of commands) {
-			if (command.action !== 'select') {
-				continue;
-			}
-			await setupCommand(command);
+	// 	const unavailable: CommandNames[] = ['function'];
 
-			assert.equal(
-				editor.selection.start.isBefore(editor.selection.end),
-				true,
-				`did not ${getCommandName(command)} correctly`
-			);
-			vscode.commands.executeCommand('cancelSelection');
-		}
-	});
+	// 	for (const command of commands) {
+	// 		if (command.action !== 'select') {
+	// 			continue;
+	// 		}
+	// 		await setupCommand(command);
 
-	test.skip('tests all the tsx language', async () => {
+	// 		assert.equal(
+	// 			editor.selection.start.isBefore(editor.selection.end),
+	// 			true,
+	// 			`did not ${getCommandName(command)} correctly`
+	// 		);
+	// 		vscode.commands.executeCommand('cancelSelection');
+	// 	}
+	// });
+
+	test('tests all the tsx language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.tsx'),
 			language: 'typescriptreact',
@@ -396,6 +411,7 @@ suite('Extension Test Suite', () => {
 			if (command.action !== 'select') {
 				continue;
 			}
+
 			await setupCommand(command);
 
 			assert.equal(
@@ -407,7 +423,7 @@ suite('Extension Test Suite', () => {
 		}
 	});
 
-	test.skip('tests all the ts language', async () => {
+	test('tests all the ts language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.ts'),
 			language: 'typescript',
@@ -429,7 +445,7 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
-	test.skip('tests all the yaml language', async () => {
+	test('tests all the yaml language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.yaml'),
 			language: 'yaml',

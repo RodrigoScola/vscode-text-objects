@@ -64,7 +64,7 @@ function typescript(): Selector {
 }
 function typescriptreact(): Selector {
 	return {
-		language: 'typescript',
+		language: 'typescriptreact',
 		query: javascript().query,
 	};
 }
@@ -155,7 +155,7 @@ function selectTypescript(): Selector {
 }
 function selectTypescriptReact(): Selector {
 	return {
-		language: 'typescript',
+		language: 'typescriptreact',
 		query: javascript().query,
 	};
 }
