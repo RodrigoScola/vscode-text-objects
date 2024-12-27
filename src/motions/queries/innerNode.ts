@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 function C(): Selector {
 	const query = [
 		'(call_expression arguments: (argument_list (_) @node  )) ',
@@ -67,23 +69,29 @@ function csharp(): Selector {
 
 function go(): Selector {
 	const query = [
-		`(call_expression arguments:(argument_list (_) @call )) `,
-		`(for_statement body: (block (_) @loop)*) `,
-		`(function_declaration body:(block (_) @function )) `,
-		`(method_declaration body:(block (_) @function )) `,
-		`(for_statement) @node`,
-		'(type_declaration (type_spec type: (struct_type) )) @node ',
-		`(go_statement (_ (_ (func_literal)))) @node `,
-		`(var_declaration (_ (_ (func_literal)))) @node `,
-		`(function_declaration) @node'`,
-		`(func_literal) @node' `,
-		`(method_declaration) @node'`,
-		`(if_statement  ) @node `,
-		`(expression_switch_statement) @node`,
-		`(short_var_declaration) @node `,
-		`(var_declaration) @node `,
-		`(const_declaration) @node `,
-		`(const_spec) @node `,
+		` (composite_literal type: (array_type) body: (literal_value (_) @node)) `,
+		` (composite_literal type: (slice_type) body: (literal_value (_) @node)) `,
+		` (var_declaration (var_spec type : (array_type))) @node `,
+		` (call_expression arguments:(argument_list (_) @node )) `,
+		` (struct_type (field_declaration_list (_)+ @node) ) `,
+
+		` (function_declaration body:(block (_) @node )) `,
+		` (method_declaration body:(block (_) @node )) `,
+		` (var_declaration (var_spec value:(expression_list (_) @node )    ))  `,
+		` (const_declaration (const_spec value:(expression_list (_) @node )    ))  `,
+		` (short_var_declaration left:(expression_list (_) @node )) `,
+		`(type_declaration (type_spec type: (struct_type))) @node`,
+		` (expression_list (composite_literal (_) ) ) @node`,
+		`
+(if_statement 
+    consequence: (block (_) @node) 
+)
+
+`,
+		`(if_statement consequence: (block (_)* @node) )`,
+		`(if_statement alternative: (block (_)* @node))`,
+
+		`(expression_switch_statement (expression_case  (_) @node ))`,
 	].join('\n');
 
 	return {
@@ -156,14 +164,13 @@ function javascript(): Selector {
 
 function python(): Selector {
 	const query = [
-		'(call arguments: (argument_list (_) @node)  )',
-		`(for_statement body: (block (_)+ @node)) `,
-		'( right: (lambda) @node) ',
-		`(if_statement consequence: (_) @node)  `,
-		`(elif_clause consequence:(block (_)+ @node)) `,
-		`(else_clause body:(block (_)+ @node)) `,
-		`(conditional_expression (_)+ @node ) `,
-		`(conditional_expression (_) (comparison_operator (_) ) (_)+ @node) `,
+		'(call arguments: (argument_list (_) @node))',
+		`(for_statement body: (block (_)+ @node))`,
+		`(if_statement consequence: (_) @node)`,
+		`(elif_clause consequence:(block (_)+ @node))`,
+		`(else_clause body:(block (_)+ @node))`,
+		`(conditional_expression (_)+ @node )`,
+		`(conditional_expression (_) (comparison_operator (_) ) (_)+ @node)`,
 	];
 
 	return {
@@ -185,6 +192,29 @@ function rust(): Selector {
 
 	return {
 		language: 'rust',
+		query: query.join('\n'),
+	};
+}
+function lua(): Selector {
+	const query: string[] = [
+		`(function_definition_statement body: (block (_)+ @node )) `,
+		`(local_function_definition_statement body: (block (_)+ @node ))  `,
+		`(local_variable_declaration (expression_list value:(function_definition body: (block (_)+ @node )))) `,
+		`(variable_assignment (expression_list value:(function_definition body: (block (_)+ @node ))))  `,
+		`(field value:(function_definition body: (block (_)+ @node))) `,
+		`(table (field_list (_) @node )) `,
+		`(while_statement body: (block (_)+ @node )) `,
+		`(repeat_statement body: (block (_)+ @node )) `,
+		`(for_numeric_statement body: (block (_)+ @node )) `,
+		`(for_generic_statement body: (block (_)+ @node )) `,
+		'(call arguments: (argument_list (_)@node )) ',
+
+		'(if_statement consequence: (_) @node )',
+		'(if_statement consequence: (_) @node (comment) @node )',
+		'(if_statement alternative: (else_clause (_) @node  )  )',
+	];
+	return {
+		language: 'lua',
 		query: query.join('\n'),
 	};
 }
@@ -232,6 +262,7 @@ export default {
 	java,
 	csharp,
 	go,
+	lua,
 	javascript,
 	python,
 	rust,

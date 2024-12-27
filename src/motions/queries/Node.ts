@@ -69,9 +69,9 @@ function go(): Selector {
 		'(type_declaration (type_spec type: (struct_type) )) @node ',
 		`(go_statement (_ (_ (func_literal)))) @node `,
 		`(var_declaration (_ (_ (func_literal)))) @node `,
-		`(function_declaration) @node'`,
-		`(func_literal) @node' `,
-		`(method_declaration) @node'`,
+		`(function_declaration) @node`,
+		`(func_literal) @node `,
+		`(method_declaration) @node`,
 		`(if_statement  ) @node `,
 		`(expression_switch_statement) @node`,
 		`(short_var_declaration) @node `,
@@ -211,6 +211,34 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+
+function lua(): Selector {
+	const query = [
+		`(field_list) @node`,
+
+		`(while_statement) @node`,
+		`(repeat_statement) @node`,
+		`(for_numeric_statement) @node`,
+		`(for_generic_statement) @node`,
+		'(table) @node',
+		`(variable_assignment) @node`,
+		`(local_variable_declaration) @node`,
+		` (function_definition_statement) @node `,
+		` (local_function_definition_statement) @node `,
+		` (local_variable_declaration
+  (expression_list value:(function_definition))) @node `,
+		`(variable_assignment
+  (expression_list value:(function_definition))) @node `,
+		`(field value:(function_definition)) @node`,
+		'(if_statement) @node',
+		'(call arguments: (argument_list) @node)',
+	];
+
+	return {
+		language: 'lua',
+		query: query.join('\n'),
+	};
+}
 function yaml(): Selector {
 	const query = [` (block_mapping_pair) @node`];
 
@@ -228,6 +256,7 @@ export default {
 	go,
 	javascript,
 	python,
+	lua,
 	rust,
 	toml,
 	javascriptreact,

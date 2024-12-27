@@ -220,6 +220,7 @@ suite('Extension Test Suite', () => {
 		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
 		const invalid: CommandNames[] = [
 			'call',
+			'node',
 			'type',
 			'function',
 			'parameters',
@@ -257,6 +258,7 @@ suite('Extension Test Suite', () => {
 			'function',
 			'parameters',
 			'loop',
+			'node',
 			'conditional',
 			'class',
 		];
