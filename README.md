@@ -56,8 +56,8 @@ You can use it in a variety of languages such as:
 
 -    remove the console logs - DONE
 -    make sure keybinds and vim are okay - DONE
+-    do a nice landing page - DONE
 
--    do a nice landing page
 -    Make an icon, revamp the name?
 -    LAUNCH (add tags and releases)
 
@@ -1563,11 +1563,11 @@ After That, also add this to your `settings.json` to enable full vim mode.
 		"commands": ["vscode-textobjects.yank.next.inner.node"]
 	}
 ]
-
-
-
-
 ```
+
+# Huge Thanks
+
+Thank you [nvim-treesitter-textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) for the huge inspiration. You were the reason that i wanted to make this extension in vscode and the thing i miss about [neovim](https://github.com/neovim/neovim/) the most.
 
 ## Disclaimer
 
