@@ -71,7 +71,7 @@ function lua(): Selector {
 function python(): Selector {
 	return {
 		language: 'python',
-		query: [` (expression_statement) @variable `].join('\n'),
+		query: [` (expression_statement (assignment)) @variable `].join('\n'),
 	};
 }
 function rust(): Selector {
