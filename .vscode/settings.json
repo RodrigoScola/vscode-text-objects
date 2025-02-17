@@ -1,5 +1,4 @@
 {
-	"vscode-textobjects.vimEnabled": true,
 	"vscode-textobjects.selection.groupElements": false,
 	"github.copilot.chat.experimental.codeFeedback.instructions": [
 		{

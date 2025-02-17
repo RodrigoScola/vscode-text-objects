@@ -154,7 +154,15 @@ def perform_extremely_complex_operations_no_comprehensions(input_data):
     data = []
     sorted_input = sorted(set(input_data), key=lambda x: -x)
     for item in sorted_input:
-        data.append(transform( item))
+        transformed = []
+        for k, v in enumerate([x**2 for x in range(item) if x % 3 == 0]):
+            value = 0
+            transformed.append({"key": k, "value": value})
+
+            for i in range(v):
+                if i % 2 == 0 and len(str(i)) % 2 == 0:
+                    value += i**2
+        data.append({"original": item, "transformed": transformed})
 
     final_result = []
     for data in data:
@@ -208,15 +216,8 @@ def perform_extremely_complex_operations_no_comprehensions(input_data):
         "nested_transformations": nested_transformations,
     }
 
-def transform( item):
-    transformed = []
-    for k, v in enumerate([x**2 for x in range(item) if x % 3 == 0]):
-        value = 0
-        transformed.append({"key": k, "value": value})
+    
 
-        for i in range(v):
-            if i % 2 == 0 and len(str(i)) % 2 == 0:
-                value += i**2
-    return {"original": item, "transformed": transformed}
+    
 
     

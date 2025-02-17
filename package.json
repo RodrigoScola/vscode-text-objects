@@ -5,6 +5,7 @@
 		"name": "Rodrigo Scola",
 		"url": "https://github.com/RodrigoScola"
 	},
+	"icon": "./extension/icon.png",
 	"displayName": "Vscode Text Objects",
 	"keywords": [
 		"select",
