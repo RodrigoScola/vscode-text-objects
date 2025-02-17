@@ -126,9 +126,9 @@ export function createDeleteNext(scope: CommandScope, name: CommandNames): Comma
 				});
 			} else {
 				if (getConfig().copyOnDelete()) {
-					ctx.editor.exec('editor.action.clipboardCutAction');
+					vscode.commands.executeCommand('editor.action.clipboardCutAction');
 				} else {
-					ctx.editor.exec('deleteRight');
+					vscode.commands.executeCommand('deleteRight');
 				}
 			}
 		},
@@ -150,13 +150,13 @@ export function createDeletePrevious(scope: CommandScope, name: CommandNames): C
 
 			if (getConfig().vimActive()) {
 				vscode.commands.executeCommand('noop').then(() => {
-					ctx.editor.exec('extension.vim_delete');
+					vscode.commands.executeCommand('extension.vim_delete');
 				});
 			} else {
 				if (getConfig().copyOnDelete()) {
-					ctx.editor.exec('editor.action.clipboardCutAction');
+					vscode.commands.executeCommand('editor.action.clipboardCutAction');
 				} else {
-					ctx.editor.exec('deleteRight');
+					vscode.commands.executeCommand('deleteRight');
 				}
 			}
 		},
