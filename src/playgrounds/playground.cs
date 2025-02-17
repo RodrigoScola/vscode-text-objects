@@ -1,29 +1,24 @@
 // Basic function
-// Basic function
-// Basic function
-// Basic function
-public void myfunction() {
+public void myfunction()
+{
     // code
 }
 
 // function with parameters
-public void myfunction(int param1, string param2) {
+public void myfunction(int param1, string param2)
+{
     // code
 }
 
-// Function with return type
-public int MyFunction() {
-    // code
-    return 42;
-}
 
-// Static function
-public static void MyFunction() {
+
+public static void MyFunction()
+{
     // code
 }
 
-// Function with default parameters
-public void MyFunction(int param1 = 10) {
+public void MyFunction(int param1 = 10)
+{
     // code
 }
 
@@ -31,58 +26,70 @@ public void MyFunction(int param1 = 10) {
 public int MyFunction() => 42;
 
 // Generic function
-public T MyFunction<T>(T param) {
+public T MyFunction<T>(T param)
+{
     return param;
 }
 
 // Async function
-public async Task MyFunctionAsync() {
+public async Task MyFunctionAsync()
+{
     await Task.Delay(1000);
 }
 
 // Function with out parameter
-public void MyFunction(out int result) {
+public void MyFunction(out int result)
+{
     result = 42;
 }
 
 // Function with ref parameter
-public void MyFunction(ref int param) {
+public void MyFunction(ref int param)
+{
     param = 42;
 }
 // Static Function
-public static int MyStaticFunction() {
+public static int MyStaticFunction()
+{
     return 42;
 }
 
 // Function with Parameters
-public int MyFunctionWithParams(int a, int b) {
+public int MyFunctionWithParams(int a, int b)
+{
     return a + b;
 }
 
 // Function with Default Parameters
-public int MyFunctionWithDefaultParams(int a, int b = 10) {
+public int MyFunctionWithDefaultParams(int a, int b = 10)
+{
     return a + b;
 }
 
 // Function with Named Parameters
-public int MyFunctionWithNamedParams(int a, int b) {
+public int MyFunctionWithNamedParams(int a, int b)
+{
     return a + b;
 }
 // Usage: MyFunctionWithNamedParams(a: 5, b: 10);
 
 // Function with Optional Parameters
-public int MyFunctionWithOptionalParams(int a, int b = 10) {
+public int MyFunctionWithOptionalParams(int a, int b = 10)
+{
     return a + b;
 }
 
 // Function with Variable Number of Parameters (params)
-public int MyFunctionWithParamsArray(params int[] numbers) {
+public int MyFunctionWithParamsArray(params int[] numbers)
+{
     return numbers.Sum();
 }
 
 // Function with Local Functions
-public int MyFunctionWithLocalFunction(int a, int b) {
-    int LocalFunction(int x, int y) {
+public int MyFunctionWithLocalFunction(int a, int b)
+{
+    int LocalFunction(int x, int y)
+    {
         return x + y;
     }
     return LocalFunction(a, b);
@@ -101,32 +108,37 @@ string str2 = new string(charArray);
 string str1 = "Hello, World!";
 
 // For loop
-for (int i = 0; i < array.Length; i++) {
+for (int i = 0; i < array.Length; i++)
+{
     Console.WriteLine(array[i]);
     Console.WriteLine(array[i]);
 }
 
 // Foreach loop
-foreach (var item in array) {
+foreach (var item in array)
+{
     Console.WriteLine(item);
 }
 
 // While loop
 int i = 0;
-while (i < array.Length) {
+while (i < array.Length)
+{
     Console.WriteLine(array[i]);
     i++;
 }
 
 // Do-while loop
 int j = 0;
-do {
+do
+{
     Console.WriteLine(array[j]);
     j++;
 } while (j < array.Length);
 
 // Parallel.For loop
-Parallel.For(0, array.Length, i => {
+Parallel.For(0, array.Length, i =>
+{
     Console.WriteLine(array[i]);
 });
 
@@ -135,7 +147,8 @@ array.ToList().ForEach(item => Console.WriteLine(item));
 
 // Using IEnumerator
 IEnumerator enumerator = array.GetEnumerator();
-while (enumerator.MoveNext()) {
+while (enumerator.MoveNext())
+{
     Console.WriteLine(enumerator.Current);
 }
 
@@ -145,28 +158,38 @@ int y = 20;
 x = 20;
 
 // If statement
-if (x < y) {
+if (x < y)
+{
     Console.WriteLine("x is less than y");
 }
 
 // If-else statement
-if (x > y) {
+if (x > y)
+{
     // Console.WriteLine("x is greater than y");
-} else if (x < y)  {
+}
+else if (x < y)
+{
     Console.WriteLine("x is not greater than y");
 }
 
 // If-else if-else statement
-if (x > y) {
+if (x > y)
+{
     Console.WriteLine("x is greater than y");
-} else if (x == y) {
+}
+else if (x == y)
+{
     Console.WriteLine("x is equal to y");
-} else {
+}
+else
+{
     Console.WriteLine("x is less than y");
 }
 
 // Switch statement
-switch (x) {
+switch (x)
+{
     case 5:
         Console.WriteLine("x is 5");
         break;
@@ -312,7 +335,8 @@ MyClass obj2 = new MyClass(10, "example");
 // Using an object initializer
 MyClass obj3 = new MyClass { Property1 = 10, Property2 = "example" };
 
-public class MyClass {
+public class MyClass
+{
     private static readonly Lazy<MyClass> _instance = new Lazy<MyClass>(() => new MyClass());
 
     public static MyClass Instance => _instance.Value;
@@ -324,7 +348,8 @@ MyClass obj9 = MyClass.Instance;
 
 var obj10 = new { Property1 = 10, Property2 = "example" };
 
-public struct MyStruct {
+public struct MyStruct
+{
     public int Property1;
     public string Property2;
 }
@@ -397,30 +422,36 @@ dynamicVariable = "Now I'm a string";
 /// <param name="a">Description of parameter a</param>
 /// <param name="b">Description of parameter b</param>
 /// <returns>Description of the return value</returns>
-public int MyFunctionWithParams(int a, int b) {
+public int MyFunctionWithParams(int a, int b)
+{
     return a + b;
 }
 
 using System;
 
-public class MyClass {
+public class MyClass
+{
     public int Property1 { get; set; }
     public string Property2 { get; set; }
 }
 
-public struct MyStruct {
+public struct MyStruct
+{
     public int Property1 { get; set; }
     public string Property2 { get; set; }
 }
 
-public enum DayOfWeek {
+public enum DayOfWeek
+{
     Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 }
 
 public record MyRecord(int Property1, string Property2);
 
-public class Program {
-    public static void Main() {
+public class Program
+{
+    public static void Main()
+    {
         // Using classes
         MyClass obj = new MyClass();
         obj.Property1 = 10;

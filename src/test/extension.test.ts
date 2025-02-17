@@ -1,13 +1,9 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import { init, commands, addSelectors, getCommandName, setupCommand } from '../motions/commands';
+import {  commands,  getCommandName, setupCommand } from '../motions/commands';
 import fs from 'fs';
 import path from 'path';
-import Function from '../motions/queries/Function';
-import { createYankNext } from '../motions/modifiers';
 import { LanguageParser } from '../parsing/parser';
-import { getContext } from '../context/context';
-import { start } from 'repl';
 
 function getFile(filename: string): string {
 	const cpath = path.join(__dirname, '..', '..', 'src', 'playgrounds', filename);
@@ -135,7 +131,7 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
-	test('tests all the cs language', async () => {
+	 test('tests all the cs language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.cs'),
 			language: 'csharp',

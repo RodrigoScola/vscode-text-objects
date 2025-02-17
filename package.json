@@ -5,7 +5,7 @@
 		"name": "Rodrigo Scola",
 		"url": "https://github.com/RodrigoScola"
 	},
-	"icon": "./extension/icon.png",
+	"icon": "images/icon.png",
 	"displayName": "Vscode Text Objects",
 	"keywords": [
 		"select",
@@ -23,7 +23,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.1.25",
+	"version": "0.1.26",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
