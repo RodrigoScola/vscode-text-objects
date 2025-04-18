@@ -16,14 +16,14 @@ If you enjoy this extension, consider supporting it. You can donate it on ko-fi 
 
 </div>
 
-<html>
+<div align="center">
 
   <a style="display: 	flex; justify-content: center; align-items: center; height: 200%; width: 100%; " href="https://ko-fi.com/M4M31DOW0A" target="_blank">
     <img
 	style=" width: 50%; height: 100%; object-fit: contain; "
 	 src="/images/support.png" alt="Support me on Ko-fi">
   </a>
-</html>
+</div>
 
 ## Supported Languages
 
