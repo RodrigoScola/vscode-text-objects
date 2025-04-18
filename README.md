@@ -18,29 +18,10 @@ If you enjoy this extension, consider supporting it. You can donate it on ko-fi 
 
 <html>
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-	  display: "flex"
-	  justify-content:"center"
-    }
-    .full-screen-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 200%;
-      width: 100%;
-    }
-    .full-screen-btn img {
-      width: 50%;
-      height: 100%;
-      object-fit: contain; /* or cover, depending on your taste */
-    }
-  </style>
-  <a class="full-screen-btn" href="https://ko-fi.com/M4M31DOW0A" target="_blank">
-    <img src="/images/support.png" alt="Support me on Ko-fi">
+  <a style="display: 	flex; justify-content: center; align-items: center; height: 200%; width: 100%; " href="https://ko-fi.com/M4M31DOW0A" target="_blank">
+    <img
+	style=" width: 50%; height: 100%; object-fit: contain; "
+	 src="/images/support.png" alt="Support me on Ko-fi">
   </a>
 </html>
 
