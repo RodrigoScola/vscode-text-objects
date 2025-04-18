@@ -8,23 +8,6 @@ With Vscode Text Objects you can select, delete, copy and go to text in a more f
 
 ![VSCode Text Objects Demo](./docs/demo.gif)
 
-## Support
-
-<div align="center">
-
-If you enjoy this extension, consider supporting it. You can donate it on ko-fi or paypal directly. It will encourage me to make more extensions and make them better and better!
-
-</div>
-
-<div align="center">
-
-  <a style="display: 	flex; justify-content: center; align-items: center; height: 200%; width: 100%; " href="https://ko-fi.com/M4M31DOW0A" target="_blank">
-    <img
-	style=" width: 50%; height: 100%; object-fit: contain; "
-	 src="/images/support.png" alt="Support me on Ko-fi">
-  </a>
-</div>
-
 ## Supported Languages
 
 You can use it in a variety of languages such as:
