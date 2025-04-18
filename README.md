@@ -10,7 +10,11 @@ With Vscode Text Objects you can select, delete, copy and go to text in a more f
 
 ## Support
 
+<div align="center">
+
 If you enjoy this extension, consider supporting it. You can donate it on ko-fi or paypal directly. It will encourage me to make more extensions and make them better and better!
+
+</div>
 
 <html>
 
@@ -36,7 +40,7 @@ If you enjoy this extension, consider supporting it. You can donate it on ko-fi 
     }
   </style>
   <a class="full-screen-btn" href="https://ko-fi.com/M4M31DOW0A" target="_blank">
-    <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Support me on Ko-fi">
+    <img src="/images/support.png" alt="Support me on Ko-fi">
   </a>
 </html>
 
