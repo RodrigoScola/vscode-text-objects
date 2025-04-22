@@ -6,6 +6,9 @@
 		"url": "https://github.com/RodrigoScola"
 	},
 	"icon": "images/icon.png",
+	"sponsor": {
+		"url": "https://ko-fi.com/rodrigoscola"
+	},
 	"displayName": "Vscode Text Objects",
 	"keywords": [
 		"select",
@@ -23,7 +26,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.1.32",
+	"version": "0.1.33",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
