@@ -1,5 +1,5 @@
 import assert from 'assert';
-import fs from 'fs';
+import fs, { writeFileSync } from 'fs';
 import path from 'path';
 import { getCommandName } from './motions/commands';
 
@@ -28,15 +28,8 @@ export function saveCommands(commands: Command[]) {
 		const node: Record<string, string> = {
 			command: `vscode-textobjects.${getCommandName(command)}`,
 			title: `${actionName} ${command.direction} ${command.scope} ${command.name}`,
+			when: `editorTextFocus  `,
 		};
-
-		if (command.action === 'change' || command.action === 'yank') {
-			node.when = ` editorTextFocus  && ${makeName(
-				'vimEnabled'
-			)}  && !inDebugRepl && vim.mode != 'Insert'`;
-		} else {
-			node.when = `editorTextFocus`;
-		}
 
 		total.push(node);
 
@@ -48,6 +41,7 @@ export function saveCommands(commands: Command[]) {
 	}
 }
 
+//todo: if this becomes a bigger thing, see if the values still need to be hardcoded, they could be in the user config and we get the defaults or the user preffered keybind from there
 function getkeyForCommandName(name: CommandNames): string {
 	switch (name) {
 		case 'array': {
@@ -89,7 +83,7 @@ function getkeyForCommandName(name: CommandNames): string {
 		}
 
 		case 'parameters': {
-			return 'p';
+			return 'e';
 		}
 
 		case 'rhs': {
@@ -97,11 +91,11 @@ function getkeyForCommandName(name: CommandNames): string {
 		}
 
 		case 'string': {
-			return 's';
+			return 'q';
 		}
 
 		case 'type': {
-			return 't';
+			return 'y';
 		}
 		case 'variable': {
 			return 'v';
@@ -237,9 +231,6 @@ export function saveVimKeybinds(commands: Command[]) {
 
 		const node: Record<string, any> = {
 			before: key,
-			//just to be sure
-
-			when: ` editorTextFocus  && ${makeName('vimEnabled')}  && !inDebugRepl && vim.mode != 'Insert'`,
 			commands: [`vscode-textobjects.${getCommandName(command)}`],
 		};
 

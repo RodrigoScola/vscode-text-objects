@@ -1,13 +1,13 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
-import {  commands,  getCommandName, setupCommand } from '../motions/commands';
+import { commands, getCommandName, setupCommand } from '../motions/commands';
 import fs from 'fs';
 import path from 'path';
 import { LanguageParser } from '../parsing/parser';
 
 function getFile(filename: string): string {
 	const cpath = path.join(__dirname, '..', '..', 'src', 'playgrounds', filename);
-	assert.equal(fs.existsSync(cpath), true, 'playground file for c does not exist:' + cpath);
+	assert.equal(fs.existsSync(cpath), true, 'playground file for' + filename + ' does not exist:' + cpath);
 	return fs.readFileSync(cpath, 'utf-8');
 }
 
@@ -131,7 +131,7 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
-	 test('tests all the cs language', async () => {
+	test('tests all the cs language', async () => {
 		const doc = await vscode.workspace.openTextDocument({
 			content: getFile('playground.cs'),
 			language: 'csharp',

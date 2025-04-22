@@ -3,8 +3,6 @@ node_modules
 .vscode-test
 .idea
 
-playground.js
-
 dist
 out
 bugs
@@ -18,3 +16,5 @@ vim_keybinds.json
 vscode-text-objects.sln
 
 support_readme.md
+
+retrospective.md
