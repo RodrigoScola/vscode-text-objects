@@ -12,7 +12,7 @@ With Vscode Text Objects you can select, delete, copy and go to text in a more f
 
 If you enjoy this extension, consider supporting it. You can donate it on ko-fi or paypal directly. It will encourage me to make more extensions and make them better and better!
 
-  <a style="display: 	flex; justify-content: center; align-items: center; height: 200%; width: 100%; " href="https://ko-fi.com/M4M31DOW0A" target="_blank">
+  <a style="display: 	flex; justify-content: center; align-items: center; height: 100%; width: 50%; " href="https://ko-fi.com/M4M31DOW0A" target="_blank">
 <img style=" width: 50%; height: 100%; object-fit: contain; " src="/images/support.png" alt="Support me on Ko-fi">
   </a>
 </div>
