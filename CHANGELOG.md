@@ -1,6 +1,6 @@
 # Change Log
 
-## [0.1.32]
+## [0.1.33]
 
 In the continuation to make `Vscode-Text-Objects` a seemless integration with vscode and the vim extension. We've done some updates to how we handle the configuration and keybinds.
 
