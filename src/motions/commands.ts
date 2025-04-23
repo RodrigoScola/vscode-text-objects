@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { QueryMatch, QueryOptions } from 'web-tree-sitter';
-import { saveKeybinds, saveVimKeybinds, saveCommands } from '../configGeneration';
+import { saveKeybinds, saveVimKeybinds, saveCommands, makeName } from '../configGeneration';
 import * as vscode from 'vscode';
 import { getConfig } from '../config';
 import { filterDuplicates } from '../parsing/nodes';
@@ -58,6 +58,9 @@ function addSelector(command: Command, selector: Selector) {
 }
 
 export function getCommandName(command: Command): string {
+	return `${command.action}.${command.direction}.${command.scope}.${command.name}.${command.position}`;
+}
+export function getCommandNameWithoutPosition(command: Command): string {
 	return `${command.action}.${command.direction}.${command.scope}.${command.name}`;
 }
 
@@ -857,8 +860,20 @@ export function init() {
 	// saveCommands(commands);
 	// saveVimKeybinds(commands);
 	for (const command of commands) {
-		const name = `vscode-textobjects.${getCommandName(command)}`;
-		vscode.commands.registerCommand(name, async () => {
+		const name = makeName(getCommandName(command));
+		const nameWithoutPosition = makeName(getCommandNameWithoutPosition(command));
+
+		if (command.action === 'goTo') {
+			vscode.commands.registerCommand(nameWithoutPosition, async () => {
+				vscode.window.showWarningMessage(
+					`${nameWithoutPosition} is now outdated, please update to [${name}] or update your configuration in https://github.com/RodrigoScola/vscode-text-objects/blob/main/vim_integration.md`
+				);
+			});
+
+			continue;
+		}
+
+		vscode.commands.registerCommand(nameWithoutPosition, async () => {
 			setupCommand(command);
 		});
 	}

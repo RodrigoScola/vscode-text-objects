@@ -1,52 +1,3 @@
-export function a(b: number, c: string) {
-	console.log(b);
-	function d() {
-		console.log(b);
-		function e() {
-			console.log(c);
-		}
-	}
-	console.log('this');
-}
-
-export const d = function () {};
-
-let g = {
-	db: 3,
-};
-
-g = {
-	db: 5,
-};
-
-function b() {
-	console.log('');
-}
-
-function c() {}
-
-a(3, 'asdfadf');
-
-export class M {
-	public static asopidfj = 34;
-}
-
-interface S {
-	asdf: string;
-	sdf: string;
-}
-
-type Sa = {
-	asdf: string;
-};
-enum SB {
-	asdf = 'asdf',
-}
-
-type FGJ<T> = {
-	dfj: T;
-};
-
 import assert from 'assert';
 import * as vscode from 'vscode';
 import { closestPos, nextPosition, previousPosition } from '../parsing/position';
@@ -91,6 +42,7 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 	return {
 		name,
 		scope,
+		position:'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -105,6 +57,8 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 export function createSelectPrevious(scope: CommandScope, name: CommandNames): Command {
 	return {
 		name,
+
+		position:'start',
 		scope,
 		selectors: {},
 		currentSelector: undefined,
@@ -123,6 +77,7 @@ export function createGoToPrevious(scope: CommandScope, name: CommandNames): Com
 	return {
 		scope: scope,
 		name: name,
+		position:'start',
 		action: 'goTo',
 		direction: 'previous',
 		selectors: {},
@@ -141,6 +96,7 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 	return {
 		scope: scope,
 		name: name,
+		position:'start',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'goTo',
@@ -155,11 +111,32 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 		},
 	};
 }
+export function createGoToNextEnd(scope: CommandScope, name: CommandNames): Command {
+	return {
+		scope: scope,
+		name: name,
+		position:'end',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'goTo',
+		direction: 'next',
+		//todo: check to see if this is right
+		pos: previousPosition,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor.goTo, 'go to is undefined');
+			if (!range) {
+				return;
+			}
+			ctx.editor.goTo(ctx, range.start);
+		},
+	};
+}
 
 export function createDeleteNext(scope: CommandScope, name: CommandNames): Command {
 	return {
 		name,
 		scope,
+		position:'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -170,41 +147,43 @@ export function createDeleteNext(scope: CommandScope, name: CommandNames): Comma
 			ctx.editor.selectRange(ctx, range);
 
 			if (getConfig().vimActive()) {
-				ctx.editor.exec('noop').then(() => {
-					ctx.editor.exec('extension.vim_delete');
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('extension.vim_delete');
 				});
 			} else {
 				if (getConfig().copyOnDelete()) {
-					ctx.editor.exec('editor.action.clipboardCutAction');
+					vscode.commands.executeCommand('editor.action.clipboardCutAction');
 				} else {
-					ctx.editor.exec('deleteRight');
+					vscode.commands.executeCommand('deleteRight');
 				}
 			}
 		},
 	};
 }
+
 export function createDeletePrevious(scope: CommandScope, name: CommandNames): Command {
 	return {
 		name,
 		scope,
+		position:'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'delete',
-		pos: closestPos,
+		pos: previousPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 
 			if (getConfig().vimActive()) {
-				ctx.editor.exec('noop').then(() => {
-					ctx.editor.exec('extension.vim_delete');
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('extension.vim_delete');
 				});
 			} else {
 				if (getConfig().copyOnDelete()) {
-					ctx.editor.exec('editor.action.clipboardCutAction');
+					vscode.commands.executeCommand('editor.action.clipboardCutAction');
 				} else {
-					ctx.editor.exec('deleteRight');
+					vscode.commands.executeCommand('deleteRight');
 				}
 			}
 		},
@@ -215,19 +194,46 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 	return {
 		name,
 		scope,
+
+		position:'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'yank',
 		pos: closestPos,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
+			if (!range) {
+				return;
+			}
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
-				vscode.commands.executeCommand('vim.remap', {
-					after: ['y', 'y'],
+
+			if (getConfig().vimActive()) {
+				//aparently  if you abstract this logic everything breaks
+				//or it could be that im dumb
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
+						after: ['y'],
+					});
 				});
-			});
+			} else {
+				const doc = ctx.editor.getRange(
+					range.start.line,
+					range.start.character,
+					range.end.line,
+					range.end.character
+				);
+				const previousCursor = ctx.editor.cursor();
+				const cursorRange = new vscode.Range(previousCursor, previousCursor);
+				const ed = ctx.editor.getEditor();
+
+				ed.selection = new vscode.Selection(range.start, range.end);
+				ed.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+				vscode.env.clipboard.writeText(doc).then(() => {
+					ed.selection = new vscode.Selection(cursorRange.start, cursorRange.start);
+					ed.revealRange(cursorRange, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+				});
+			}
 		},
 	};
 }
@@ -236,21 +242,38 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 	return {
 		name,
 		scope,
+		position:'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'yank',
-		pos: closestPos,
+		pos: previousPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
-				ctx.editor.exec('vim.remap', {
-					args: {
+			if (!range) {
+				return;
+			}
+			if (getConfig().vimActive()) {
+				vscode.commands.executeCommand('noop').then(() => {
+					vscode.commands.executeCommand('vim.remap', {
 						after: ['y'],
-					},
+					});
 				});
-			});
+			} else {
+				const doc = ctx.editor.getRange(
+					range.start.line,
+					range.start.character,
+					range.end.line,
+					range.end.character
+				);
+
+				const ed = ctx.editor.getEditor();
+
+				ed.selection = new vscode.Selection(range.start, range.end);
+				ed.revealRange(range, vscode.TextEditorRevealType.InCenterIfOutsideViewport);
+				vscode.env.clipboard.writeText(doc);
+			}
 		},
 	};
 }
@@ -259,6 +282,8 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 	return {
 		name,
 		scope,
+
+		position:'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -267,13 +292,13 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
-				if (getConfig().vimActive()) {
+			if (getConfig().vimActive()) {
+				vscode.commands.executeCommand('noop').then(() => {
 					vscode.commands.executeCommand('vim.remap', {
 						after: ['c'],
 					});
-				}
-			});
+				});
+			}
 		},
 	};
 }
@@ -282,15 +307,16 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 	return {
 		name,
 		scope,
+		position:'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'change',
-		pos: closestPos,
+		pos: previousPosition,
 		end: (ctx: Context, range: vscode.Range | undefined) => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
-			ctx.editor.exec('noop').then(() => {
+			vscode.commands.executeCommand('noop').then(() => {
 				vscode.commands.executeCommand('vim.remap', {
 					after: ['c'],
 				});

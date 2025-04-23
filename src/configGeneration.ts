@@ -1,4 +1,5 @@
 import assert from 'assert';
+
 import fs, { writeFileSync } from 'fs';
 import path from 'path';
 import { getCommandName } from './motions/commands';
@@ -7,7 +8,7 @@ import { getCommandName } from './motions/commands';
  * this is not supposed to be pretty, this is just so i can generate the keybinds, vim integration or the commands automatically
  *
  */
-function makeName(str: string) {
+export function makeName(str: string) {
 	return `vscode-textobjects.${str}`;
 }
 
@@ -231,7 +232,7 @@ export function saveVimKeybinds(commands: Command[]) {
 
 		const node: Record<string, any> = {
 			before: key,
-			commands: [`vscode-textobjects.${getCommandName(command)}`],
+			commands: [makeName(getCommandName(command))],
 		};
 
 		total.push(node);

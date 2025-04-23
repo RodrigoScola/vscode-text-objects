@@ -41,6 +41,7 @@ declare global {
 		language: Language;
 		parser: Parser;
 	};
+	export type CommandPosition = 'start' | 'end';
 
 	export type Command = {
 		selectors: Partial<Record<SupportedLanguages, Selector>>;
@@ -48,6 +49,7 @@ declare global {
 		name: CommandNames;
 		scope: CommandScope;
 		direction: CommandDirection;
+		position: CommandPosition;
 		action: CommandAction;
 		onMatch?: OnMatchFunc;
 		end: OnFinish;
