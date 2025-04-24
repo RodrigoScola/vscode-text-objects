@@ -25,9 +25,11 @@ class MyClass2:
         print("This is a class method.")
 
 
+name = "Josh"
+
 def my_generator():
     yield 1
-    yield 2
+    yield c2
     yield 3
 
 

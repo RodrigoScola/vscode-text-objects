@@ -2,7 +2,7 @@ import assert from 'assert';
 
 import fs from 'fs';
 import path from 'path';
-import { getCommandName } from './motions/commands';
+import { getCommandName, getCommandNameWithoutPosition } from './motions/commands';
 
 /**
  * this is not supposed to be pretty, this is just so i can generate the keybinds, vim integration or the commands automatically
@@ -13,7 +13,7 @@ export function makeName(str: string) {
 }
 
 export function saveCommands(commands: Command[]) {
-	const total = [];
+	const total: Record<string, Record<string, string>> = {};
 	for (const command of commands) {
 		let actionName: string = command.action;
 
@@ -32,14 +32,25 @@ export function saveCommands(commands: Command[]) {
 			when: `editorTextFocus  `,
 		};
 
-		total.push(node);
+		//remove this in a future patch
+		if (command.action === 'goTo') {
+			const nodeWithoutPosition = {
+				command: makeName(getCommandNameWithoutPosition(command)),
+				title: `${actionName} ${command.direction} ${command.scope} ${command.name}`,
+				when: `editorTextFocus  `,
+			};
 
-		fs.writeFileSync(
-			path.join(__dirname, '..', 'commands.json'),
+			total[nodeWithoutPosition.command] = nodeWithoutPosition;
+		}
 
-			JSON.stringify(total, null, 2)
-		);
+		total[node.command] = node;
 	}
+
+	fs.writeFileSync(
+		path.join(__dirname, '..', 'commands.json'),
+
+		JSON.stringify(Object.values(total), null, 2)
+	);
 }
 
 //todo: if this becomes a bigger thing, see if the values still need to be hardcoded, they could be in the user config and we get the defaults or the user preffered keybind from there
@@ -107,23 +118,23 @@ function getkeyForCommandName(name: CommandNames): string {
 	}
 }
 
-function getKeyForCommandActionAndScope(action: CommandAction, scope: CommandScope): string {
-	if (action === 'goTo' && scope === 'outer') {
+function getKeyForCommand(command: Command): string {
+	if (command.action === 'goTo' && command.position === 'start') {
 		return 'f';
-	} else if (action === 'goTo' && scope === 'inner') {
+	} else if (command.action === 'goTo' && command.position === 'end') {
 		return 't';
-	} else if (action === 'select' && scope === 'inner') {
+	} else if (command.action === 'select' && command.scope === 'inner') {
 		return 'n';
-	} else if (action === 'select' && scope === 'outer') {
+	} else if (command.action === 'select' && command.scope === 'outer') {
 		return 's';
-	} else if (action === 'delete' && scope === 'outer') {
+	} else if (command.action === 'delete' && command.scope === 'outer') {
 		return 'd';
-	} else if (action === 'delete' && scope === 'inner') {
+	} else if (command.action === 'delete' && command.scope === 'inner') {
 		return 'x';
-	} else if (action === 'yank' && scope === 'outer') {
+	} else if (command.action === 'yank' && command.scope === 'outer') {
 		return 'y';
 	}
-	throw new Error('forgot to implement: ' + action);
+	throw new Error('forgot to implement: ' + getCommandName(command));
 }
 
 export function saveKeybinds(commands: Command[]) {
@@ -133,7 +144,7 @@ export function saveKeybinds(commands: Command[]) {
 		if (
 			command.action === 'change' ||
 			(command.action === 'yank' && command.scope === 'inner') ||
-			(command.action !== 'goTo' && command.position === 'end')
+			(command.action === 'goTo' && command.scope === 'inner')
 		) {
 			//actions that are only with vim integration
 			continue;
@@ -141,34 +152,40 @@ export function saveKeybinds(commands: Command[]) {
 		let winActivation = ['ctrl+alt'];
 		let macActivation = ['cmd+alt'];
 
-		if (command.direction === 'previous') {
-			winActivation.push('shift');
-			macActivation.push('shift');
-			winActivation.push(getKeyForCommandActionAndScope(command.action, command.scope).toUpperCase());
-			macActivation.push(getKeyForCommandActionAndScope(command.action, command.scope).toUpperCase());
-		} else {
-			winActivation.push(getKeyForCommandActionAndScope(command.action, command.scope));
-			macActivation.push(getKeyForCommandActionAndScope(command.action, command.scope));
-		}
+		const node: {
+			command: string;
+			when: string;
+			mac?: string;
+			key?: string;
+		} = {
+			command: `${makeName(getCommandName(command))}`,
+			when: 'editorTextFocus',
+		};
+
 		let winKey = ['ctrl+alt'];
 		let macKey = ['cmd+alt'];
 
 		if (command.direction === 'previous') {
+			winActivation.push('shift');
+			macActivation.push('shift');
+			winActivation.push(getKeyForCommand(command).toUpperCase());
+			macActivation.push(getKeyForCommand(command).toUpperCase());
+
 			winKey.push('shift');
 			macKey.push('shift');
 			winKey.push(getkeyForCommandName(command.name).toUpperCase());
 			macKey.push(getkeyForCommandName(command.name).toUpperCase());
 		} else {
+			winActivation.push(getKeyForCommand(command));
+			macActivation.push(getKeyForCommand(command));
+
 			winKey.push(getkeyForCommandName(command.name));
 			macKey.push(getkeyForCommandName(command.name));
 		}
 
-		const node = {
-			command: `${makeName(getCommandName(command))}`,
-			when: 'editorTextFocus',
-			key: [winActivation.join('+'), winKey.join('+')].join(' '),
-			mac: [macActivation.join('+'), macKey.join('+')].join(' '),
-		};
+		node.key = [winActivation.join('+'), winKey.join('+')].join(' ');
+		node.mac = [macActivation.join('+'), macKey.join('+')].join(' ');
+
 		total.push(node);
 	}
 

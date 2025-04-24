@@ -165,8 +165,10 @@ export function init() {
 		if (command.action === 'goTo' && !(nameWithoutPosition in installedCommands)) {
 			const dis = vscode.commands.registerCommand(nameWithoutPosition, async () => {
 				vscode.window.showWarningMessage(
-					`${nameWithoutPosition} is now outdated, please update to [${name}] or update your configuration in https://github.com/RodrigoScola/vscode-text-objects/blob/main/vim_integration.md`
+					`${nameWithoutPosition} is now outdated and will be removed in a future version, please update to [${name}] or update your configuration in https://github.com/RodrigoScola/vscode-text-objects/blob/main/vim_integration.md`
 				);
+
+				setupCommand(command);
 			});
 
 			installedCommands[nameWithoutPosition] = dis;
