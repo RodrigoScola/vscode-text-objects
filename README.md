@@ -8,7 +8,7 @@ With Vscode Text Objects you can select, delete, copy and go to text in a more f
 
 ![VSCode Text Objects Demo](./docs/demo.gif)
 
-<div align="center">
+<div >
 
 If you enjoy this extension, consider supporting it. You can donate it on ko-fi or paypal directly. It will encourage me to make more extensions and make them better and better!
 
@@ -44,31 +44,10 @@ You can use it in a variety of languages such as:
 -    do backward gotos - DONE
 -    do backward selection - DONE
 -    add yank commands - DONE
--    add an inner string convention for languages that do not have it? should be good - DONE
--    fix command titles - DONE
--    put back the keybinds - DONE
--    change call to be all out and inner to be nearest - DONE
 -    add go to empty params - DONE
 -    add rest of inner and outers (arrays, objects...) - DONE
 -    inner comment - DONE
--    change the commands interface for better devs - DONE
--    do the else on if statements - DONE
--    rhs is not for assignign, but reassigning - DONE
--    do inner rhs aswell - DONE
--    finish the languages support - DONE
--    see if it works on tsx and jsx all the things (mainly conditionals) - DONE
--    add the on language events - DONE
--    see if the todos are valid still - DONE
--    organize into good js - DONE
-
-### Misc
-
--    remove the console logs - DONE
--    make sure keybinds and vim are okay - DONE
--    do a nice landing page - DONE
-
--    Make an icon, revamp the name?
--    LAUNCH (add tags and releases)
+-    go to start and end of statements - DONE
 
 ### Nodes Support
 
@@ -89,6 +68,15 @@ The current Fully supported nodes are:
 -    Variables
 -    Right Hand Variable Assignment
 -    Left Hand Variable Assignment
+
+### Misc
+
+-    remove the console logs - DONE
+-    make sure keybinds and vim are okay - DONE
+-    do a nice landing page - DONE
+
+-    Make an icon, revamp the name?
+-    LAUNCH (add tags and releases)
 
 # Keybinds
 
