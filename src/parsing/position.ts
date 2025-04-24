@@ -2,7 +2,23 @@ import assert from 'assert';
 import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 
+export function nextPositionEnd(nodes: Range[], index: Position): Range | undefined {
+	let closestRange: Range | undefined;
 
+	for (let i = 0; i < nodes.length; i++) {
+		const range = nodes[i];
+
+		if (index.isAfterOrEqual(range.end)) {
+			continue;
+		}
+
+		if (!closestRange || closestRange.end.isAfter(range.end)) {
+			closestRange = range;
+		}
+	}
+
+	return closestRange;
+}
 export function nextPosition(nodes: Range[], index: Position): Range | undefined {
 	let closestRange: Range | undefined;
 
@@ -14,6 +30,24 @@ export function nextPosition(nodes: Range[], index: Position): Range | undefined
 		}
 
 		if (!closestRange || closestRange.start.isAfter(range.start)) {
+			closestRange = range;
+		}
+	}
+
+	return closestRange;
+}
+
+export function previousPositionEnd(nodes: Range[], index: Position): Range | undefined {
+	let closestRange: Range | undefined;
+
+	for (let i = 0; i < nodes.length; i++) {
+		const range = nodes[i];
+
+		if (index.isBeforeOrEqual(range.end)) {
+			continue;
+		}
+
+		if (!closestRange || closestRange.start.isBefore(range.end)) {
 			closestRange = range;
 		}
 	}

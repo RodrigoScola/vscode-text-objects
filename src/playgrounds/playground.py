@@ -1,7 +1,6 @@
 def f(param1, two):
     print("second")
 
-
 def second():
     print("second")
 

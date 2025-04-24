@@ -34,24 +34,7 @@
 		"Other",
 		"Keymaps"
 	],
-	"activationEvents": [
-		"onLanguage:javascript",
-		"onLanguage:typescript",
-		"onLanguage:javascriptreact",
-		"onLanguage:typescriptreact",
-		"onLanguage:java",
-		"onLanguage:c_sharp",
-		"onLanguage:c",
-		"onLanguage:cpp",
-		"onLanguage:go",
-		"onLanguage:lua",
-		"onLanguage:python",
-		"onLanguage:rust",
-		"onLanguage:toml",
-		"onLanguage:yaml",
-		"onLanguage:json",
-		"onLanguage:jsonc"
-	],
+	"activationEvents": [],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"configuration": {
@@ -1261,1394 +1244,1704 @@
 		],
 		"commands": [
 			{
-				"command": "vscode-textobjects.select.next.outer.function",
-				"title": "Select next outer function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.function.start",
+				"title": "Select next outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.function",
-				"title": "Select next inner function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.function.start",
+				"title": "Select next inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.loop",
-				"title": "Select next outer loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.loop.start",
+				"title": "Select next outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.loop",
-				"title": "Select next inner loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.loop.start",
+				"title": "Select next inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.conditional",
-				"title": "Select next outer conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.conditional.start",
+				"title": "Select next outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.conditional",
-				"title": "Select next inner conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.conditional.start",
+				"title": "Select next inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.rhs",
-				"title": "Select next outer rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.rhs.start",
+				"title": "Select next outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.rhs",
-				"title": "Select next inner rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.rhs.start",
+				"title": "Select next inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.lhs",
-				"title": "Select next outer lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.lhs.start",
+				"title": "Select next outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.lhs",
-				"title": "Select next inner lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.lhs.start",
+				"title": "Select next inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.variable",
-				"title": "Select next outer variable",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.variable.start",
+				"title": "Select next outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.string",
-				"title": "Select next outer string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.string.start",
+				"title": "Select next outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.string",
-				"title": "Select next inner string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.string.start",
+				"title": "Select next inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.class",
-				"title": "Select next outer class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.class.start",
+				"title": "Select next outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.class",
-				"title": "Select next inner class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.class.start",
+				"title": "Select next inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.array",
-				"title": "Select next outer array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.array.start",
+				"title": "Select next outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.array",
-				"title": "Select next inner array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.array.start",
+				"title": "Select next inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.object",
-				"title": "Select next outer object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.object.start",
+				"title": "Select next outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.object",
-				"title": "Select next inner object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.object.start",
+				"title": "Select next inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.parameters",
-				"title": "Select next outer parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.parameters.start",
+				"title": "Select next outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.parameters",
-				"title": "Select next inner parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.parameters.start",
+				"title": "Select next inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.call",
-				"title": "Select next outer call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.call.start",
+				"title": "Select next outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.call",
-				"title": "Select next inner call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.call.start",
+				"title": "Select next inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.type",
-				"title": "Select next outer type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.type.start",
+				"title": "Select next outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.type",
-				"title": "Select next inner type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.type.start",
+				"title": "Select next inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.comment",
-				"title": "Select next outer comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.comment.start",
+				"title": "Select next outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.comment",
-				"title": "Select next inner comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.comment.start",
+				"title": "Select next inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.function",
-				"title": "Select previous outer function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.outer.node.start",
+				"title": "Select next outer node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.function",
-				"title": "Select previous inner function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.next.inner.node.start",
+				"title": "Select next inner node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.loop",
-				"title": "Select previous outer loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.function.start",
+				"title": "Go To next outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.loop",
-				"title": "Select previous inner loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.function.start",
+				"title": "Go To next inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.conditional",
-				"title": "Select previous outer conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.loop.start",
+				"title": "Go To next outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.conditional",
-				"title": "Select previous inner conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.loop.start",
+				"title": "Go To next inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.rhs",
-				"title": "Select previous outer rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.conditional.start",
+				"title": "Go To next outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.rhs",
-				"title": "Select previous inner rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.conditional.start",
+				"title": "Go To next inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.lhs",
-				"title": "Select previous outer lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.rhs.start",
+				"title": "Go To next outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.lhs",
-				"title": "Select previous inner lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.rhs.start",
+				"title": "Go To next inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.variable",
-				"title": "Select previous outer variable",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.lhs.start",
+				"title": "Go To next outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.string",
-				"title": "Select previous outer string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.lhs.start",
+				"title": "Go To next inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.string",
-				"title": "Select previous inner string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.variable.start",
+				"title": "Go To next outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.class",
-				"title": "Select previous outer class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.string.start",
+				"title": "Go To next outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.class",
-				"title": "Select previous inner class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.string.start",
+				"title": "Go To next inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.array",
-				"title": "Select previous outer array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.class.start",
+				"title": "Go To next outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.array",
-				"title": "Select previous inner array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.class.start",
+				"title": "Go To next inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.object",
-				"title": "Select previous outer object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.array.start",
+				"title": "Go To next outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.object",
-				"title": "Select previous inner object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.array.start",
+				"title": "Go To next inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.parameters",
-				"title": "Select previous inner parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.object.start",
+				"title": "Go To next outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.parameters",
-				"title": "Select previous outer parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.object.start",
+				"title": "Go To next inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.call",
-				"title": "Select previous outer call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.parameters.start",
+				"title": "Go To next outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.call",
-				"title": "Select previous inner call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.parameters.start",
+				"title": "Go To next inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.type",
-				"title": "Select previous outer type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.call.start",
+				"title": "Go To next outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.type",
-				"title": "Select previous inner type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.call.start",
+				"title": "Go To next inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.comment",
-				"title": "Select previous outer comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.type.start",
+				"title": "Go To next outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.comment",
-				"title": "Select previous inner comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.type.start",
+				"title": "Go To next inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.function",
-				"title": "Go To next outer function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.comment.start",
+				"title": "Go To next outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.function",
-				"title": "Go To next inner function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.comment.start",
+				"title": "Go To next inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.loop",
-				"title": "Go To next outer loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.node.start",
+				"title": "Go To next outer node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.loop",
-				"title": "Go To next inner loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.node.start",
+				"title": "Go To next inner node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.conditional",
-				"title": "Go To next outer conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.function.end",
+				"title": "Go To next outer function end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.conditional",
-				"title": "Go To next inner conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.function.end",
+				"title": "Go To next inner function end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.rhs",
-				"title": "Go To next outer rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.loop.end",
+				"title": "Go To next outer loop end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.rhs",
-				"title": "Go To next inner rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.loop.end",
+				"title": "Go To next inner loop end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.lhs",
-				"title": "Go To next outer lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.conditional.end",
+				"title": "Go To next outer conditional end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.lhs",
-				"title": "Go To next inner lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.conditional.end",
+				"title": "Go To next inner conditional end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.variable",
-				"title": "Go To next outer variable",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.rhs.end",
+				"title": "Go To next outer rhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.string",
-				"title": "Go To next outer string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.rhs.end",
+				"title": "Go To next inner rhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.string",
-				"title": "Go To next inner string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.lhs.end",
+				"title": "Go To next outer lhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.class",
-				"title": "Go To next outer class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.lhs.end",
+				"title": "Go To next inner lhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.class",
-				"title": "Go To next inner class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.variable.end",
+				"title": "Go To next outer variable end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.array",
-				"title": "Go To next outer array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.string.end",
+				"title": "Go To next outer string end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.array",
-				"title": "Go To next inner array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.string.end",
+				"title": "Go To next inner string end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.object",
-				"title": "Go To next outer object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.class.end",
+				"title": "Go To next outer class end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.object",
-				"title": "Go To next inner object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.class.end",
+				"title": "Go To next inner class end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.parameters",
-				"title": "Go To next outer parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.array.end",
+				"title": "Go To next outer array end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.parameters",
-				"title": "Go To next inner parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.array.end",
+				"title": "Go To next inner array end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.call",
-				"title": "Go To next outer call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.object.end",
+				"title": "Go To next outer object end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.call",
-				"title": "Go To next inner call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.object.end",
+				"title": "Go To next inner object end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.type",
-				"title": "Go To next outer type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.parameters.end",
+				"title": "Go To next outer parameters end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.type",
-				"title": "Go To next inner type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.parameters.end",
+				"title": "Go To next inner parameters end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.comment",
-				"title": "Go To next outer comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.call.end",
+				"title": "Go To next outer call end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.comment",
-				"title": "Go To next inner comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.call.end",
+				"title": "Go To next inner call end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.function",
-				"title": "Go To previous outer function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.type.end",
+				"title": "Go To next outer type end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.function",
-				"title": "Go To previous inner function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.type.end",
+				"title": "Go To next inner type end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.loop",
-				"title": "Go To previous outer loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.comment.end",
+				"title": "Go To next outer comment end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.loop",
-				"title": "Go To previous inner loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.comment.end",
+				"title": "Go To next inner comment end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.conditional",
-				"title": "Go To previous outer conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.inner.node.end",
+				"title": "Go To next inner node end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.conditional",
-				"title": "Go To previous inner conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.next.outer.node.end",
+				"title": "Go To next outer node end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.rhs",
-				"title": "Go To previous outer rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.function.start",
+				"title": "Go To previous outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.rhs",
-				"title": "Go To previous inner rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.function.start",
+				"title": "Go To previous inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.lhs",
-				"title": "Go To previous outer lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.loop.start",
+				"title": "Go To previous outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.lhs",
-				"title": "Go To previous inner lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.loop.start",
+				"title": "Go To previous inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.variable",
-				"title": "Go To previous outer variable",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.conditional.start",
+				"title": "Go To previous outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.string",
-				"title": "Go To previous outer string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.conditional.start",
+				"title": "Go To previous inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.string",
-				"title": "Go To previous inner string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.rhs.start",
+				"title": "Go To previous outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.class",
-				"title": "Go To previous outer class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.rhs.start",
+				"title": "Go To previous inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.class",
-				"title": "Go To previous inner class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.lhs.start",
+				"title": "Go To previous outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.array",
-				"title": "Go To previous outer array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.lhs.start",
+				"title": "Go To previous inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.array",
-				"title": "Go To previous inner array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.variable.start",
+				"title": "Go To previous outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.object",
-				"title": "Go To previous outer object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.string.start",
+				"title": "Go To previous outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.object",
-				"title": "Go To previous inner object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.string.start",
+				"title": "Go To previous inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.parameters",
-				"title": "Go To previous inner parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.class.start",
+				"title": "Go To previous outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.parameters",
-				"title": "Go To previous outer parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.class.start",
+				"title": "Go To previous inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.call",
-				"title": "Go To previous outer call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.array.start",
+				"title": "Go To previous outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.call",
-				"title": "Go To previous inner call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.array.start",
+				"title": "Go To previous inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.type",
-				"title": "Go To previous outer type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.object.start",
+				"title": "Go To previous outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.type",
-				"title": "Go To previous inner type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.object.start",
+				"title": "Go To previous inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.comment",
-				"title": "Go To previous outer comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.parameters.start",
+				"title": "Go To previous inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.comment",
-				"title": "Go To previous inner comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.parameters.start",
+				"title": "Go To previous outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.function",
-				"title": "Delete next outer function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.call.start",
+				"title": "Go To previous outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.function",
-				"title": "Delete next inner function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.call.start",
+				"title": "Go To previous inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.loop",
-				"title": "Delete next outer loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.type.start",
+				"title": "Go To previous outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.loop",
-				"title": "Delete next inner loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.type.start",
+				"title": "Go To previous inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.conditional",
-				"title": "Delete next outer conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.comment.start",
+				"title": "Go To previous outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.conditional",
-				"title": "Delete next inner conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.comment.start",
+				"title": "Go To previous inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.rhs",
-				"title": "Delete next outer rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.node.start",
+				"title": "Go To previous outer node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.rhs",
-				"title": "Delete next inner rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.node.start",
+				"title": "Go To previous inner node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.lhs",
-				"title": "Delete next outer lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.function.end",
+				"title": "Go To previous outer function end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.lhs",
-				"title": "Delete next inner lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.function.end",
+				"title": "Go To previous inner function end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.variable",
-				"title": "Delete next outer variable",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.loop.end",
+				"title": "Go To previous outer loop end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.string",
-				"title": "Delete next outer string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.loop.end",
+				"title": "Go To previous inner loop end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.string",
-				"title": "Delete next inner string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.conditional.end",
+				"title": "Go To previous outer conditional end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.class",
-				"title": "Delete next outer class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.conditional.end",
+				"title": "Go To previous inner conditional end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.class",
-				"title": "Delete next inner class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.rhs.end",
+				"title": "Go To previous outer rhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.array",
-				"title": "Delete next outer array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.rhs.end",
+				"title": "Go To previous inner rhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.array",
-				"title": "Delete next inner array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.lhs.end",
+				"title": "Go To previous outer lhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.object",
-				"title": "Delete next outer object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.lhs.end",
+				"title": "Go To previous inner lhs end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.object",
-				"title": "Delete next inner object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.variable.end",
+				"title": "Go To previous outer variable end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.parameters",
-				"title": "Delete next outer parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.string.end",
+				"title": "Go To previous outer string end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.parameters",
-				"title": "Delete next inner parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.string.end",
+				"title": "Go To previous inner string end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.call",
-				"title": "Delete next outer call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.class.end",
+				"title": "Go To previous outer class end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.call",
-				"title": "Delete next inner call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.class.end",
+				"title": "Go To previous inner class end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.type",
-				"title": "Delete next outer type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.array.end",
+				"title": "Go To previous outer array end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.type",
-				"title": "Delete next inner type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.array.end",
+				"title": "Go To previous inner array end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.outer.comment",
-				"title": "Delete next outer comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.object.end",
+				"title": "Go To previous outer object end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.next.inner.comment",
-				"title": "Delete next inner comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.object.end",
+				"title": "Go To previous inner object end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.function",
-				"title": "Delete previous outer function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.parameters.end",
+				"title": "Go To previous inner parameters end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.function",
-				"title": "Delete previous inner function",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.parameters.end",
+				"title": "Go To previous outer parameters end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.loop",
-				"title": "Delete previous outer loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.call.end",
+				"title": "Go To previous outer call end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.loop",
-				"title": "Delete previous inner loop",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.call.end",
+				"title": "Go To previous inner call end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.conditional",
-				"title": "Delete previous outer conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.type.end",
+				"title": "Go To previous outer type end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.conditional",
-				"title": "Delete previous inner conditional",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.type.end",
+				"title": "Go To previous inner type end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.rhs",
-				"title": "Delete previous outer rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.outer.comment.end",
+				"title": "Go To previous outer comment end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.rhs",
-				"title": "Delete previous inner rhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.goTo.previous.inner.comment.end",
+				"title": "Go To previous inner comment end",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.lhs",
-				"title": "Delete previous outer lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.function.start",
+				"title": "Select previous outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.lhs",
-				"title": "Delete previous inner lhs",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.function.start",
+				"title": "Select previous inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.variable",
-				"title": "Delete previous outer variable",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.loop.start",
+				"title": "Select previous outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.string",
-				"title": "Delete previous outer string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.loop.start",
+				"title": "Select previous inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.string",
-				"title": "Delete previous inner string",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.conditional.start",
+				"title": "Select previous outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.class",
-				"title": "Delete previous outer class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.conditional.start",
+				"title": "Select previous inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.class",
-				"title": "Delete previous inner class",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.rhs.start",
+				"title": "Select previous outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.array",
-				"title": "Delete previous outer array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.rhs.start",
+				"title": "Select previous inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.array",
-				"title": "Delete previous inner array",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.lhs.start",
+				"title": "Select previous outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.object",
-				"title": "Delete previous outer object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.lhs.start",
+				"title": "Select previous inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.object",
-				"title": "Delete previous inner object",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.variable.start",
+				"title": "Select previous outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.parameters",
-				"title": "Delete previous outer parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.string.start",
+				"title": "Select previous outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.parameters",
-				"title": "Delete previous inner parameters",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.string.start",
+				"title": "Select previous inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.call",
-				"title": "Delete previous outer call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.class.start",
+				"title": "Select previous outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.call",
-				"title": "Delete previous inner call",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.class.start",
+				"title": "Select previous inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.type",
-				"title": "Delete previous outer type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.array.start",
+				"title": "Select previous outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.type",
-				"title": "Delete previous inner type",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.array.start",
+				"title": "Select previous inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.outer.comment",
-				"title": "Delete previous outer comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.outer.object.start",
+				"title": "Select previous outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.delete.previous.inner.comment",
-				"title": "Delete previous inner comment",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.select.previous.inner.object.start",
+				"title": "Select previous inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.function",
-				"title": "Copy next outer function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.inner.parameters.start",
+				"title": "Select previous inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.function",
-				"title": "Copy next inner function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.outer.parameters.start",
+				"title": "Select previous outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.loop",
-				"title": "Copy next outer loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.outer.call.start",
+				"title": "Select previous outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.loop",
-				"title": "Copy next inner loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.inner.call.start",
+				"title": "Select previous inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.conditional",
-				"title": "Copy next outer conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.outer.type.start",
+				"title": "Select previous outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.conditional",
-				"title": "Copy next inner conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.inner.type.start",
+				"title": "Select previous inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.rhs",
-				"title": "Copy next outer rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.outer.comment.start",
+				"title": "Select previous outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.rhs",
-				"title": "Copy next inner rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.inner.comment.start",
+				"title": "Select previous inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.lhs",
-				"title": "Copy next outer lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.outer.node.start",
+				"title": "Select previous outer node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.lhs",
-				"title": "Copy next inner lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.select.previous.inner.node.start",
+				"title": "Select previous inner node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.variable",
-				"title": "Copy next outer variable",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.function.start",
+				"title": "Delete next outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.string",
-				"title": "Copy next outer string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.function.start",
+				"title": "Delete next inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.string",
-				"title": "Copy next inner string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.loop.start",
+				"title": "Delete next outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.class",
-				"title": "Copy next outer class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.loop.start",
+				"title": "Delete next inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.class",
-				"title": "Copy next inner class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.conditional.start",
+				"title": "Delete next outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.array",
-				"title": "Copy next outer array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.conditional.start",
+				"title": "Delete next inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.array",
-				"title": "Copy next inner array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.rhs.start",
+				"title": "Delete next outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.object",
-				"title": "Copy next outer object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.rhs.start",
+				"title": "Delete next inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.object",
-				"title": "Copy next inner object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.lhs.start",
+				"title": "Delete next outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.parameters",
-				"title": "Copy next outer parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.lhs.start",
+				"title": "Delete next inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.parameters",
-				"title": "Copy next inner parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.variable.start",
+				"title": "Delete next outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.call",
-				"title": "Copy next outer call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.string.start",
+				"title": "Delete next outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.call",
-				"title": "Copy next inner call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.string.start",
+				"title": "Delete next inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.type",
-				"title": "Copy next outer type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.class.start",
+				"title": "Delete next outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.type",
-				"title": "Copy next inner type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.class.start",
+				"title": "Delete next inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.outer.comment",
-				"title": "Copy next outer comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.array.start",
+				"title": "Delete next outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.next.inner.comment",
-				"title": "Copy next inner comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.array.start",
+				"title": "Delete next inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.function",
-				"title": "Copy previous outer function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.object.start",
+				"title": "Delete next outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.function",
-				"title": "Copy previous inner function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.object.start",
+				"title": "Delete next inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.loop",
-				"title": "Copy previous outer loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.parameters.start",
+				"title": "Delete next outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.loop",
-				"title": "Copy previous inner loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.parameters.start",
+				"title": "Delete next inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.conditional",
-				"title": "Copy previous outer conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.call.start",
+				"title": "Delete next outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.conditional",
-				"title": "Copy previous inner conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.call.start",
+				"title": "Delete next inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.rhs",
-				"title": "Copy previous outer rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.type.start",
+				"title": "Delete next outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.rhs",
-				"title": "Copy previous inner rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.type.start",
+				"title": "Delete next inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.lhs",
-				"title": "Copy previous outer lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.comment.start",
+				"title": "Delete next outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.lhs",
-				"title": "Copy previous inner lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.inner.comment.start",
+				"title": "Delete next inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.variable",
-				"title": "Copy previous outer variable",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.next.outer.node.start",
+				"title": "Delete next outer node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.string",
-				"title": "Copy previous outer string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.node.start",
+				"title": "Delete previous inner node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.string",
-				"title": "Copy previous inner string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.function.start",
+				"title": "Delete previous outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.class",
-				"title": "Copy previous outer class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.function.start",
+				"title": "Delete previous inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.class",
-				"title": "Copy previous inner class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.loop.start",
+				"title": "Delete previous outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.array",
-				"title": "Copy previous outer array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.loop.start",
+				"title": "Delete previous inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.array",
-				"title": "Copy previous inner array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.conditional.start",
+				"title": "Delete previous outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.object",
-				"title": "Copy previous outer object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.conditional.start",
+				"title": "Delete previous inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.object",
-				"title": "Copy previous inner object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.rhs.start",
+				"title": "Delete previous outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.parameters",
-				"title": "Copy previous outer parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.rhs.start",
+				"title": "Delete previous inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.parameters",
-				"title": "Copy previous inner parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.lhs.start",
+				"title": "Delete previous outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.call",
-				"title": "Copy previous outer call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.lhs.start",
+				"title": "Delete previous inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.call",
-				"title": "Copy previous inner call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.variable.start",
+				"title": "Delete previous outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.type",
-				"title": "Copy previous outer type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.string.start",
+				"title": "Delete previous outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.type",
-				"title": "Copy previous inner type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.string.start",
+				"title": "Delete previous inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.outer.comment",
-				"title": "Copy previous outer comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.class.start",
+				"title": "Delete previous outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.yank.previous.inner.comment",
-				"title": "Copy previous inner comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.class.start",
+				"title": "Delete previous inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.function",
-				"title": "Change next outer function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.array.start",
+				"title": "Delete previous outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.function",
-				"title": "Change next inner function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.array.start",
+				"title": "Delete previous inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.loop",
-				"title": "Change next outer loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.object.start",
+				"title": "Delete previous outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.loop",
-				"title": "Change next inner loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.object.start",
+				"title": "Delete previous inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.conditional",
-				"title": "Change next outer conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.parameters.start",
+				"title": "Delete previous outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.conditional",
-				"title": "Change next inner conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.parameters.start",
+				"title": "Delete previous inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.rhs",
-				"title": "Change next outer rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.call.start",
+				"title": "Delete previous outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.rhs",
-				"title": "Change next inner rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.call.start",
+				"title": "Delete previous inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.lhs",
-				"title": "Change next outer lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.type.start",
+				"title": "Delete previous outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.lhs",
-				"title": "Change next inner lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.type.start",
+				"title": "Delete previous inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.variable",
-				"title": "Change next outer variable",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.outer.comment.start",
+				"title": "Delete previous outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.string",
-				"title": "Change next outer string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.delete.previous.inner.comment.start",
+				"title": "Delete previous inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.string",
-				"title": "Change next inner string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.function.start",
+				"title": "Copy next outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.class",
-				"title": "Change next outer class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.function.start",
+				"title": "Copy next inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.class",
-				"title": "Change next inner class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.loop.start",
+				"title": "Copy next outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.array",
-				"title": "Change next outer array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.loop.start",
+				"title": "Copy next inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.array",
-				"title": "Change next inner array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.conditional.start",
+				"title": "Copy next outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.object",
-				"title": "Change next outer object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.conditional.start",
+				"title": "Copy next inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.object",
-				"title": "Change next inner object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.rhs.start",
+				"title": "Copy next outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.parameters",
-				"title": "Change next outer parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.rhs.start",
+				"title": "Copy next inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.parameters",
-				"title": "Change next inner parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.lhs.start",
+				"title": "Copy next outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.call",
-				"title": "Change next outer call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.lhs.start",
+				"title": "Copy next inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.call",
-				"title": "Change next inner call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.variable.start",
+				"title": "Copy next outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.type",
-				"title": "Change next outer type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.string.start",
+				"title": "Copy next outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.type",
-				"title": "Change next inner type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.string.start",
+				"title": "Copy next inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.outer.comment",
-				"title": "Change next outer comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.class.start",
+				"title": "Copy next outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.next.inner.comment",
-				"title": "Change next inner comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.class.start",
+				"title": "Copy next inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.function",
-				"title": "Change previous outer function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.array.start",
+				"title": "Copy next outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.function",
-				"title": "Change previous inner function",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.array.start",
+				"title": "Copy next inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.loop",
-				"title": "Change previous outer loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.object.start",
+				"title": "Copy next outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.loop",
-				"title": "Change previous inner loop",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.object.start",
+				"title": "Copy next inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.conditional",
-				"title": "Change previous outer conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.parameters.start",
+				"title": "Copy next outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.conditional",
-				"title": "Change previous inner conditional",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.parameters.start",
+				"title": "Copy next inner parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.rhs",
-				"title": "Change previous outer rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.call.start",
+				"title": "Copy next outer call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.rhs",
-				"title": "Change previous inner rhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.call.start",
+				"title": "Copy next inner call start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.lhs",
-				"title": "Change previous outer lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.type.start",
+				"title": "Copy next outer type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.lhs",
-				"title": "Change previous inner lhs",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.type.start",
+				"title": "Copy next inner type start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.variable",
-				"title": "Change previous outer variable",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.comment.start",
+				"title": "Copy next outer comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.string",
-				"title": "Change previous outer string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.comment.start",
+				"title": "Copy next inner comment start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.string",
-				"title": "Change previous inner string",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.outer.node.start",
+				"title": "Copy next outer node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.class",
-				"title": "Change previous outer class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.next.inner.node.start",
+				"title": "Copy next inner node start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.class",
-				"title": "Change previous inner class",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.function.start",
+				"title": "Copy previous outer function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.array",
-				"title": "Change previous outer array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.inner.function.start",
+				"title": "Copy previous inner function start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.array",
-				"title": "Change previous inner array",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.loop.start",
+				"title": "Copy previous outer loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.object",
-				"title": "Change previous outer object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.inner.loop.start",
+				"title": "Copy previous inner loop start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.object",
-				"title": "Change previous inner object",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.conditional.start",
+				"title": "Copy previous outer conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.parameters",
-				"title": "Change previous outer parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.inner.conditional.start",
+				"title": "Copy previous inner conditional start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.parameters",
-				"title": "Change previous inner parameters",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.rhs.start",
+				"title": "Copy previous outer rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.call",
-				"title": "Change previous outer call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.inner.rhs.start",
+				"title": "Copy previous inner rhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.call",
-				"title": "Change previous inner call",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.lhs.start",
+				"title": "Copy previous outer lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.type",
-				"title": "Change previous outer type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.inner.lhs.start",
+				"title": "Copy previous inner lhs start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.type",
-				"title": "Change previous inner type",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.variable.start",
+				"title": "Copy previous outer variable start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.outer.comment",
-				"title": "Change previous outer comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.outer.string.start",
+				"title": "Copy previous outer string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.change.previous.inner.comment",
-				"title": "Change previous inner comment",
-				"when": " editorTextFocus  && vscode-textobjects.vimEnabled  && !inDebugRepl && vim.mode != 'Insert'"
+				"command": "vscode-textobjects.yank.previous.inner.string.start",
+				"title": "Copy previous inner string start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.outer.node",
-				"title": "Select next outer node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.outer.class.start",
+				"title": "Copy previous outer class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.next.inner.node",
-				"title": "Select next inner node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.inner.class.start",
+				"title": "Copy previous inner class start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.outer.node",
-				"title": "Select previous outer node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.outer.array.start",
+				"title": "Copy previous outer array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.select.previous.inner.node",
-				"title": "Select previous inner node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.inner.array.start",
+				"title": "Copy previous inner array start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.outer.node",
-				"title": "Go To next outer node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.outer.object.start",
+				"title": "Copy previous outer object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.next.inner.node",
-				"title": "Go To next inner node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.inner.object.start",
+				"title": "Copy previous inner object start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.outer.node",
-				"title": "Go To previous outer node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.outer.parameters.start",
+				"title": "Copy previous outer parameters start",
+				"when": "editorTextFocus  "
 			},
 			{
-				"command": "vscode-textobjects.goTo.previous.inner.node",
-				"title": "Go To previous inner node",
-				"when": "editorTextFocus"
+				"command": "vscode-textobjects.yank.previous.inner.parameters.start",
+				"title": "Copy previous inner parameters start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.yank.previous.outer.call.start",
+				"title": "Copy previous outer call start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.yank.previous.inner.call.start",
+				"title": "Copy previous inner call start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.yank.previous.outer.type.start",
+				"title": "Copy previous outer type start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.yank.previous.inner.type.start",
+				"title": "Copy previous inner type start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.yank.previous.outer.comment.start",
+				"title": "Copy previous outer comment start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.yank.previous.inner.comment.start",
+				"title": "Copy previous inner comment start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.function.start",
+				"title": "Change next outer function start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.function.start",
+				"title": "Change next inner function start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.loop.start",
+				"title": "Change next outer loop start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.loop.start",
+				"title": "Change next inner loop start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.conditional.start",
+				"title": "Change next outer conditional start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.conditional.start",
+				"title": "Change next inner conditional start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.rhs.start",
+				"title": "Change next outer rhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.rhs.start",
+				"title": "Change next inner rhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.lhs.start",
+				"title": "Change next outer lhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.lhs.start",
+				"title": "Change next inner lhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.variable.start",
+				"title": "Change next outer variable start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.string.start",
+				"title": "Change next outer string start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.string.start",
+				"title": "Change next inner string start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.class.start",
+				"title": "Change next outer class start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.class.start",
+				"title": "Change next inner class start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.array.start",
+				"title": "Change next outer array start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.array.start",
+				"title": "Change next inner array start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.object.start",
+				"title": "Change next outer object start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.object.start",
+				"title": "Change next inner object start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.parameters.start",
+				"title": "Change next outer parameters start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.parameters.start",
+				"title": "Change next inner parameters start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.call.start",
+				"title": "Change next outer call start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.call.start",
+				"title": "Change next inner call start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.type.start",
+				"title": "Change next outer type start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.type.start",
+				"title": "Change next inner type start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.comment.start",
+				"title": "Change next outer comment start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.inner.comment.start",
+				"title": "Change next inner comment start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.next.outer.node.start",
+				"title": "Change next outer node start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.node.start",
+				"title": "Change previous inner node start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.function.start",
+				"title": "Change previous outer function start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.function.start",
+				"title": "Change previous inner function start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.loop.start",
+				"title": "Change previous outer loop start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.loop.start",
+				"title": "Change previous inner loop start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.conditional.start",
+				"title": "Change previous outer conditional start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.conditional.start",
+				"title": "Change previous inner conditional start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.rhs.start",
+				"title": "Change previous outer rhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.rhs.start",
+				"title": "Change previous inner rhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.lhs.start",
+				"title": "Change previous outer lhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.lhs.start",
+				"title": "Change previous inner lhs start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.variable.start",
+				"title": "Change previous outer variable start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.string.start",
+				"title": "Change previous outer string start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.string.start",
+				"title": "Change previous inner string start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.class.start",
+				"title": "Change previous outer class start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.class.start",
+				"title": "Change previous inner class start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.array.start",
+				"title": "Change previous outer array start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.array.start",
+				"title": "Change previous inner array start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.object.start",
+				"title": "Change previous outer object start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.object.start",
+				"title": "Change previous inner object start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.parameters.start",
+				"title": "Change previous outer parameters start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.parameters.start",
+				"title": "Change previous inner parameters start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.call.start",
+				"title": "Change previous outer call start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.call.start",
+				"title": "Change previous inner call start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.type.start",
+				"title": "Change previous outer type start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.type.start",
+				"title": "Change previous inner type start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.outer.comment.start",
+				"title": "Change previous outer comment start",
+				"when": "editorTextFocus  "
+			},
+			{
+				"command": "vscode-textobjects.change.previous.inner.comment.start",
+				"title": "Change previous inner comment start",
+				"when": "editorTextFocus  "
 			}
 		]
 	},
@@ -2661,8 +2954,7 @@
 		"watch:esbuild": "node esbuild.js --watch",
 		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
 		"package": "npm run check-types && npm run lint && node esbuild.js --production",
-		"compile-tests": "tsc -p . --outDir out && cp -r ./parsers ./out/parsers",
-		"watch-tests": "tsc -p . -w --outDir out",
+		"compile-tests": "tsc -p . --outDir dist && cp -r ./parsers ./dist/parsers",
 		"pretest": "npm run compile-tests && npm run compile_test ",
 		"pretest_release": "npm run compile-tests && npm run compile && npm run lint",
 		"check-types": "tsc --noEmit",

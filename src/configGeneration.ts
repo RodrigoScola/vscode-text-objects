@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import fs, { writeFileSync } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { getCommandName } from './motions/commands';
 
@@ -27,8 +27,8 @@ export function saveCommands(commands: Command[]) {
 		}
 
 		const node: Record<string, string> = {
-			command: `vscode-textobjects.${getCommandName(command)}`,
-			title: `${actionName} ${command.direction} ${command.scope} ${command.name}`,
+			command: makeName(getCommandName(command)),
+			title: `${actionName} ${command.direction} ${command.scope} ${command.name} ${command.position}`,
 			when: `editorTextFocus  `,
 		};
 
@@ -130,7 +130,11 @@ export function saveKeybinds(commands: Command[]) {
 	const total = [];
 
 	for (const command of commands) {
-		if (command.action === 'change' || (command.action === 'yank' && command.scope === 'inner')) {
+		if (
+			command.action === 'change' ||
+			(command.action === 'yank' && command.scope === 'inner') ||
+			(command.action !== 'goTo' && command.position === 'end')
+		) {
 			//actions that are only with vim integration
 			continue;
 		}
@@ -198,11 +202,15 @@ function getKeyForCommandScope(scope: CommandScope): string {
 	throw new Error('forgot to implement: ' + scope);
 }
 
-function getGoToKeyForDirection(dir: CommandDirection): string {
-	if (dir === 'next') {
-		return '[';
-	} else if (dir === 'previous') {
-		return ']';
+function getGoToKeyForDirectionAndPosition(dir: CommandDirection, pos: CommandPosition): string[] {
+	if (dir === 'next' && pos === 'start') {
+		return ['['];
+	} else if (dir === 'previous' && pos === 'start') {
+		return [']'];
+	} else if (dir === 'next' && pos === 'end') {
+		return ['[', '['];
+	} else if (dir === 'previous' && pos === 'end') {
+		return [']', ']'];
 	}
 	throw new Error('forgot to implement:' + dir);
 }
@@ -219,7 +227,7 @@ export function saveVimKeybinds(commands: Command[]) {
 				dirKey = dirKey.toUpperCase();
 			}
 
-			key = [getGoToKeyForDirection(command.direction), dirKey];
+			key = getGoToKeyForDirectionAndPosition(command.direction, command.position).concat(dirKey);
 		} else {
 			key = [
 				getVimKeyForCommandAction(command.action),
