@@ -24,12 +24,6 @@ export function getVimSettingsNames(): string[] {
 function checkVimPositionals(): void {
 	const ctx = getContext();
 
-	ctx.extensionContext?.updateState(
-		'check_vim_positional_commands',
-		ProcessFlow.SHOULD_ASK,
-		EditorScope.global
-	);
-
 	const config = vscode.workspace.getConfiguration('vim');
 	if (!config) {
 		return;

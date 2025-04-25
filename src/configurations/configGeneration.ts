@@ -2,7 +2,7 @@ import assert from 'assert';
 
 import fs from 'fs';
 import path from 'path';
-import { commands, getCommandName, getCommandNameWithoutPosition } from '../motions/commands';
+import { getCommandName, getCommandNameWithoutPosition } from '../motions/commands';
 
 /**
  * this is not supposed to be pretty, this is just so i can generate the keybinds, vim integration or the commands automatically
@@ -238,7 +238,7 @@ function getGoToKeyForDirectionAndPosition(dir: CommandDirection, pos: CommandPo
 
 export type VimKeybinding = { before: string[]; commands: string[] };
 
-export function GetVimKeybindings(commands: Command[]) {
+export function GetVimKeybindings(commands: Command[]): VimKeybinding[] {
 	const keybindings: VimKeybinding[] = [];
 	for (const command of commands) {
 		let key: string[] = [];

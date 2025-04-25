@@ -3586,6 +3586,16 @@
 				"command": "vscode-textobjects.change.previous.inner.comment.start",
 				"title": "Change previous inner comment start",
 				"when": "editorTextFocus  "
+			},
+			{
+				"title": "migrate vim positionals",
+				"when": "",
+				"command": "vscode-textobjects.migrateVimPositionals"
+			},
+			{
+				"title": "generate vim keybinds",
+				"when": "",
+				"command": "vscode-textobjects.generateVimKeybinds"
 			}
 		]
 	},
