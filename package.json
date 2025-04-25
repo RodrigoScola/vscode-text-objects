@@ -40,6 +40,65 @@
 		"configuration": {
 			"title": "Vscode Text Objects",
 			"properties": {
+				"vscode-textobjects.keybindings": {
+					"type": "object",
+					"default": {
+						"go to start": "f",
+						"go to end": "t",
+						"select inner": "n",
+						"select outer": "s",
+						"delete outer": "d",
+						"delete inner": "x",
+						"yank outer": "y",
+						"array": "a",
+						"call": "m",
+						"class": "k",
+						"comment": "c",
+						"conditional": "i",
+						"function": "f",
+						"lhs": "h",
+						"loop": "l",
+						"node": "n",
+						"object": "o",
+						"rhs": "r",
+						"parameters": "e",
+						"string": "q",
+						"type": "t",
+						"variable": "v"
+					},
+					"title": "Used to generate the motions for the vim extension "
+				},
+				"vscode-textobjects.vimKeybindings": {
+					"type": "object",
+					"default": {
+						"select": "v",
+						"change": "c",
+						"delete": "d",
+						"yank": "y",
+						"go to next start": "[",
+						"go to next end": "[ [",
+						"go to previous start": "]",
+						"go to previous end": "] ]",
+						"inner": "i",
+						"outer": "a",
+						"array": "a",
+						"call": "m",
+						"class": "k",
+						"comment": "c",
+						"conditional": "i",
+						"function": "f",
+						"lhs": "h",
+						"loop": "l",
+						"node": "n",
+						"object": "o",
+						"rhs": "r",
+						"parameters": "e",
+						"string": "q",
+						"type": "t",
+						"variable": "v"
+					},
+					"title": "Used to generate the motions for the vim extension "
+				},
 				"vscode-textobjects.vimEnabled": {
 					"type": "boolean",
 					"default": false,
@@ -3596,6 +3655,11 @@
 				"title": "generate vim keybinds",
 				"when": "",
 				"command": "vscode-textobjects.generateVimKeybinds"
+			},
+			{
+				"title": "generate keybinds",
+				"when": "",
+				"command": "vscode-textobjects.generateKeybinds"
 			}
 		]
 	},

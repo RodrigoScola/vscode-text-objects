@@ -17,6 +17,23 @@ export class Config {
 
 		return Boolean(value);
 	}
+	vimkeybindingConfig(): VimKeyboardConfig {
+		assert(this.config, ' config has not been setup');
+
+		const value = this.config.get('vimKeybindings');
+
+		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
+		return value as VimKeyboardConfig;
+	}
+	keybindingConfig(): DefaultKeyboardConfig {
+		assert(this.config, ' config has not been setup');
+
+		const value = this.config.get('keybindings');
+
+		assert(typeof value !== 'undefined' && value !== null, 'value was not found');
+
+		return value as DefaultKeyboardConfig;
+	}
 
 	copyOnDelete(): boolean {
 		assert(this.config, ' config has not been setup');

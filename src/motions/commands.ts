@@ -33,6 +33,7 @@ import {
 } from '../configurations/migrateVimPositionals';
 import { format } from 'path';
 import { GenerateVimKeybinds } from '../configurations/generateVimKeybinds';
+import { GenerateKeyboardKeybindings } from '../configurations/generateKeybindings';
 
 function addSelector(command: Command, selector: Selector): void {
 	command.selectors[selector.language] = selector;
@@ -181,6 +182,10 @@ const editorCommands: EditorCommand[] = [
 	createEditorCommand(makeName('generateVimKeybinds'), 'generate vim keybinds', () => {
 		GenerateVimKeybinds();
 	}),
+
+	createEditorCommand(makeName('generateKeybinds'), 'generate keybinds', () => {
+		GenerateKeyboardKeybindings();
+	}),
 ];
 //doing this because the vscode.commands.getCommands() returns a promise, so this is to not slow down the start times
 const installedCommands: Record<string, vscode.Disposable> = {};
@@ -188,7 +193,7 @@ const installedCommands: Record<string, vscode.Disposable> = {};
 export function init(): void {
 	automaticProcess();
 	saveKeybinds(commands);
-	saveCommands(formatKeybindCommands(commands).concat(editorCommands));
+	saveCommands(formatKeybindCommands(commands).concat(editorCommands as any as Record<string, string>[]));
 	saveVimKeybinds(commands);
 
 	for (const editorCommand of editorCommands) {

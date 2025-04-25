@@ -3,6 +3,7 @@ import assert from 'assert';
 import fs from 'fs';
 import path from 'path';
 import { getCommandName, getCommandNameWithoutPosition } from '../motions/commands';
+import { getConfig } from '../config';
 
 /**
  * this is not supposed to be pretty, this is just so i can generate the keybinds, vim integration or the commands automatically
@@ -58,92 +59,34 @@ export function saveCommands(commands: Record<string, string>[]): void {
 }
 
 //todo: if this becomes a bigger thing, see if the values still need to be hardcoded, they could be in the user config and we get the defaults or the user preffered keybind from there
-function getkeyForCommandName(name: CommandNames): string {
-	switch (name) {
-		case 'array': {
-			return 'a';
-		}
-		case 'call': {
-			return 'm';
-		}
-		case 'class': {
-			return 'k';
-		}
-
-		case 'comment': {
-			return 'c';
-		}
-
-		case 'conditional': {
-			return 'i';
-		}
-
-		case 'function': {
-			return 'f';
-		}
-
-		case 'lhs': {
-			return 'h';
-		}
-
-		case 'loop': {
-			return 'l';
-		}
-
-		case 'node': {
-			return 'n';
-		}
-
-		case 'object': {
-			return 'o';
-		}
-
-		case 'parameters': {
-			return 'e';
-		}
-
-		case 'rhs': {
-			return 'r';
-		}
-
-		case 'string': {
-			return 'q';
-		}
-
-		case 'type': {
-			return 'y';
-		}
-		case 'variable': {
-			return 'v';
-		}
-		default: {
-			throw new Error('forgot to implement: ' + name);
-		}
+function getkeyForCommandName(name: CommandNames, config: KeyboardConfig): string {
+	if (!(name in config)) {
+		throw new Error(`invalid keybinding for ${name}`);
 	}
+	return config[name];
 }
 
-function getKeyForCommand(command: Command): string {
+function getKeyForCommand(command: Command, config: KeyboardMotionConfig): string {
 	if (command.action === 'goTo' && command.position === 'start') {
-		return 'f';
+		return config['go to start'];
 	} else if (command.action === 'goTo' && command.position === 'end') {
-		return 't';
+		return config['go to end'];
 	} else if (command.action === 'select' && command.scope === 'inner') {
-		return 'n';
+		return config['select inner'];
 	} else if (command.action === 'select' && command.scope === 'outer') {
-		return 's';
+		return config['select outer'];
 	} else if (command.action === 'delete' && command.scope === 'outer') {
-		return 'd';
+		return config['delete outer'];
 	} else if (command.action === 'delete' && command.scope === 'inner') {
-		return 'x';
+		return config['delete inner'];
 	} else if (command.action === 'yank' && command.scope === 'outer') {
-		return 'y';
+		return config['yank outer'];
 	}
-	throw new Error('forgot to implement: ' + getCommandName(command));
+	throw new Error('did not implement: ' + getCommandName(command));
 }
 
-export function saveKeybinds(commands: Command[]) {
-	const total = [];
-
+export function getKeyboardKeybinds(commands: Command[], config: DefaultKeyboardConfig): KeyboardKeybind[] {
+	const total: KeyboardKeybind[] = [];
 	for (const command of commands) {
 		if (
 			command.action === 'change' ||
@@ -172,19 +115,19 @@ export function saveKeybinds(commands: Command[]) {
 		if (command.direction === 'previous') {
 			winActivation.push('shift');
 			macActivation.push('shift');
-			winActivation.push(getKeyForCommand(command).toUpperCase());
-			macActivation.push(getKeyForCommand(command).toUpperCase());
+			winActivation.push(getKeyForCommand(command, config).toUpperCase());
+			macActivation.push(getKeyForCommand(command, config).toUpperCase());
 
 			winKey.push('shift');
 			macKey.push('shift');
-			winKey.push(getkeyForCommandName(command.name).toUpperCase());
-			macKey.push(getkeyForCommandName(command.name).toUpperCase());
+			winKey.push(getkeyForCommandName(command.name, config).toUpperCase());
+			macKey.push(getkeyForCommandName(command.name, config).toUpperCase());
 		} else {
-			winActivation.push(getKeyForCommand(command));
-			macActivation.push(getKeyForCommand(command));
+			winActivation.push(getKeyForCommand(command, config));
+			macActivation.push(getKeyForCommand(command, config));
 
-			winKey.push(getkeyForCommandName(command.name));
-			macKey.push(getkeyForCommandName(command.name));
+			winKey.push(getkeyForCommandName(command.name, config));
+			macKey.push(getkeyForCommandName(command.name, config));
 		}
 
 		node.key = [winActivation.join('+'), winKey.join('+')].join(' ');
@@ -192,6 +135,12 @@ export function saveKeybinds(commands: Command[]) {
 
 		total.push(node);
 	}
+	return total;
+}
+
+export function saveKeybinds(commands: Command[]): void {
+	const keyboardConfig = getConfig().keybindingConfig();
+	const total = getKeyboardKeybinds(commands, keyboardConfig);
 
 	fs.writeFileSync(
 		path.join(__dirname, '..', 'keybinds.json'),
@@ -200,38 +149,40 @@ export function saveKeybinds(commands: Command[]) {
 	);
 }
 
-function getVimKeyForCommandAction(action: CommandAction): string {
+function getVimKeyForCommandAction(action: CommandAction, config: VimMotionConfig): string {
 	if (action === 'change') {
-		return 'c';
+		return config.change;
 	} else if (action === 'delete') {
-		return 'd';
+		return config.delete;
 	} else if (action === 'select') {
-		return 'v';
+		return config.select;
 	} else if (action === 'yank') {
-		return 'y';
+		return config.yank;
 	}
 	throw new Error('forgot to implement: ' + action);
 }
 
-function getKeyForCommandScope(scope: CommandScope): string {
+function getKeyForCommandScope(scope: CommandScope, config: ScopeConfig): string {
 	if (scope === 'inner') {
-		return 'i';
+		return config.inner;
 	} else if (scope === 'outer') {
-		return 'a';
+		return config.outer;
 	}
 
 	throw new Error('forgot to implement: ' + scope);
 }
 
 function getGoToKeyForDirectionAndPosition(dir: CommandDirection, pos: CommandPosition): string[] {
+	const config = getConfig().vimkeybindingConfig();
+
 	if (dir === 'next' && pos === 'start') {
-		return ['['];
+		return config['go to next start'].split(' ');
 	} else if (dir === 'previous' && pos === 'start') {
-		return [']'];
+		return config['go to previous start'].split(' ');
 	} else if (dir === 'next' && pos === 'end') {
-		return ['[', '['];
+		return config['go to next end'].split(' ');
 	} else if (dir === 'previous' && pos === 'end') {
-		return [']', ']'];
+		return config['go to previous end'].split(' ');
 	}
 	throw new Error('forgot to implement:' + dir);
 }
@@ -240,11 +191,14 @@ export type VimKeybinding = { before: string[]; commands: string[] };
 
 export function GetVimKeybindings(commands: Command[]): VimKeybinding[] {
 	const keybindings: VimKeybinding[] = [];
+
+	const keybindConfig = getConfig().vimkeybindingConfig();
+
 	for (const command of commands) {
 		let key: string[] = [];
 
 		if (command.action === 'goTo') {
-			let dirKey = getkeyForCommandName(command.name);
+			let dirKey = getkeyForCommandName(command.name, keybindConfig);
 
 			if (command.scope === 'inner') {
 				dirKey = dirKey.toUpperCase();
@@ -253,11 +207,11 @@ export function GetVimKeybindings(commands: Command[]): VimKeybinding[] {
 			key = getGoToKeyForDirectionAndPosition(command.direction, command.position).concat(dirKey);
 		} else {
 			key = [
-				getVimKeyForCommandAction(command.action),
-				getKeyForCommandScope(command.scope),
+				getVimKeyForCommandAction(command.action, keybindConfig),
+				getKeyForCommandScope(command.scope, keybindConfig),
 				command.direction === 'next'
-					? getkeyForCommandName(command.name)
-					: getkeyForCommandName(command.name).toUpperCase(),
+					? getkeyForCommandName(command.name, keybindConfig)
+					: getkeyForCommandName(command.name, keybindConfig).toUpperCase(),
 			];
 		}
 
@@ -271,7 +225,7 @@ export function GetVimKeybindings(commands: Command[]): VimKeybinding[] {
 	return keybindings;
 }
 
-export function saveVimKeybinds(commands: Command[]) {
+export function saveVimKeybinds(commands: Command[]): void {
 	const total = GetVimKeybindings(commands);
 
 	assert.equal(total.length, commands.length);
