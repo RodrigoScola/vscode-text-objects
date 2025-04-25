@@ -1,5 +1,7 @@
+import { ExtensionContext } from 'vscode';
 import assert from 'assert';
 import { Editor } from '../editor/editor';
+import { EditorContext } from '../editor/editorContext';
 
 let context: Context;
 
@@ -12,7 +14,7 @@ export function updateContext(ctx: Context): Context {
 	context = ctx;
 	return context;
 }
-export function updateCommand(cmd: Command) {
+export function updateCommand(cmd: Command): void {
 	context.command = cmd;
 	context.command.currentSelector = undefined;
 }
@@ -24,6 +26,10 @@ export function getDefaultContext(): Context {
 		parsing: {
 			parser: undefined,
 		},
-		extensionState: <T>(_: string, d: T) => d,
+		extensionContext: null,
 	};
+}
+
+export function setExtensionContext(c: ExtensionContext): void {
+	context.extensionContext = new EditorContext(c);
 }

@@ -1,7 +1,9 @@
+import { ExtensionContext } from 'vscode';
 import { Position, Range } from 'vscode';
 import Parser, { Language, QueryMatch } from 'web-tree-sitter';
 import { Editor } from '../editor/editor';
 import { Languages } from '../parsing/parser';
+import { EditorContext } from '../editor/editorContext';
 
 export {};
 
@@ -34,10 +36,7 @@ declare global {
 			parser: Parsing | undefined;
 		};
 		command: Command | null;
-		extensionState: {
-			get: <T>(s: string, d: T) => T;
-			update: <T>(s: string, d: T) => void;
-		};
+		extensionContext: EditorContext | null;
 	};
 
 	export type Parsing = {
