@@ -3,7 +3,7 @@ import assert from 'assert';
 import { Editor } from '../editor/editor';
 import { EditorContext } from '../editor/editorContext';
 
-let context: Context;
+let context: Context = getDefaultContext();
 
 export function getContext(): Context {
 	assert(context, ' context is not defined');

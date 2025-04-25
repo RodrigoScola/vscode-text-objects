@@ -1,16 +1,18 @@
 import { ExtensionContext, Memento } from 'vscode';
 
-enum ProcessFlow {
+export enum ProcessFlow {
 	DONT_ASK = 0,
+	ALREADY_MIGRATED = 1,
+	SHOULD_ASK = 2,
 }
 
-enum EditorScope {
+export enum EditorScope {
 	global = 1,
 	workspace = 2,
 }
 
 const keys = {
-	checkedKeys: ProcessFlow.DONT_ASK,
+	check_vim_positional_commands: ProcessFlow.DONT_ASK as ProcessFlow,
 } as const;
 
 export class EditorContext {
@@ -19,7 +21,7 @@ export class EditorContext {
 		this.ctx = c;
 	}
 
-	private getState(scope: EditorScope): Memento {
+	private getEditorState(scope: EditorScope): Memento {
 		if (scope === EditorScope.global) {
 			return this.ctx.globalState;
 		} else if (scope === EditorScope.workspace) {
@@ -29,12 +31,22 @@ export class EditorContext {
 		throw new Error(`invalid state ${scope}`);
 	}
 
-	getConfig<T extends keyof typeof keys, K extends (typeof keys)[T]>(
+	getState<T extends keyof typeof keys, K extends (typeof keys)[T]>(
 		key: T,
 		scope: EditorScope
 	): K | undefined {
-		const config = this.getState(scope);
+		const config = this.getEditorState(scope);
 
 		return config.get(key);
+	}
+
+	updateState<T extends keyof typeof keys, K extends (typeof keys)[T]>(
+		key: T,
+		v: K,
+		scope: EditorScope
+	): Thenable<void> {
+		const config = this.getEditorState(scope);
+
+		return config.update(key, v);
 	}
 }

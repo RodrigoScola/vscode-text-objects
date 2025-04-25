@@ -73,4 +73,11 @@ declare global {
 		start: Parser.Point;
 		end: Parser.Point;
 	};
+
+	export type EditorCommand = {
+		command: string;
+		title: string;
+		when: string;
+		f: () => void;
+	};
 }

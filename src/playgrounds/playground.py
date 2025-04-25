@@ -29,6 +29,7 @@ name = "Josh"
 
 def my_generator():
     yield 1
+
     yield c2
     yield 3
 

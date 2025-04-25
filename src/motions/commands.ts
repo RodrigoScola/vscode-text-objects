@@ -1,6 +1,12 @@
 import assert from 'assert';
 import { QueryOptions } from 'web-tree-sitter';
-import { saveKeybinds, saveVimKeybinds, saveCommands, makeName } from '../configGeneration';
+import {
+	saveKeybinds,
+	saveVimKeybinds,
+	saveCommands,
+	makeName,
+	formatKeybindCommands,
+} from '../configurations/configGeneration';
 import * as vscode from 'vscode';
 import { LanguageParser } from '../parsing/parser';
 import {
@@ -18,11 +24,16 @@ import {
 	getYankPreviousCommands,
 } from './commandFunctions';
 
-import { getDefaultContext, updateCommand, updateContext } from '../context/context';
+import { getContext, getDefaultContext, updateCommand, updateContext } from '../context/context';
 import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
-import { automaticProcess } from '../migrateChanges';
+import {
+	automaticProcess,
+	getVimSettingsNames,
+	MigratePositionalCommand,
+} from '../configurations/migrateVimPositionals';
+import { format } from 'path';
 
-function addSelector(command: Command, selector: Selector) {
+function addSelector(command: Command, selector: Selector): void {
 	command.selectors[selector.language] = selector;
 }
 
@@ -67,7 +78,7 @@ function getOptions(ctx: Context): QueryOptions {
 	return opts;
 }
 
-function executeCommand(ctx: Context) {
+function executeCommand(ctx: Context): void {
 	assert(ctx.parsing.parser, 'parser is not defined?');
 
 	const command = ctx.command;
@@ -130,13 +141,13 @@ export const commands: Command[] = getSelectNextCommands()
 	.concat(getChangenextCommands())
 	.concat(getChangePreviousCommands());
 
-export async function setupCommand(command: Command) {
+export async function setupCommand(command: Command): Promise<void> {
 	const currentEditor = vscode.window.activeTextEditor;
 	if (!currentEditor) {
 		return;
 	}
 
-	const ctx = updateContext(getDefaultContext());
+	const ctx = getContext();
 
 	ctx.editor.setEditor(currentEditor);
 
@@ -151,14 +162,36 @@ export async function setupCommand(command: Command) {
 
 	executeCommand(ctx);
 }
+
+function createEditorCommand(name: string, title: string, f: () => void): EditorCommand {
+	return {
+		title: title,
+		when: '',
+		command: name,
+		f,
+	};
+}
+
+const editorCommands: EditorCommand[] = [
+	createEditorCommand(makeName('migrateVimPositionals'), 'migrate vim positionals', () => {
+		MigratePositionalCommand(vscode.workspace.getConfiguration('vim'));
+	}),
+];
 //doing this because the vscode.commands.getCommands() returns a promise, so this is to not slow down the start times
 const installedCommands: Record<string, vscode.Disposable> = {};
 
-export function init() {
+export function init(): void {
 	automaticProcess();
-	// saveKeybinds(commands);
-	// saveCommands(commands);
-	// saveVimKeybinds(commands);
+	saveKeybinds(commands);
+	saveCommands(formatKeybindCommands(commands).concat(editorCommands));
+	saveVimKeybinds(commands);
+
+	installedCommands[makeName('migratePositionals')] = vscode.commands.registerCommand(
+		makeName('migratePositionals'),
+		() => {
+			MigratePositionalCommand(vscode.workspace.getConfiguration('vim'));
+		}
+	);
 
 	for (const command of commands) {
 		const name = makeName(getCommandName(command));
@@ -184,7 +217,7 @@ export function init() {
 	}
 }
 
-export function deactivate() {
+export function deactivate(): void {
 	for (const command of Object.values(installedCommands)) {
 		command.dispose();
 	}

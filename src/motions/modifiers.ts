@@ -113,8 +113,7 @@ export function createGoToPreviousEnd(scope: CommandScope, name: CommandNames): 
 				return;
 			}
 
-			const endPos = new vscode.Position(range.end.line, Math.max(range.end.character - 1, 0));
-			ctx.editor.goTo(ctx, endPos);
+			ctx.editor.goTo(ctx, range.end);
 		},
 	};
 }
@@ -154,8 +153,7 @@ export function createGoToNextEnd(scope: CommandScope, name: CommandNames): Comm
 				return;
 			}
 
-			const endPos = new vscode.Position(range.end.line, Math.max(range.end.character - 1, 0));
-			ctx.editor.goTo(ctx, endPos);
+			ctx.editor.goTo(ctx, range.end);
 		},
 	};
 }

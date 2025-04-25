@@ -2,18 +2,19 @@ import assert from 'assert';
 
 import fs from 'fs';
 import path from 'path';
-import { getCommandName, getCommandNameWithoutPosition } from './motions/commands';
+import { commands, getCommandName, getCommandNameWithoutPosition } from '../motions/commands';
 
 /**
  * this is not supposed to be pretty, this is just so i can generate the keybinds, vim integration or the commands automatically
  *
  */
-export function makeName(str: string) {
+export function makeName(str: string): string {
 	return `vscode-textobjects.${str}`;
 }
 
-export function saveCommands(commands: Command[]) {
-	const total: Record<string, Record<string, string>> = {};
+export function formatKeybindCommands(commands: Command[]): Record<string, string>[] {
+	const keybindCommands: Record<string, Record<string, string>> = {};
+
 	for (const command of commands) {
 		let actionName: string = command.action;
 
@@ -40,16 +41,19 @@ export function saveCommands(commands: Command[]) {
 				when: `editorTextFocus  `,
 			};
 
-			total[nodeWithoutPosition.command] = nodeWithoutPosition;
+			keybindCommands[nodeWithoutPosition.command] = nodeWithoutPosition;
 		}
 
-		total[node.command] = node;
+		keybindCommands[node.command] = node;
 	}
+	return Object.values(keybindCommands);
+}
 
+export function saveCommands(commands: Record<string, string>[]): void {
 	fs.writeFileSync(
 		path.join(__dirname, '..', 'commands.json'),
 
-		JSON.stringify(Object.values(total), null, 2)
+		JSON.stringify(commands, null, 2)
 	);
 }
 
