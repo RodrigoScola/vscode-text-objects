@@ -24,5 +24,6 @@ export function getDefaultContext(): Context {
 		parsing: {
 			parser: undefined,
 		},
+		extensionState: <T>(_: string, d: T) => d,
 	};
 }

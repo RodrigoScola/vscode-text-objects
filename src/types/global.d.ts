@@ -34,6 +34,10 @@ declare global {
 			parser: Parsing | undefined;
 		};
 		command: Command | null;
+		extensionState: {
+			get: <T>(s: string, d: T) => T;
+			update: <T>(s: string, d: T) => void;
+		};
 	};
 
 	export type Parsing = {

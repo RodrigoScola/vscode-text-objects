@@ -20,6 +20,7 @@ import {
 
 import { getDefaultContext, updateCommand, updateContext } from '../context/context';
 import { pointPool, toNodes as toPoint, toRange } from '../parsing/nodes';
+import { automaticProcess } from '../migrateChanges';
 
 function addSelector(command: Command, selector: Selector) {
 	command.selectors[selector.language] = selector;
@@ -154,9 +155,10 @@ export async function setupCommand(command: Command) {
 const installedCommands: Record<string, vscode.Disposable> = {};
 
 export function init() {
-	saveKeybinds(commands);
-	saveCommands(commands);
-	saveVimKeybinds(commands);
+	automaticProcess();
+	// saveKeybinds(commands);
+	// saveCommands(commands);
+	// saveVimKeybinds(commands);
 
 	for (const command of commands) {
 		const name = makeName(getCommandName(command));

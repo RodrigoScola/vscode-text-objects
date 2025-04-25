@@ -232,8 +232,10 @@ function getGoToKeyForDirectionAndPosition(dir: CommandDirection, pos: CommandPo
 	throw new Error('forgot to implement:' + dir);
 }
 
-export function saveVimKeybinds(commands: Command[]) {
-	const total = [];
+export type VimKeybinding = { before: string[]; commands: string[] };
+
+export function GetVimKeybindings(commands: Command[]) {
+	const keybindings: VimKeybinding[] = [];
 	for (const command of commands) {
 		let key: string[] = [];
 
@@ -255,13 +257,19 @@ export function saveVimKeybinds(commands: Command[]) {
 			];
 		}
 
-		const node: Record<string, any> = {
+		const node: VimKeybinding = {
 			before: key,
 			commands: [makeName(getCommandName(command))],
 		};
 
-		total.push(node);
+		keybindings.push(node);
 	}
+	return keybindings;
+}
+
+export function saveVimKeybinds(commands: Command[]) {
+	const total = GetVimKeybindings(commands);
+
 	assert.equal(total.length, commands.length);
 
 	fs.writeFileSync(
