@@ -29,6 +29,16 @@ export default [
 			eqeqeq: 'warn',
 			'no-throw-literal': 'warn',
 			semi: 'warn',
+			'@typescript-eslint/explicit-function-return-type': [
+				'warn',
+				{
+					allowExpressions: false,
+					allowTypedFunctionExpressions: true,
+					allowHigherOrderFunctions: true,
+					allowDirectConstAssertionInArrowFunctions: true,
+					allowConciseArrowFunctionExpressionsStartingWithVoid: true,
+				},
+			],
 		},
 	},
 ];

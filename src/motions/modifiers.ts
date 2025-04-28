@@ -1,6 +1,12 @@
 import assert from 'assert';
 import * as vscode from 'vscode';
-import { closestPos, nextPosition, previousPosition } from '../parsing/position';
+import {
+	closestPos,
+	nextPosition,
+	nextPositionEnd,
+	previousPosition,
+	previousPositionEnd,
+} from '../parsing/position';
 import { getConfig } from '../config';
 
 const strRegex = /['"`]/;
@@ -42,6 +48,7 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 	return {
 		name,
 		scope,
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -56,6 +63,7 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 export function createSelectPrevious(scope: CommandScope, name: CommandNames): Command {
 	return {
 		name,
+		position: 'start',
 		scope,
 		selectors: {},
 		currentSelector: undefined,
@@ -74,6 +82,7 @@ export function createGoToPrevious(scope: CommandScope, name: CommandNames): Com
 	return {
 		scope: scope,
 		name: name,
+		position: 'start',
 		action: 'goTo',
 		direction: 'previous',
 		selectors: {},
@@ -88,10 +97,31 @@ export function createGoToPrevious(scope: CommandScope, name: CommandNames): Com
 		},
 	};
 }
+export function createGoToPreviousEnd(scope: CommandScope, name: CommandNames): Command {
+	return {
+		scope: scope,
+		name: name,
+		position: 'end',
+		action: 'goTo',
+		direction: 'previous',
+		selectors: {},
+		currentSelector: undefined,
+		pos: previousPositionEnd,
+		end: (ctx, range) => {
+			assert(ctx.editor.goTo, 'go to is undefined');
+			if (!range) {
+				return;
+			}
+
+			ctx.editor.goTo(ctx, range.end);
+		},
+	};
+}
 export function createGoToNext(scope: CommandScope, name: CommandNames): Command {
 	return {
 		scope: scope,
 		name: name,
+		position: 'start',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'goTo',
@@ -106,11 +136,33 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 		},
 	};
 }
+export function createGoToNextEnd(scope: CommandScope, name: CommandNames): Command {
+	return {
+		scope: scope,
+		name: name,
+		position: 'end',
+		selectors: {},
+		currentSelector: undefined,
+		action: 'goTo',
+		direction: 'next',
+		//todo: check to see if this is right
+		pos: nextPositionEnd,
+		end: (ctx: Context, range: vscode.Range | undefined) => {
+			assert(ctx.editor.goTo, 'go to is undefined');
+			if (!range) {
+				return;
+			}
+
+			ctx.editor.goTo(ctx, range.end);
+		},
+	};
+}
 
 export function createDeleteNext(scope: CommandScope, name: CommandNames): Command {
 	return {
 		name,
 		scope,
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -139,6 +191,7 @@ export function createDeletePrevious(scope: CommandScope, name: CommandNames): C
 	return {
 		name,
 		scope,
+		position: 'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
@@ -167,6 +220,8 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 	return {
 		name,
 		scope,
+
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -213,6 +268,7 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 	return {
 		name,
 		scope,
+		position: 'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
@@ -252,6 +308,8 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 	return {
 		name,
 		scope,
+
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -275,6 +333,7 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 	return {
 		name,
 		scope,
+		position: 'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,

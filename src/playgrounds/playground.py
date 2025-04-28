@@ -1,7 +1,6 @@
 def f(param1, two):
     print("second")
 
-
 def second():
     print("second")
 
@@ -26,9 +25,12 @@ class MyClass2:
         print("This is a class method.")
 
 
+name = "Josh"
+
 def my_generator():
     yield 1
-    yield 2
+
+    yield c2
     yield 3
 
 
@@ -216,10 +218,11 @@ def perform_extremely_complex_operations_no_comprehensions(input_data):
         "nested_transformations": nested_transformations,
     }
 
-def transform( item):
+def transform( itea):
     transformed = []
     for k, v in enumerate([x**2 for x in range(item) if x % 3 == 0]):
             value = 0
+
             transformed.append({"key": k, "value": value})
 
             for i in range(v):
