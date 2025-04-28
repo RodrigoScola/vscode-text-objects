@@ -11,7 +11,7 @@ export async function GenerateKeyboardKeybindings(): Promise<void> {
 		content: JSON.stringify(total, null, 1),
 	});
 
-	await vscode.window.showTextDocument(doc);
+	await vscode.window.showTextDocument(doc, { preview: true });
 
 	try {
 		vscode.commands.executeCommand('editor.action.formatDocument');

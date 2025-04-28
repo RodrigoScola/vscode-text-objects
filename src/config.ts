@@ -44,13 +44,6 @@ export class Config {
 		return Boolean(value);
 	}
 }
-let config: Config;
 export function getConfig(): Config {
-	//good one asserts!
-	if (!config) {
-		config = new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
-	}
-
-	assert(config, 'configuration has not setup yet');
-	return config;
+	return new Config(vscode.workspace.getConfiguration('vscode-textobjects'));
 }

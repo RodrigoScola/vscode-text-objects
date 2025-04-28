@@ -18,3 +18,5 @@ vscode-text-objects.sln
 support_readme.md
 
 retrospective.md
+**/*.vsix
+*.vsix

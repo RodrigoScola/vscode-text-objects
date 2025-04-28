@@ -7,7 +7,9 @@ export async function GenerateVimKeybinds(): Promise<void> {
 		content: JSON.stringify(GetVimKeybindings(commands), null, 1),
 	});
 
-	await vscode.window.showTextDocument(doc);
+	await vscode.window.showTextDocument(doc, {
+		preview: true,
+	});
 
 	try {
 		vscode.commands.executeCommand('editor.action.formatDocument');
