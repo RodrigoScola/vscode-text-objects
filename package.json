@@ -34,7 +34,9 @@
 		"Other",
 		"Keymaps"
 	],
-	"activationEvents": [],
+	"activationEvents": [
+		"onStartupFinished"
+	],
 	"main": "./dist/extension.js",
 	"contributes": {
 		"configuration": {
@@ -42,6 +44,96 @@
 			"properties": {
 				"vscode-textobjects.keybindings": {
 					"type": "object",
+					"properties": {
+						"go to start": {
+							"type": "string",
+							"description": "Keybinding for go to start"
+						},
+						"go to end": {
+							"type": "string",
+							"description": "Keybinding for go to end"
+						},
+						"select inner": {
+							"type": "string",
+							"description": "Keybinding for select inner"
+						},
+						"select outer": {
+							"type": "string",
+							"description": "Keybinding for select outer"
+						},
+						"delete outer": {
+							"type": "string",
+							"description": "Keybinding for delete outer"
+						},
+						"delete inner": {
+							"type": "string",
+							"description": "Keybinding for delete inner"
+						},
+						"yank outer": {
+							"type": "string",
+							"description": "Keybinding for yank outer"
+						},
+						"array": {
+							"type": "string",
+							"description": "Keybinding for array"
+						},
+						"call": {
+							"type": "string",
+							"description": "Keybinding for call"
+						},
+						"class": {
+							"type": "string",
+							"description": "Keybinding for class"
+						},
+						"comment": {
+							"type": "string",
+							"description": "Keybinding for comment"
+						},
+						"conditional": {
+							"type": "string",
+							"description": "Keybinding for conditional"
+						},
+						"function": {
+							"type": "string",
+							"description": "Keybinding for function"
+						},
+						"lhs": {
+							"type": "string",
+							"description": "Keybinding for lhs"
+						},
+						"loop": {
+							"type": "string",
+							"description": "Keybinding for loop"
+						},
+						"node": {
+							"type": "string",
+							"description": "Keybinding for node"
+						},
+						"object": {
+							"type": "string",
+							"description": "Keybinding for object"
+						},
+						"rhs": {
+							"type": "string",
+							"description": "Keybinding for rhs"
+						},
+						"parameters": {
+							"type": "string",
+							"description": "Keybinding for parameters"
+						},
+						"string": {
+							"type": "string",
+							"description": "Keybinding for string"
+						},
+						"type": {
+							"type": "string",
+							"description": "Keybinding for type"
+						},
+						"variable": {
+							"type": "string",
+							"description": "Keybinding for variable"
+						}
+					},
 					"default": {
 						"go to start": "f",
 						"go to end": "t",
@@ -66,7 +158,8 @@
 						"type": "t",
 						"variable": "v"
 					},
-					"title": "Used to generate the motions for the vim extension "
+					"title": "Keyboard Keybindings",
+					"description": "Used to generate the motions for the extension "
 				},
 				"vscode-textobjects.vimKeybindings": {
 					"type": "object",
@@ -96,6 +189,109 @@
 						"string": "q",
 						"type": "t",
 						"variable": "v"
+					},
+					"description": "Used to generate the motions for the vim extension",
+					"properties": {
+						"select": {
+							"type": "string",
+							"description": "Keybinding for select"
+						},
+						"change": {
+							"type": "string",
+							"description": "Keybinding for change"
+						},
+						"delete": {
+							"type": "string",
+							"description": "Keybinding for delete"
+						},
+						"yank": {
+							"type": "string",
+							"description": "Keybinding for yank"
+						},
+						"go to next start": {
+							"type": "string",
+							"description": "Keybinding for go to next start"
+						},
+						"go to next end": {
+							"type": "string",
+							"description": "Keybinding for go to next end"
+						},
+						"go to previous start": {
+							"type": "string",
+							"description": "Keybinding for go to previous start"
+						},
+						"go to previous end": {
+							"type": "string",
+							"description": "Keybinding for go to previous end"
+						},
+						"inner": {
+							"type": "string",
+							"description": "Keybinding for inner selection"
+						},
+						"outer": {
+							"type": "string",
+							"description": "Keybinding for outer selection"
+						},
+						"array": {
+							"type": "string",
+							"description": "Keybinding for array"
+						},
+						"call": {
+							"type": "string",
+							"description": "Keybinding for call"
+						},
+						"class": {
+							"type": "string",
+							"description": "Keybinding for class"
+						},
+						"comment": {
+							"type": "string",
+							"description": "Keybinding for comment"
+						},
+						"conditional": {
+							"type": "string",
+							"description": "Keybinding for conditional"
+						},
+						"function": {
+							"type": "string",
+							"description": "Keybinding for function"
+						},
+						"lhs": {
+							"type": "string",
+							"description": "Keybinding for lhs"
+						},
+						"loop": {
+							"type": "string",
+							"description": "Keybinding for loop"
+						},
+						"node": {
+							"type": "string",
+							"description": "Keybinding for node"
+						},
+						"object": {
+							"type": "string",
+							"description": "Keybinding for object"
+						},
+						"rhs": {
+							"type": "string",
+							"description": "Keybinding for rhs"
+						},
+						"parameters": {
+							"type": "string",
+							"description": "Keybinding for parameters"
+						},
+						"string": {
+							"type": "string",
+							"description": "Keybinding for string"
+						},
+						"type": {
+							"type": "string",
+							"description": "Keybinding for type"
+						},
+						"variable": {
+							"type": "string",
+							"description": "Keybinding for variable"
+						}
 					},
 					"title": "Used to generate the motions for the vim extension "
 				},

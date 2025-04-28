@@ -222,6 +222,7 @@ def transform( itea):
     transformed = []
     for k, v in enumerate([x**2 for x in range(item) if x % 3 == 0]):
             value = 0
+
             transformed.append({"key": k, "value": value})
 
             for i in range(v):

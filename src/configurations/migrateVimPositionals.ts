@@ -65,7 +65,7 @@ function checkVimPositionals(): void {
 
 			ctx.extensionContext?.updateState(
 				'check_vim_positional_commands',
-				ProcessFlow.ALREADY_MIGRATED,
+				ProcessFlow.EXECUTED,
 				EditorScope.global
 			);
 		});

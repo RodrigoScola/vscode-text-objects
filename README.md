@@ -8,6 +8,10 @@ With Vscode Text Objects you can select, delete, copy and go to text in a more f
 
 ![VSCode Text Objects Demo](./docs/demo.gif)
 
+## Changing Keybinds
+
+To change your keybinds, you need to update your `vscode-textobjects.keybindings` or `vscode-textobjects.vimKeybindings` to the shortcut you want. Then execute the command `vscode-textobjects.generateKeybinds` or `vscode-textobjects.generateVimKeybinds`. Copy and paste the output on your vscode keybinds (`Preferences: Open Keyboard shortcuts (JSON)`) or on your global `settings.json` vim keybinds.
+
 <div >
 
 If you enjoy this extension, consider supporting it. You can donate it on ko-fi or paypal directly. It will encourage me to make more extensions and make them better and better!

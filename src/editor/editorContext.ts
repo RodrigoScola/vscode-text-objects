@@ -2,7 +2,7 @@ import { ExtensionContext, Memento } from 'vscode';
 
 export enum ProcessFlow {
 	DONT_ASK = 0,
-	ALREADY_MIGRATED = 1,
+	EXECUTED = 1,
 	SHOULD_ASK = 2,
 }
 
@@ -13,6 +13,7 @@ export enum EditorScope {
 
 const keys = {
 	check_vim_positional_commands: ProcessFlow.DONT_ASK as ProcessFlow,
+	showed_new_positionals_and_migrations: ProcessFlow.SHOULD_ASK as ProcessFlow,
 } as const;
 
 export class EditorContext {

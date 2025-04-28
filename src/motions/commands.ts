@@ -34,6 +34,7 @@ import {
 import { format } from 'path';
 import { GenerateVimKeybinds } from '../configurations/generateVimKeybinds';
 import { GenerateKeyboardKeybindings } from '../configurations/generateKeybindings';
+import { showUpdateKeybindingsWelcomeScreen } from '../state/updates/new_keybindings';
 
 function addSelector(command: Command, selector: Selector): void {
 	command.selectors[selector.language] = selector;
@@ -195,6 +196,8 @@ export function init(): void {
 	saveKeybinds(commands);
 	saveCommands(formatKeybindCommands(commands).concat(editorCommands as any as Record<string, string>[]));
 	saveVimKeybinds(commands);
+
+	showUpdateKeybindingsWelcomeScreen();
 
 	for (const editorCommand of editorCommands) {
 		installedCommands[makeName('migratePositionals')] = vscode.commands.registerCommand(
