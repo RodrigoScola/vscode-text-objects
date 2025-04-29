@@ -27,7 +27,7 @@ export async function GenerateVimKeybinds(): Promise<void> {
 			!Array.isArray(keybind.commands) ||
 			keybind.commands.length !== 1 ||
 			!keybind.commands[0] ||
-			keybind.commands[0].includes(makeName(''))
+			!keybind.commands[0].includes(makeName(''))
 		) {
 			previousKeybinds.push(keybind);
 			continue;
@@ -37,7 +37,11 @@ export async function GenerateVimKeybinds(): Promise<void> {
 	}
 
 	for (const keybind of keybinds) {
-		if (!(keybind.commands[0] in nameToCommand)) {
+		if (
+			!(keybind.commands[0] in nameToCommand) ||
+			('before' in keybind &&
+				keybind.before.join(',') !== nameToCommand[keybind.commands[0]].before.join(','))
+		) {
 			nameToCommand[keybind.commands[0]] = keybind;
 		}
 	}

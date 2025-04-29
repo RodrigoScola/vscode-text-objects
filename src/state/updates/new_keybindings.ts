@@ -52,9 +52,13 @@ This is a big one 🎊🎊🎊! We added a new motion specification, new way to 
 
 <p>To migrate your old configuration to the new configuration, either accept the migration prompt, or execute the command <i>vscode-textobjects.migrateVimPositionals</i>.</p>
 
-<h2> A New way to configure and generate your keybindings</h2>
+<h2>A New way to configure and generate your keybindings</h2>
 
-<p>There was a lot to improve in the keybinds and configuration department. If you wanted to change a motion key you had to update all the motions to update the one keystroke. Now you can update your settings in <i>vscode-textobjects.keybindings</i> or <i>vscode-textobjects.vimKeybindings</i> if you use vim mode. Then to regenerate your keybinds, use the commands <i>vscode-textobjects.generateKeybinds</i> or <i>vscode-textobjects.generateVimKeybinds</i> and then press <i>CTRL+SHIFT+P</i> and either paste your new keybindings on <i>Preferences: Open Keyboard shortcuts (JSON)</i> or on your json settings on your <i>vim</i> keybinds.</p>
+<p> There was a lot to improve in the keybinds and configuration department. If you wanted to change a motion key you had to update all the motions to update the one keystroke. Now you can update your settings with commands!</p>
+
+<p>to change a specific key, use the <i>vscode-textobjects.keybindings<i>. Then if you are not using the <i>vim</i> extension, use the command <i>Generate Keybindings</i>. It will open a new window with all your new keybindings for you to paste in your keyboard json config. To see that configuration, press CTRL+SHIFT+P and type <i>Preferences: Open Keyboard shortcuts (JSON)</i>.</p>
+
+if you are using the <a href="https://marketplace.visualstudio.com/items?itemName=vscodevim.vim" target="_blank" >Vim extension</a>. Alter your keys in <i>vscode-textobjects.vimKeybindings</i>, then use the command <i>Generate Vim Keybinds</i>. It will now update your keybinds and they will be stored in <i>normalModeKeybindings</i>
 
 <h2>Contribute</h2>
 
