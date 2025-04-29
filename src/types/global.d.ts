@@ -1,4 +1,3 @@
-import { ExtensionContext } from 'vscode';
 import { Position, Range } from 'vscode';
 import Parser, { Language, QueryMatch } from 'web-tree-sitter';
 import { Editor } from '../editor/editor';

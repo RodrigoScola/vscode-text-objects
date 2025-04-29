@@ -42,6 +42,30 @@
 		"configuration": {
 			"title": "Vscode Text Objects",
 			"properties": {
+				"vscode-textobjects.motions": {
+					"type": "object",
+					"properties": {
+						"select": {
+							"type": "boolean",
+							"description": "Enables the select motion"
+						},
+						"change": {
+							"type": "boolean",
+							"description": "Enables the change motion"
+						},
+						"delete": {
+							"type": "boolean",
+							"description": "Enables the delete motion"
+						},
+						"copy": {
+							"type": "boolean",
+							"description": "Enables the copy motion"
+						}
+					},
+					"default": {
+						"select": true
+					}
+				},
 				"vscode-textobjects.keybindings": {
 					"type": "object",
 					"properties": {

@@ -45,7 +45,9 @@ function java(): Selector {
 function javascript(): Selector {
 	return {
 		language: 'javascript',
-		query: [` (variable_declarator name:(_ (_) @lhs) ) `].join('\n'),
+		query: [`(variable_declarator name:(_) @lhs) `, `(assignment_expression left:(identifier) @lhs)`].join(
+			'\n'
+		),
 	};
 }
 
@@ -97,11 +99,7 @@ function toml(): Selector {
 function typescript(): Selector {
 	return {
 		language: 'typescript',
-		query: [
-			`(variable_declarator value: (_) @rhs)`,
-			`( assignment_expression (_) @rhs) `,
-			` (type_alias_declaration value: (_) @type   ) `,
-		].join('\n'),
+		query: javascript().query,
 	};
 }
 function yaml(): Selector {
@@ -113,17 +111,13 @@ function yaml(): Selector {
 function typescriptreact(): Selector {
 	return {
 		language: 'typescriptreact',
-		query: [
-			`(variable_declarator value: (_) @rhs)`,
-			`( assignment_expression (_) @rhs) `,
-			` (type_alias_declaration value: (_) @type   ) `,
-		].join('\n'),
+		query: typescript().query,
 	};
 }
 function javascriptreact(): Selector {
 	return {
 		language: 'javascriptreact',
-		query: [`(variable_declarator value: (_) @rhs)`, `( assignment_expression (_) @rhs) `].join('\n'),
+		query: javascript().query,
 	};
 }
 export default {

@@ -96,14 +96,7 @@ function toml(): Selector {
 function typescript(): Selector {
 	return {
 		language: 'typescript',
-		query: [
-			`(variable_declarator value: (_) @rhs)`,
-			`( assignment_expression (_) @rhs) `,
-			` (type_alias_declaration value: (_) @type   ) `,
-			// `( public_field_definition
-			// value: (_) @rhs
-			// )`,
-		].join('\n'),
+		query: [` (variable_declarator name:(_) @lhs) `].join('\n'),
 	};
 }
 

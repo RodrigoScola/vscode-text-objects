@@ -5,6 +5,10 @@ import { getConfig } from '../config';
 
 const strRegex = /['"`]/;
 
+let other = '';
+
+other = 'other';
+
 export function withInnerStringModifier(command: Command): Command {
 	const next = command.end;
 
@@ -42,7 +46,7 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 	return {
 		name,
 		scope,
-		position:'start',
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -58,7 +62,7 @@ export function createSelectPrevious(scope: CommandScope, name: CommandNames): C
 	return {
 		name,
 
-		position:'start',
+		position: 'start',
 		scope,
 		selectors: {},
 		currentSelector: undefined,
@@ -77,7 +81,7 @@ export function createGoToPrevious(scope: CommandScope, name: CommandNames): Com
 	return {
 		scope: scope,
 		name: name,
-		position:'start',
+		position: 'start',
 		action: 'goTo',
 		direction: 'previous',
 		selectors: {},
@@ -96,7 +100,7 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 	return {
 		scope: scope,
 		name: name,
-		position:'start',
+		position: 'start',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'goTo',
@@ -115,7 +119,7 @@ export function createGoToNextEnd(scope: CommandScope, name: CommandNames): Comm
 	return {
 		scope: scope,
 		name: name,
-		position:'end',
+		position: 'end',
 		selectors: {},
 		currentSelector: undefined,
 		action: 'goTo',
@@ -136,7 +140,7 @@ export function createDeleteNext(scope: CommandScope, name: CommandNames): Comma
 	return {
 		name,
 		scope,
-		position:'start',
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -165,7 +169,7 @@ export function createDeletePrevious(scope: CommandScope, name: CommandNames): C
 	return {
 		name,
 		scope,
-		position:'start',
+		position: 'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
@@ -195,7 +199,7 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 		name,
 		scope,
 
-		position:'start',
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -242,7 +246,7 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 	return {
 		name,
 		scope,
-		position:'start',
+		position: 'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,
@@ -283,7 +287,7 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 		name,
 		scope,
 
-		position:'start',
+		position: 'start',
 		direction: 'next',
 		selectors: {},
 		currentSelector: undefined,
@@ -307,7 +311,7 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 	return {
 		name,
 		scope,
-		position:'start',
+		position: 'start',
 		direction: 'previous',
 		selectors: {},
 		currentSelector: undefined,

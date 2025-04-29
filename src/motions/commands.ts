@@ -1,12 +1,6 @@
 import assert from 'assert';
 import { QueryOptions } from 'web-tree-sitter';
-import {
-	saveKeybinds,
-	saveVimKeybinds,
-	saveCommands,
-	makeName,
-	formatKeybindCommands,
-} from '../configurations/configGeneration';
+import { makeName, formatKeybindCommands } from '../configurations/configGeneration';
 import * as vscode from 'vscode';
 import { LanguageParser } from '../parsing/parser';
 import {
@@ -193,9 +187,10 @@ const installedCommands: Record<string, vscode.Disposable> = {};
 
 export function init(): void {
 	automaticProcess();
-	saveKeybinds(commands);
-	saveCommands(formatKeybindCommands(commands).concat(editorCommands as any as Record<string, string>[]));
-	saveVimKeybinds(commands);
+
+	// saveKeybinds(commands);
+	// saveCommands(formatKeybindCommands(commands).concat(editorCommands as any as Record<string, string>[]));
+	// saveVimKeybinds(commands);
 
 	showUpdateKeybindingsWelcomeScreen();
 
