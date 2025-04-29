@@ -8,9 +8,13 @@ With Vscode Text Objects you can select, delete, copy and go to text in a more f
 
 ![VSCode Text Objects Demo](./docs/demo.gif)
 
-## Changing Keybinds
+## Getting started
 
-To change your keybinds, you need to update your `vscode-textobjects.keybindings` or `vscode-textobjects.vimKeybindings` to the shortcut you want. Then execute the command `vscode-textobjects.generateKeybinds` or `vscode-textobjects.generateVimKeybinds`. Copy and paste the output on your vscode keybinds (`Preferences: Open Keyboard shortcuts (JSON)`) or on your global `settings.json` vim keybinds.
+To change your keybinds, you need to update your `vscode-textobjects.keybindings` to the shortcut you want. Then execute the command `vscode-textobjects.generateKeybinds`. Copy and paste the output on your vscode keybinds (`Preferences: Open Keyboard shortcuts (JSON)`).
+
+### The Vim way
+
+If you are using the [Vim extension](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim), you need to change the shortcuts in `vscode-textobjects.vimKeybinds` to the key that you want, then use the command `Generate Vim Keybinds`, then it will automagically save it in your `normalModeKeybinds` in your `settings.json`
 
 <div >
 
@@ -39,19 +43,43 @@ You can use it in a variety of languages such as:
 -    c#
 -    yaml
 
-## Roadmap
+## VIM Integration
 
--    vim integration with delete and change - DONE
--    add keybinds and vim integration on gotos - DONE
--    finalize keybinds - DONE
--    finalize gotos - DONE
--    do backward gotos - DONE
--    do backward selection - DONE
--    add yank commands - DONE
--    add go to empty params - DONE
--    add rest of inner and outers (arrays, objects...) - DONE
--    inner comment - DONE
--    go to start and end of statements - DONE
+## **For the full list of commands, go to [vim_integration.md](/vim_integration.md)**
+
+To enable Vim integration, wich adds the commands to select, delete, copy and change as motions that you can activate using the vim motions syntax!
+
+To enable the deletion, copying and changing motions to go to your register instead of your clipboard. Go to your `settings.json` and paste this:
+
+```json
+"vscode-textobjects.vimEnabled": true,
+```
+
+Example:
+
+To select a function, just press:
+
+    v a f
+
+To select the inner of a function, just press:
+
+    v i f
+
+to go to a function, just press:
+
+    [ f
+
+to go to the inside of a function, just press:
+
+    [ F
+
+to go to back a function, just press:
+
+    ] f
+
+to go back to the inside of a function, just press:
+
+    ] F
 
 ### Nodes Support
 
@@ -101,44 +129,6 @@ The current keybinds for all the nodes are:
 -    v - Variables
 -    r - Right Hand Variable Assignment
 -    h - Left Hand Variable Assignment
-
-## VIM Integration
-
-## **For the full list of commands, go to [vim_integration.md](/vim_integration.md)**
-
-To enable Vim integration, wich adds the commands to select, delete, copy and change as motions that you can activate using the vim motions syntax!
-
-To enable the deletion, copying and changing motions to go to your register instead of your clipboard. Go to your `settings.json` and paste this:
-
-```json
-"vscode-textobjects.vimEnabled": true,
-```
-
-Example:
-
-To select a function, just press:
-
-    v a f
-
-To select the inner of a function, just press:
-
-    v i f
-
-to go to a function, just press:
-
-    [ f
-
-to go to the inside of a function, just press:
-
-    [ F
-
-to go to back a function, just press:
-
-    ] f
-
-to go back to the inside of a function, just press:
-
-    ] F
 
 # Huge Thanks
 

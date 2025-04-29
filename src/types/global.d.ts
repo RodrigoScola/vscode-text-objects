@@ -137,4 +137,6 @@ declare global {
 		mac?: string;
 		key?: string;
 	};
+
+	export type VimKeybinding = { before: string[]; commands: string[] };
 }

@@ -187,8 +187,6 @@ function getGoToKeyForDirectionAndPosition(dir: CommandDirection, pos: CommandPo
 	throw new Error('forgot to implement:' + dir);
 }
 
-export type VimKeybinding = { before: string[]; commands: string[] };
-
 export function GetVimKeybindings(commands: Command[]): VimKeybinding[] {
 	const keybindings: VimKeybinding[] = [];
 

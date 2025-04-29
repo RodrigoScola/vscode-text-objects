@@ -170,15 +170,15 @@ function createEditorCommand(name: string, title: string, f: () => void): Editor
 }
 
 const editorCommands: EditorCommand[] = [
-	createEditorCommand(makeName('migrateVimPositionals'), 'migrate vim positionals', () => {
+	createEditorCommand(makeName('migrateVimPositionals'), 'Migrate vim positionals', () => {
 		MigratePositionalCommand(vscode.workspace.getConfiguration('vim'));
 	}),
 
-	createEditorCommand(makeName('generateVimKeybinds'), 'generate vim keybinds', () => {
+	createEditorCommand(makeName('generateVimKeybinds'), 'Generate vim keybinds', () => {
 		GenerateVimKeybinds();
 	}),
 
-	createEditorCommand(makeName('generateKeybinds'), 'generate keybinds', () => {
+	createEditorCommand(makeName('generateKeybinds'), 'Generate keybinds', () => {
 		GenerateKeyboardKeybindings();
 	}),
 ];
