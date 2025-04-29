@@ -66,7 +66,12 @@ if you are using the <a href="https://marketplace.visualstudio.com/items?itemNam
 
 <h3>
 <a href="https://ko-fi.com/rodrigoscola" target="_blank" src="https://ko-fi.com/rodrigoscola">Donate Here</a></h3>
+  <a style="display: 	flex; justify-content: center; align-items: center; height: 100%; width: 50%; " href="https://ko-fi.com/M4M31DOW0A" target="_blank">
+<img style=" width: 50%; height: 50%; object-fit: contain; " src="/images/support.png" alt="Support me on Ko-fi">
+  </a>
+</div>
     </body>
+
     </html>
   `;
 }
