@@ -24,7 +24,7 @@ To enable the deletion, copying and changing motions to go to your register inst
 
 #### Changing the keybinds
 
-If you are using the [Vim extension](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim), you need to change the shortcuts in `vscode-textobjects.vimKeybinds` to the key that you want, then use the command `Generate Vim Keybinds`, then it will automagically save it in your `normalModeKeybinds` in your `settings.json`
+If you are using the [Vim extension](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim), you need to change the shortcuts in `vscode-textobjects.vimKeybinds` to the key that you want, then use the command `Generate Vim Keybinds`. It will show you a new window with your new keybinds that you need to paste on your `settings.json`
 
 ## Supported Languages
 

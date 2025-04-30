@@ -43,16 +43,16 @@ function checkVimPositionals(): void {
 
 	vscode.window
 		.showWarningMessage(
-			'you have an invalid command. do you want to migrate changes?',
-			'yes',
-			'dont ask me again'
+			'You have an invalid command. do you want to migrate changes? If there are comments inside your vim settings, they will get removed. To circumvent that, use the command "generateVimKeybinds" and copy-paste your new keybinds on your vim settings. ',
+			'Yes',
+			'Dont ask me again'
 		)
 		.then((r) => {
 			if (!r) {
 				return;
 			}
 
-			if (r === 'dont ask me again') {
+			if (r === 'Dont ask me again') {
 				ctx.extensionContext?.updateState(
 					'check_vim_positional_commands',
 					ProcessFlow.DONT_ASK,

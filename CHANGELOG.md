@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.2.2]
+
+After some bugs on the vim keybind generation and position migration.
+
+-    changed the `vimGenerateKeybinds` commands to show a new editor window, instead of automatically changing it (it deleted some comments)
+
+-    Added a comment on the `migratePositionals` command to warn about comment removal on auto upgrade
+
 ## [0.2.0]
 
 This is a big one 🎊🎊🎊! We added a new motion specification, new way to configure and generate your keybindings and migration to the new model!
