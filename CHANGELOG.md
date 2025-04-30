@@ -8,6 +8,8 @@ After some bugs on the vim keybind generation and position migration.
 
 -    Added a comment on the `migratePositionals` command to warn about comment removal on auto upgrade
 
+thanks to [Josh](https://github.com/JoshPaulie) and [nv-pipo](https://github.com/nv-pipo) for discovering this.
+
 ## [0.2.0]
 
 This is a big one 🎊🎊🎊! We added a new motion specification, new way to configure and generate your keybindings and migration to the new model!
