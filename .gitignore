@@ -20,3 +20,5 @@ support_readme.md
 retrospective.md
 **/*.vsix
 *.vsix
+
+things.md
