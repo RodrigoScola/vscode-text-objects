@@ -46,6 +46,7 @@ export function getCommandNameWithoutPosition(command: Command): string {
 function assertSelector(ctx: Context, selector: Selector | undefined): asserts selector {
 	const command = ctx.command;
 	assert(command, 'invalid command?');
+
 	assert(selector, `invalid selector for ${getCommandName(ctx.command!)}`);
 
 	assert(selector.language === ctx.editor.language(), 'they are different languages');

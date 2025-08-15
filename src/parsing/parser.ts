@@ -61,6 +61,9 @@ export const Languages = {
 	toml: {
 		module: 'toml',
 	},
+	php: {
+		module: 'php',
+	},
 };
 
 export const SupportedLanguages = Object.keys(Languages);
@@ -82,34 +85,24 @@ export class LanguageParser {
 	static path(name: string): string {
 		return path.join(__dirname, '..', 'parsers', `tree-sitter-${name}.wasm`); // Adjust the path if necessary
 	}
-	static async get(langname: string): Promise<Parsing | undefined> {
+
+	static async get(langname: string) {
 		if (langname in LanguageParser.initedLanguages) {
 			return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 		}
 
 		let lang: Language | undefined;
-		assert(LanguageParser.hasStarted === true, 'the default language parser has not started');
-		// if (!LanguageParser.hasStarted) {
-		// 	await LanguageParser.init()
-		// }
+		await LanguageParser.init();
+		try {
+			const parseName = Languages[langname as keyof typeof Languages];
 
-		const parseName = Languages[langname as keyof typeof Languages];
-
-		assert(parseName, 'could not find parser for ' + langname);
-		const modulePath = this.path(parseName.module);
-
-		if (!(langname in LanguageParser.initedLanguages)) {
-			try {
-				lang = await parser.Language.load(modulePath);
-			} catch (err) {
-				// could send an notification alert
-				console.error('could not set language:', err);
-			}
-		} else {
-			//@ts-ignore
-			lang = LanguageParser.initedLanguages[langname];
+			assert(parseName, 'could not find parser for ' + langname);
+			lang = await parser.Language.load(this.path(parseName.module));
+		} catch (err) {
+			console.error('could not set language', err);
+			return undefined;
 		}
-		assert(lang, `could not set language ${langname}`);
+		assert(lang, 'could not set language');
 		const p = new Parser();
 		p.setLanguage(lang);
 		LanguageParser.initedLanguages[langname as keyof typeof Languages] = {
@@ -119,4 +112,42 @@ export class LanguageParser {
 		};
 		return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 	}
+
+	// static async get(langname: string): Promise<Parsing | undefined> {
+	// 	if (langname in LanguageParser.initedLanguages) {
+	// 		return LanguageParser.initedLanguages[langname as keyof typeof Languages];
+	// 	}
+
+	// 	let lang: Language | undefined;
+	// 	assert(LanguageParser.hasStarted === true, 'the default language parser has not started');
+	// 	// if (!LanguageParser.hasStarted) {
+	// 	// 	await LanguageParser.init()
+	// 	// }
+
+	// 	const parseName = Languages[langname as keyof typeof Languages];
+
+	// 	assert(parseName, 'could not find parser for ' + langname);
+	// 	const modulePath = this.path(parseName.module);
+
+	// 	if (!(langname in LanguageParser.initedLanguages)) {
+	// 		try {
+	// 			lang = await parser.Language.load(modulePath);
+	// 		} catch (err) {
+	// 			// could send an notification alert
+	// 			console.error('could not set language:', err);
+	// 		}
+	// 	} else {
+	// 		//@ts-ignore
+	// 		lang = LanguageParser.initedLanguages[langname];
+	// 	}
+	// 	assert(lang, `could not set language ${langname}`);
+	// 	const p = new Parser();
+	// 	p.setLanguage(lang);
+	// 	LanguageParser.initedLanguages[langname as keyof typeof Languages] = {
+	// 		language: lang,
+	// 		module: langname,
+	// 		parser: p,
+	// 	};
+	// 	return LanguageParser.initedLanguages[langname as keyof typeof Languages];
+	// }
 }

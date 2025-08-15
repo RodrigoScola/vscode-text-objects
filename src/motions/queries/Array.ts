@@ -107,6 +107,12 @@ function selectYaml(): Selector {
 		query: [`  (block_sequence) @array  `].join('\n'),
 	};
 }
+function selectPhp(): Selector {
+	return {
+		language: 'php',
+		query: [` (array_creation_expression) @array `].join('\n'),
+	};
+}
 
 export const select = {
 	C: selectC,
@@ -125,6 +131,7 @@ export const select = {
 	typescript: selectTypescript,
 	typescriptreact: selectTypescriptReact,
 	javascriptreact: selectjavascriptReact,
+	php: selectPhp,
 };
 
 export const goTo = select;

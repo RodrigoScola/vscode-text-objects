@@ -3890,6 +3890,8 @@
 		"typescript": "^5.5.4"
 	},
 	"dependencies": {
+		"@php-wasm/node": "^1.0.29",
+		"@php-wasm/universal": "^1.0.29",
 		"web-tree-sitter": "^0.23.0"
 	}
 }
