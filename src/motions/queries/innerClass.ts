@@ -88,6 +88,18 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`
+			 (class_declaration
+ body:(declaration_list
+  (_)+ @class ))
+			`,
+		].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -101,4 +113,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

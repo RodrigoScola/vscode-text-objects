@@ -93,6 +93,21 @@ function yaml(): Selector {
 		].join('\n'),
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`(class_declaration) @class`,
+
+			`
+
+			(object_creation_expression
+  (declaration_list
+ (method_declaration)*)) @class
+			`,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -108,4 +123,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

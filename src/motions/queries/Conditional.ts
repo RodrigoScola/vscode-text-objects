@@ -102,6 +102,17 @@ function javascript(): Selector {
 		query: jsSelector.join('\n'),
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`(if_statement) @conditional`,
+			`(conditional_expression) @conditional`,
+			`(switch_statement) @conditional`,
+			`(match_expression) @conditional`,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -116,4 +127,5 @@ export default {
 	typescript,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

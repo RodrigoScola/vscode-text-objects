@@ -87,6 +87,13 @@ function yaml(): Selector {
 	};
 }
 
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [` (function_call_expression arguments:(arguments (argument) @call )  ) `].join('\n'),
+	};
+}
+
 export default {
 	C,
 	cpp,
@@ -101,4 +108,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

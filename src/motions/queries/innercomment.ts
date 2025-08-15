@@ -100,6 +100,12 @@ function yaml(): Selector {
 		query: ['(comment) @comment'].join('\n'),
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: ['(comment) @comment'].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -118,4 +124,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };
