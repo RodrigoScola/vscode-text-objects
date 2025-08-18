@@ -1,5 +1,9 @@
 # Change Log
 
+## [0.2.4]
+
+-    Added a new Language: PHP!
+
 ## [0.2.2]
 
 After some bugs on the vim keybind generation and position migration.
