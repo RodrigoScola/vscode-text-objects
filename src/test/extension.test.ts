@@ -467,4 +467,28 @@ suite('Extension Test Suite', () => {
 			vscode.commands.executeCommand('cancelSelection');
 		}
 	});
+	test('tests all the php language', async () => {
+		const doc = await vscode.workspace.openTextDocument({
+			content: getFile('playground.php'),
+			language: 'php',
+		});
+
+		const [editor] = await Promise.all([vscode.window.showTextDocument(doc), LanguageParser.init()]);
+
+		const invalid: CommandNames[] = ['node'];
+
+		for (const command of commands) {
+			if (command.action !== 'select' || invalid.includes(command.name)) {
+				continue;
+			}
+			await setupCommand(command);
+
+			assert.equal(
+				editor.selection.start.isBefore(editor.selection.end),
+				true,
+				`did not ${getCommandName(command)} correctly`
+			);
+			vscode.commands.executeCommand('cancelSelection');
+		}
+	});
 });

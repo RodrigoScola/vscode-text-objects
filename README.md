@@ -32,17 +32,18 @@ You can use it in a variety of languages such as:
 
 -    Javascript and JSX
 -    Typescript and TSX
--    JSON
+-    Python
+-    RUST
 -    Golang
--    rust
--    c++
--    python
--    c
--    lua
--    java
--    toml
--    c#
--    yaml
+-    C#
+-    C++
+-    C
+-    PHP
+-    Java
+-    Lua
+-    Toml
+-    Yaml
+-    JSON
 
 <div >
 
