@@ -74,6 +74,12 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [`(formal_parameters (_) @params ) `].join('\n'),
+	};
+}
 export const select: Record<string, () => Selector> = {
 	C,
 	cpp,
@@ -87,6 +93,7 @@ export const select: Record<string, () => Selector> = {
 	typescript,
 	typescriptreact,
 	javascriptreact,
+	php,
 };
 
 function selectC(): Selector {
@@ -165,6 +172,12 @@ function selectjavascriptReact(): Selector {
 		query: javascript().query,
 	};
 }
+function selectPhp(): Selector {
+	return {
+		language: 'php',
+		query: [`(formal_parameters   ) @params`].join('\n'),
+	};
+}
 
 export const goTo: Record<string, () => Selector> = {
 	C: selectC,
@@ -179,4 +192,5 @@ export const goTo: Record<string, () => Selector> = {
 	typescript: selectTypescript,
 	typescriptreact: selectTypescriptReact,
 	javascriptreact: selectjavascriptReact,
+	php: selectPhp,
 };

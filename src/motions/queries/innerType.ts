@@ -71,6 +71,12 @@ function typescriptreact(): Selector {
 		query: typescript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [`(primitive_type) @type`].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -81,4 +87,5 @@ export default {
 	rust,
 	typescript,
 	typescriptreact,
+	php,
 };

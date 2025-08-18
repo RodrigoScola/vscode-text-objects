@@ -69,7 +69,8 @@ const selectNextCommand: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -396,7 +397,8 @@ const deleteNextCommands: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -471,7 +473,8 @@ const deletePreviousCommands: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -545,7 +548,8 @@ const yankNextCommands: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -620,7 +624,8 @@ const yankPreviousCommands: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -692,7 +697,8 @@ const changeNextcommands: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -767,7 +773,8 @@ const changePreviousCommand: Command[] = [
 				!language.includes('java') &&
 				//javascript, javascriptreact, typescript, typescriptreact
 				!language.includes('script') &&
-				!language.includes('python')
+				!language.includes('python') &&
+				!language.includes('php')
 			) {
 				return groupMatches(ctx, matches);
 			}
@@ -823,7 +830,7 @@ const changePreviousCommand: Command[] = [
 ];
 
 //this could be better, i could make a Record<string, names> but rn i just want to see if it works
-function FilterNodeDuplicates(ctx: Context, matches: QueryMatch[]) {
+function FilterNodeDuplicates(ctx: Context, matches: QueryMatch[]): QueryMatch[] {
 	const lang = ctx.editor.language();
 
 	//javascript , typescript, javascriptreact, typescriptreact

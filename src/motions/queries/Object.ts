@@ -131,6 +131,12 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [` (array_creation_expression (array_element_initializer (_)+   ) @object) `].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -148,4 +154,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

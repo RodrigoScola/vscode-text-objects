@@ -1,4 +1,3 @@
-import { window } from 'vscode';
 import * as parser from 'web-tree-sitter';
 
 import assert from 'assert';

@@ -7,6 +7,8 @@ const strRegex = /['"`]/;
 
 let other = '';
 
+let b = true ? false : true;
+
 other = 'other';
 
 export function withInnerStringModifier(command: Command): Command {
@@ -328,3 +330,5 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 		},
 	};
 }
+
+function d() {}

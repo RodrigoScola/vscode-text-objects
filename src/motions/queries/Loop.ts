@@ -92,6 +92,17 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			` (for_statement   ) @loop `,
+			` (foreach_statement  ) @loop `,
+			` (while_statement ) @loop `,
+			` (do_statement  ) @loop  `,
+		].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -105,4 +116,5 @@ export default {
 	typescript,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

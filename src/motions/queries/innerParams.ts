@@ -74,6 +74,16 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`
+			(formal_parameters (_) @parameter)
+			`,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -88,4 +98,5 @@ export default {
 	typescript,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

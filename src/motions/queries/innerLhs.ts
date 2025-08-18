@@ -120,6 +120,15 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`(assignment_expression left:(variable_name (_) @variable ) ) `,
+			`(assignment_expression left:(list_literal (_) @variable )  ) `,
+		].join('\n'),
+	};
+}
 export default {
 	C,
 	cpp,
@@ -137,4 +146,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

@@ -48,6 +48,7 @@ function javascript(): Selector {
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			`(field_definition  value:(_) @rhs) `,
+			` (object (pair key:(property_identifier) value:(_) @rhs ) ) `,
 		].join('\n'),
 	};
 }
@@ -103,6 +104,8 @@ function typescript(): Selector {
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
+
+			` (object (pair key:(property_identifier) value:(_) @rhs ) ) `,
 		].join('\n'),
 	};
 }
@@ -121,6 +124,8 @@ function typescriptreact(): Selector {
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			` (class_declaration body:(class_body (public_field_definition value:(_) @rhs ))) `,
+
+			` (object (pair key:(property_identifier) value:(_) @rhs ) ) `,
 		].join('\n'),
 	};
 }
@@ -132,6 +137,16 @@ function javascriptreact(): Selector {
 			`(variable_declarator value: (_) @rhs)`,
 			`(assignment_expression right:(_) @rhs) `,
 			`(field_definition  value:(_) @rhs) `,
+			`(object (pair key:(property_identifier) value:(_) @rhs ) ) `,
+		].join('\n'),
+	};
+}
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			` (assignment_expression right:(_) @rhs ) `,
+			// ` (assignment_expression right:(_ (_) @rhs )) `,
 		].join('\n'),
 	};
 }
@@ -153,4 +168,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

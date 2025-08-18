@@ -108,6 +108,14 @@ function javascriptreact(): Selector {
 		query: javascript().query,
 	};
 }
+
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [`(string_content) @string`, `(nowdoc_string) @string `].join('\n'),
+	};
+}
+
 export default {
 	C,
 	cpp,
@@ -125,4 +133,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };

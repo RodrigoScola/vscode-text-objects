@@ -99,6 +99,17 @@ function typescriptreact(): Selector {
 		].join('\n'),
 	};
 }
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`(primitive_type) @type`,
+			` (union_type) @type `,
+			` (intersection_type) @type `,
+			`(optional_type) @type`,
+		].join('\n'),
+	};
+}
 
 export default {
 	C,
@@ -109,4 +120,5 @@ export default {
 	rust,
 	typescript,
 	typescriptreact,
+	php,
 };

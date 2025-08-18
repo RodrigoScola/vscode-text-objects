@@ -180,14 +180,11 @@ function php(): Selector {
 	return {
 		language: 'php',
 		query: [
-			// ` (if_statement body:(compound_statement (_)+ @conditional )) `,
-			// ` (if_statement alternative:(else_clause body:(compound_statement (_)+ @conditional)))
-			// `,
-			// ` (if_statement alternative:(else_clause body:((_)+ @conditional)))
-			// `,
-			`
-			(conditional_expression body: (_) @conditional) | (conditional_expression alternative: (_) @conditional)
-			`,
+			`(if_statement body:(compound_statement (_)+ @conditional )) `,
+			`(if_statement alternative:(else_clause body:(compound_statement (_)+ @conditional))) `,
+			`(if_statement alternative:(else_clause body:((_)+ @conditional))) `,
+			`(conditional_expression body: (_) @conditional) `,
+			`(conditional_expression alternative: (_) @conditional) `,
 		].join('\n'),
 	};
 }

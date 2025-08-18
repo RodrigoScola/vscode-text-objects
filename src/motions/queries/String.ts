@@ -111,6 +111,18 @@ function javascriptreact(): Selector {
 	};
 }
 
+function php(): Selector {
+	return {
+		language: 'php',
+		query: [
+			`(encapsed_string) @string`,
+			`(string) @string`,
+			` (heredoc_body (string_content)) @string `,
+			` (nowdoc_body  (nowdoc_string)) @string `,
+		].join('\n'),
+	};
+}
+
 export default {
 	C,
 	cpp,
@@ -128,4 +140,5 @@ export default {
 	yaml,
 	typescriptreact,
 	javascriptreact,
+	php,
 };
