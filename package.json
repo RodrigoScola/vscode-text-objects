@@ -26,7 +26,7 @@
 		"type": "git",
 		"url": "https://github.com/RodrigoScola/vscode-text-objects"
 	},
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"engines": {
 		"vscode": "^1.93.0"
 	},
@@ -3876,8 +3876,8 @@
 		"test": "vscode-test"
 	},
 	"devDependencies": {
-		"@types/mocha": "^10.0.7",
-		"@types/node": "20.x",
+		"@types/mocha": "^10.0.10",
+		"@types/node": "^20.19.43",
 		"@types/vscode": "^1.93.0",
 		"@typescript-eslint/eslint-plugin": "^8.3.0",
 		"@typescript-eslint/parser": "^8.3.0",

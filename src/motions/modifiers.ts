@@ -2,6 +2,7 @@ import assert from 'assert';
 import * as vscode from 'vscode';
 import {
 	closestPos,
+	lastCharPosition,
 	nextPosition,
 	nextPositionEnd,
 	previousPosition,
@@ -113,9 +114,7 @@ export function createGoToPreviousEnd(scope: CommandScope, name: CommandNames): 
 				return;
 			}
 
-			const lastChar = new vscode.Position(range.end.line, Math.max(0, range.end.character - 1));
-
-			ctx.editor.goTo(ctx, lastChar);
+			ctx.editor.goTo(ctx, lastCharPosition(range));
 		},
 	};
 }
@@ -155,9 +154,7 @@ export function createGoToNextEnd(scope: CommandScope, name: CommandNames): Comm
 				return;
 			}
 
-			const lastChar = new vscode.Position(range.end.line, Math.max(0, range.end.character - 1));
-
-			ctx.editor.goTo(ctx, lastChar);
+			ctx.editor.goTo(ctx, lastCharPosition(range));
 		},
 	};
 }

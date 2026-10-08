@@ -137,7 +137,11 @@ function selectJavascript(): Selector {
 function selectLua(): Selector {
 	return {
 		language: 'lua',
-		query: ['(parameter_list) @params'].join('\n'),
+		// lua has no parameter_list node for empty parameters, and the node does not include the parens
+		query: [
+			'(function_definition_statement "(" @params ")" @params)',
+			'(function_definition "(" @params ")" @params)',
+		].join('\n'),
 	};
 }
 
@@ -157,19 +161,19 @@ function selectRust(): Selector {
 function selectTypescript(): Selector {
 	return {
 		language: 'typescript',
-		query: javascript().query,
+		query: selectJavascript().query,
 	};
 }
 function selectTypescriptReact(): Selector {
 	return {
 		language: 'typescriptreact',
-		query: javascript().query,
+		query: selectJavascript().query,
 	};
 }
 function selectjavascriptReact(): Selector {
 	return {
 		language: 'javascriptreact',
-		query: javascript().query,
+		query: selectJavascript().query,
 	};
 }
 function selectPhp(): Selector {

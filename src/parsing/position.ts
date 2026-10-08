@@ -2,13 +2,18 @@ import assert from 'assert';
 import { Position, Range } from 'vscode';
 import { QueryMatch } from 'web-tree-sitter';
 
+// go to end commands place the cursor on the last character of the range, not after it
+export function lastCharPosition(range: Range): Position {
+	return new Position(range.end.line, Math.max(0, range.end.character - 1));
+}
+
 export function nextPositionEnd(nodes: Range[], index: Position): Range | undefined {
 	let closestRange: Range | undefined;
 
 	for (let i = 0; i < nodes.length; i++) {
 		const range = nodes[i];
 
-		if (index.isAfterOrEqual(range.end)) {
+		if (index.isAfterOrEqual(lastCharPosition(range))) {
 			continue;
 		}
 
@@ -43,7 +48,7 @@ export function previousPositionEnd(nodes: Range[], index: Position): Range | un
 	for (let i = 0; i < nodes.length; i++) {
 		const range = nodes[i];
 
-		if (index.isBeforeOrEqual(range.end)) {
+		if (index.isBeforeOrEqual(lastCharPosition(range))) {
 			continue;
 		}
 

@@ -1,18 +1,21 @@
 {
-	"compilerOptions": {
-		"module": "Node16",
-		"target": "ES2022",
-		"lib": ["ES2022"],
-		"sourceMap": true,
-		"rootDir": "src",
-		"strict": true /* enable all strict type-checking options */,
-		// "noEmit": true,
-		"alwaysStrict": true,
+  "compilerOptions": {
+    "module": "Node16",
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "sourceMap": true,
+    "rootDir": "src",
+    // only load @types from this project, not from node_modules folders in parent directories
+    "typeRoots": ["./node_modules/@types"],
+    "strict": true /* enable all strict type-checking options */,
+    // "noEmit": true,
+    "alwaysStrict": true,
+    "types": ["node", "mocha"],
 
-		"noImplicitReturns": true,
-		"noUnusedParameters": true /* Report errors on unused parameters. */
-		/* Additional Checks */
-		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-	}
+    "noImplicitReturns": true,
+    "noUnusedParameters": true /* Report errors on unused parameters. */
+    /* Additional Checks */
+    // "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+    // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+  }
 }
