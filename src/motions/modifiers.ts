@@ -15,7 +15,7 @@ const strRegex = /['"`]/;
 export function withInnerStringModifier(command: Command): Command {
 	const next = command.end;
 
-	command.end = function (context: Context, range: vscode.Range | undefined) {
+	command.end = function (context: Context, range: vscode.Range | undefined): void {
 		if (!range) {
 			return;
 		}
@@ -40,7 +40,7 @@ export function withInnerStringModifier(command: Command): Command {
 	};
 	return command;
 }
-export function withMatchFunc(command: Command, func: OnMatchFunc) {
+export function withMatchFunc(command: Command, func: OnMatchFunc): Command {
 	command.onMatch = func;
 	return command;
 }
@@ -55,7 +55,7 @@ export function createSelectNext(scope: CommandScope, name: CommandNames): Comma
 		currentSelector: undefined,
 		action: 'select',
 		pos: closestPos,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 		},
@@ -71,7 +71,7 @@ export function createSelectPrevious(scope: CommandScope, name: CommandNames): C
 		direction: 'previous',
 		action: 'select',
 		pos: previousPosition,
-		end: async (ctx, range) => {
+		end: async (ctx, range): Promise<void> => {
 			assert(ctx.editor.selectRange, 'select range is undefined');
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			await ctx.editor.selectRange(ctx, range);
@@ -89,7 +89,7 @@ export function createGoToPrevious(scope: CommandScope, name: CommandNames): Com
 		selectors: {},
 		currentSelector: undefined,
 		pos: previousPosition,
-		end: (ctx, range) => {
+		end: (ctx, range): void => {
 			assert(ctx.editor.goTo, 'go to is undefined');
 			if (!range) {
 				return;
@@ -108,7 +108,7 @@ export function createGoToPreviousEnd(scope: CommandScope, name: CommandNames): 
 		selectors: {},
 		currentSelector: undefined,
 		pos: previousPositionEnd,
-		end: (ctx, range) => {
+		end: (ctx, range): void => {
 			assert(ctx.editor.goTo, 'go to is undefined');
 			if (!range) {
 				return;
@@ -128,7 +128,7 @@ export function createGoToNext(scope: CommandScope, name: CommandNames): Command
 		action: 'goTo',
 		direction: 'next',
 		pos: nextPosition,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor.goTo, 'go to is undefined');
 			if (!range) {
 				return;
@@ -148,7 +148,7 @@ export function createGoToNextEnd(scope: CommandScope, name: CommandNames): Comm
 		direction: 'next',
 		//todo: check to see if this is right
 		pos: nextPositionEnd,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor.goTo, 'go to is undefined');
 			if (!range) {
 				return;
@@ -169,7 +169,7 @@ export function createDeleteNext(scope: CommandScope, name: CommandNames): Comma
 		currentSelector: undefined,
 		action: 'delete',
 		pos: closestPos,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 
@@ -198,7 +198,7 @@ export function createDeletePrevious(scope: CommandScope, name: CommandNames): C
 		currentSelector: undefined,
 		action: 'delete',
 		pos: previousPosition,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 
@@ -228,7 +228,7 @@ export function createYankNext(scope: CommandScope, name: CommandNames): Command
 		currentSelector: undefined,
 		action: 'yank',
 		pos: closestPos,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			if (!range) {
 				return;
 			}
@@ -275,7 +275,7 @@ export function createYankPrevious(scope: CommandScope, name: CommandNames): Com
 		currentSelector: undefined,
 		action: 'yank',
 		pos: previousPosition,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			if (!range) {
@@ -316,7 +316,7 @@ export function createChangeNext(scope: CommandScope, name: CommandNames): Comma
 		currentSelector: undefined,
 		action: 'change',
 		pos: closestPos,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			if (getConfig().vimActive()) {
@@ -340,7 +340,7 @@ export function createChangePrevious(scope: CommandScope, name: CommandNames): C
 		currentSelector: undefined,
 		action: 'change',
 		pos: previousPosition,
-		end: (ctx: Context, range: vscode.Range | undefined) => {
+		end: (ctx: Context, range: vscode.Range | undefined): void => {
 			assert(ctx.editor && typeof ctx.editor.selectRange === 'function', 'is this running another way');
 			ctx.editor.selectRange(ctx, range);
 			vscode.commands.executeCommand('noop').then(() => {

@@ -6,6 +6,10 @@ export default [
 		files: ['**/*.ts'],
 	},
 	{
+		// sample files the tests run the commands against, not extension code
+		ignores: ['src/playgrounds/**'],
+	},
+	{
 		plugins: {
 			'@typescript-eslint': typescriptEslint,
 		},

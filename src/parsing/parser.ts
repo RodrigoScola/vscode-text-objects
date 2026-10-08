@@ -86,7 +86,7 @@ export class LanguageParser {
 		return path.join(__dirname, '..', 'parsers', `tree-sitter-${name}.wasm`); // Adjust the path if necessary
 	}
 
-	static async get(langname: string) {
+	static async get(langname: string): Promise<Parsing | undefined> {
 		if (langname in LanguageParser.initedLanguages) {
 			return LanguageParser.initedLanguages[langname as keyof typeof Languages];
 		}
